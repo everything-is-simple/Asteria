@@ -90,12 +90,27 @@ flowchart TD
     E --> F[Alpha readonly consumer]
 ```
 
+`wave_core_state` 与 `system_state` 是两个状态空间，不得合并。
+
+Wave 状态机：
+
 ```mermaid
 stateDiagram-v2
     [*] --> alive
     alive --> terminated: break
-    terminated --> transition: open transition
-    transition --> alive: candidate confirmed as new wave
+```
+
+System 状态读出：
+
+```mermaid
+stateDiagram-v2
+    [*] --> uninitialized
+    uninitialized --> up_alive: first up wave confirmed
+    uninitialized --> down_alive: first down wave confirmed
+    up_alive --> transition: up wave break
+    down_alive --> transition: down wave break
+    transition --> up_alive: up candidate confirmed
+    transition --> down_alive: down candidate confirmed
 ```
 
 ## 8. 核心表族

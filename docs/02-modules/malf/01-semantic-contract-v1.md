@@ -73,6 +73,8 @@ WavePosition
 | `life_state` | lifespan 状态 |
 | `position_quadrant` | 二维位置 |
 
+`uninitialized` 是 Core/System 内部状态，不发布为 WavePosition 行。首次 wave 尚未确认的 bar 不写入 `malf_wave_position`；截至最新 run 仍未初始化的 symbol 不写入 `malf_wave_position_latest`，下游缺行即视为尚未初始化，而不是数据错误。
+
 ## 6. 不允许表达
 
 | 表达 | 裁决 |

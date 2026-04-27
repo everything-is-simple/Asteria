@@ -23,8 +23,11 @@ flowchart TD
     A[market_base_day] --> B[malf_core_day]
     B --> C[malf_lifespan_day]
     C --> D[malf_service_day]
+    B --> D
     D --> E[WavePosition]
 ```
+
+Service 构建同时读取 Core 与 Lifespan：alive 行的 lifespan 字段来自 `malf_lifespan_snapshot`；transition 行的 `transition_span` 来自 `malf_transition_ledger`，不来自 `malf_lifespan_snapshot`。
 
 ## 3. Core DB
 
@@ -77,6 +80,8 @@ created_at
 | `malf_wave_position_latest` | `symbol + timeframe + service_version` | 最新 WavePosition |
 | `malf_interface_audit` | `audit_id` | 接口完整性审计 |
 
+首次 wave 尚未确认的 uninitialized bar 不写入 `malf_wave_position`。截至 service run 最新 bar 仍未初始化的 symbol 不写入 `malf_wave_position_latest`；下游缺行即视为 uninitialized。
+
 Service 表必须带：
 
 ```text
@@ -122,6 +127,7 @@ erDiagram
     malf_transition_ledger ||--o{ malf_candidate_ledger : owns
     malf_wave_ledger ||--o{ malf_lifespan_snapshot : measured_by
     malf_lifespan_snapshot ||--o{ malf_wave_position : published_as
+    malf_transition_ledger ||--o{ malf_wave_position : publishes_transition_span
 ```
 
 ## 8. 写入裁决
