@@ -36,4 +36,3 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
 | `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_2.md` | 波段统计学定义 |
 | `MALF_03_System_Service_Interface_v1_2.md` | MALF 对系统其它模块的服务接口 |
 | `MALF_00_Three_Documents_Bridge_v1_2.md` | 三份文件关联总纲 |
-

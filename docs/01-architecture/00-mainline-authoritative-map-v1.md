@@ -173,4 +173,3 @@ design freeze
 | schema version | 必须 |
 | rule version | 语义模块必须 |
 | sample version | 统计模块必须 |
-

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Asteria Governance"
+  short_description: "Asteria module gates and checks"
+  default_prompt: "Use Asteria governance to make a doc-first, one-module-at-a-time change."

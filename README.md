@@ -35,3 +35,29 @@ MALF = Market Lifespan Framework
 4. [模块设计文档标准](docs/02-modules/00-module-design-document-standard-v1.md)
 5. [模块门禁账本](docs/03-refactor/00-module-gate-ledger-v1.md)
 
+## Python 环境
+
+首选本地虚拟环境：
+
+```powershell
+D:\miniconda\py310\python.exe -m venv H:\Asteria\.venv
+H:\Asteria\.venv\Scripts\python.exe -m pip install --upgrade pip
+H:\Asteria\.venv\Scripts\python.exe -m pip install -e ".[dev]"
+```
+
+可选 conda 环境：
+
+```powershell
+D:\miniconda\py310\Scripts\conda.exe env create -f environment.yml
+```
+
+## 开发检查
+
+```powershell
+H:\Asteria\.venv\Scripts\python.exe scripts\dev\doctor.py
+H:\Asteria\.venv\Scripts\python.exe scripts\governance\check_project_governance.py
+H:\Asteria\.venv\Scripts\ruff.exe check .
+H:\Asteria\.venv\Scripts\ruff.exe format --check .
+H:\Asteria\.venv\Scripts\mypy.exe src
+H:\Asteria\.venv\Scripts\pytest.exe
+```

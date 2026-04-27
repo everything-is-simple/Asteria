@@ -109,4 +109,3 @@ flowchart TD
 | new wave confirmation bar 的 no_new_span = 0 | Lifespan |
 | transition_span 不并入 no_new_span | Lifespan |
 | wave_core_state 不得取 transition | Service |
-

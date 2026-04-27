@@ -1,0 +1,83 @@
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "asteria"
+version = "0.1.0"
+description = "Asteria Market Lifespan Framework, a local-first MALF-led market research ledger system."
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "duckdb>=1.2.0",
+    "pandas>=2.2.0",
+    "polars>=1.0.0",
+    "pyarrow>=18.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "matplotlib>=3.8.0",
+    "mypy>=1.10.0",
+    "pre-commit>=4.3.0",
+    "pytest>=9.0.0",
+    "pytest-cov>=6.0.0",
+    "ruff>=0.14.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/asteria"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "."]
+testpaths = ["tests"]
+addopts = "--basetemp=H:/Asteria-temp/pytest-tmp"
+cache_dir = "H:/Asteria-temp/pytest-cache"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+src = ["src", "scripts", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+[tool.mypy]
+python_version = "3.10"
+mypy_path = "src"
+packages = ["asteria"]
+ignore_missing_imports = true
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_optional = true
+
+[tool.asteria.governance]
+repo_roots = [
+    "H:/Asteria",
+    "H:/Asteria-data",
+    "H:/Asteria-report",
+    "H:/Asteria-Validated",
+    "H:/Asteria-temp",
+]
+formal_source_roots = ["src", "scripts", "tests"]
+required_docs = [
+    "README.md",
+    "AGENTS.md",
+    "docs/00-governance/00-asteria-refactor-charter-v1.md",
+    "docs/01-architecture/00-mainline-authoritative-map-v1.md",
+    "docs/01-architecture/01-database-topology-v1.md",
+    "docs/03-refactor/00-module-gate-ledger-v1.md",
+]
+max_python_file_lines = 500
+max_script_file_lines = 240
+max_markdown_file_lines = 1200
+comment_style = "Prefer comments that explain intent, boundary, or non-obvious invariants. Avoid restating code."
+active_module_rule = "Only one mainline module may be in construction at a time."
+doc_first_rule = "Design and gate documents must exist before formal module implementation."
