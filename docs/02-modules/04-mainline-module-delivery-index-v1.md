@@ -55,7 +55,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2\
 | 5 | Portfolio Plan | `docs/02-modules/portfolio_plan/` | pre-gate six-doc draft | 否 | 等 Position 放行后重新审阅并冻结 |
 | 6 | Trade | `docs/02-modules/trade/` | pre-gate six-doc draft | 否 | 等 Portfolio Plan 放行后重新审阅并冻结 |
 | 7 | System Readout | `docs/02-modules/system_readout/` | pre-gate six-doc draft | 否 | 等 Trade 放行后重新审阅并冻结 |
-| 8 | Pipeline | `docs/02-modules/pipeline/` | pending placeholder | 否 | 等主线 gate registry 放行 |
+| 8 | Pipeline | `docs/02-modules/pipeline/` | pre-gate six-doc draft | 否 | 等 MALF bounded proof gate 后重新审阅并冻结 |
 
 ## 4. 主线顺序
 
@@ -88,12 +88,16 @@ MALF
 本轮只建立占位或 pre-gate draft，不冻结：
 
 ```text
+Alpha
 Signal
 Position
+Portfolio Plan
+Trade
+System Readout
 Pipeline
 ```
 
-Alpha / Signal / Position / Portfolio Plan / Trade / System Readout pre-gate draft 和下游占位文档不得被解释为语义冻结、schema 冻结或施工许可。
+Alpha / Signal / Position / Portfolio Plan / Trade / System Readout / Pipeline pre-gate draft 不得被解释为语义冻结、schema 冻结或施工许可。
 
 ## 6. 硬边界
 

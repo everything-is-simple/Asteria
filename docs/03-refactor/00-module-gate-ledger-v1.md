@@ -28,7 +28,7 @@ MALF
 MALF
 ```
 
-Alpha、Signal、Position、Portfolio Plan、Trade 和 System Readout 为 pre-gate six-doc draft，不允许施工。Pipeline 仍为 pending placeholder，不允许施工。
+Alpha、Signal、Position、Portfolio Plan、Trade、System Readout 和 Pipeline 为 pre-gate six-doc draft，不允许施工。
 
 ## 2. 模块状态表
 
@@ -42,7 +42,7 @@ Alpha、Signal、Position、Portfolio Plan、Trade 和 System Readout 为 pre-ga
 | 5 | Portfolio Plan | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/portfolio_plan/` | 等 Position 放行后重新审阅并冻结 |
 | 6 | Trade | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/trade/` | 等 Portfolio Plan 放行后重新审阅并冻结 |
 | 7 | System Readout | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/system_readout/` | 等 Trade 放行后重新审阅并冻结 |
-| 8 | Pipeline | pending placeholder | not frozen | 否 | `docs/02-modules/pipeline/` | 只编排，不抢业务施工位 |
+| 8 | Pipeline | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/pipeline/` | 只编排和记录，不抢业务施工位 |
 
 ## 3. 文档交付清单
 
@@ -97,7 +97,12 @@ MALF 本轮冻结文档：
 | System Readout | `docs/02-modules/system_readout/03-runner-contract-v1.md` | draft / pre-gate / not frozen |
 | System Readout | `docs/02-modules/system_readout/04-audit-spec-v1.md` | draft / pre-gate / not frozen |
 | System Readout | `docs/02-modules/system_readout/05-build-card-v1.md` | draft / pre-gate / not frozen |
-| Pipeline | `docs/02-modules/pipeline/00-pending-module-gate-v1.md` | not frozen |
+| Pipeline | `docs/02-modules/pipeline/00-authority-design-v1.md` | draft / pre-gate / not frozen |
+| Pipeline | `docs/02-modules/pipeline/01-semantic-contract-v1.md` | draft / pre-gate / not frozen |
+| Pipeline | `docs/02-modules/pipeline/02-database-schema-spec-v1.md` | draft / pre-gate / not frozen |
+| Pipeline | `docs/02-modules/pipeline/03-runner-contract-v1.md` | draft / pre-gate / not frozen |
+| Pipeline | `docs/02-modules/pipeline/04-audit-spec-v1.md` | draft / pre-gate / not frozen |
+| Pipeline | `docs/02-modules/pipeline/05-build-card-v1.md` | draft / pre-gate / not frozen |
 
 ## 4. 交付资产
 

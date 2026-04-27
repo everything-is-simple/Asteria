@@ -2,11 +2,11 @@
 
 日期：2026-04-27
 
-状态：pending / not frozen
+状态：pre-gate draft / not frozen
 
 ## 1. 当前裁决
 
-Pipeline 是编排层，不是业务语义模块。本轮不冻结 Pipeline 设计，不允许建立全链路施工。
+Pipeline 是编排层，不是业务语义模块。本轮已补齐 pre-gate 六件套 draft，但不冻结 Pipeline 设计，不允许建立全链路施工。
 
 ## 2. 等待条件
 
@@ -16,7 +16,7 @@ Pipeline 必须等待：
 MALF bounded proof gate
 ```
 
-之后只能先记录 MALF 单模块运行，不得抢占 Alpha 以后模块的施工位。
+之后只能先记录 MALF 单模块运行，不得抢占 Alpha 以后模块的施工位，也不得把 pre-gate 文档解释为施工许可。
 
 ## 3. 允许的未来职责
 
@@ -39,9 +39,9 @@ build_manifest
 | 合并模块 DB | 违反多库拓扑 |
 | 绕过模块冻结直接运行全链路 | 违反单模块施工门禁 |
 
-## 5. 未来必须补齐
+## 5. 当前 pre-gate 文档集
 
-Pipeline 进入设计冻结前必须补齐：
+本轮已补齐以下 pre-gate draft：
 
 ```text
 00-authority-design-v1.md
@@ -51,3 +51,15 @@ Pipeline 进入设计冻结前必须补齐：
 04-audit-spec-v1.md
 05-build-card-v1.md
 ```
+
+这些文档用于锁定 Pipeline 的编排边界、记录边界和未来 runner 审计边界，不构成 frozen、schema gate 或施工许可。
+
+## 6. 下一次重审条件
+
+Pipeline 只有在以下条件满足后，才允许重新审阅是否进入冻结：
+
+```text
+MALF bounded proof gate passed
+```
+
+即便届时进入重审，Pipeline 也仍然只能负责编排与记录，不得定义任何主线业务语义。
