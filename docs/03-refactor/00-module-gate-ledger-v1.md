@@ -28,7 +28,7 @@ MALF
 MALF
 ```
 
-Alpha 为 pre-gate six-doc draft，不允许施工。Signal 到 Pipeline 仍为 pending placeholder，不允许施工。
+Alpha 和 Signal 为 pre-gate six-doc draft，不允许施工。Position 到 Pipeline 仍为 pending placeholder，不允许施工。
 
 ## 2. 模块状态表
 
@@ -37,7 +37,7 @@ Alpha 为 pre-gate six-doc draft，不允许施工。Signal 到 Pipeline 仍为 
 | 0 | Data Foundation | delivered draft | not frozen | 否 | `docs/02-modules/01-data-foundation-design-v1.md` | 地基输入契约，非策略主线 |
 | 1 | MALF | delivered six-doc set | frozen | 是 | `docs/02-modules/malf/` | 唯一可进入下一施工卡的主线模块 |
 | 2 | Alpha | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/alpha/` | 等 MALF WavePosition 放行后重新审阅并冻结 |
-| 3 | Signal | pending placeholder | not frozen | 否 | `docs/02-modules/signal/` | 等 Alpha 放行 |
+| 3 | Signal | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/signal/` | 等 Alpha 放行后重新审阅并冻结 |
 | 4 | Position | pending placeholder | not frozen | 否 | `docs/02-modules/position/` | 等 Signal 放行 |
 | 5 | Portfolio Plan | pending placeholder | not frozen | 否 | `docs/02-modules/portfolio_plan/` | 等 Position 放行 |
 | 6 | Trade | pending placeholder | not frozen | 否 | `docs/02-modules/trade/` | 等 Portfolio Plan 放行 |
@@ -67,7 +67,12 @@ MALF 本轮冻结文档：
 | Alpha | `docs/02-modules/alpha/03-runner-contract-v1.md` | draft / pre-gate / not frozen |
 | Alpha | `docs/02-modules/alpha/04-audit-spec-v1.md` | draft / pre-gate / not frozen |
 | Alpha | `docs/02-modules/alpha/05-build-card-v1.md` | draft / pre-gate / not frozen |
-| Signal | `docs/02-modules/signal/00-pending-module-gate-v1.md` | not frozen |
+| Signal | `docs/02-modules/signal/00-authority-design-v1.md` | draft / pre-gate / not frozen |
+| Signal | `docs/02-modules/signal/01-semantic-contract-v1.md` | draft / pre-gate / not frozen |
+| Signal | `docs/02-modules/signal/02-database-schema-spec-v1.md` | draft / pre-gate / not frozen |
+| Signal | `docs/02-modules/signal/03-runner-contract-v1.md` | draft / pre-gate / not frozen |
+| Signal | `docs/02-modules/signal/04-audit-spec-v1.md` | draft / pre-gate / not frozen |
+| Signal | `docs/02-modules/signal/05-build-card-v1.md` | draft / pre-gate / not frozen |
 | Position | `docs/02-modules/position/00-pending-module-gate-v1.md` | not frozen |
 | Portfolio Plan | `docs/02-modules/portfolio_plan/00-pending-module-gate-v1.md` | not frozen |
 | Trade | `docs/02-modules/trade/00-pending-module-gate-v1.md` | not frozen |
