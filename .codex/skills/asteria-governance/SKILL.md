@@ -45,11 +45,15 @@ Run checks with the repo-local environment:
 
 ```powershell
 H:\Asteria\.venv\Scripts\python.exe scripts\governance\check_project_governance.py
-H:\Asteria\.venv\Scripts\ruff.exe check .
-H:\Asteria\.venv\Scripts\ruff.exe format --check .
-H:\Asteria\.venv\Scripts\mypy.exe src
+H:\Asteria\.venv\Scripts\ruff.exe check . --cache-dir H:\Asteria-temp\ruff-cache
+H:\Asteria\.venv\Scripts\ruff.exe format --check . --cache-dir H:\Asteria-temp\ruff-cache
+H:\Asteria\.venv\Scripts\mypy.exe src --cache-dir H:\Asteria-temp\mypy-cache
 H:\Asteria\.venv\Scripts\pytest.exe
 ```
+
+Do not leave tool caches in the repo root. Treat `H:\Asteria\.ruff_cache` and
+`H:\Asteria\.mypy_cache` as accidental temporary artifacts: delete them if they
+appear, never stage them, and rerun checks with the cache directories above.
 
 ## Style
 
