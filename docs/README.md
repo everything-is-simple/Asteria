@@ -48,3 +48,7 @@ Validated 资产清单：
 重构来路：
 
 - [Asteria 重构来路与决策链](H:/Asteria/docs/00-governance/01-asteria-refactor-origin-trace-v1.md)
+
+当前系统清单：
+
+- [Asteria 当前系统清单](H:/Asteria/docs/00-governance/02-current-system-inventory-v1.md)
