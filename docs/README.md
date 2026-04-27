@@ -40,3 +40,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
 Validated 资产清单：
 
 - [Asteria Validated 资产清单](H:/Asteria/docs/01-architecture/02-validated-asset-inventory-v1.md)
+
+前辈系统资产清单：
+
+- [前辈系统主线模块资产清单](H:/Asteria/docs/01-architecture/03-predecessor-system-module-inventory-v1.md)
