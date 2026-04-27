@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Local artifacts
+*.duckdb
+*.duckdb.wal
+*.duckdb.tmp
+*.parquet
+*.csv
+*.xlsx
+*.xls
+
+# Asteria generated outputs
+reports/
+artifacts/
+tmp/
+temp/
+
+# Editor
+.vscode/
+.idea/
+
