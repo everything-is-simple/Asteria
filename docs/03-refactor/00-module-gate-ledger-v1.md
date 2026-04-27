@@ -34,7 +34,7 @@ Alpha、Signal、Position、Portfolio Plan、Trade、System Readout 和 Pipeline
 
 | 顺序 | 模块 | 文档状态 | 冻结状态 | 是否允许施工 | 文档位置 | 说明 |
 |---:|---|---|---|---:|---|---|
-| 0 | Data Foundation | delivered draft | not frozen | 否 | `docs/02-modules/01-data-foundation-design-v1.md` | 地基输入契约，非策略主线 |
+| 0 | Data Foundation | foundation six-doc draft | not frozen | 否 | `docs/02-modules/data/` | 地基输入契约，非策略主线，不占主线施工位 |
 | 1 | MALF | delivered six-doc set | frozen | 是 | `docs/02-modules/malf/` | 唯一可进入下一施工卡的主线模块 |
 | 2 | Alpha | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/alpha/` | 等 MALF WavePosition 放行后重新审阅并冻结 |
 | 3 | Signal | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/signal/` | 等 Alpha 放行后重新审阅并冻结 |
@@ -45,6 +45,17 @@ Alpha、Signal、Position、Portfolio Plan、Trade、System Readout 和 Pipeline
 | 8 | Pipeline | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/pipeline/` | 只编排和记录，不抢业务施工位 |
 
 ## 3. 文档交付清单
+
+Data Foundation 本轮六件套草案：
+
+| 文档 | 状态 |
+|---|---|
+| `docs/02-modules/data/00-authority-design-v1.md` | draft / foundation-contract / not frozen |
+| `docs/02-modules/data/01-semantic-contract-v1.md` | draft / foundation-contract / not frozen |
+| `docs/02-modules/data/02-database-schema-spec-v1.md` | draft / foundation-contract / not frozen |
+| `docs/02-modules/data/03-runner-contract-v1.md` | draft / foundation-contract / not frozen |
+| `docs/02-modules/data/04-audit-spec-v1.md` | draft / foundation-contract / not frozen |
+| `docs/02-modules/data/05-build-card-v1.md` | draft / foundation-contract / not frozen |
 
 MALF 本轮冻结文档：
 
