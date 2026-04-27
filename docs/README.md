@@ -44,3 +44,7 @@ Validated 资产清单：
 前辈系统资产清单：
 
 - [前辈系统主线模块资产清单](H:/Asteria/docs/01-architecture/03-predecessor-system-module-inventory-v1.md)
+
+重构来路：
+
+- [Asteria 重构来路与决策链](H:/Asteria/docs/00-governance/01-asteria-refactor-origin-trace-v1.md)

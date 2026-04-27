@@ -30,10 +30,11 @@ MALF = Market Lifespan Framework
 ## 阅读入口
 
 1. [重构总纲](docs/00-governance/00-asteria-refactor-charter-v1.md)
-2. [主线模块权威图](docs/01-architecture/00-mainline-authoritative-map-v1.md)
-3. [数据库拓扑](docs/01-architecture/01-database-topology-v1.md)
-4. [模块设计文档标准](docs/02-modules/00-module-design-document-standard-v1.md)
-5. [模块门禁账本](docs/03-refactor/00-module-gate-ledger-v1.md)
+2. [重构来路与决策链](docs/00-governance/01-asteria-refactor-origin-trace-v1.md)
+3. [主线模块权威图](docs/01-architecture/00-mainline-authoritative-map-v1.md)
+4. [数据库拓扑](docs/01-architecture/01-database-topology-v1.md)
+5. [模块设计文档标准](docs/02-modules/00-module-design-document-standard-v1.md)
+6. [模块门禁账本](docs/03-refactor/00-module-gate-ledger-v1.md)
 
 ## Python 环境
 
