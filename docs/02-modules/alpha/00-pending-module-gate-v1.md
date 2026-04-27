@@ -2,11 +2,11 @@
 
 日期：2026-04-27
 
-状态：pending / not frozen
+状态：pre-gate draft / not frozen
 
 ## 1. 当前裁决
 
-Alpha 是 MALF 之后的第一下游主线模块，但本轮不冻结 Alpha 设计，不允许进入施工。
+Alpha 是 MALF 之后的第一下游主线模块。本目录已补齐 pre-gate 六件套 draft，但本轮不冻结 Alpha 设计，不允许进入施工。
 
 ## 2. 等待条件
 
@@ -48,15 +48,17 @@ position_quadrant
 | 输出 order | 归属 Trade |
 | 把可交易性客观事实当作 Alpha 语义 | 客观事实属于 Data Foundation |
 
-## 5. 未来必须补齐
+## 5. 已补齐的 pre-gate draft
 
-Alpha 进入设计冻结前必须补齐：
+以下文档只表示预门禁草案，不表示设计冻结或施工许可：
 
-```text
-00-authority-design-v1.md
-01-semantic-contract-v1.md
-02-database-schema-spec-v1.md
-03-runner-contract-v1.md
-04-audit-spec-v1.md
-05-build-card-v1.md
-```
+| 文档 | 状态 |
+|---|---|
+| `00-authority-design-v1.md` | draft / pre-gate / not frozen |
+| `01-semantic-contract-v1.md` | draft / pre-gate / not frozen |
+| `02-database-schema-spec-v1.md` | draft / pre-gate / not frozen |
+| `03-runner-contract-v1.md` | draft / pre-gate / not frozen |
+| `04-audit-spec-v1.md` | draft / pre-gate / not frozen |
+| `05-build-card-v1.md` | draft / pre-gate / not frozen |
+
+Alpha 进入设计冻结前必须在 MALF WavePosition service released 之后重新审阅这些文档。

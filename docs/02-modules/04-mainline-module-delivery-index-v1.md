@@ -49,7 +49,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2\
 |---:|---|---|---|---:|---|
 | 0 | Data Foundation | `docs/02-modules/01-data-foundation-design-v1.md` | draft | 否 | 作为地基输入契约继续冻结 |
 | 1 | MALF | `docs/02-modules/malf/` | frozen | 是 | 仅允许 MALF 下一施工卡 |
-| 2 | Alpha | `docs/02-modules/alpha/` | pending placeholder | 否 | 等 MALF WavePosition 放行 |
+| 2 | Alpha | `docs/02-modules/alpha/` | pre-gate six-doc draft | 否 | 等 MALF WavePosition 放行后重新审阅并冻结 |
 | 3 | Signal | `docs/02-modules/signal/` | pending placeholder | 否 | 等 Alpha 放行 |
 | 4 | Position | `docs/02-modules/position/` | pending placeholder | 否 | 等 Signal 放行 |
 | 5 | Portfolio Plan | `docs/02-modules/portfolio_plan/` | pending placeholder | 否 | 等 Position 放行 |
@@ -85,10 +85,9 @@ flowchart LR
 MALF
 ```
 
-本轮只建立占位，不冻结：
+本轮只建立占位或 pre-gate draft，不冻结：
 
 ```text
-Alpha
 Signal
 Position
 Portfolio Plan
@@ -97,7 +96,7 @@ System Readout
 Pipeline
 ```
 
-下游占位文档不得被解释为语义冻结、schema 冻结或施工许可。
+Alpha pre-gate draft 和下游占位文档不得被解释为语义冻结、schema 冻结或施工许可。
 
 ## 6. 硬边界
 
