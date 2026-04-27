@@ -28,7 +28,7 @@ MALF
 MALF
 ```
 
-Alpha、Signal 和 Position 为 pre-gate six-doc draft，不允许施工。Portfolio Plan 到 Pipeline 仍为 pending placeholder，不允许施工。
+Alpha、Signal、Position 和 Portfolio Plan 为 pre-gate six-doc draft，不允许施工。Trade 到 Pipeline 仍为 pending placeholder，不允许施工。
 
 ## 2. 模块状态表
 
@@ -39,7 +39,7 @@ Alpha、Signal 和 Position 为 pre-gate six-doc draft，不允许施工。Portf
 | 2 | Alpha | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/alpha/` | 等 MALF WavePosition 放行后重新审阅并冻结 |
 | 3 | Signal | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/signal/` | 等 Alpha 放行后重新审阅并冻结 |
 | 4 | Position | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/position/` | 等 Signal 放行后重新审阅并冻结 |
-| 5 | Portfolio Plan | pending placeholder | not frozen | 否 | `docs/02-modules/portfolio_plan/` | 等 Position 放行 |
+| 5 | Portfolio Plan | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/portfolio_plan/` | 等 Position 放行后重新审阅并冻结 |
 | 6 | Trade | pending placeholder | not frozen | 否 | `docs/02-modules/trade/` | 等 Portfolio Plan 放行 |
 | 7 | System Readout | pending placeholder | not frozen | 否 | `docs/02-modules/system_readout/` | 等 Trade 放行 |
 | 8 | Pipeline | pending placeholder | not frozen | 否 | `docs/02-modules/pipeline/` | 只编排，不抢业务施工位 |
@@ -79,7 +79,12 @@ MALF 本轮冻结文档：
 | Position | `docs/02-modules/position/03-runner-contract-v1.md` | draft / pre-gate / not frozen |
 | Position | `docs/02-modules/position/04-audit-spec-v1.md` | draft / pre-gate / not frozen |
 | Position | `docs/02-modules/position/05-build-card-v1.md` | draft / pre-gate / not frozen |
-| Portfolio Plan | `docs/02-modules/portfolio_plan/00-pending-module-gate-v1.md` | not frozen |
+| Portfolio Plan | `docs/02-modules/portfolio_plan/00-authority-design-v1.md` | draft / pre-gate / not frozen |
+| Portfolio Plan | `docs/02-modules/portfolio_plan/01-semantic-contract-v1.md` | draft / pre-gate / not frozen |
+| Portfolio Plan | `docs/02-modules/portfolio_plan/02-database-schema-spec-v1.md` | draft / pre-gate / not frozen |
+| Portfolio Plan | `docs/02-modules/portfolio_plan/03-runner-contract-v1.md` | draft / pre-gate / not frozen |
+| Portfolio Plan | `docs/02-modules/portfolio_plan/04-audit-spec-v1.md` | draft / pre-gate / not frozen |
+| Portfolio Plan | `docs/02-modules/portfolio_plan/05-build-card-v1.md` | draft / pre-gate / not frozen |
 | Trade | `docs/02-modules/trade/00-pending-module-gate-v1.md` | not frozen |
 | System Readout | `docs/02-modules/system_readout/00-pending-module-gate-v1.md` | not frozen |
 | Pipeline | `docs/02-modules/pipeline/00-pending-module-gate-v1.md` | not frozen |
