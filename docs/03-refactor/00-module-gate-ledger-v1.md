@@ -10,75 +10,113 @@
 refactor-governance
 ```
 
-当前唯一活跃设计卡：
+当前已交付主线模块文档索引：
 
 ```text
-01-malf-schema-and-runner-contract-freeze-card-20260427
+docs/02-modules/04-mainline-module-delivery-index-v1.md
 ```
+
+当前唯一冻结主线模块：
+
+```text
+MALF
+```
+
+当前唯一允许进入下一施工卡的模块：
+
+```text
+MALF
+```
+
+Alpha 到 Pipeline 仅为 pending placeholder，不允许施工。
 
 ## 2. 模块状态表
 
-| 顺序 | 模块 | 当前状态 | 是否允许施工 | 说明 |
-|---:|---|---|---:|---|
-| 0 | Data Foundation | `draft` | 否 | 先冻结输入契约，不作为第一主线施工 |
-| 1 | MALF | `design-card-draft` | 否 | schema / runner / audit 冻结卡已创建，未冻结 |
-| 2 | Alpha | `pending` | 否 | 等 MALF WavePosition 放行 |
-| 3 | Signal | `pending` | 否 | 等 Alpha 放行 |
-| 4 | Position | `pending` | 否 | 等 Signal 放行 |
-| 5 | Portfolio Plan | `pending` | 否 | 等 Position 放行 |
-| 6 | Trade | `pending` | 否 | 等 Portfolio Plan 放行 |
-| 7 | System Readout | `pending` | 否 | 等 Trade 放行 |
-| 8 | Pipeline | `pending` | 否 | 只做编排，不抢业务模块施工位 |
+| 顺序 | 模块 | 文档状态 | 冻结状态 | 是否允许施工 | 文档位置 | 说明 |
+|---:|---|---|---|---:|---|---|
+| 0 | Data Foundation | delivered draft | not frozen | 否 | `docs/02-modules/01-data-foundation-design-v1.md` | 地基输入契约，非策略主线 |
+| 1 | MALF | delivered six-doc set | frozen | 是 | `docs/02-modules/malf/` | 唯一可进入下一施工卡的主线模块 |
+| 2 | Alpha | pending placeholder | not frozen | 否 | `docs/02-modules/alpha/` | 等 MALF WavePosition 放行 |
+| 3 | Signal | pending placeholder | not frozen | 否 | `docs/02-modules/signal/` | 等 Alpha 放行 |
+| 4 | Position | pending placeholder | not frozen | 否 | `docs/02-modules/position/` | 等 Signal 放行 |
+| 5 | Portfolio Plan | pending placeholder | not frozen | 否 | `docs/02-modules/portfolio_plan/` | 等 Position 放行 |
+| 6 | Trade | pending placeholder | not frozen | 否 | `docs/02-modules/trade/` | 等 Portfolio Plan 放行 |
+| 7 | System Readout | pending placeholder | not frozen | 否 | `docs/02-modules/system_readout/` | 等 Trade 放行 |
+| 8 | Pipeline | pending placeholder | not frozen | 否 | `docs/02-modules/pipeline/` | 只编排，不抢业务施工位 |
 
-## 3. 今日完成目标
+## 3. 文档交付清单
 
-| 项 | 状态 |
+MALF 本轮冻结文档：
+
+| 文档 | 状态 |
 |---|---|
-| 建立 Asteria 根文档入口 | done |
-| 明确 `data` 非策略主线 | done |
-| 明确主线模块顺序 | done |
-| 明确 DuckDB 目标拓扑 | done |
-| 明确单模块施工门禁 | done |
-| 启动 MALF schema spec | done |
+| `docs/02-modules/malf/00-authority-design-v1.md` | frozen |
+| `docs/02-modules/malf/01-semantic-contract-v1.md` | frozen |
+| `docs/02-modules/malf/02-database-schema-spec-v1.md` | frozen |
+| `docs/02-modules/malf/03-runner-contract-v1.md` | frozen |
+| `docs/02-modules/malf/04-audit-spec-v1.md` | frozen |
+| `docs/02-modules/malf/05-build-card-v1.md` | frozen |
 
-## 4. 下一张卡
+下游本轮占位文档：
 
-当前设计卡：
+| 模块 | 占位文档 | 状态 |
+|---|---|---|
+| Alpha | `docs/02-modules/alpha/00-pending-module-gate-v1.md` | not frozen |
+| Signal | `docs/02-modules/signal/00-pending-module-gate-v1.md` | not frozen |
+| Position | `docs/02-modules/position/00-pending-module-gate-v1.md` | not frozen |
+| Portfolio Plan | `docs/02-modules/portfolio_plan/00-pending-module-gate-v1.md` | not frozen |
+| Trade | `docs/02-modules/trade/00-pending-module-gate-v1.md` | not frozen |
+| System Readout | `docs/02-modules/system_readout/00-pending-module-gate-v1.md` | not frozen |
+| Pipeline | `docs/02-modules/pipeline/00-pending-module-gate-v1.md` | not frozen |
+
+## 4. 交付资产
+
+正式可交付压缩包：
 
 ```text
-01-malf-schema-and-runner-contract-freeze-card-20260427
+H:\Asteria-Validated\Asteria-mainline-module-docs-v1.zip
+```
+
+该 zip 是主线模块文档交付包，不是运行证据包，也不是 DuckDB 产物。
+
+## 5. 下一张施工卡
+
+下一张施工卡必须仍然只针对 MALF：
+
+```text
+MALF day bounded proof
 ```
 
 目标：
 
 | 内容 | 要求 |
 |---|---|
-| MALF day 三库 schema | `malf_core_day / malf_lifespan_day / malf_service_day` |
-| Core 表族 | pivot / structure / wave / break / transition / candidate |
-| Lifespan 表族 | snapshot / profile / sample / rule |
-| Service 表族 | wave_position / latest / audit |
-| Runner contract | bounded proof first, full build later |
-| Audit spec | Core + Lifespan + Service 不变量 |
+| Core runner | bounded proof first |
+| Lifespan runner | 基于 Core 输出 |
+| Service runner | 发布 WavePosition |
+| Audit runner | Core + Lifespan + Service 硬审计 |
+| Evidence | 证据落入 `H:\Asteria-report` 或 `H:\Asteria-Validated` |
 
-## 5. 施工锁
+## 6. 施工锁
 
-在下一张卡未冻结前，不允许：
+在 MALF day bounded proof 未通过前，不允许：
 
 | 禁止项 |
 |---|
-| 迁移旧 MALF engine |
-| 创建正式 MALF DuckDB |
-| 修改 Alpha |
-| 修改 Position / Portfolio / Trade |
+| 迁移旧 Alpha / Signal / Position / Portfolio / Trade / System 代码 |
+| 创建 Alpha / Signal / Position / Portfolio / Trade / System 正式 DB |
+| 让下游模块补充自有语义 |
 | 建立 pipeline 全链路 |
+| 让 Alpha、Signal、Portfolio、Trade、System 写回 MALF |
+| 合并 `wave_core_state` 与 `system_state` |
 
-## 6. 放行定义
+## 7. MALF 放行定义
 
 MALF day 首轮放行标准：
 
 | 门禁 | 要求 |
 |---|---|
-| Design | 三份 MALF 终稿已引用并映射到 Asteria schema |
+| Design | MALF 三份终稿已引用并映射到 Asteria 六件套 |
 | Schema | day 三库表族自然键冻结 |
 | Bounded Build | 小样本可重算、幂等 |
 | Invariant Audit | 硬规则全通过 |
