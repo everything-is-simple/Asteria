@@ -1,0 +1,73 @@
+# Asteria 执行卡记录区
+
+本目录负责把 repo 内正式执行闭环补齐。
+
+它回答的不是“模块怎么设计”，也不是“当前门禁开到哪”，而是：
+
+1. 为什么这张卡开工。
+2. 这张卡实际怎么执行。
+3. 证据资产放在哪里。
+4. 最后结论是什么。
+
+## 1. 与其他目录的分工
+
+| 位置 | 负责什么 |
+|---|---|
+| `docs/02-modules/` | 模块定义、契约、Schema、Runner、Audit、Build Card |
+| `docs/03-refactor/` | 冻结状态、门禁账本、重构施工清单 |
+| `docs/04-execution/` | 执行闭环索引、执行记录、结论 |
+| `H:\Asteria-report` | 报告、清单、审计摘要等真实证据 |
+| `H:\Asteria-Validated` | validated zip、正式证据归档资产 |
+
+一句话说：
+
+```text
+02-modules 定义要做什么
+03-refactor 定义允不允许做
+04-execution 记录这次到底怎么做完的
+```
+
+## 2. 最小闭环
+
+每张正式执行卡都必须有四类文档：
+
+| 文档 | 作用 |
+|---|---|
+| `card` | 本次执行目标、输入范围、允许动作、禁止动作 |
+| `evidence-index` | 外部证据路径、关键计数、关键审计值 |
+| `record` | 执行经过、关键步骤、promote 与验证记录 |
+| `conclusion` | 最终裁决与对门禁的影响 |
+
+没有这四件套，就不算 repo 内闭环完成。
+
+## 3. 目录结构
+
+```text
+docs/04-execution/
+  README.md
+  00-execution-discipline-v1.md
+  00-conclusion-index-v1.md
+  templates/
+  records/
+    <module_id>/
+      <run_id>.card.md
+      <run_id>.evidence-index.md
+      <run_id>.record.md
+      <run_id>.conclusion.md
+```
+
+## 4. 命名规则
+
+1. 执行记录按模块分目录，不按日期散铺。
+2. 单卡文件统一带 `run_id`。
+3. `conclusion` 是单卡唯一正式结论入口。
+4. `evidence-index` 只索引和摘要，不复制大报告或二进制资产。
+
+## 5. 当前样板
+
+第一张完整样板卡：
+
+- [MALF day bounded proof card](records/malf/malf-day-bounded-proof-20260428-01.card.md)
+- [MALF day bounded proof evidence index](records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md)
+- [MALF day bounded proof record](records/malf/malf-day-bounded-proof-20260428-01.record.md)
+- [MALF day bounded proof conclusion](records/malf/malf-day-bounded-proof-20260428-01.conclusion.md)

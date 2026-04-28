@@ -36,6 +36,7 @@ MALF = Market Lifespan Framework
 5. [数据库拓扑](docs/01-architecture/01-database-topology-v1.md)
 6. [模块设计文档标准](docs/02-modules/00-module-design-document-standard-v1.md)
 7. [模块门禁账本](docs/03-refactor/00-module-gate-ledger-v1.md)
+8. [执行卡记录区](docs/04-execution/README.md)
 
 ## Python 环境
 

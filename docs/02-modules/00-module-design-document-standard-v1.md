@@ -16,7 +16,7 @@
 | 4 | Runner Contract | CLI/API、build mode、checkpoint、replay、幂等 |
 | 5 | Audit Spec | 硬规则、软观察、抽样查询、失败裁决 |
 | 6 | Build Card | 本轮只动什么、不动什么、验收命令 |
-| 7 | Evidence / Record / Conclusion | 执行证据、运行记录、放行或待修结论 |
+| 7 | Evidence / Record / Conclusion | 执行证据、运行记录、放行或待修结论，统一归档到 `docs/04-execution/` |
 
 机器可读治理层还必须为每个模块维护：
 
@@ -139,3 +139,24 @@ README/index docs
 | `released` | 本模块放行 |
 | `integrated` | 下游消费已证明不破坏 |
 | `blocked` | 存在阻塞 |
+
+## 9. 执行记录归档要求
+
+模块进入正式执行后，repo 内必须能形成可追溯的执行闭环。
+
+正式执行记录统一放在：
+
+```text
+docs/04-execution/
+```
+
+最小闭环必须包含四类文档：
+
+| 文档 | 作用 |
+|---|---|
+| `card` | 说明本次为什么开工、只动什么、不动什么 |
+| `evidence-index` | 索引外部证据、关键计数、路径入口 |
+| `record` | 按顺序记录本次执行经过与关键动作 |
+| `conclusion` | 给出 passed / blocked / superseded / failed 结论 |
+
+`H:\Asteria-report` 与 `H:\Asteria-Validated` 继续承载真实证据资产；repo 内执行区只负责索引、摘要、记录与结论。

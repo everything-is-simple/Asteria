@@ -156,6 +156,7 @@ MALF day bounded proof 已通过。
 | Service DB | `H:\Asteria-data\malf_service_day.duckdb` |
 | closeout | `H:\Asteria-report\malf\2026-04-28\malf-day-bounded-proof-20260428-01\closeout.md` |
 | validated evidence | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` |
+| execution conclusion | `docs/04-execution/records/malf/malf-day-bounded-proof-20260428-01.conclusion.md` |
 | hard audit | `hard_fail_count = 0` |
 
 MALF day 放行后，只授权 Alpha freeze review。Alpha、Signal、Position、Portfolio
