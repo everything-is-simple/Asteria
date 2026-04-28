@@ -19,7 +19,7 @@ status = "frozen"
 doc_status = "delivered six-doc set"
 allow_build = true
 doc_path = "docs/02-modules/malf"
-next_card = "malf_day_bounded_proof"
+next_card = "alpha_freeze_review"
 
 [[modules]]
 module_id = "alpha"

@@ -113,3 +113,20 @@ def test_project_governance_rejects_repo_root_duckdb(tmp_path: Path) -> None:
     assert any(
         "generated database artifact is inside repo" in message for message in _messages(repo_root)
     )
+
+
+def test_project_governance_rejects_docs_sync_next_card_mismatch(tmp_path: Path) -> None:
+    repo_root = _copy_governance_repo(tmp_path)
+    registry_path = repo_root / "governance" / "module_gate_registry.toml"
+    registry_text = registry_path.read_text(encoding="utf-8")
+    registry_path.write_text(
+        registry_text.replace(
+            'next_card = "alpha_freeze_review"',
+            'next_card = "malf_day_bounded_proof"',
+        ),
+        encoding="utf-8",
+    )
+
+    assert any(
+        "MALF next_card must be alpha_freeze_review" in message for message in _messages(repo_root)
+    )

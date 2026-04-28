@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from asteria.governance.docs_sync import run_docs_sync_checks
+
 try:
     import tomllib
 except ModuleNotFoundError:  # Python 3.10
@@ -418,5 +420,8 @@ def run_checks(repo_root: Path) -> list[Finding]:
     findings.extend(_check_historical_ledger(repo_root, gate_registry, historical_registry))
     findings.extend(_check_module_api_contracts(repo_root, gate_registry, topology_registry))
     findings.extend(_check_forbidden_pre_gate_sources(repo_root, gate_registry))
+    findings.extend(
+        Finding(finding.path, finding.message) for finding in run_docs_sync_checks(repo_root)
+    )
     findings.extend(_check_forbidden_repo_artifacts(repo_root))
     return findings
