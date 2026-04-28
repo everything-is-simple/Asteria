@@ -38,7 +38,9 @@ docs/02-modules/04-mainline-module-delivery-index-v1.md
 
 当前最强的一段已经很明确：`MALF` 六件套已冻结，且是唯一允许进入下一施工卡的主线模块。`Data Foundation` 已补齐 foundation six-doc draft；`Alpha / Signal / Position / Portfolio Plan / Trade / System Readout / Pipeline` 也都已经达到各自当前 gate level 所要求的 draft 文档齐套状态。
 
-当前最明显的共同缺口也很明确：`H:\Asteria-data` 中还没有任何正式 DuckDB。这意味着不仅 25 个目标库未建，连 `MALF day bounded proof` 所依赖的首批正式库也尚未物理落地。
+与 2026-04-27 相比，当前还有一个积极变化已经发生：机器可读治理已经落地，仓库中已存在 `governance/*.toml` registry、模块 API contract 和增强版 `check_project_governance.py`。这意味着“谁能施工、谁不能施工、哪些 DB 合法、哪些 source 合法”已经不再只是文档约束，而是脚本可检。
+
+当前最明显的共同缺口也很明确：`H:\Asteria-data` 中还没有任何正式 DuckDB。这意味着不仅 25 个目标库未建，连 `MALF day bounded proof` 所依赖的首批正式库也尚未物理落地；同时，MALF 虽然已经出现 bounded proof scaffold，但正式结构语义和 release evidence 仍未形成。
 
 因此本系统当前仍然被锁定在：
 
@@ -53,7 +55,7 @@ MALF day bounded proof
 | 模块 | 角色定位 | 文档状态 | 文档缺口 | 目标DB | 当前DB状态 | 关键阻塞 | 下一步 |
 |---|---|---|---|---|---|---|---|
 | Data Foundation | 地基层 / source-fact 服务 / 非策略主线 | foundation six-doc draft / not frozen | 缺 freeze review、formal schema gate、runner 落地、build evidence。<br/>简评：当前文档齐到了 foundation draft 级别，不是“文档不全”，而是还没有进入实现与放行。 | `raw_market.duckdb`<br/>`market_meta.duckdb`<br/>`market_base_day.duckdb`<br/>`market_base_week.duckdb`<br/>`market_base_month.duckdb` | 未建 | 无正式 Data DuckDB；且当前总施工锁仍指向 MALF 主线推进。 | 保持文档为 foundation contract；等待与 `MALF day bounded proof` 直接相关的 Data 输入库进入最小建库实施。 |
-| MALF | 主线结构事实 / lifespan / WavePosition 服务 | frozen | 缺 formal DB、runner、bounded proof、audit evidence、release evidence。<br/>简评：这是当前唯一真正“文档完成并可施工”的主线模块，缺口已经从设计转移到实现与验证。 | `malf_core_day.duckdb`<br/>`malf_lifespan_day.duckdb`<br/>`malf_service_day.duckdb`<br/>`malf_core_week.duckdb`<br/>`malf_lifespan_week.duckdb`<br/>`malf_service_week.duckdb`<br/>`malf_core_month.duckdb`<br/>`malf_lifespan_month.duckdb`<br/>`malf_service_month.duckdb` | 未建 | `MALF day bounded proof` 尚未实施；WavePosition service 尚未 released。 | 直接进入 `MALF day bounded proof`：先建 day 三库最小链路，再做 Core / Lifespan / Service / Audit 的 bounded proof。 |
+| MALF | 主线结构事实 / lifespan / WavePosition 服务 | frozen | 缺 formal DB promote、正式结构语义、硬审计 evidence、release evidence。<br/>简评：runner scaffold 已出现，缺口已进一步收缩到“真正的 MALF 语义实现与放行证据”。 | `malf_core_day.duckdb`<br/>`malf_lifespan_day.duckdb`<br/>`malf_service_day.duckdb`<br/>`malf_core_week.duckdb`<br/>`malf_lifespan_week.duckdb`<br/>`malf_service_week.duckdb`<br/>`malf_core_month.duckdb`<br/>`malf_lifespan_month.duckdb`<br/>`malf_service_month.duckdb` | 未建 | `MALF day bounded proof` 仅完成 scaffold；WavePosition service 尚未 released。 | 继续 `MALF day bounded proof`：先以真实 sample scope 跑通 day 三库，再补 Core / Lifespan / Service 的正式语义与硬审计。 |
 | Alpha | 机会解释层 | pre-gate six-doc draft / not frozen | 缺 design freeze review、formal schema gate、runner 落地、bounded proof、release evidence。<br/>简评：Alpha 不是文档缺页，而是被明确卡在 `MALF WavePosition service released` 之后。 | `alpha_bof.duckdb`<br/>`alpha_tst.duckdb`<br/>`alpha_pb.duckdb`<br/>`alpha_cpb.duckdb`<br/>`alpha_bpb.duckdb` | 未建 | MALF Service 未 released；Alpha 不允许提前创建正式 DB。 | 保持 pre-gate draft；等待 MALF WavePosition service released 后再做 Alpha freeze review。 |
 | Signal | 正式 signal 聚合层 | pre-gate six-doc draft / not frozen | 缺 design freeze review、formal schema gate、runner 落地、bounded proof、release evidence。<br/>简评：Signal 的文档边界已经在，但其输入前提是 Alpha released，不是当前施工对象。 | `signal.duckdb` | 未建 | Alpha 未 released；Signal 不能越过上游 release 链。 | 保持 pre-gate draft；等待 Alpha released 后重审并冻结。 |
 | Position | 持仓候选 / 进出场计划层 | pre-gate six-doc draft / not frozen | 缺 design freeze review、formal schema gate、runner 落地、bounded proof、release evidence。<br/>简评：Position 的职责边界已经清楚，但正式输入 `formal signal` 还不存在。 | `position.duckdb` | 未建 | Signal 未 released；Position 不允许提前建正式库。 | 保持 pre-gate draft；等待 Signal released 后重审并冻结。 |
@@ -76,6 +78,19 @@ MALF day bounded proof
 | Pipeline | pre-gate six-doc draft 已齐 |
 
 也就是说，当前主线的核心矛盾不再是“文档到处缺页”，而是“只有 MALF 到了可以从文档迈向实现的阶段”。
+
+### 5.1.1 治理准备度
+
+从“门禁是否机器可读”这个角度看，当前状态也已经发生变化：
+
+| 结论 | 说明 |
+|---|---|
+| module gate registry | 已落地 |
+| database topology registry | 已落地 |
+| module API contracts | 已落地 |
+| enhanced governance checker | 已落地 |
+
+这意味着 Asteria 当前的第一主矛盾，已经从“治理有没有写出来”转成了“治理已经到位，MALF 语义 runtime 什么时候接上”。
 
 ### 5.2 数据库准备度
 
