@@ -21,6 +21,12 @@
 | `scripts/data/run_market_base_month_build.py` | 月线基础价格线物化 |
 | `scripts/data/run_data_audit.py` | Data Foundation 硬审计 |
 
+当前最小可执行入口：
+
+| runner | 职责 |
+|---|---|
+| `scripts/data/run_data_bootstrap.py` | 从 TDX 离线 txt 执行 raw + market_base_day bounded bootstrap，并生成 dirty scope 与 checkpoint |
+
 ## 3. 输入输出合同
 
 ### raw sync
@@ -32,6 +38,14 @@ source config
 vendor files or api response
 target = H:\Asteria-data\raw_market.duckdb
 working = H:\Asteria-temp\data\<run_id>\
+```
+
+首轮 source config 固定支持：
+
+```text
+source_root = H:\tdx_offline_Data
+asset_type = stock / index / block
+adj_mode = backward / forward / none / all
 ```
 
 输出：
@@ -96,6 +110,21 @@ Data Foundation runner 至少必须支持：
 | `resume` | 从 checkpoint 或上次中断点续跑 |
 | `audit-only` | 只做硬审计，不写业务事实 |
 
+`scripts/data/run_data_bootstrap.py` 的公共参数必须包含：
+
+```text
+--source-root
+--target-root
+--temp-root
+--asset-type
+--adj-mode
+--mode
+--run-id
+--start-dt
+--end-dt
+--symbol-limit
+```
+
 ## 5. 幂等与断点
 
 每个 runner 必须满足：
@@ -106,6 +135,14 @@ Data Foundation runner 至少必须支持：
 | checkpoint | 可记录处理到的源批次或时间范围 |
 | replay scope | 可按 source batch、trade_date、symbol 范围重放 |
 | reject isolation | 脏记录进入 reject audit，不污染正式事实 |
+
+当前 checkpoint 位置：
+
+```text
+H:\Asteria-temp\data\<run_id>\checkpoint.json
+```
+
+已完成 run 以 `resume` 重入时不得重复 promote 已完成的 batch。
 
 ## 6. run ledger
 
@@ -128,6 +165,15 @@ created_at
 source_vendor
 source_batch_id
 input_snapshot
+```
+
+TDX source manifest 至少记录：
+
+```text
+source_path
+source_size_bytes
+source_mtime
+source_content_hash
 ```
 
 ## 7. 路径边界
@@ -163,6 +209,13 @@ Data Foundation runner 不得：
 | 生成策略字段 | Data 不是策略层 |
 | 读取交易结果来修正基础事实 | 交易结果不定义基础事实 |
 | 绕过 `market_meta` 直接伪造统一 `symbol` | 映射必须可审计 |
+
+还不得：
+
+| 禁止项 | 原因 |
+|---|---|
+| 直接复制 `H:\Lifespan-data\astock_lifespan_alpha` 下游库 | 旧下游只能作为旁证，不能越过新主线门禁 |
+| 让 MALF 直接读 TDX txt 或旧 `malf_day.duckdb` | MALF 只能消费新 Data Foundation 的正式 market_base |
 
 ## 9. 最小放行条件
 

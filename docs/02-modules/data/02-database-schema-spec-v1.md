@@ -30,6 +30,10 @@ Data Foundation 目标正式库共五个：
 | `raw_market_reject_audit` | 被拒绝或脏记录审计 |
 | `raw_schema_version` | schema 版本 |
 
+当前最小 bootstrap 实现已落地 `raw_market_sync_run`、`raw_market_source_file`、`raw_market_bar`
+和 `raw_schema_version`。`raw_market_reject_audit` 保持 schema contract，等待 reject isolation
+卡进入实现。
+
 ### 2.2 自然键
 
 | 表 | 自然键 |
@@ -39,6 +43,20 @@ Data Foundation 目标正式库共五个：
 | `raw_market_bar` | `source_vendor + source_symbol + timeframe + bar_dt + price_line + source_revision` |
 | `raw_market_reject_audit` | `reject_id` |
 | `raw_schema_version` | `schema_version` |
+
+TDX 离线 txt bootstrap 必须保留以下 source manifest 字段：
+
+```text
+source_path
+source_size_bytes
+source_mtime
+source_content_hash
+source_vendor
+source_batch_id
+source_revision
+run_id
+schema_version
+```
 
 ## 3. market_meta.duckdb
 
@@ -79,6 +97,7 @@ Data Foundation 目标正式库共五个：
 | `market_base_bar` | 标准基础 bar |
 | `market_base_latest` | 每个 symbol 当前最后一条正式 bar 指针 |
 | `market_base_run` | base build 审计 |
+| `market_base_dirty_scope` | 增量重算影响范围 |
 | `market_base_schema_version` | schema 版本 |
 
 ### 4.2 自然键
@@ -88,6 +107,7 @@ Data Foundation 目标正式库共五个：
 | `market_base_bar` | `symbol + timeframe + bar_dt + price_line + adj_mode` |
 | `market_base_latest` | `symbol + timeframe + price_line + adj_mode` |
 | `market_base_run` | `base_run_id` |
+| `market_base_dirty_scope` | `symbol + timeframe + adj_mode + run_id` |
 | `market_base_schema_version` | `schema_version` |
 
 ## 5. 版本字段
@@ -214,3 +234,12 @@ market_base_day.duckdb
 ```
 
 它们是 MALF day bounded proof 的直接上游输入契约。
+
+首轮 `market_base_day` 默认把 `stock-day\Backward-Adjusted` 物化为：
+
+```text
+price_line = analysis_price_line
+adj_mode = backward
+```
+
+`Non-Adjusted` 保留给未来 Trade execution price line，`Forward-Adjusted` 暂作为审计备用价格线。
