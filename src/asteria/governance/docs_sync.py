@@ -159,7 +159,7 @@ def _check_registry_next_cards(
     modules = _module_map(gate_registry)
     for conclusion in conclusions:
         expected = conclusion.expected_next_card
-        if conclusion.status != "passed" or expected is None:
+        if conclusion.status != "passed" or expected is None or conclusion.module_id not in modules:
             continue
         actual = modules.get(conclusion.module_id, {}).get("next_card")
         if actual != expected:
@@ -304,6 +304,8 @@ def _plan_safe_actions(
         modules = _module_map(gate_registry)
         for conclusion in conclusions:
             expected = conclusion.expected_next_card
+            if conclusion.module_id not in modules:
+                continue
             actual = modules.get(conclusion.module_id, {}).get("next_card")
             if conclusion.status == "passed" and expected and actual != expected:
                 report.actions.append(

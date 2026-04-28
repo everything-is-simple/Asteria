@@ -130,3 +130,123 @@ def test_project_governance_rejects_docs_sync_next_card_mismatch(tmp_path: Path)
     assert any(
         "MALF next_card must be alpha_freeze_review" in message for message in _messages(repo_root)
     )
+
+
+def test_project_governance_rejects_missing_release_gate_conclusion(
+    tmp_path: Path,
+) -> None:
+    repo_root = _copy_governance_repo(tmp_path)
+    conclusion_path = (
+        repo_root
+        / "docs"
+        / "04-execution"
+        / "records"
+        / "malf"
+        / "malf-day-bounded-proof-20260428-01.conclusion.md"
+    )
+    conclusion_path.unlink()
+
+    assert any(
+        "release gate missing required artifact: conclusion" in message
+        for message in _messages(repo_root)
+    )
+
+
+def test_project_governance_rejects_missing_release_gate_evidence_index(
+    tmp_path: Path,
+) -> None:
+    repo_root = _copy_governance_repo(tmp_path)
+    evidence_path = (
+        repo_root
+        / "docs"
+        / "04-execution"
+        / "records"
+        / "malf"
+        / "malf-day-bounded-proof-20260428-01.evidence-index.md"
+    )
+    evidence_path.unlink()
+
+    assert any(
+        "release gate missing required artifact: evidence-index" in message
+        for message in _messages(repo_root)
+    )
+
+
+def test_project_governance_rejects_missing_release_gate_external_asset(
+    tmp_path: Path,
+) -> None:
+    repo_root = _copy_governance_repo(tmp_path)
+    evidence_path = (
+        repo_root
+        / "docs"
+        / "04-execution"
+        / "records"
+        / "malf"
+        / "malf-day-bounded-proof-20260428-01.evidence-index.md"
+    )
+    evidence_text = evidence_path.read_text(encoding="utf-8")
+    evidence_path.write_text(
+        evidence_text.replace(
+            r"H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip",
+            r"H:\Asteria-Validated\missing-release-gate-evidence.zip",
+        ),
+        encoding="utf-8",
+    )
+
+    assert any(
+        "release gate evidence asset does not exist: validated_zip" in message
+        for message in _messages(repo_root)
+    )
+
+
+def test_project_governance_rejects_missing_release_gate_manifest(
+    tmp_path: Path,
+) -> None:
+    repo_root = _copy_governance_repo(tmp_path)
+    evidence_path = (
+        repo_root
+        / "docs"
+        / "04-execution"
+        / "records"
+        / "malf"
+        / "malf-day-bounded-proof-20260428-01.evidence-index.md"
+    )
+    evidence_text = evidence_path.read_text(encoding="utf-8")
+    evidence_path.write_text(
+        evidence_text.replace(
+            r"H:\Asteria-report\malf\2026-04-28"
+            r"\malf-day-bounded-proof-20260428-01\manifest.json",
+            r"H:\Asteria-report\malf\2026-04-28"
+            r"\malf-day-bounded-proof-20260428-01\missing-manifest.json",
+        ),
+        encoding="utf-8",
+    )
+
+    assert any(
+        "release gate evidence asset does not exist: manifest" in message
+        for message in _messages(repo_root)
+    )
+
+
+def test_project_governance_rejects_release_gate_next_card_mismatch(
+    tmp_path: Path,
+) -> None:
+    repo_root = _copy_governance_repo(tmp_path)
+    conclusion_path = (
+        repo_root
+        / "docs"
+        / "04-execution"
+        / "records"
+        / "malf"
+        / "malf-day-bounded-proof-20260428-01.conclusion.md"
+    )
+    conclusion_text = conclusion_path.read_text(encoding="utf-8")
+    conclusion_path.write_text(
+        conclusion_text.replace("`Alpha freeze review`", "`Signal freeze review`", 1),
+        encoding="utf-8",
+    )
+
+    assert any(
+        "release gate allowed next action must match registry next_card" in message
+        for message in _messages(repo_root)
+    )
