@@ -2,7 +2,7 @@
 
 日期：2026-04-28
 
-状态：active
+状态：passed
 
 ## 1. 目标
 
@@ -21,14 +21,14 @@
 
 | 顺序 | 项 | 当前状态 | 验收口径 |
 |---:|---|---|---|
-| 1 | 选定 bounded sample scope | 待做 | 覆盖 alive 推进、停滞、transition、同向 new wave、反向 new wave |
-| 2 | 实现 Core pivot / structure primitive | 待做 | `malf_pivot_ledger`、`malf_structure_ledger` 出现真实记录 |
-| 3 | 实现 wave / break / transition / candidate | 待做 | `malf_wave_ledger`、`malf_break_ledger`、`malf_transition_ledger`、`malf_candidate_ledger` 出现真实记录 |
-| 4 | 实现 Lifespan snapshot / profile | 待做 | `new_count`、`no_new_span`、`transition_span`、`life_state`、`position_quadrant` 可从真实 wave 派生 |
-| 5 | 实现 Service WavePosition 发布 | 待做 | `malf_wave_position` 与 `malf_wave_position_latest` 发布真实记录 |
-| 6 | 实现硬审计 SQL 与裁决 | 待做 | Core / Lifespan / Service hard audit 全部可执行 |
-| 7 | 形成 report / closeout / evidence | 待做 | `H:\Asteria-report` 与 `H:\Asteria-Validated` 中有正式证据资产 |
-| 8 | 通过 MALF day bounded proof gate | 待做 | 门禁账本可支持进入 Alpha freeze review |
+| 1 | 选定 bounded sample scope | 完成 | 真实 bounded sample 覆盖 alive 推进、停滞、transition、同向 new wave、反向 new wave |
+| 2 | 实现 Core pivot / structure primitive | 完成 | `malf_pivot_ledger`、`malf_structure_ledger` 已写入真实记录 |
+| 3 | 实现 wave / break / transition / candidate | 完成 | `malf_wave_ledger`、`malf_break_ledger`、`malf_transition_ledger`、`malf_candidate_ledger` 已写入真实记录 |
+| 4 | 实现 Lifespan snapshot / profile | 完成 | `new_count`、`no_new_span`、`transition_span`、`life_state`、`position_quadrant` 已从真实 wave 派生 |
+| 5 | 实现 Service WavePosition 发布 | 完成 | `malf_wave_position` 与 `malf_wave_position_latest` 已发布真实记录 |
+| 6 | 实现硬审计 SQL 与裁决 | 通过 | Core / Lifespan / Service hard audit 全部通过 |
+| 7 | 形成 report / closeout / evidence | 完成 | `H:\Asteria-report` 与 `H:\Asteria-Validated` 中已有正式证据资产 |
+| 8 | 通过 MALF day bounded proof gate | 通过 | 门禁账本可支持进入 Alpha freeze review |
 
 ## 4. 施工纪律
 
@@ -50,3 +50,21 @@
 -> 跑 hard audit
 -> 落 report / evidence
 ```
+
+## 6. 放行记录
+
+| 项 | 值 |
+|---|---|
+| run_id | `malf-day-bounded-proof-20260428-01` |
+| source DB | `H:\Asteria-temp\data-bootstrap-smoke-all-2\market_base_day.duckdb` |
+| sample scope | `day / 2024-01-01..2024-12-31 / symbol_limit=4` |
+| Core DB | `H:\Asteria-data\malf_core_day.duckdb` |
+| Lifespan DB | `H:\Asteria-data\malf_lifespan_day.duckdb` |
+| Service DB | `H:\Asteria-data\malf_service_day.duckdb` |
+| closeout | `H:\Asteria-report\malf\2026-04-28\malf-day-bounded-proof-20260428-01\closeout.md` |
+| validated evidence | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` |
+| hard audit | `hard_fail_count = 0` |
+| next allowed action | Alpha freeze review |
+
+本放行不授权 Alpha / Signal / Position / Portfolio / Trade / System 施工，不授权建立全链路
+pipeline，也不授权任何下游模块写回 MALF。

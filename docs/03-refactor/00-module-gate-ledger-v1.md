@@ -22,13 +22,26 @@ docs/02-modules/04-mainline-module-delivery-index-v1.md
 MALF
 ```
 
-当前唯一允许进入下一施工卡的模块：
+当前最新通过门禁：
 
 ```text
-MALF
+MALF day bounded proof
+```
+
+当前允许进入下一评审卡的模块：
+
+```text
+Alpha freeze review
+```
+
+当前唯一已通过 bounded proof 的主线模块：
+
+```text
+MALF day
 ```
 
 Alpha、Signal、Position、Portfolio Plan、Trade、System Readout 和 Pipeline 为 pre-gate six-doc draft，不允许施工。
+Alpha 只允许进入 freeze review，不允许直接施工。
 
 ## 2. 模块状态表
 
@@ -129,27 +142,45 @@ H:\Asteria-Validated\Asteria-mainline-module-docs-v1.zip
 
 该 zip 是主线模块文档交付包，不是运行证据包，也不是 DuckDB 产物。
 
-## 5. 下一张施工卡
+## 5. MALF Day Bounded Proof 放行记录
 
-下一张施工卡必须仍然只针对 MALF：
+MALF day bounded proof 已通过。
+
+| 项 | 值 |
+|---|---|
+| run_id | `malf-day-bounded-proof-20260428-01` |
+| source DB | `H:\Asteria-temp\data-bootstrap-smoke-all-2\market_base_day.duckdb` |
+| sample scope | `day / 2024-01-01..2024-12-31 / symbol_limit=4` |
+| Core DB | `H:\Asteria-data\malf_core_day.duckdb` |
+| Lifespan DB | `H:\Asteria-data\malf_lifespan_day.duckdb` |
+| Service DB | `H:\Asteria-data\malf_service_day.duckdb` |
+| closeout | `H:\Asteria-report\malf\2026-04-28\malf-day-bounded-proof-20260428-01\closeout.md` |
+| validated evidence | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` |
+| hard audit | `hard_fail_count = 0` |
+
+MALF day 放行后，只授权 Alpha freeze review。Alpha、Signal、Position、Portfolio
+Plan、Trade、System Readout、Pipeline 仍不允许施工。
+
+## 6. 下一张施工卡
+
+下一张施工卡必须先针对 Alpha freeze review，不得直接进入 Alpha 代码施工：
 
 ```text
-MALF day bounded proof
+Alpha freeze review
 ```
 
 目标：
 
 | 内容 | 要求 |
 |---|---|
-| Core runner | bounded proof first |
-| Lifespan runner | 基于 Core 输出 |
-| Service runner | 发布 WavePosition |
-| Audit runner | Core + Lifespan + Service 硬审计 |
-| Evidence | 证据落入 `H:\Asteria-report` 或 `H:\Asteria-Validated` |
+| MALF Contract Review | 确认 Alpha 只读消费 WavePosition，不回写 MALF |
+| Alpha Six-doc Review | 基于已放行 WavePosition 重审 Alpha 六件套 |
+| Freeze Decision | 只在 review 通过后更新 Alpha 冻结状态 |
+| Build Card | 若 Alpha 冻结，再写下一张 Alpha 施工卡 |
 
-## 6. 施工锁
+## 7. 施工锁
 
-在 MALF day bounded proof 未通过前，不允许：
+在 Alpha freeze review 未通过前，不允许：
 
 | 禁止项 |
 |---|
@@ -160,7 +191,7 @@ MALF day bounded proof
 | 让 Alpha、Signal、Portfolio、Trade、System 写回 MALF |
 | 合并 `wave_core_state` 与 `system_state` |
 
-## 7. MALF 放行定义
+## 8. MALF 放行定义
 
 MALF day 首轮放行标准：
 
