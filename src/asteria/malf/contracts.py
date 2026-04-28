@@ -36,6 +36,10 @@ class MalfDayRequest:
             raise ValueError(f"Unsupported MALF run mode: {self.mode}")
         if self.timeframe not in VALID_TIMEFRAMES:
             raise ValueError(f"Unsupported MALF timeframe: {self.timeframe}")
+        if self.mode == "bounded" and not (
+            self.start_dt or self.end_dt or self.symbol_limit is not None
+        ):
+            raise ValueError("bounded MALF runs require start_dt, end_dt, or symbol_limit")
         if self.start_date and self.end_date and self.start_date > self.end_date:
             raise ValueError("start_dt cannot be later than end_dt")
 

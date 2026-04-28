@@ -39,8 +39,11 @@ def bootstrap_malf_core_day_database(path: Path) -> None:
                 symbol varchar,
                 timeframe varchar,
                 pivot_dt date,
+                confirmed_dt date,
                 pivot_type varchar,
+                pivot_price double,
                 pivot_seq_in_bar bigint,
+                source_bar_dt date,
                 run_id varchar,
                 schema_version varchar,
                 core_rule_version varchar,
@@ -51,10 +54,16 @@ def bootstrap_malf_core_day_database(path: Path) -> None:
         con.execute(
             """
             create table if not exists malf_structure_ledger (
-                structure_id varchar,
+                primitive_id varchar,
                 pivot_id varchar,
                 structure_context varchar,
                 reference_pivot_id varchar,
+                reference_price double,
+                primitive varchar,
+                direction_context varchar,
+                symbol varchar,
+                timeframe varchar,
+                pivot_dt date,
                 run_id varchar,
                 schema_version varchar,
                 core_rule_version varchar,
@@ -70,6 +79,18 @@ def bootstrap_malf_core_day_database(path: Path) -> None:
                 timeframe varchar,
                 wave_seq bigint,
                 direction varchar,
+                birth_type varchar,
+                start_pivot_id varchar,
+                candidate_guard_pivot_id varchar,
+                confirm_pivot_id varchar,
+                confirm_dt date,
+                wave_core_state varchar,
+                terminated_dt date,
+                terminated_by_break_id varchar,
+                final_progress_extreme_pivot_id varchar,
+                final_progress_extreme_price double,
+                final_guard_pivot_id varchar,
+                final_guard_price double,
                 run_id varchar,
                 schema_version varchar,
                 core_rule_version varchar,
@@ -82,8 +103,11 @@ def bootstrap_malf_core_day_database(path: Path) -> None:
             create table if not exists malf_break_ledger (
                 break_id varchar,
                 wave_id varchar,
-                break_dt date,
+                direction varchar,
                 guard_pivot_id varchar,
+                break_dt date,
+                break_price double,
+                system_state_after varchar,
                 run_id varchar,
                 schema_version varchar,
                 core_rule_version varchar,
@@ -97,7 +121,13 @@ def bootstrap_malf_core_day_database(path: Path) -> None:
                 transition_id varchar,
                 old_wave_id varchar,
                 break_id varchar,
-                transition_dt date,
+                old_direction varchar,
+                old_progress_extreme_pivot_id varchar,
+                old_progress_extreme_price double,
+                break_dt date,
+                state varchar,
+                confirmed_dt date,
+                new_wave_id varchar,
                 run_id varchar,
                 schema_version varchar,
                 core_rule_version varchar,
@@ -112,6 +142,12 @@ def bootstrap_malf_core_day_database(path: Path) -> None:
                 transition_id varchar,
                 candidate_guard_pivot_id varchar,
                 candidate_direction varchar,
+                candidate_dt date,
+                is_active_at_close boolean,
+                invalidated_by_candidate_id varchar,
+                reference_progress_extreme_price double,
+                confirmed_by_pivot_id varchar,
+                confirmed_wave_id varchar,
                 run_id varchar,
                 schema_version varchar,
                 core_rule_version varchar,
@@ -146,7 +182,14 @@ def bootstrap_malf_lifespan_day_database(path: Path) -> None:
             create table if not exists malf_lifespan_snapshot (
                 snapshot_id varchar,
                 wave_id varchar,
+                old_wave_id varchar,
+                symbol varchar,
+                timeframe varchar,
                 bar_dt date,
+                wave_core_state varchar,
+                system_state varchar,
+                direction varchar,
+                progress_updated boolean,
                 new_count bigint,
                 no_new_span bigint,
                 transition_span bigint,
@@ -154,6 +197,7 @@ def bootstrap_malf_lifespan_day_database(path: Path) -> None:
                 position_quadrant varchar,
                 update_rank double,
                 stagnation_rank double,
+                guard_boundary_price double,
                 run_id varchar,
                 schema_version varchar,
                 lifespan_rule_version varchar,
@@ -170,8 +214,12 @@ def bootstrap_malf_lifespan_day_database(path: Path) -> None:
                 direction varchar,
                 sample_version varchar,
                 metric_name varchar,
-                sample_cutoff varchar,
-                metric_value double,
+                sample_cutoff date,
+                sample_size bigint,
+                p25 double,
+                p50 double,
+                p75 double,
+                p90 double,
                 run_id varchar,
                 schema_version varchar,
                 lifespan_rule_version varchar,
@@ -183,6 +231,11 @@ def bootstrap_malf_lifespan_day_database(path: Path) -> None:
             """
             create table if not exists malf_sample_version (
                 sample_version varchar,
+                universe varchar,
+                timeframe varchar,
+                direction varchar,
+                birth_type varchar,
+                sample_cutoff_rule varchar,
                 created_at timestamp
             )
             """
@@ -191,6 +244,9 @@ def bootstrap_malf_lifespan_day_database(path: Path) -> None:
             """
             create table if not exists malf_rule_version (
                 lifespan_rule_version varchar,
+                low_update_threshold double,
+                high_update_threshold double,
+                high_stagnation_threshold double,
                 created_at timestamp
             )
             """
@@ -199,6 +255,33 @@ def bootstrap_malf_lifespan_day_database(path: Path) -> None:
 
 def bootstrap_malf_service_day_database(path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    wave_position_columns = """
+        symbol varchar,
+        timeframe varchar,
+        bar_dt date,
+        system_state varchar,
+        wave_id varchar,
+        old_wave_id varchar,
+        wave_core_state varchar,
+        direction varchar,
+        new_count bigint,
+        no_new_span bigint,
+        transition_span bigint,
+        update_rank double,
+        stagnation_rank double,
+        life_state varchar,
+        position_quadrant varchar,
+        guard_boundary_price double,
+        sample_scope varchar,
+        sample_version varchar,
+        lifespan_rule_version varchar,
+        service_version varchar,
+        run_id varchar,
+        schema_version varchar,
+        source_core_run_id varchar,
+        source_lifespan_run_id varchar,
+        created_at timestamp
+    """
     with duckdb.connect(str(path)) as con:
         con.execute(
             """
@@ -217,49 +300,9 @@ def bootstrap_malf_service_day_database(path: Path) -> None:
             )
             """
         )
+        con.execute(f"create table if not exists malf_wave_position ({wave_position_columns})")
         con.execute(
-            """
-            create table if not exists malf_wave_position (
-                symbol varchar,
-                timeframe varchar,
-                bar_dt date,
-                system_state varchar,
-                wave_id varchar,
-                old_wave_id varchar,
-                wave_core_state varchar,
-                direction varchar,
-                new_count bigint,
-                no_new_span bigint,
-                transition_span bigint,
-                update_rank double,
-                stagnation_rank double,
-                life_state varchar,
-                position_quadrant varchar,
-                guard_boundary_price double,
-                sample_scope varchar,
-                sample_version varchar,
-                lifespan_rule_version varchar,
-                service_version varchar,
-                run_id varchar,
-                schema_version varchar,
-                source_core_run_id varchar,
-                source_lifespan_run_id varchar,
-                created_at timestamp
-            )
-            """
-        )
-        con.execute(
-            """
-            create table if not exists malf_wave_position_latest (
-                symbol varchar,
-                timeframe varchar,
-                service_version varchar,
-                latest_bar_dt date,
-                run_id varchar,
-                schema_version varchar,
-                created_at timestamp
-            )
-            """
+            f"create table if not exists malf_wave_position_latest ({wave_position_columns})"
         )
         con.execute(
             """

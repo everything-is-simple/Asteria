@@ -24,6 +24,9 @@ def main() -> int:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--schema-version", default=MALF_SCHEMA_VERSION)
     parser.add_argument("--service-version", required=True)
+    parser.add_argument("--start-dt")
+    parser.add_argument("--end-dt")
+    parser.add_argument("--symbol-limit", type=int)
     args = parser.parse_args()
 
     summary = run_malf_day_service_build(
@@ -39,6 +42,9 @@ def main() -> int:
             mode=args.mode,
             schema_version=args.schema_version,
             service_version=args.service_version,
+            start_dt=args.start_dt,
+            end_dt=args.end_dt,
+            symbol_limit=args.symbol_limit,
         )
     )
     print(json.dumps(summary.as_dict(), ensure_ascii=False, indent=2))

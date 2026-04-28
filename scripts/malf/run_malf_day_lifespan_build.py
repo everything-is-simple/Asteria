@@ -24,6 +24,9 @@ def main() -> int:
     parser.add_argument("--schema-version", default=MALF_SCHEMA_VERSION)
     parser.add_argument("--rule-version", required=True)
     parser.add_argument("--sample-version", required=True)
+    parser.add_argument("--start-dt")
+    parser.add_argument("--end-dt")
+    parser.add_argument("--symbol-limit", type=int)
     args = parser.parse_args()
 
     summary = run_malf_day_lifespan_build(
@@ -40,6 +43,9 @@ def main() -> int:
             schema_version=args.schema_version,
             lifespan_rule_version=args.rule_version,
             sample_version=args.sample_version,
+            start_dt=args.start_dt,
+            end_dt=args.end_dt,
+            symbol_limit=args.symbol_limit,
         )
     )
     print(json.dumps(summary.as_dict(), ensure_ascii=False, indent=2))
