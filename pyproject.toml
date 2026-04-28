@@ -73,6 +73,7 @@ required_docs = [
     "docs/00-governance/00-asteria-refactor-charter-v1.md",
     "docs/01-architecture/00-mainline-authoritative-map-v1.md",
     "docs/01-architecture/01-database-topology-v1.md",
+    "docs/01-architecture/04-historical-ledger-incremental-protocol-v1.md",
     "docs/03-refactor/00-module-gate-ledger-v1.md",
 ]
 max_python_file_lines = 500

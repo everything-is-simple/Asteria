@@ -138,7 +138,8 @@ name -> roots -> governance -> architecture -> topology -> MALF bridge -> asset 
 
 ## 7. Python 代码资产
 
-当前 `src/` 只有最小 core 骨架。
+当前 `src/` 包含最小 core 骨架，以及服务 MALF day bounded proof 输入准备的
+Data bounded bootstrap support。
 
 | 文件 | 职责 |
 |---|---|
@@ -146,19 +147,25 @@ name -> roots -> governance -> architecture -> topology -> MALF bridge -> asset 
 | `src/asteria/core/__init__.py` | core package 入口 |
 | `src/asteria/core/contracts.py` | 基础 contract 类型占位 |
 | `src/asteria/core/paths.py` | 五根目录路径解析、数据库路径、temp run root |
+| `src/asteria/data/__init__.py` | Data Foundation package 入口 |
+| `src/asteria/data/contracts.py` | Data bootstrap 请求、摘要、source manifest contract |
+| `src/asteria/data/tdx_text.py` | TDX 离线 txt 发现与解析 |
+| `src/asteria/data/schema.py` | `raw_market` 与 `market_base_day` 最小 bootstrap schema |
+| `src/asteria/data/bootstrap.py` | TDX txt 到 raw/base day 的 bounded bootstrap 执行入口 |
+| `src/asteria/data/legacy_audit.py` | 老 raw/base 库只读覆盖率对账辅助 |
 
 当前代码状态：
 
 | 项 | 状态 |
 |---|---|
 | MALF engine | 未实现 |
-| Data builder | 未实现 |
+| Data Foundation bounded bootstrap support | 已实现最小入口；正式 Data Foundation builder 未放行 |
 | Alpha engine | 未实现 |
 | Signal engine | 未实现 |
 | Position / Portfolio / Trade / System | 未实现 |
 | Pipeline runtime | 未实现 |
 
-这是有意为之：当前 MALF 卡尚未冻结，不能提前迁移旧实现。
+这是有意为之：当前只允许按门禁进入 MALF day bounded proof，不得提前迁移旧实现或放行下游模块。
 
 ## 8. 脚本资产
 
@@ -166,14 +173,15 @@ name -> roots -> governance -> architecture -> topology -> MALF bridge -> asset 
 |---|---|
 | `scripts/dev/doctor.py` | 输出 Asteria 版本、Python 版本、五根目录 |
 | `scripts/governance/check_project_governance.py` | 检查必需文档和文件长度治理规则 |
+| `scripts/data/run_data_bootstrap.py` | 从 TDX 离线 txt 执行 raw + market_base_day 最小 bounded bootstrap |
 
 当前脚本只服务：
 
 ```text
-environment proof + governance proof
+environment proof + governance proof + Data bounded bootstrap support
 ```
 
-不服务正式数据构建。
+不服务完整正式 Data Foundation 构建或下游主线运行。
 
 ## 9. 测试资产
 
@@ -181,6 +189,9 @@ environment proof + governance proof
 |---|---|
 | `tests/unit/core/test_paths.py` | 验证路径解析与数据库路径规则 |
 | `tests/unit/governance/test_project_governance.py` | 验证治理检查入口可运行 |
+| `tests/unit/data/test_tdx_text.py` | 验证 TDX txt 发现与解析 |
+| `tests/unit/data/test_bootstrap_runner.py` | 验证 bounded bootstrap、resume、自然键替换与 dirty scope |
+| `tests/unit/data/test_legacy_audit.py` | 验证老 raw/base 库只读覆盖率对账 |
 
 测试配置：
 
@@ -250,7 +261,7 @@ environment proof + governance proof
 | Pipeline 地位 | 编排层，不定义业务语义 |
 | DB 拓扑 | 25 DuckDB 目标拓扑 |
 | 第一施工模块 | MALF |
-| 当前施工状态 | MALF schema/runner/audit freeze card draft |
+| 当前施工状态 | MALF 已冻结，下一施工卡为 MALF day bounded proof |
 
 ## 13. 当前数据库状态
 
@@ -279,8 +290,8 @@ environment proof + governance proof
 
 | 尚未拥有 | 原因 |
 |---|---|
-| 正式 MALF engine | MALF schema/runner/audit 卡尚未冻结 |
-| 正式 Data Foundation builder | Data 先冻结输入契约，不抢第一施工位 |
+| 正式 MALF engine | MALF 虽已冻结，但 day bounded proof runtime、审计与 evidence 尚未实施 |
+| 正式 Data Foundation builder | Data 仍未冻结；当前只有 bounded bootstrap support，不抢第一施工位 |
 | Alpha/Signal 实现 | 等 MALF WavePosition 放行 |
 | Position/Portfolio/Trade/System 实现 | 等上游模块依次放行 |
 | Pipeline 全链路运行 | Pipeline 不能先于业务模块定义语义 |
@@ -292,25 +303,23 @@ environment proof + governance proof
 当前唯一自然下一步：
 
 ```text
-审阅并冻结 docs/02-modules/03-malf-schema-runner-audit-spec-v1.md
+MALF day bounded proof
 ```
 
-冻结目标：
+首轮目标：
 
 | 目标 | 状态 |
 |---|---|
-| MALF Core day 表族字段 | draft |
-| MALF Lifespan day 表族字段 | draft |
-| MALF Service WavePosition 字段 | draft |
-| 自然键 | draft |
-| runner build modes | draft |
-| hard audit list | draft |
-| bounded proof 样本范围 | draft |
+| Data 输入 | `market_base_day` 最小输入契约可供 MALF day bounded proof 消费 |
+| MALF Core day | bounded proof runner 尚未实现 |
+| MALF Lifespan day | bounded proof runner 尚未实现 |
+| MALF Service WavePosition | service runner 尚未实现 |
+| hard audit | 审计 runner 与 evidence 尚未形成 |
 
-冻结后才进入：
+通过后才进入：
 
 ```text
-02-malf-day-bounded-proof-implementation-card
+Alpha freeze review
 ```
 
 ## 16. 一句话总结
@@ -318,13 +327,13 @@ environment proof + governance proof
 当前 Asteria 已经拥有：
 
 ```text
-名字、根目录、环境、治理规则、主线图、数据库拓扑、MALF 权威桥、MALF schema 草案、资产清单、最小 Python 骨架、治理检查和基础测试。
+名字、根目录、环境、治理规则、主线图、数据库拓扑、MALF 权威桥、MALF 冻结文档、资产清单、最小 Python 骨架、Data bounded bootstrap support、治理检查和基础测试。
 ```
 
 当前 Asteria 还没有：
 
 ```text
-任何未经冻结设计支撑的正式主线实现。
+正式 Data Foundation builder、MALF runtime、下游主线实现、pipeline runtime 或任何未经放行证据支撑的正式主线运行。
 ```
 
 这正是本轮重构想要的状态：先把地基、边界和证据摆正，再让第一个主线模块进入施工。

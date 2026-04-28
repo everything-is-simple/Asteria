@@ -1,0 +1,24 @@
+module_id = "portfolio_plan"
+display_name = "Portfolio Plan"
+contract_version = "v1"
+status = "pre_gate_draft"
+run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+resume_behavior = "resume from portfolio checkpoint after Position release"
+source_manifest_fields = ["source_position_release_version", "source_position_run_id"]
+forbidden_inputs = ["alpha_internal", "malf_internal", "mock_formal_data"]
+forbidden_outputs = ["actual_fill", "broker_order_id"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "position.duckdb"
+table = "position_candidate_ledger"
+source_role = "official"
+natural_key = ["signal_id", "candidate_type", "position_rule_version"]
+required_fields = ["signal_id", "symbol", "candidate_type"]
+
+[[official_outputs]]
+db_name = "portfolio_plan.duckdb"
+table = "portfolio_admission_ledger"
+natural_key = ["position_candidate_id", "portfolio_plan_rule_version"]
+public_fields = ["position_candidate_id", "admission_status", "target_exposure_ref"]
+version_fields = ["run_id", "schema_version", "portfolio_plan_rule_version", "source_position_release_version"]

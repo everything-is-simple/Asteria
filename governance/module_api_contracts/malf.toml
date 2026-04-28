@@ -1,0 +1,36 @@
+module_id = "malf"
+display_name = "MALF"
+contract_version = "v1"
+status = "frozen"
+run_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+resume_behavior = "resume from MALF replay scope and checkpoint"
+source_manifest_fields = ["source_market_base_run_id", "source_core_run_id", "source_lifespan_run_id"]
+forbidden_inputs = ["raw_market.duckdb.raw_market_bar", "legacy_malf_day.duckdb", "mock_formal_data"]
+forbidden_outputs = ["buy_signal", "position_size", "order_intent"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "market_base_day.duckdb"
+table = "market_base_bar"
+source_role = "official"
+natural_key = ["symbol", "timeframe", "bar_dt", "price_line", "adj_mode"]
+required_fields = ["symbol", "timeframe", "bar_dt", "high_px", "low_px", "close_px"]
+
+[[official_outputs]]
+db_name = "malf_service_day.duckdb"
+table = "malf_wave_position"
+natural_key = ["symbol", "timeframe", "bar_dt", "service_version"]
+public_fields = [
+    "symbol",
+    "timeframe",
+    "bar_dt",
+    "system_state",
+    "wave_core_state",
+    "direction",
+    "new_count",
+    "no_new_span",
+    "transition_span",
+    "life_state",
+    "position_quadrant",
+]
+version_fields = ["run_id", "schema_version", "lifespan_rule_version", "service_version"]

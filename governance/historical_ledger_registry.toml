@@ -1,0 +1,38 @@
+registry_version = "2026-04-28.v1"
+source_authority = "tdx"
+legacy_raw_base_role = "read_only_audit"
+legacy_downstream_role = "evidence_only"
+mock_role = "tests_only"
+initialization_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+incremental_modes = ["daily_incremental", "resume", "audit-only"]
+initial_batch_strategy = "time_window_first"
+default_time_window_years = "2-3"
+symbol_bucket_role = "secondary_batch_control"
+logical_ledger_required = [
+    "source_manifest",
+    "run_ledger",
+    "checkpoint",
+    "replay_scope",
+    "audit_summary",
+]
+
+[[daily_incremental_chain]]
+step_seq = 1
+module_id = "data"
+step_name = "scan_tdx_and_update_raw_base"
+required_status = "foundation_contract"
+protocol_only = false
+
+[[daily_incremental_chain]]
+step_seq = 2
+module_id = "malf"
+step_name = "consume_market_base_dirty_scope"
+required_status = "active_allowed_or_released"
+protocol_only = false
+
+[[daily_incremental_chain]]
+step_seq = 3
+module_id = "pipeline"
+step_name = "record_incremental_manifest_after_gate"
+required_status = "future_gate_required"
+protocol_only = true

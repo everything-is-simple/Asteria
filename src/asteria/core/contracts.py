@@ -20,4 +20,4 @@ class MainlineModule(str, Enum):
     POSITION = "position"
     PORTFOLIO_PLAN = "portfolio_plan"
     TRADE = "trade"
-    SYSTEM = "system"
+    SYSTEM_READOUT = "system_readout"

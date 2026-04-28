@@ -1,0 +1,29 @@
+module_id = "data"
+display_name = "Data Foundation"
+contract_version = "v1"
+status = "foundation_contract"
+run_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+resume_behavior = "resume from source manifest, checkpoint, or dirty scope"
+source_manifest_fields = ["source_path", "source_size_bytes", "source_mtime", "source_content_hash"]
+forbidden_inputs = ["legacy_downstream", "mock_formal_data"]
+forbidden_outputs = ["strategy_signal", "position_size", "order_intent"]
+
+[[official_inputs]]
+input_type = "source"
+name = "tdx_offline_data"
+source_role = "official"
+required_fields = ["source_path", "source_mtime", "source_content_hash"]
+
+[[official_outputs]]
+db_name = "raw_market.duckdb"
+table = "raw_market_bar"
+natural_key = ["source_vendor", "source_symbol", "timeframe", "bar_dt", "price_line", "source_revision"]
+public_fields = ["symbol", "timeframe", "bar_dt", "open_px", "high_px", "low_px", "close_px", "volume", "amount"]
+version_fields = ["run_id", "schema_version"]
+
+[[official_outputs]]
+db_name = "market_base_day.duckdb"
+table = "market_base_bar"
+natural_key = ["symbol", "timeframe", "bar_dt", "price_line", "adj_mode"]
+public_fields = ["symbol", "timeframe", "bar_dt", "price_line", "adj_mode", "open_px", "high_px", "low_px", "close_px"]
+version_fields = ["run_id", "schema_version"]

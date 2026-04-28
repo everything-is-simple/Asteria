@@ -1,0 +1,24 @@
+module_id = "position"
+display_name = "Position"
+contract_version = "v1"
+status = "pre_gate_draft"
+run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+resume_behavior = "resume from position checkpoint after Signal release"
+source_manifest_fields = ["source_signal_release_version", "source_signal_run_id"]
+forbidden_inputs = ["raw_market.duckdb.raw_market_bar", "malf_internal", "mock_formal_data"]
+forbidden_outputs = ["portfolio_allocation", "actual_fill"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "signal.duckdb"
+table = "formal_signal_ledger"
+source_role = "official"
+natural_key = ["symbol", "timeframe", "signal_dt", "signal_type", "signal_rule_version"]
+required_fields = ["symbol", "timeframe", "signal_dt", "signal_type", "signal_strength"]
+
+[[official_outputs]]
+db_name = "position.duckdb"
+table = "position_candidate_ledger"
+natural_key = ["signal_id", "candidate_type", "position_rule_version"]
+public_fields = ["signal_id", "symbol", "candidate_type", "entry_plan_ref", "exit_plan_ref"]
+version_fields = ["run_id", "schema_version", "position_rule_version", "source_signal_release_version"]

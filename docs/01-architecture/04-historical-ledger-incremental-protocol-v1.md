@@ -15,6 +15,18 @@ logical history is connected by source manifest, run ledger, checkpoint, audit
 
 它不合并模块 DB，不改变主线依赖方向，也不授权下游模块越过当前门禁施工。
 
+机器可读治理入口：
+
+```text
+governance/historical_ledger_registry.toml
+governance/database_topology_registry.toml
+governance/module_api_contracts/*.toml
+```
+
+这些 registry 是本协议的执行面。文档说明原则，registry 负责让
+`check_project_governance.py` 能够阻断错误数据源、未登记 DB、缺少 checkpoint
+策略和越权主线穿透。
+
 ## 2. 当前数据来源
 
 | 来源 | 路径 | 用途 |
@@ -57,6 +69,17 @@ stock-day\Backward-Adjusted -> analysis_price_line
 | 日期窗口 | 一批处理几年，例如 `2010-01-01` 到 `2013-12-31` |
 | symbol batch | 一批处理几百只标的 |
 
+默认策略：
+
+```text
+time-window first
+symbol bucket second
+```
+
+也就是说，全量初始化优先按 2-3 年日期窗口切批；若单批仍然过重，再在该日期窗口内按
+symbol bucket 分桶。这样历史重放、断点续跑和每日增量都可以沿用同一套
+`checkpoint + replay_scope` 语义。
+
 每个 batch 必须产生：
 
 ```text
@@ -84,6 +107,17 @@ flowchart TD
 
 Pipeline 只能记录 run、step、manifest 和 gate snapshot，不得定义业务字段或绕过模块门禁。
 
+每日增量的治理边界：
+
+| 事项 | 裁决 |
+|---|---|
+| 数据入口 | 只能从 TDX source scan/hash 进入新 `raw_market` |
+| 旧 raw/base | 只读覆盖率、字段映射、行数和缺口对账 |
+| 旧下游库 | 只做旁证和回归样本，不得作为 official input |
+| mock 数据 | 只能用于单测和 contract test，不得进入 `H:\Asteria-data` |
+| 穿透范围 | 只能穿透已 released 或当前 active-allowed 的模块 |
+| Pipeline | 当前只定义协议；runtime 必须等 MALF bounded proof gate 后再冻结 |
+
 ## 6. 最小可执行入口
 
 当前落地的最小入口是：
@@ -109,3 +143,24 @@ H:\Asteria\.venv\Scripts\python.exe scripts\data\run_data_bootstrap.py `
 | Alpha / Signal / Position / Portfolio / Trade / System 写回 MALF | 禁止 |
 | Pipeline 定义业务语义 | 禁止 |
 | 临时 DB、checkpoint、报告写入 repo 根目录 | 禁止 |
+
+## 8. 总账接入硬要求
+
+每个正式 DuckDB 必须在 `governance/database_topology_registry.toml` 中声明：
+
+```text
+db_name
+module_id
+grain
+ledger_role
+writer
+allowed_modes
+checkpoint_policy
+checkpoint_key
+replay_scope
+promote_rule
+```
+
+每个模块必须在 `governance/module_api_contracts/` 中声明 official inputs、official
+outputs、public fields、natural keys、version fields、forbidden inputs 和 forbidden outputs。
+下游只能消费 official outputs，不得读取内部表重建上游语义。

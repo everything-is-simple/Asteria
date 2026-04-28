@@ -55,7 +55,11 @@ Data Foundation 本轮六件套草案：
 | `docs/02-modules/data/02-database-schema-spec-v1.md` | draft / foundation-contract / not frozen |
 | `docs/02-modules/data/03-runner-contract-v1.md` | draft / foundation-contract / not frozen |
 | `docs/02-modules/data/04-audit-spec-v1.md` | draft / foundation-contract / not frozen |
-| `docs/02-modules/data/05-build-card-v1.md` | draft / foundation-contract / not frozen |
+| `docs/02-modules/data/05-build-card-v1.md` | draft / foundation-contract / bounded-bootstrap-support |
+
+Data Foundation 模块整体仍为 `not frozen`。`bounded-bootstrap-support` 只记录当前已有
+TDX txt 到 raw/base day 的最小输入准备能力，不授权正式 Data Foundation builder、正式
+Data DuckDB 建库或下游主线施工。
 
 MALF 本轮冻结文档：
 

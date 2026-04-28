@@ -1,0 +1,22 @@
+module_id = "pipeline"
+display_name = "Pipeline"
+contract_version = "v1"
+status = "pre_gate_draft"
+run_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+resume_behavior = "resume from pipeline step checkpoint after module gate validation"
+source_manifest_fields = ["gate_registry_version", "manifest_version", "module_scope"]
+forbidden_inputs = ["business_internal_table", "mock_formal_data"]
+forbidden_outputs = ["business_field", "business_mutation"]
+
+[[official_inputs]]
+input_type = "registry"
+name = "module_gate_registry"
+source_role = "official"
+required_fields = ["active_mainline_module", "registry_version"]
+
+[[official_outputs]]
+db_name = "pipeline.duckdb"
+table = "pipeline_run"
+natural_key = ["pipeline_run_id"]
+public_fields = ["pipeline_run_id", "run_scope", "run_mode", "run_status", "manifest_version"]
+version_fields = ["run_id", "schema_version", "pipeline_version", "gate_registry_version"]

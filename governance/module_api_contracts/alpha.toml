@@ -1,0 +1,24 @@
+module_id = "alpha"
+display_name = "Alpha"
+contract_version = "v1"
+status = "pre_gate_draft"
+run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+resume_behavior = "resume from alpha family checkpoint after MALF service release"
+source_manifest_fields = ["source_malf_service_version", "source_malf_run_id"]
+forbidden_inputs = ["raw_market.duckdb.raw_market_bar", "legacy_downstream", "mock_formal_data"]
+forbidden_outputs = ["position_size", "portfolio_allocation", "order_intent"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "malf_service_day.duckdb"
+table = "malf_wave_position"
+source_role = "official"
+natural_key = ["symbol", "timeframe", "bar_dt", "service_version"]
+required_fields = ["symbol", "timeframe", "bar_dt", "life_state", "position_quadrant"]
+
+[[official_outputs]]
+db_name = "alpha_bof.duckdb"
+table = "alpha_signal_candidate"
+natural_key = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "alpha_rule_version"]
+public_fields = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "candidate_score"]
+version_fields = ["run_id", "schema_version", "alpha_rule_version", "source_malf_service_version"]

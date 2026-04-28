@@ -1,0 +1,24 @@
+module_id = "trade"
+display_name = "Trade"
+contract_version = "v1"
+status = "pre_gate_draft"
+run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+resume_behavior = "resume from trade checkpoint after Portfolio Plan release"
+source_manifest_fields = ["source_portfolio_plan_release_version", "source_portfolio_plan_run_id"]
+forbidden_inputs = ["alpha_internal", "malf_internal", "mock_formal_data"]
+forbidden_outputs = ["strategy_score", "portfolio_constraint"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "portfolio_plan.duckdb"
+table = "portfolio_admission_ledger"
+source_role = "official"
+natural_key = ["position_candidate_id", "portfolio_plan_rule_version"]
+required_fields = ["position_candidate_id", "admission_status", "target_exposure_ref"]
+
+[[official_outputs]]
+db_name = "trade.duckdb"
+table = "order_intent_ledger"
+natural_key = ["portfolio_admission_id", "order_side", "trade_rule_version"]
+public_fields = ["portfolio_admission_id", "order_side", "order_intent_status", "execution_plan_ref"]
+version_fields = ["run_id", "schema_version", "trade_rule_version", "source_portfolio_plan_release_version"]

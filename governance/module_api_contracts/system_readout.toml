@@ -1,0 +1,24 @@
+module_id = "system_readout"
+display_name = "System Readout"
+contract_version = "v1"
+status = "pre_gate_draft"
+run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+resume_behavior = "resume from readout manifest after Trade release"
+source_manifest_fields = ["source_db", "source_run_id", "source_release_version", "source_audit_status"]
+forbidden_inputs = ["mock_formal_data", "unreleased_business_table"]
+forbidden_outputs = ["business_mutation", "strategy_redefinition"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "trade.duckdb"
+table = "fill_ledger"
+source_role = "official"
+natural_key = ["order_intent_id", "execution_dt", "fill_seq", "trade_rule_version"]
+required_fields = ["order_intent_id", "execution_dt", "fill_qty", "fill_px"]
+
+[[official_outputs]]
+db_name = "system.duckdb"
+table = "system_chain_readout"
+natural_key = ["system_readout_run_id", "readout_scope", "readout_dt"]
+public_fields = ["system_readout_run_id", "readout_scope", "readout_status", "source_manifest_id"]
+version_fields = ["run_id", "schema_version", "source_chain_release_version"]

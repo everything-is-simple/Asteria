@@ -6,9 +6,10 @@
 
 ## 1. 目的
 
-本合同定义 Data Foundation 后续 runner 的命令边界、输入输出、幂等与断点规则。
+本合同定义 Data Foundation 后续正式 runner 的命令边界、输入输出、幂等与断点规则。
 
-本轮不实现 runner，只冻结未来 runner 应遵守的口径。
+当前只存在 `scripts/data/run_data_bootstrap.py` 最小 bounded bootstrap support。它服务
+MALF day bounded proof 的输入准备，不等于完整 Data Foundation runner 放行。
 
 ## 2. 目标 runner
 
@@ -124,6 +125,22 @@ Data Foundation runner 至少必须支持：
 --end-dt
 --symbol-limit
 ```
+
+### 4.1 当前最小 bootstrap 模式边界
+
+`scripts/data/run_data_bootstrap.py` 当前已经接受上述 `--mode` 公共参数，但各模式的
+生产级语义尚未全部落地：
+
+| 模式 | 当前行为 | 后续正式 runner 要求 |
+|---|---|---|
+| `bounded` | 已用于小样本 raw + market_base_day bootstrap | 保持小样本可重算、幂等、可审计 |
+| `resume` | 已支持复用 completed checkpoint，避免重复 promote 已完成 run | 扩展为 batch / source / date-window 级断点续跑 |
+| `audit-only` | 已返回只审计摘要，不写业务事实 | 扩展为正式 Data hard audit，不写正式事实 |
+| `segmented` | 参数已接受，当前仍走最小 bootstrap 路径 | 后续实现日期窗口和 symbol batch 分片语义 |
+| `full` | 参数已接受，当前仍走最小 bootstrap 路径 | 后续实现完整 universe / timeframe 全量构建语义 |
+
+因此，当前实现可证明 Data bounded bootstrap support 已存在，但不得被解释为正式
+`segmented` / `full` Data Foundation builder 已经放行。
 
 ## 5. 幂等与断点
 

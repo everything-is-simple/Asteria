@@ -18,6 +18,16 @@
 | 6 | Build Card | 本轮只动什么、不动什么、验收命令 |
 | 7 | Evidence / Record / Conclusion | 执行证据、运行记录、放行或待修结论 |
 
+机器可读治理层还必须为每个模块维护：
+
+```text
+governance/module_api_contracts/<module_id>.toml
+```
+
+该合同规定 official inputs、official outputs、public fields、natural keys、version
+fields、run modes、resume behavior、source manifest fields、forbidden inputs 和
+forbidden outputs。Markdown 六件套负责解释语义，TOML 合同负责让门禁脚本可执行。
+
 ## 3. 模块文档模板
 
 每个模块 Authority Design 至少包含：
@@ -61,6 +71,25 @@
 | `sample_version` | 统计 rank/sample 模块必填 |
 | `created_at` | 批量写入审计 |
 | `source_*` | 跨库输入必须可追溯 |
+
+## 5.1 总账接入标准
+
+每个正式 DuckDB 必须在 `governance/database_topology_registry.toml` 中登记：
+
+```text
+db_name
+module_id
+grain
+ledger_role
+writer
+allowed_modes
+checkpoint_policy
+checkpoint_key
+replay_scope
+promote_rule
+```
+
+这些字段让多 DuckDB 拓扑在治理上形成一个逻辑历史总账，而不是一组不可追溯的散库。
 
 ## 6. 自然键标准
 

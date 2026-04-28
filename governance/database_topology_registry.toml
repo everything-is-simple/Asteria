@@ -1,0 +1,302 @@
+registry_version = "2026-04-28.v1"
+formal_root = "H:/Asteria-data"
+
+[[databases]]
+db_name = "raw_market.duckdb"
+module_id = "data"
+grain = "source"
+ledger_role = "raw_source_fact"
+writer = "run_raw_market_sync"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+checkpoint_policy = "source_manifest_hash"
+checkpoint_key = ["source_vendor", "source_batch_id"]
+replay_scope = ["source_batch_id", "trade_date", "symbol"]
+promote_rule = "staging_audit_passed"
+
+[[databases]]
+db_name = "market_meta.duckdb"
+module_id = "data"
+grain = "reference"
+ledger_role = "metadata_fact"
+writer = "run_market_meta_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+checkpoint_policy = "reference_manifest_hash"
+checkpoint_key = ["reference_batch_id"]
+replay_scope = ["effective_date", "symbol"]
+promote_rule = "staging_audit_passed"
+
+[[databases]]
+db_name = "market_base_day.duckdb"
+module_id = "data"
+grain = "day"
+ledger_role = "base_market_fact"
+writer = "run_market_base_day_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+checkpoint_policy = "dirty_scope"
+checkpoint_key = ["symbol_bucket", "bar_dt"]
+replay_scope = ["bar_dt", "symbol", "adj_mode"]
+promote_rule = "natural_key_replace_after_audit"
+
+[[databases]]
+db_name = "market_base_week.duckdb"
+module_id = "data"
+grain = "week"
+ledger_role = "base_market_fact"
+writer = "run_market_base_week_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+checkpoint_policy = "dirty_scope"
+checkpoint_key = ["symbol_bucket", "week_dt"]
+replay_scope = ["week_dt", "symbol", "adj_mode"]
+promote_rule = "natural_key_replace_after_audit"
+
+[[databases]]
+db_name = "market_base_month.duckdb"
+module_id = "data"
+grain = "month"
+ledger_role = "base_market_fact"
+writer = "run_market_base_month_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+checkpoint_policy = "dirty_scope"
+checkpoint_key = ["symbol_bucket", "month_dt"]
+replay_scope = ["month_dt", "symbol", "adj_mode"]
+promote_rule = "natural_key_replace_after_audit"
+
+[[databases]]
+db_name = "malf_core_day.duckdb"
+module_id = "malf"
+grain = "day"
+ledger_role = "structure_fact"
+writer = "run_malf_day_core_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+checkpoint_policy = "malf_replay_scope"
+checkpoint_key = ["symbol_bucket", "bar_dt"]
+replay_scope = ["bar_dt", "symbol", "source_market_base_run_id"]
+promote_rule = "core_audit_passed"
+
+[[databases]]
+db_name = "malf_lifespan_day.duckdb"
+module_id = "malf"
+grain = "day"
+ledger_role = "lifespan_fact"
+writer = "run_malf_day_lifespan_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+checkpoint_policy = "malf_replay_scope"
+checkpoint_key = ["symbol_bucket", "bar_dt"]
+replay_scope = ["bar_dt", "wave_id"]
+promote_rule = "lifespan_audit_passed"
+
+[[databases]]
+db_name = "malf_service_day.duckdb"
+module_id = "malf"
+grain = "day"
+ledger_role = "service_interface"
+writer = "run_malf_day_service_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+checkpoint_policy = "malf_replay_scope"
+checkpoint_key = ["symbol_bucket", "bar_dt"]
+replay_scope = ["bar_dt", "symbol", "service_version"]
+promote_rule = "interface_audit_passed"
+
+[[databases]]
+db_name = "malf_core_week.duckdb"
+module_id = "malf"
+grain = "week"
+ledger_role = "structure_fact"
+writer = "run_malf_week_core_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+checkpoint_policy = "malf_replay_scope"
+checkpoint_key = ["symbol_bucket", "week_dt"]
+replay_scope = ["week_dt", "symbol"]
+promote_rule = "core_audit_passed"
+
+[[databases]]
+db_name = "malf_lifespan_week.duckdb"
+module_id = "malf"
+grain = "week"
+ledger_role = "lifespan_fact"
+writer = "run_malf_week_lifespan_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+checkpoint_policy = "malf_replay_scope"
+checkpoint_key = ["symbol_bucket", "week_dt"]
+replay_scope = ["week_dt", "wave_id"]
+promote_rule = "lifespan_audit_passed"
+
+[[databases]]
+db_name = "malf_service_week.duckdb"
+module_id = "malf"
+grain = "week"
+ledger_role = "service_interface"
+writer = "run_malf_week_service_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+checkpoint_policy = "malf_replay_scope"
+checkpoint_key = ["symbol_bucket", "week_dt"]
+replay_scope = ["week_dt", "symbol", "service_version"]
+promote_rule = "interface_audit_passed"
+
+[[databases]]
+db_name = "malf_core_month.duckdb"
+module_id = "malf"
+grain = "month"
+ledger_role = "structure_fact"
+writer = "run_malf_month_core_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+checkpoint_policy = "malf_replay_scope"
+checkpoint_key = ["symbol_bucket", "month_dt"]
+replay_scope = ["month_dt", "symbol"]
+promote_rule = "core_audit_passed"
+
+[[databases]]
+db_name = "malf_lifespan_month.duckdb"
+module_id = "malf"
+grain = "month"
+ledger_role = "lifespan_fact"
+writer = "run_malf_month_lifespan_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+checkpoint_policy = "malf_replay_scope"
+checkpoint_key = ["symbol_bucket", "month_dt"]
+replay_scope = ["month_dt", "wave_id"]
+promote_rule = "lifespan_audit_passed"
+
+[[databases]]
+db_name = "malf_service_month.duckdb"
+module_id = "malf"
+grain = "month"
+ledger_role = "service_interface"
+writer = "run_malf_month_service_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+checkpoint_policy = "malf_replay_scope"
+checkpoint_key = ["symbol_bucket", "month_dt"]
+replay_scope = ["month_dt", "symbol", "service_version"]
+promote_rule = "interface_audit_passed"
+
+[[databases]]
+db_name = "alpha_bof.duckdb"
+module_id = "alpha"
+grain = "cross_timeframe"
+ledger_role = "alpha_family"
+writer = "run_alpha_bof_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+checkpoint_policy = "alpha_replay_scope"
+checkpoint_key = ["symbol_bucket", "bar_dt"]
+replay_scope = ["bar_dt", "symbol", "alpha_family"]
+promote_rule = "alpha_audit_passed"
+
+[[databases]]
+db_name = "alpha_tst.duckdb"
+module_id = "alpha"
+grain = "cross_timeframe"
+ledger_role = "alpha_family"
+writer = "run_alpha_tst_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+checkpoint_policy = "alpha_replay_scope"
+checkpoint_key = ["symbol_bucket", "bar_dt"]
+replay_scope = ["bar_dt", "symbol", "alpha_family"]
+promote_rule = "alpha_audit_passed"
+
+[[databases]]
+db_name = "alpha_pb.duckdb"
+module_id = "alpha"
+grain = "cross_timeframe"
+ledger_role = "alpha_family"
+writer = "run_alpha_pb_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+checkpoint_policy = "alpha_replay_scope"
+checkpoint_key = ["symbol_bucket", "bar_dt"]
+replay_scope = ["bar_dt", "symbol", "alpha_family"]
+promote_rule = "alpha_audit_passed"
+
+[[databases]]
+db_name = "alpha_cpb.duckdb"
+module_id = "alpha"
+grain = "cross_timeframe"
+ledger_role = "alpha_family"
+writer = "run_alpha_cpb_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+checkpoint_policy = "alpha_replay_scope"
+checkpoint_key = ["symbol_bucket", "bar_dt"]
+replay_scope = ["bar_dt", "symbol", "alpha_family"]
+promote_rule = "alpha_audit_passed"
+
+[[databases]]
+db_name = "alpha_bpb.duckdb"
+module_id = "alpha"
+grain = "cross_timeframe"
+ledger_role = "alpha_family"
+writer = "run_alpha_bpb_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+checkpoint_policy = "alpha_replay_scope"
+checkpoint_key = ["symbol_bucket", "bar_dt"]
+replay_scope = ["bar_dt", "symbol", "alpha_family"]
+promote_rule = "alpha_audit_passed"
+
+[[databases]]
+db_name = "signal.duckdb"
+module_id = "signal"
+grain = "cross_timeframe"
+ledger_role = "signal_ledger"
+writer = "run_signal_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+checkpoint_policy = "signal_replay_scope"
+checkpoint_key = ["symbol_bucket", "signal_dt"]
+replay_scope = ["signal_dt", "symbol"]
+promote_rule = "signal_audit_passed"
+
+[[databases]]
+db_name = "position.duckdb"
+module_id = "position"
+grain = "signal"
+ledger_role = "position_ledger"
+writer = "run_position_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+checkpoint_policy = "position_replay_scope"
+checkpoint_key = ["signal_id"]
+replay_scope = ["signal_id", "symbol"]
+promote_rule = "position_audit_passed"
+
+[[databases]]
+db_name = "portfolio_plan.duckdb"
+module_id = "portfolio_plan"
+grain = "portfolio_run"
+ledger_role = "portfolio_plan_ledger"
+writer = "run_portfolio_plan_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+checkpoint_policy = "portfolio_replay_scope"
+checkpoint_key = ["portfolio_run_id"]
+replay_scope = ["position_candidate_id", "portfolio_run_id"]
+promote_rule = "portfolio_plan_audit_passed"
+
+[[databases]]
+db_name = "trade.duckdb"
+module_id = "trade"
+grain = "execution"
+ledger_role = "trade_ledger"
+writer = "run_trade_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+checkpoint_policy = "trade_replay_scope"
+checkpoint_key = ["order_intent_id", "execution_trade_date"]
+replay_scope = ["order_intent_id", "execution_trade_date"]
+promote_rule = "trade_audit_passed"
+
+[[databases]]
+db_name = "system.duckdb"
+module_id = "system_readout"
+grain = "readout"
+ledger_role = "system_readout"
+writer = "run_system_readout_build"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+checkpoint_policy = "readout_source_manifest"
+checkpoint_key = ["system_readout_run_id"]
+replay_scope = ["source_run_id", "module_release_version"]
+promote_rule = "system_readout_audit_passed"
+
+[[databases]]
+db_name = "pipeline.duckdb"
+module_id = "pipeline"
+grain = "run"
+ledger_role = "orchestration_ledger"
+writer = "run_pipeline_record"
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+checkpoint_policy = "pipeline_step_checkpoint"
+checkpoint_key = ["pipeline_run_id", "step_seq"]
+replay_scope = ["pipeline_run_id", "module_scope", "step_seq"]
+promote_rule = "pipeline_audit_passed"
