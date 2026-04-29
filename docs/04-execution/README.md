@@ -110,9 +110,12 @@ docs/04-execution/
 - [Signal bounded proof record](records/signal/signal-bounded-proof-20260429-01.record.md)
 - [Signal bounded proof conclusion](records/signal/signal-bounded-proof-20260429-01.conclusion.md)
 
-已打开的 Position freeze review card：
+已登记的 Position freeze review guardrail：
 
 - [Position freeze review card](records/position/position-freeze-review-20260429-01.card.md)
+- [Position freeze review evidence index](records/position/position-freeze-review-20260429-01.evidence-index.md)
+- [Position freeze review record](records/position/position-freeze-review-20260429-01.record.md)
+- [Position freeze review conclusion](records/position/position-freeze-review-20260429-01.conclusion.md)
 
 已闭环的 governance gate：
 

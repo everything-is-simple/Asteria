@@ -24,8 +24,9 @@ Current gate:
 - `Alpha freeze review passed`
 - `Alpha bounded proof passed`
 - `Signal freeze review passed`
-- Next allowed action: `Signal bounded proof build card`
-- Signal freeze review is review-only; it does not authorize Signal code, Signal formal DBs, downstream construction, or a full-chain pipeline.
+- `Signal bounded proof passed`
+- Next allowed action: `Position freeze review`
+- Signal bounded proof only releases the bounded `signal.duckdb` surface; it does not authorize Signal full build, Position construction, downstream construction, or a full-chain pipeline.
 
 Hard rules:
 

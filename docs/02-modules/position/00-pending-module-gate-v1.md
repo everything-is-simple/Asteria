@@ -6,20 +6,23 @@
 
 ## 1. 当前裁决
 
-Position 是 Signal 之后的主线模块。本目录已补齐 pre-gate 六件套 draft，但本轮不冻结 Position 设计，不允许进入施工。
+Position 是 Signal 之后的主线模块。本目录已补齐 pre-gate 六件套 draft。当前已通过
+Signal bounded proof，唯一允许推进的是 Position freeze review；该 review 仍不允许
+Position 施工。
 
-截至 2026-04-29，当前唯一允许推进的是 `Alpha freeze review`。Position 仍必须等待
-Signal release，不得绕过 Signal 直接消费 Alpha 草案或 MALF WavePosition。
+截至 2026-04-29，Position 只能在 review-only 范围内重审六件套和只读 Signal 输入契约；
+不得绕过 Signal 直接消费 Alpha 草案或 MALF WavePosition。
 
 ## 2. 等待条件
 
 Position 必须等待：
 
 ```text
-Signal released
+Signal bounded proof released for review consumption
 ```
 
-Signal 放行前，Position 不得定义持仓候选、入场计划或退出计划。
+Position freeze review 可以审查持仓候选、入场计划和退出计划的文档语义，但不得创建
+Position runner、正式 DB 或 bounded proof 产物。
 
 ## 3. 上游依赖
 
@@ -48,4 +51,5 @@ Position 只能消费正式 Signal 账本，不得直接用 Alpha 草案或 MALF
 | `04-audit-spec-v1.md` | draft / pre-gate / not frozen |
 | `05-build-card-v1.md` | draft / pre-gate / not frozen |
 
-Position 进入设计冻结前必须在 Signal released 之后重新审阅这些文档。
+Position freeze review 必须重新审阅这些文档。任何 Position bounded proof 或 full daily
+mainline 声明，还必须先处理已登记的 MALF Lifespan dense bar-level WavePosition gap。
