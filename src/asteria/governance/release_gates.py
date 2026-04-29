@@ -48,6 +48,7 @@ def run_release_gate_checks(
         return [ReleaseGateFinding(gate_ledger, "module gate ledger is missing")]
 
     records = _parse_conclusion_index(conclusion_index)
+    latest_by_module = _latest_passed_by_module(records)
     ledger_text = gate_ledger.read_text(encoding="utf-8")
     modules = {module["module_id"]: module for module in gate_registry.get("modules", [])}
     for record in records:
@@ -59,7 +60,14 @@ def run_release_gate_checks(
         conclusion_text = record.conclusion_path.read_text(encoding="utf-8")
         evidence_text = record.evidence_path.read_text(encoding="utf-8")
         if record.module_id in modules:
-            findings.extend(_check_conclusion(record, conclusion_text, modules))
+            findings.extend(
+                _check_conclusion(
+                    record,
+                    conclusion_text,
+                    modules,
+                    latest_by_module.get(record.module_id) == record.run_id,
+                )
+            )
         findings.extend(_check_evidence_assets(repo_root, record.evidence_path, evidence_text))
         if record.module_id in modules:
             findings.extend(_check_gate_ledger(record, ledger_text))
@@ -95,6 +103,14 @@ def _parse_conclusion_index(path: Path) -> list[ReleaseGateRecord]:
     return records
 
 
+def _latest_passed_by_module(records: list[ReleaseGateRecord]) -> dict[str, str]:
+    latest: dict[str, str] = {}
+    for record in records:
+        if record.status == "passed":
+            latest[record.module_id] = record.run_id
+    return latest
+
+
 def _check_required_record_files(record: ReleaseGateRecord) -> list[ReleaseGateFinding]:
     findings: list[ReleaseGateFinding] = []
     record_dir = record.conclusion_path.parent
@@ -111,6 +127,7 @@ def _check_conclusion(
     record: ReleaseGateRecord,
     conclusion_text: str,
     modules: dict[str, dict[str, Any]],
+    is_latest_for_module: bool,
 ) -> list[ReleaseGateFinding]:
     findings: list[ReleaseGateFinding] = []
     if not _contains_backticked_value(conclusion_text, "passed"):
@@ -131,7 +148,7 @@ def _check_conclusion(
         return findings
 
     next_card = modules.get(record.module_id, {}).get("next_card")
-    if next_card != _normalize_action(allowed_next_action):
+    if is_latest_for_module and next_card != _normalize_action(allowed_next_action):
         findings.append(
             ReleaseGateFinding(
                 record.conclusion_path,

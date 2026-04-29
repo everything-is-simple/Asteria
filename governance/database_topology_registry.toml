@@ -11,9 +11,13 @@ released_formal_dbs = [
     "malf_core_day.duckdb",
     "malf_lifespan_day.duckdb",
     "malf_service_day.duckdb",
+    "alpha_bof.duckdb",
+    "alpha_tst.duckdb",
+    "alpha_pb.duckdb",
+    "alpha_cpb.duckdb",
+    "alpha_bpb.duckdb",
 ]
 blocked_formal_db_modules = [
-    "alpha",
     "signal",
     "position",
     "portfolio_plan",
@@ -21,7 +25,7 @@ blocked_formal_db_modules = [
     "system_readout",
     "pipeline",
 ]
-topology_status = "target topology; only released_formal_dbs may exist as formal DBs without a new gate"
+topology_status = "target topology; released_formal_dbs may exist as formal DBs without a new gate"
 
 [[databases]]
 db_name = "raw_market.duckdb"

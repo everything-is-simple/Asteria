@@ -29,14 +29,14 @@ flowchart LR
 | 项 | 当前状态 |
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha` |
-| 当前已通过 bounded proof | `MALF day` |
-| 当前已打开执行卡 | `Alpha bounded proof build card` |
-| 当前只允许施工 | `Alpha bounded proof` |
+| 当前已通过 bounded proof | `MALF day`; `Alpha day` |
+| 当前已打开执行卡 | `Signal freeze review` |
+| 当前只允许施工 | `Signal freeze review` |
 | 当前仍禁止 | Alpha full build、Signal/Position/Portfolio Plan/Trade/System/Pipeline 施工 |
 
-`Alpha freeze review` 已基于已放行的 WavePosition 重审并冻结 Alpha 六件套和只读契约。
-后续 Alpha bounded proof build card 已打开，但仍不授权 Alpha full build、下游施工或
-全链路 pipeline。
+`Alpha bounded proof` 已基于已放行的 WavePosition 跑通五个 Alpha family 的 bounded
+proof。后续只允许 Signal freeze review，但仍不授权 Alpha full build、Signal construction、
+下游施工或全链路 pipeline。
 
 ## 2. 主线模块
 
@@ -203,7 +203,7 @@ design freeze
 当前主线图不是“全系统已上线图”。它是模块依赖和施工顺序的法律图：
 
 ```text
-MALF day passed -> Alpha freeze review passed -> Alpha bounded proof build card opened
+MALF day passed -> Alpha freeze review passed -> Alpha bounded proof passed -> Signal freeze review
 ```
 
 任何下游实现都必须等前置模块完成 freeze / proof / release evidence。

@@ -114,17 +114,18 @@ def _check_gate_registry(repo_root: Path, gate_registry: dict[str, Any]) -> list
     findings: list[Finding] = []
     modules = _module_map(gate_registry)
     active = gate_registry.get("active_mainline_module")
-    build_allowed = [
+    action_allowed = [
         module_id
         for module_id, module in modules.items()
-        if module_id in MAINLINE_MODULES and bool(module.get("allow_build"))
+        if module_id in MAINLINE_MODULES
+        and (bool(module.get("allow_build")) or bool(module.get("allow_review")))
     ]
 
-    if len(build_allowed) != 1:
-        findings.append(Finding(path, "only one mainline module may allow build"))
-    if active not in build_allowed:
+    if len(action_allowed) != 1:
+        findings.append(Finding(path, "only one mainline module may allow build or review"))
+    if active not in action_allowed:
         findings.append(
-            Finding(path, "active_mainline_module must be the build-allowed mainline module")
+            Finding(path, "active_mainline_module must be the action-allowed mainline module")
         )
     if "system" in modules or "system_readout" not in modules:
         findings.append(

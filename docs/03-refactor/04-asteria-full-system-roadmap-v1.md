@@ -4,8 +4,8 @@
 
 ## 1. Summary
 
-当前基线：`MALF day bounded proof` 与 `Alpha freeze review` 已通过；`Alpha bounded
-proof build card` 已打开，下一步只允许 Alpha bounded proof。
+当前基线：`MALF day bounded proof`、`Alpha freeze review` 与 `Alpha bounded proof`
+已通过；下一步只允许 Signal freeze review。
 
 本路线图依据以下权威资产刷新：
 
@@ -71,12 +71,12 @@ Pipeline schedules and records only
 
 ## 5. Phase 2: Alpha Bounded Proof
 
-- [ ] 实现 Alpha bounded runner，支持 `bounded`、`resume`、`audit-only`。
-- [ ] 建立 Alpha run ledger、schema version、rule version、checkpoint、replay scope。
-- [ ] 对至少一个 alpha family 跑通真实 bounded sample，再扩展到五个 family。
-- [ ] 审计 Alpha 不回写 MALF、不制造 MALF 语义、不输出资金/订单。
-- [ ] 产出 Alpha evidence 包与 conclusion。
-- [ ] Release gate 通过后，只授权 `Signal freeze review`。
+- [x] 实现 Alpha bounded runner，支持 `bounded`、`resume`、`audit-only`。
+- [x] 建立 Alpha run ledger、schema version、rule version、checkpoint、replay scope。
+- [x] 对至少一个 alpha family 跑通真实 bounded sample，再扩展到五个 family。
+- [x] 审计 Alpha 不回写 MALF、不制造 MALF 语义、不输出资金/订单。
+- [x] 产出 Alpha evidence 包与 conclusion。
+- [x] Release gate 通过后，只授权 `Signal freeze review`。
 
 ## 6. Phase 3: Signal Freeze + Bounded Proof
 
@@ -170,8 +170,8 @@ Pipeline schedules and records only
 
 ## 16. Assumptions
 
-- 当前事实基线以 `MALF day bounded proof passed` 为准。
-- 当前卡固定为 `Alpha bounded proof build card`，不是无卡 Alpha 代码施工。
+- 当前事实基线以 `MALF day bounded proof passed` 和 `Alpha bounded proof passed` 为准。
+- 当前下一卡固定为 `Signal freeze review`，不是 Signal construction。
 - Data Foundation 是地基轨道，不进入策略主线排序。
 - Pipeline 是编排与记录轨道，不进入业务主线排序。
 - 不同时施工两个策略主线模块。

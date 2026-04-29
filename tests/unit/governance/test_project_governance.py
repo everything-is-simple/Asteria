@@ -40,14 +40,15 @@ def test_project_governance_rejects_multiple_build_allowed_mainline_modules(
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'allow_build = false\ndoc_path = "docs/02-modules/signal"',
-            'allow_build = true\ndoc_path = "docs/02-modules/signal"',
+            'doc_status = "frozen six-doc set / bounded proof passed"\nallow_build = false',
+            'doc_status = "frozen six-doc set / bounded proof passed"\nallow_build = true',
         ),
         encoding="utf-8",
     )
 
     assert any(
-        "only one mainline module may allow build" in message for message in _messages(repo_root)
+        "only one mainline module may allow build or review" in message
+        for message in _messages(repo_root)
     )
 
 

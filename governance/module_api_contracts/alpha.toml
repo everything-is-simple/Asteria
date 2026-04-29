@@ -1,15 +1,15 @@
 module_id = "alpha"
 display_name = "Alpha"
 contract_version = "v1"
-status = "frozen"
+status = "released"
 authority_assets = [
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2",
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
 ]
-release_conclusion = "docs/04-execution/records/alpha/alpha-freeze-review-20260429-01.conclusion.md"
-evidence_index = "docs/04-execution/records/alpha/alpha-freeze-review-20260429-01.evidence-index.md"
-gate_state = "freeze_review_passed; bounded_proof_build_card_opened"
-formal_db_permission = "allowed_for_alpha_bounded_proof_under_active_card"
+release_conclusion = "docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.conclusion.md"
+evidence_index = "docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md"
+gate_state = "bounded_proof_passed; signal_freeze_review_next"
+formal_db_permission = "released_bounded_proof_family_dbs_only; full_build_requires_new_card"
 writeback_boundary = "read_malf_wave_position_only; never write back to MALF"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from alpha family checkpoint after MALF service release"
@@ -27,6 +27,34 @@ required_fields = ["symbol", "timeframe", "bar_dt", "system_state", "wave_core_s
 
 [[official_outputs]]
 db_name = "alpha_bof.duckdb"
+table = "alpha_signal_candidate"
+natural_key = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "alpha_rule_version"]
+public_fields = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "candidate_score"]
+version_fields = ["run_id", "schema_version", "alpha_rule_version", "source_malf_service_version"]
+
+[[official_outputs]]
+db_name = "alpha_tst.duckdb"
+table = "alpha_signal_candidate"
+natural_key = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "alpha_rule_version"]
+public_fields = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "candidate_score"]
+version_fields = ["run_id", "schema_version", "alpha_rule_version", "source_malf_service_version"]
+
+[[official_outputs]]
+db_name = "alpha_pb.duckdb"
+table = "alpha_signal_candidate"
+natural_key = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "alpha_rule_version"]
+public_fields = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "candidate_score"]
+version_fields = ["run_id", "schema_version", "alpha_rule_version", "source_malf_service_version"]
+
+[[official_outputs]]
+db_name = "alpha_cpb.duckdb"
+table = "alpha_signal_candidate"
+natural_key = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "alpha_rule_version"]
+public_fields = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "candidate_score"]
+version_fields = ["run_id", "schema_version", "alpha_rule_version", "source_malf_service_version"]
+
+[[official_outputs]]
+db_name = "alpha_bpb.duckdb"
 table = "alpha_signal_candidate"
 natural_key = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "alpha_rule_version"]
 public_fields = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "candidate_score"]

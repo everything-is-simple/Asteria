@@ -84,7 +84,7 @@ authority_assets = [
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2",
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2.zip",
 ]
-current_allowed_next_card = "alpha_freeze_review"
+current_allowed_next_card = "signal_freeze_review"
 max_python_file_lines = 500
 max_script_file_lines = 240
 max_markdown_file_lines = 1200

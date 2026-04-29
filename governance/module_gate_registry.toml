@@ -1,5 +1,5 @@
 registry_version = "2026-04-29.v1"
-active_mainline_module = "alpha"
+active_mainline_module = "signal"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
@@ -7,8 +7,8 @@ authority_assets = [
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2.zip",
 ]
 latest_governance_run_id = "docs-authority-refresh-20260429-01"
-latest_mainline_release_run_id = "malf-day-bounded-proof-20260428-01"
-current_allowed_next_card = "alpha_bounded_proof_build_card"
+latest_mainline_release_run_id = "alpha-bounded-proof-20260429-01"
+current_allowed_next_card = "signal_freeze_review"
 construction_lock = [
     "alpha_full_build",
     "alpha_segmented_production_build",
@@ -49,19 +49,21 @@ allowed_downstream_use = "read_only_wave_position_for_alpha_freeze_review"
 module_id = "alpha"
 display_name = "Alpha"
 mainline = true
-status = "frozen"
-doc_status = "frozen six-doc set / freeze review passed"
-allow_build = true
+status = "released"
+doc_status = "frozen six-doc set / bounded proof passed"
+allow_build = false
 doc_path = "docs/02-modules/alpha"
-waits_for = "alpha_bounded_proof_build_card"
-next_card = "alpha_bounded_proof_build_card"
+waits_for = "malf_day_bounded_proof_passed"
+next_card = "signal_freeze_review"
 freeze_review_status = "passed"
 freeze_review_run_id = "alpha-freeze-review-20260429-01"
 active_card = "docs/04-execution/records/alpha/alpha-bounded-proof-build-card-20260429-01.card.md"
-release_conclusion = "docs/04-execution/records/alpha/alpha-freeze-review-20260429-01.conclusion.md"
-evidence_index = "docs/04-execution/records/alpha/alpha-freeze-review-20260429-01.evidence-index.md"
-next_allowed_action = "alpha_bounded_proof_only"
-formal_db_permission = "allowed_for_alpha_bounded_proof_under_active_card"
+proof_status = "bounded_proof_passed"
+proof_run_id = "alpha-bounded-proof-20260429-01"
+release_conclusion = "docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.conclusion.md"
+evidence_index = "docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md"
+next_allowed_action = "signal_freeze_review"
+formal_db_permission = "released_bounded_proof_family_dbs_only; full_build_requires_new_card"
 input_boundary = "read_only_malf_wave_position"
 
 [[modules]]
@@ -71,6 +73,7 @@ mainline = true
 status = "pre_gate_draft"
 doc_status = "pre-gate six-doc draft"
 allow_build = false
+allow_review = true
 doc_path = "docs/02-modules/signal"
 waits_for = "alpha_released"
 formal_db_permission = "not_allowed"
