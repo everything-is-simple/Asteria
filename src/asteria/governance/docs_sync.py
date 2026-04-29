@@ -52,6 +52,18 @@ EXECUTION_RECORDS = Path("docs/04-execution/records")
 GATE_REGISTRY = Path("governance/module_gate_registry.toml")
 GATE_LEDGER = Path("docs/03-refactor/00-module-gate-ledger-v1.md")
 ROADMAP = Path("docs/03-refactor/04-asteria-full-system-roadmap-v1.md")
+VALIDATED_ASSET_INVENTORY = Path("docs/01-architecture/02-validated-asset-inventory-v1.md")
+MALF_AUTHORITY_BRIDGE = Path("docs/02-modules/02-malf-authoritative-design-bridge-v1.md")
+LATEST_DOCS_CODE_SNAPSHOT = "Asteria-docs-code-20260428-214427.zip"
+MALF_AUTHORITY_ROOT = Path(r"H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2")
+MALF_AUTHORITY_ZIP = Path(r"H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip")
+LATEST_DOCS_CODE_ZIP = Path(rf"H:\Asteria-Validated\{LATEST_DOCS_CODE_SNAPSHOT}")
+MALF_AUTHORITY_FILES = [
+    "MALF_00_Three_Documents_Bridge_v1_2.md",
+    "MALF_01_Core_Definitions_Theorems_v1_3.md",
+    "MALF_02_Lifespan_Stats_Definitions_Theorems_v1_2.md",
+    "MALF_03_System_Service_Interface_v1_2.md",
+]
 SAFE_ROADMAP_NEXT_CARD_ITEM = (
     "- [ ] 修正 `governance/module_gate_registry.toml`：把 MALF `next_card` "
     "从 `malf_day_bounded_proof` 改为 `alpha_freeze_review`。"
@@ -76,6 +88,8 @@ def plan_docs_sync(repo_root: Path) -> SyncReport:
     _check_roadmap(repo_root, conclusions, report)
     _check_conclusion_index(repo_root, conclusions, report)
     _check_execution_record_sets(repo_root, conclusions, report)
+    _check_validated_authority_assets(repo_root, report)
+    _check_malf_authority_bridge(repo_root, report)
     _plan_safe_actions(repo_root, registry, conclusions, report)
     return report
 
@@ -259,6 +273,51 @@ def _check_execution_record_sets(
                 report.findings.append(SyncFinding(path, message))
         if conclusion.evidence_path.exists():
             _check_external_evidence_paths(conclusion.evidence_path, report)
+
+
+def _check_validated_authority_assets(repo_root: Path, report: SyncReport) -> None:
+    path = repo_root / VALIDATED_ASSET_INVENTORY
+    text = _read_text(path)
+    if not text:
+        report.findings.append(SyncFinding(path, "validated asset inventory is missing"))
+        return
+
+    if LATEST_DOCS_CODE_SNAPSHOT not in text:
+        report.findings.append(
+            SyncFinding(path, "validated asset inventory must reference latest docs/code snapshot")
+        )
+
+    for asset_path, message in [
+        (LATEST_DOCS_CODE_ZIP, "latest docs/code snapshot asset is missing"),
+        (MALF_AUTHORITY_ZIP, "MALF authority zip asset is missing"),
+        (MALF_AUTHORITY_ROOT, "MALF authority directory asset is missing"),
+    ]:
+        if not asset_path.exists():
+            report.findings.append(SyncFinding(path, message))
+
+    for file_name in MALF_AUTHORITY_FILES:
+        authority_file = MALF_AUTHORITY_ROOT / file_name
+        if not authority_file.exists():
+            report.findings.append(
+                SyncFinding(path, f"MALF authority source file is missing: {file_name}")
+            )
+
+
+def _check_malf_authority_bridge(repo_root: Path, report: SyncReport) -> None:
+    path = repo_root / MALF_AUTHORITY_BRIDGE
+    text = _read_text(path)
+    if not text:
+        report.findings.append(SyncFinding(path, "MALF authority bridge is missing"))
+        return
+
+    for file_name in MALF_AUTHORITY_FILES:
+        if file_name not in text:
+            report.findings.append(
+                SyncFinding(
+                    path,
+                    f"MALF authority bridge missing authority file reference: {file_name}",
+                )
+            )
 
 
 def _check_external_evidence_paths(evidence_path: Path, report: SyncReport) -> None:

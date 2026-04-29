@@ -19,7 +19,7 @@
 |---|---|---|
 | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` | 现行权威设计 | 直接作为 Asteria 的 MALF 权威输入 |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 架构级剖切面研究报告 | 作为治理、历史总账、增量协议与下一阶段施工路径的分析输入 |
-| `H:\Asteria-Validated\Asteria-docs-code-20260428-123534.zip` | 当前仓库文档与代码归档 | 作为 2026-04-28 硬治理落地后的正式代码/文档快照 |
+| `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` | 当前仓库文档与代码归档 | 作为 2026-04-28 release gate closure 前的正式代码/文档快照 |
 | `H:\Asteria-Validated\Market-Average-Lifespan-reference` | 市场参考资料与旧工作流索引 | 作为 data/reference 辅助资料，不作为治理正文 |
 | `H:\Asteria-Validated\Market-Average-Lifespan-system` | 历代系统验证快照、经验总结、回测报告 | 作为经验资产、验收旁证和历史对照，不直接迁入主线实现 |
 
@@ -74,19 +74,21 @@ H:\Asteria-Validated\Market-Average-Lifespan-reference\申万行业分类
 H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md
 H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.pdf
 H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.docx
-H:\Asteria-Validated\Asteria-docs-code-20260428-123534.zip
+H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
 ```
 
 用途：
 
 1. 记录 2026-04-28 时点对治理、主线、数据、编排四个切面的剖切面判断。
 2. 作为“为什么要把多 DuckDB 视为逻辑历史总账本”的正式分析依据。
-3. 作为 hard governance 落地前后的对照快照。
+3. 作为 hard governance 落地与 release gate closure 前后的对照快照。
 
 裁决：
 
 ```text
-报告是分析输入，zip 是代码/文档快照；二者都进入 Validated，但只有仓库 HEAD 才是当前实施真相。
+报告是分析输入，zip 是代码/文档快照；二者都进入 Validated。`214427` 快照之后的
+repo HEAD 变更必须由 repo 内执行记录、closeout、manifest 和新的 Validated 归档补齐，
+不得用旧 zip 覆盖当前仓库真相。
 ```
 
 ## 4. 高价值旁证

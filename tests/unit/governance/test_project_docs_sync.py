@@ -114,3 +114,37 @@ def test_docs_sync_rejects_pre_gate_alpha_formal_runner(tmp_path: Path) -> None:
     assert any(
         "pre-gate module has forbidden formal runner" in message for message in _messages(repo_root)
     )
+
+
+def test_docs_sync_rejects_stale_validated_docs_code_snapshot(tmp_path: Path) -> None:
+    repo_root = _copy_docs_sync_repo(tmp_path)
+    inventory_path = repo_root / "docs" / "01-architecture" / "02-validated-asset-inventory-v1.md"
+    inventory_path.write_text(
+        inventory_path.read_text(encoding="utf-8").replace(
+            "Asteria-docs-code-20260428-214427.zip",
+            "Asteria-docs-code-20260428-123534.zip",
+        ),
+        encoding="utf-8",
+    )
+
+    assert any(
+        "validated asset inventory must reference latest docs/code snapshot" in message
+        for message in _messages(repo_root)
+    )
+
+
+def test_docs_sync_rejects_missing_malf_authority_bridge_file_reference(tmp_path: Path) -> None:
+    repo_root = _copy_docs_sync_repo(tmp_path)
+    bridge_path = repo_root / "docs" / "02-modules" / "02-malf-authoritative-design-bridge-v1.md"
+    bridge_path.write_text(
+        bridge_path.read_text(encoding="utf-8").replace(
+            "`MALF_03_System_Service_Interface_v1_2.md`",
+            "`MALF_03_System_Service_Interface_REMOVED.md`",
+        ),
+        encoding="utf-8",
+    )
+
+    assert any(
+        "MALF authority bridge missing authority file reference" in message
+        for message in _messages(repo_root)
+    )

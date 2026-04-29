@@ -41,6 +41,15 @@ Validated 资产清单：
 
 - [Asteria Validated 资产清单](H:/Asteria/docs/01-architecture/02-validated-asset-inventory-v1.md)
 
+当前重要文档/代码快照：
+
+```text
+H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
+```
+
+该 zip 是快照锚点；快照之后的仓库更新以执行记录、closeout、manifest 和后续
+Validated 归档为准。
+
 前辈系统资产清单：
 
 - [前辈系统主线模块资产清单](H:/Asteria/docs/01-architecture/03-predecessor-system-module-inventory-v1.md)
