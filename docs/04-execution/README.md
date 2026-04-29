@@ -102,6 +102,13 @@ docs/04-execution/
 - [external root assets refresh record](records/governance/external-root-assets-refresh-20260429-01.record.md)
 - [external root assets refresh conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md)
 
+已闭环的 Validated root manifest refresh：
+
+- [validated root manifest refresh card](records/governance/validated-root-manifest-refresh-20260429-01.card.md)
+- [validated root manifest refresh evidence index](records/governance/validated-root-manifest-refresh-20260429-01.evidence-index.md)
+- [validated root manifest refresh record](records/governance/validated-root-manifest-refresh-20260429-01.record.md)
+- [validated root manifest refresh conclusion](records/governance/validated-root-manifest-refresh-20260429-01.conclusion.md)
+
 总索引：
 
 - [execution conclusion index](00-conclusion-index-v1.md)

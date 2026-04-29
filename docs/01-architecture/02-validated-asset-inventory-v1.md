@@ -18,12 +18,15 @@
 | 路径 | 资产性质 | 当前用途裁决 |
 |---|---|---|
 | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` | 现行权威设计 | 直接作为 Asteria 的 MALF 权威输入 |
+| `H:\Asteria-Validated\README.md` | Validated 根目录人读索引 | 声明 Validated 资产区职责、当前权威锚点和禁止用途 |
+| `H:\Asteria-Validated\validated-asset-manifest-20260429-01.json` | Validated 根目录机器清单 | 记录顶层资产角色、大小、时间和 SHA256 |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 架构级剖切面研究报告 | 作为治理、历史总账、增量协议与下一阶段施工路径的分析输入 |
 | `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` | 当前仓库文档与代码归档 | 作为 2026-04-28 release gate closure 前的正式代码/文档快照 |
 | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` | MALF day 放行证据 | 证明 MALF day Core/Lifespan/Service 三库 bounded proof 已通过 |
 | `H:\Asteria-Validated\Asteria-governance-release-gate-closure-20260428-01.zip` | 治理 release gate 证据 | 证明 release gate 四件套与外部 evidence 检查已落地 |
 | `H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip` | 文档权威链刷新证据 | 证明 Validated 资产、repo 文档、docs sync 检查已形成闭环 |
 | `H:\Asteria-Validated\Asteria-external-root-assets-refresh-20260429-01.zip` | 外部根目录资产刷新证据 | 证明 Validated / Report / Temp 三根目录分工和 inventory 已落档 |
+| `H:\Asteria-Validated\Asteria-validated-root-manifest-refresh-20260429-01.zip` | Validated 根目录 manifest 刷新证据 | 证明 Validated 根 README 与机器 manifest 已落档 |
 | `H:\Asteria-Validated\Market-Average-Lifespan-reference` | 市场参考资料与旧工作流索引 | 作为 data/reference 辅助资料，不作为治理正文 |
 | `H:\Asteria-Validated\Market-Average-Lifespan-system` | 历代系统验证快照、经验总结、回测报告 | 作为经验资产、验收旁证和历史对照，不直接迁入主线实现 |
 
@@ -104,6 +107,7 @@ H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip
 H:\Asteria-Validated\Asteria-governance-release-gate-closure-20260428-01.zip
 H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip
 H:\Asteria-Validated\Asteria-external-root-assets-refresh-20260429-01.zip
+H:\Asteria-Validated\Asteria-validated-root-manifest-refresh-20260429-01.zip
 ```
 
 用途：
@@ -112,6 +116,7 @@ H:\Asteria-Validated\Asteria-external-root-assets-refresh-20260429-01.zip
 2. 证明 release gate closure 已经把执行结论、manifest、validated zip 纳入治理检查。
 3. 证明 docs authority refresh 已经把 Validated 资产锚点纳入 docs sync 检查。
 4. 证明 repo 外三根目录的职责分区和资产 inventory 已经形成治理证据。
+5. 证明 Validated 根目录的人读 README 与机器 manifest 已经形成治理证据。
 
 裁决：
 
@@ -262,7 +267,8 @@ H:\Asteria-Validated\Market-Average-Lifespan-system\marketlifespan-quant\system-
 2. 把 `battle-tested-lessons-core-data-malf-20260403.md` 作为 `data / malf` 设计评审旁证。
 3. 把 `battle-tested-lessons-all-modules-and-mainline-bridging-20260408.md` 作为未来下游模块边界参考。
 4. 把 `A股市场` 与 `申万行业分类` 作为 `market_meta` 的 reference 资料池。
-5. 把四份当前 release / governance evidence zip 作为门禁状态证明。
+5. 把五份当前 release / governance evidence zip 作为门禁状态证明。
+6. 使用 `README.md` 和 `validated-asset-manifest-20260429-01.json` 快速判断 Validated 顶层资产职责。
 6. 把剖切面研究报告作为逻辑历史总账、每日增量、pipeline ledger 的架构依据。
 
 ### 6.2 现在不要做
