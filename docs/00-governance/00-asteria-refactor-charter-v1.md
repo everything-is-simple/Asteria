@@ -163,9 +163,9 @@ Alpha day bounded proof
 下一张允许进入的卡：
 
 ```text
-Signal bounded proof build card
+Position freeze review card
 ```
 
 MALF 语义继续以 `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` 为唯一权威。
-Signal freeze review 已通过并冻结 Signal 六件套；下一卡只允许先写 Signal bounded proof
-build card，不直接授权 Signal full build、下游施工或全链路 pipeline。
+Signal bounded proof 已通过；下一卡只允许 Position freeze review，不直接授权 Signal
+full build、Position 施工、下游施工或全链路 pipeline。

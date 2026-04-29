@@ -64,8 +64,8 @@ H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研
 
 - [Asteria 执行结论索引](H:/Asteria/docs/04-execution/00-conclusion-index-v1.md)
 
-当前已打开 `Alpha bounded proof build card`；唯一允许推进的业务动作是 Alpha
-bounded proof。Alpha full build、下游模块施工和全链路 pipeline 必须等待后续 release
+当前已通过 `Signal bounded proof`；下一步只允许打开 `Position freeze review`。
+Signal full build、Position 施工、下游模块施工和全链路 pipeline 必须等待后续 release
 gate。
 
 前辈系统资产清单：

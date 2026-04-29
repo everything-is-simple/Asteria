@@ -1,15 +1,15 @@
 module_id = "signal"
 display_name = "Signal"
 contract_version = "v1"
-status = "frozen"
+status = "released"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
     "H:/Asteria-Validated/Asteria-alpha-bounded-proof-20260429-01.zip",
 ]
-release_conclusion = "docs/04-execution/records/signal/signal-freeze-review-20260429-01.conclusion.md"
-evidence_index = "docs/04-execution/records/signal/signal-freeze-review-20260429-01.evidence-index.md"
-gate_state = "freeze_review_passed; signal_bounded_proof_build_card_next"
-formal_db_permission = "not_allowed"
+release_conclusion = "docs/04-execution/records/signal/signal-bounded-proof-20260429-01.conclusion.md"
+evidence_index = "docs/04-execution/records/signal/signal-bounded-proof-20260429-01.evidence-index.md"
+gate_state = "bounded_proof_passed; position_freeze_review_next"
+formal_db_permission = "released_bounded_proof_signal_db_only; full_build_requires_new_card"
 writeback_boundary = "consume released Alpha only; never write back to Alpha or MALF"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from signal checkpoint after Alpha release"

@@ -24,6 +24,7 @@ conclusion index、governance registry 和 Validated release evidence 为准。
 refactor-governance
 Alpha bounded proof passed
 Signal freeze review passed
+Signal bounded proof passed
 ```
 
 当前已交付主线模块文档索引：
@@ -43,19 +44,19 @@ Signal
 当前最新通过门禁：
 
 ```text
-Signal freeze review
+Signal bounded proof
 ```
 
 当前已打开执行卡：
 
 ```text
-Signal bounded proof build card
+Position freeze review card
 ```
 
 当前只允许施工对象：
 
 ```text
-Signal bounded proof build card
+Position freeze review
 ```
 
 当前已通过 bounded proof 的主线模块：
@@ -63,10 +64,11 @@ Signal bounded proof build card
 ```text
 MALF day
 Alpha day
+Signal day
 ```
 
-Signal freeze review 已通过。当前只允许 Signal bounded proof build card；该下一卡未打开前，
-仍不授权 Signal runner、Signal 正式 DB、下游施工或全链路 pipeline。
+Signal freeze review 与 Signal bounded proof 已通过。当前只允许 Position freeze review；
+不得扩展为 Position 施工、Signal full build、下游施工或全链路 pipeline。
 
 ## 2. 模块状态表
 
@@ -75,8 +77,8 @@ Signal freeze review 已通过。当前只允许 Signal bounded proof build card
 | 0 | Data Foundation | foundation six-doc draft | not frozen | 否 | `docs/02-modules/data/` | 地基输入契约，非策略主线，不占主线施工位 |
 | 1 | MALF | delivered six-doc set / day proof passed | frozen | 否 | `docs/02-modules/malf/` | day bounded proof 已通过；week/month 或 full build 需另开卡 |
 | 2 | Alpha | frozen six-doc set / bounded proof passed | released | 否 | `docs/02-modules/alpha/` | bounded proof 已通过；full build 需另开卡 |
-| 3 | Signal | frozen six-doc set / freeze review passed | frozen | 否 | `docs/02-modules/signal/` | 当前只允许 bounded proof build card，不允许直接施工 |
-| 4 | Position | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/position/` | 等 Signal bounded proof 放行后重新审阅并冻结 |
+| 3 | Signal | frozen six-doc set / bounded proof passed | released | 否 | `docs/02-modules/signal/` | bounded proof 已通过；full build 需另开卡 |
+| 4 | Position | pre-gate six-doc draft | not frozen | 是，review-only | `docs/02-modules/position/` | 当前只允许 freeze review，不允许施工 |
 | 5 | Portfolio Plan | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/portfolio_plan/` | 等 Position 放行后重新审阅并冻结 |
 | 6 | Trade | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/trade/` | 等 Portfolio Plan 放行后重新审阅并冻结 |
 | 7 | System Readout | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/system_readout/` | 等 Trade 放行后重新审阅并冻结 |
@@ -189,10 +191,10 @@ MALF day bounded proof 已通过。
 | execution conclusion | `docs/04-execution/records/malf/malf-day-bounded-proof-20260428-01.conclusion.md` |
 | hard audit | `hard_fail_count = 0` |
 
-MALF day 放行后打开的 Alpha freeze review、Alpha bounded proof 和 Signal freeze
-review 均已通过。当前下一步唯一允许动作是 Signal bounded proof build card；Signal
-runner、Signal 正式 DB、Position、Portfolio Plan、Trade、System Readout、Pipeline 仍不允许
-直接施工。
+MALF day 放行后打开的 Alpha freeze review、Alpha bounded proof、Signal freeze
+review 和 Signal bounded proof 均已通过。当前下一步唯一允许动作是 Position freeze
+review；Signal full build、Position 施工、Portfolio Plan、Trade、System Readout、
+Pipeline 仍不允许直接施工。
 
 ## 6. Alpha Freeze Review 放行记录
 
@@ -252,23 +254,42 @@ Signal freeze review 已通过。
 Signal freeze review 只冻结 Signal 六件套，不创建正式 Signal DB，不创建 Signal runner，
 不授权 Position / Portfolio Plan / Trade / System / Pipeline 施工。
 
-当前下一卡为 Signal bounded proof build card，不得扩展为 Signal construction 或下游施工。
+后续 Signal bounded proof 已通过；当前下一卡为 Position freeze review，不得扩展为
+Signal full build、Position construction 或下游施工。
 
-## 9. 施工锁
+## 9. Signal Bounded Proof 放行记录
 
-在 Signal bounded proof build card 未打开且 release gate 未通过前，不允许：
+Signal bounded proof 已通过。
+
+| 项 | 值 |
+|---|---|
+| run_id | `signal-bounded-proof-20260429-01` |
+| source DBs | `H:\Asteria-data\alpha_bof.duckdb`; `H:\Asteria-data\alpha_tst.duckdb`; `H:\Asteria-data\alpha_pb.duckdb`; `H:\Asteria-data\alpha_cpb.duckdb`; `H:\Asteria-data\alpha_bpb.duckdb` |
+| sample scope | `day / 2024-01-01..2024-12-31 / symbol_limit=4` |
+| Signal DB | `H:\Asteria-data\signal.duckdb` |
+| closeout | `H:\Asteria-report\signal\2026-04-29\signal-bounded-proof-20260429-01\closeout.md` |
+| validated evidence | `H:\Asteria-Validated\Asteria-signal-bounded-proof-20260429-01.zip` |
+| execution conclusion | `docs/04-execution/records/signal/signal-bounded-proof-20260429-01.conclusion.md` |
+| hard audit | `hard_fail_count = 0` |
+
+Signal bounded proof 只放行 bounded proof 产物和 `signal.duckdb` 当前表面，不授权
+Signal full build、Position 施工或全链路 pipeline。下一步只允许 Position freeze review。
+
+## 10. 施工锁
+
+在 Position freeze review 未闭环并另有明确 build card 前，不允许：
 
 | 禁止项 |
 |---|
 | 迁移旧 Alpha / Signal / Position / Portfolio / Trade / System 代码 |
-| 创建 Signal / Position / Portfolio / Trade / System 正式 DB |
+| 创建 Position / Portfolio / Trade / System 正式 DB |
 | 创建超出 Alpha bounded proof release 范围的 Alpha 正式 DB 或运行 full build |
 | 让下游模块补充自有语义 |
 | 建立 pipeline 全链路 |
 | 让 Alpha、Signal、Portfolio、Trade、System 写回 MALF |
 | 合并 `wave_core_state` 与 `system_state` |
 
-## 10. MALF 放行定义
+## 11. MALF 放行定义
 
 MALF day 首轮放行标准：
 

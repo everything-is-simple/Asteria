@@ -78,8 +78,8 @@ def test_project_governance_rejects_missing_current_next_card_file(tmp_path: Pat
         / "docs"
         / "04-execution"
         / "records"
-        / "signal"
-        / "signal-bounded-proof-build-card-20260429-01.card.md"
+        / "position"
+        / "position-freeze-review-20260429-01.card.md"
     )
     if card_path.exists():
         card_path.unlink()
@@ -124,9 +124,9 @@ def test_project_governance_rejects_mock_or_legacy_official_input(tmp_path: Path
 
 def test_project_governance_rejects_pre_gate_runner_script(tmp_path: Path) -> None:
     repo_root = _copy_governance_repo(tmp_path)
-    signal_script = repo_root / "scripts" / "signal" / "run_signal_bounded_proof.py"
-    signal_script.parent.mkdir(parents=True)
-    signal_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
+    position_script = repo_root / "scripts" / "position" / "run_position_bounded_proof.py"
+    position_script.parent.mkdir(parents=True)
+    position_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
 
     assert any(
         "pre-gate module has forbidden formal runner" in message for message in _messages(repo_root)
@@ -135,9 +135,9 @@ def test_project_governance_rejects_pre_gate_runner_script(tmp_path: Path) -> No
 
 def test_project_governance_rejects_pre_gate_db_create_script(tmp_path: Path) -> None:
     repo_root = _copy_governance_repo(tmp_path)
-    signal_script = repo_root / "scripts" / "signal" / "create_signal_schema.py"
-    signal_script.parent.mkdir(parents=True)
-    signal_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
+    position_script = repo_root / "scripts" / "position" / "create_position_schema.py"
+    position_script.parent.mkdir(parents=True)
+    position_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
 
     assert any(
         "pre-gate module has forbidden formal DB create script" in message

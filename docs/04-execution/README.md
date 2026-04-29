@@ -19,8 +19,8 @@
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip`
 
-当前已打开 `Signal bounded proof build card`；唯一允许推进的业务动作是 Signal bounded
-proof。Alpha full build、Signal full build 和下游模块施工仍未放行。
+当前已通过 `Signal bounded proof`；唯一允许推进的业务动作是 Position freeze review。
+Alpha full build、Signal full build、Position 施工和下游模块施工仍未放行。
 
 ## 1. 与其他目录的分工
 
@@ -102,6 +102,17 @@ docs/04-execution/
 已打开的 Signal bounded proof build card：
 
 - [Signal bounded proof build card](records/signal/signal-bounded-proof-build-card-20260429-01.card.md)
+
+已闭环的 Signal bounded proof：
+
+- [Signal bounded proof card](records/signal/signal-bounded-proof-20260429-01.card.md)
+- [Signal bounded proof evidence index](records/signal/signal-bounded-proof-20260429-01.evidence-index.md)
+- [Signal bounded proof record](records/signal/signal-bounded-proof-20260429-01.record.md)
+- [Signal bounded proof conclusion](records/signal/signal-bounded-proof-20260429-01.conclusion.md)
+
+已打开的 Position freeze review card：
+
+- [Position freeze review card](records/position/position-freeze-review-20260429-01.card.md)
 
 已闭环的 governance gate：
 
