@@ -23,6 +23,7 @@
 | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` | MALF day 放行证据 | 证明 MALF day Core/Lifespan/Service 三库 bounded proof 已通过 |
 | `H:\Asteria-Validated\Asteria-governance-release-gate-closure-20260428-01.zip` | 治理 release gate 证据 | 证明 release gate 四件套与外部 evidence 检查已落地 |
 | `H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip` | 文档权威链刷新证据 | 证明 Validated 资产、repo 文档、docs sync 检查已形成闭环 |
+| `H:\Asteria-Validated\Asteria-external-root-assets-refresh-20260429-01.zip` | 外部根目录资产刷新证据 | 证明 Validated / Report / Temp 三根目录分工和 inventory 已落档 |
 | `H:\Asteria-Validated\Market-Average-Lifespan-reference` | 市场参考资料与旧工作流索引 | 作为 data/reference 辅助资料，不作为治理正文 |
 | `H:\Asteria-Validated\Market-Average-Lifespan-system` | 历代系统验证快照、经验总结、回测报告 | 作为经验资产、验收旁证和历史对照，不直接迁入主线实现 |
 
@@ -102,6 +103,7 @@ repo HEAD 变更必须由 repo 内执行记录、closeout、manifest 和新的 V
 H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip
 H:\Asteria-Validated\Asteria-governance-release-gate-closure-20260428-01.zip
 H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip
+H:\Asteria-Validated\Asteria-external-root-assets-refresh-20260429-01.zip
 ```
 
 用途：
@@ -109,6 +111,7 @@ H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip
 1. 证明 MALF day bounded proof 已经形成 repo 内四件套与外部证据。
 2. 证明 release gate closure 已经把执行结论、manifest、validated zip 纳入治理检查。
 3. 证明 docs authority refresh 已经把 Validated 资产锚点纳入 docs sync 检查。
+4. 证明 repo 外三根目录的职责分区和资产 inventory 已经形成治理证据。
 
 裁决：
 
@@ -259,7 +262,7 @@ H:\Asteria-Validated\Market-Average-Lifespan-system\marketlifespan-quant\system-
 2. 把 `battle-tested-lessons-core-data-malf-20260403.md` 作为 `data / malf` 设计评审旁证。
 3. 把 `battle-tested-lessons-all-modules-and-mainline-bridging-20260408.md` 作为未来下游模块边界参考。
 4. 把 `A股市场` 与 `申万行业分类` 作为 `market_meta` 的 reference 资料池。
-5. 把三份当前 release evidence zip 作为门禁状态证明。
+5. 把四份当前 release / governance evidence zip 作为门禁状态证明。
 6. 把剖切面研究报告作为逻辑历史总账、每日增量、pipeline ledger 的架构依据。
 
 ### 6.2 现在不要做

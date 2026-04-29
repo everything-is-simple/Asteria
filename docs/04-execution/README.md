@@ -95,6 +95,13 @@ docs/04-execution/
 - [docs authority refresh record](records/governance/docs-authority-refresh-20260429-01.record.md)
 - [docs authority refresh conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md)
 
+已闭环的 external root assets refresh：
+
+- [external root assets refresh card](records/governance/external-root-assets-refresh-20260429-01.card.md)
+- [external root assets refresh evidence index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md)
+- [external root assets refresh record](records/governance/external-root-assets-refresh-20260429-01.record.md)
+- [external root assets refresh conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md)
+
 总索引：
 
 - [execution conclusion index](00-conclusion-index-v1.md)

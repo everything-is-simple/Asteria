@@ -25,10 +25,11 @@
 | MALF | `malf-day-bounded-proof-20260428-01` | `passed` | [conclusion](records/malf/malf-day-bounded-proof-20260428-01.conclusion.md) | [evidence-index](records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
+| Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
 
 ## 2. 当前说明
 
-- 当前 MALF day bounded proof、Phase 0 governance closure 与 docs authority refresh 已完成 repo 内执行闭环。
+- 当前 MALF day bounded proof、Phase 0 governance closure、docs authority refresh 与 external root assets refresh 已完成 repo 内执行闭环。
 - 当前唯一允许推进的业务动作仍是 `Alpha freeze review`。
 - Alpha 代码施工、Alpha 正式 DB、Alpha bounded runner、Signal / Position / Portfolio Plan / Trade / System
   施工和全链路 pipeline 仍未放行。
