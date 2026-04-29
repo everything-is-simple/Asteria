@@ -30,6 +30,25 @@
 | 是否一次改多个模块 | 否。一次只允许一个模块进入主线施工 |
 | 未验证模块是否允许上线 | 否 |
 
+## 2.1 权威资产链
+
+当前治理文档必须同时锚定仓库内 HEAD 和 `H:\Asteria-Validated` 中的正式资产。
+
+| 资产 | 地位 | 用途 |
+|---|---|---|
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` | MALF 语义权威 | 定义 Core、Lifespan、System-Service 与 Bridge |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2\` | MALF 语义权威目录 | 供文档桥接、审计和实现逐条引用 |
+| `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` | docs/code 快照锚点 | 记录 release gate closure 前的仓库文档与代码基线 |
+| `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 架构剖切面研究 | 支撑治理、主线、数据、编排四个切面的后续裁决 |
+
+裁决：
+
+```text
+Validated 保存权威快照和证据资产。
+repo HEAD 保存当前实施真相。
+快照之后的新事实必须通过执行记录、closeout、manifest 和新 Validated 归档补齐。
+```
+
 ## 3. 系统分层
 
 ```mermaid
@@ -120,16 +139,29 @@ Pipeline orchestrates, but does not redefine business meaning.
 
 ## 8. 第一阶段裁决
 
-当前唯一活跃施工对象：
+当前已完成治理闭环：
 
 ```text
-refactor-governance
+docs-authority-refresh-20260429-01
 ```
 
-下一候选主线模块：
+当前唯一冻结主线模块：
 
 ```text
-malf
+MALF
 ```
 
-MALF 施工必须以 `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` 为语义权威。
+当前最新通过主线门禁：
+
+```text
+MALF day bounded proof
+```
+
+下一张允许进入的卡：
+
+```text
+Alpha freeze review
+```
+
+MALF 语义继续以 `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` 为唯一权威。
+Alpha freeze review 只允许评审 Alpha 六件套和 WavePosition 只读契约，不授权 Alpha 代码施工。

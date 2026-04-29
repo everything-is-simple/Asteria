@@ -18,6 +18,21 @@
 
 本文件是状态清单，不是新设计，不授权任何主线模块越级施工。
 
+## 1.1 最新状态锚点
+
+本清单以仓库 HEAD 和以下 Validated 资产共同作为状态锚点：
+
+| 资产 | 当前用途 |
+|---|---|
+| `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` | release gate closure 前的 docs/code 快照锚点 |
+| `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 治理、主线、数据、编排四切面研究输入 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` | MALF 语义权威 |
+| `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` | MALF day bounded proof 证据 |
+| `H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip` | 本轮文档权威链刷新证据 |
+
+快照不是当前仓库的替代品。快照之后的变更必须通过 `docs/04-execution/`
+中的 card、evidence-index、record、conclusion 和外部 closeout/manifest 追溯。
+
 ## 2. 当前仓库位置
 
 | 项 | 值 |
@@ -76,6 +91,10 @@ full trading runtime
 | `17086e9` | Document validated asset inventory |
 | `8f902b9` | Document predecessor system module inventory |
 | `868fb0b` | Document Asteria refactor decision trace |
+| `43b852e` | Implement MALF day bounded proof |
+| `7f4f91f` | Record MALF day bounded proof release |
+| `89d7803` | Add governance release gate closure checks |
+| `1c479c4` | Add docs authority freshness gate |
 
 这些提交完成了 Asteria 的第一层地基：
 
@@ -129,9 +148,21 @@ name -> roots -> governance -> architecture -> topology -> MALF bridge -> asset 
 | 文件 | 状态 | 职责 |
 |---|---|---|
 | `docs/03-refactor/00-module-gate-ledger-v1.md` | active | 模块状态和施工锁 |
-| `docs/03-refactor/01-malf-schema-and-runner-contract-freeze-card-20260427.md` | draft | 当前 MALF schema/runner/audit 冻结卡 |
+| `docs/03-refactor/01-malf-schema-and-runner-contract-freeze-card-20260427.md` | historical | MALF schema/runner/audit 冻结卡记录 |
+| `docs/03-refactor/03-malf-day-bounded-proof-construction-checklist-v1.md` | active | MALF day bounded proof 施工清单 |
+| `docs/03-refactor/04-asteria-full-system-roadmap-v1.md` | active | 全系统 roadmap、release gate、下一卡约束 |
 
-### 6.5 Docs Index
+### 6.5 Execution Records
+
+| 文件 | 状态 | 职责 |
+|---|---|---|
+| `docs/04-execution/00-conclusion-index-v1.md` | active | 已落档结论索引 |
+| `docs/04-execution/00-execution-discipline-v1.md` | active | 执行卡闭环纪律 |
+| `docs/04-execution/records/malf/malf-day-bounded-proof-20260428-01.*.md` | passed | MALF day bounded proof 四件套 |
+| `docs/04-execution/records/governance/governance-release-gate-closure-20260428-01.*.md` | passed | release gate closure 四件套 |
+| `docs/04-execution/records/governance/docs-authority-refresh-20260429-01.*.md` | passed | 文档权威链刷新四件套 |
+
+### 6.6 Docs Index
 
 | 文件 | 职责 |
 |---|---|
@@ -155,22 +186,28 @@ Data bounded bootstrap support、机器可读治理执行器和 MALF bounded pro
 | `src/asteria/data/bootstrap.py` | TDX txt 到 raw/base day 的 bounded bootstrap 执行入口 |
 | `src/asteria/data/legacy_audit.py` | 老 raw/base 库只读覆盖率对账辅助 |
 | `src/asteria/governance/checks.py` | 机器可读门禁、DB 拓扑、API contract 与 repo 产物检查 |
+| `src/asteria/governance/docs_sync.py` | 执行结论、门禁账本、Validated 权威资产与文档新鲜度检查 |
+| `src/asteria/governance/release_gates.py` | release gate 四件套与外部 evidence 资产检查 |
 | `src/asteria/malf/contracts.py` | MALF day bounded proof 请求合同与摘要 |
 | `src/asteria/malf/schema.py` | `malf_core_day` / `malf_lifespan_day` / `malf_service_day` schema bootstrap |
 | `src/asteria/malf/bootstrap.py` | MALF day core / lifespan / service / audit scaffold |
+| `src/asteria/malf/core_engine.py` | MALF day Core bounded proof engine |
+| `src/asteria/malf/lifespan_engine.py` | MALF day Lifespan bounded proof engine |
+| `src/asteria/malf/service_engine.py` | MALF day Service WavePosition engine |
+| `src/asteria/malf/audit_engine.py` | MALF day invariant and interface audit engine |
 
 当前代码状态：
 
 | 项 | 状态 |
 |---|---|
-| MALF engine | day bounded proof scaffold 已实现；正式语义引擎仍未实现 |
+| MALF day | bounded proof 已通过，day 三库和 release evidence 已落档 |
 | Data Foundation bounded bootstrap support | 已实现最小入口；正式 Data Foundation builder 未放行 |
 | Alpha engine | 未实现 |
 | Signal engine | 未实现 |
 | Position / Portfolio / Trade / System | 未实现 |
 | Pipeline runtime | 未实现 |
 
-这是有意为之：当前只允许按门禁进入 MALF day bounded proof，不得提前迁移旧实现或放行下游模块。
+这是有意为之：MALF day 放行后只授权 `Alpha freeze review`，不得提前迁移旧实现或放行下游模块。
 
 ## 8. 脚本资产
 
@@ -178,6 +215,7 @@ Data bounded bootstrap support、机器可读治理执行器和 MALF bounded pro
 |---|---|
 | `scripts/dev/doctor.py` | 输出 Asteria 版本、Python 版本、五根目录 |
 | `scripts/governance/check_project_governance.py` | 执行机器可读治理检查：required docs、registry、API contract、禁用产物、施工锁 |
+| `scripts/governance/sync_project_docs.py` | 检查或安全同步执行结论、门禁账本、文档权威链状态 |
 | `scripts/data/run_data_bootstrap.py` | 从 TDX 离线 txt 执行 raw + market_base_day 最小 bounded bootstrap |
 | `scripts/malf/run_malf_day_core_build.py` | MALF day Core bounded proof scaffold 入口 |
 | `scripts/malf/run_malf_day_lifespan_build.py` | MALF day Lifespan bounded proof scaffold 入口 |
@@ -187,10 +225,10 @@ Data bounded bootstrap support、机器可读治理执行器和 MALF bounded pro
 当前脚本只服务：
 
 ```text
-environment proof + hard governance proof + Data bounded bootstrap support + MALF bounded proof scaffold
+environment proof + hard governance proof + docs authority checks + Data bounded bootstrap support + MALF day bounded proof
 ```
 
-仍不服务完整正式 Data Foundation 构建、MALF 正式语义放行或下游主线运行。
+仍不服务完整正式 Data Foundation 构建、Alpha 或下游主线运行。
 
 ## 9. 测试资产
 
@@ -198,6 +236,7 @@ environment proof + hard governance proof + Data bounded bootstrap support + MAL
 |---|---|
 | `tests/unit/core/test_paths.py` | 验证路径解析与数据库路径规则 |
 | `tests/unit/governance/test_project_governance.py` | 验证治理检查入口可运行 |
+| `tests/unit/governance/test_project_docs_sync.py` | 验证执行结论同步、Validated 资产锚点、MALF 权威桥接和 pre-gate 禁止项 |
 | `tests/unit/data/test_tdx_text.py` | 验证 TDX txt 发现与解析 |
 | `tests/unit/data/test_bootstrap_runner.py` | 验证 bounded bootstrap、resume、自然键替换与 dirty scope |
 | `tests/unit/data/test_legacy_audit.py` | 验证老 raw/base 库只读覆盖率对账 |
@@ -273,15 +312,19 @@ environment proof + hard governance proof + Data bounded bootstrap support + MAL
 | 逻辑总账 | 多个 DuckDB 视为统一历史总账的分账本体系 |
 | source authority | TDX / 正式生产源进入新 raw；旧 raw/base 只读对账；旧下游库只做旁证 |
 | 第一施工模块 | MALF |
-| 当前施工状态 | MALF 已冻结，下一施工卡为 MALF day bounded proof |
+| 当前主线放行 | MALF day bounded proof passed |
+| 当前治理放行 | governance release gate closure 与 docs authority refresh passed |
+| 当前允许下一卡 | Alpha freeze review |
 
 ## 13. 当前数据库状态
 
-当前仓库没有正式 DuckDB 数据库。
+当前仓库根目录没有正式 DuckDB 数据库。MALF day bounded proof 已在正式数据根下生成 day 三库。
 
 | 库类 | 状态 |
 |---|---|
-| `H:\Asteria-data\*.duckdb` | 尚未由本仓库正式创建 |
+| `H:\Asteria-data\malf_core_day.duckdb` | MALF day bounded proof Core DB |
+| `H:\Asteria-data\malf_lifespan_day.duckdb` | MALF day bounded proof Lifespan DB |
+| `H:\Asteria-data\malf_service_day.duckdb` | MALF day bounded proof Service DB |
 | `H:\Asteria-temp\*` | 可用于 pytest 和未来 working DB |
 | repo root `*.duckdb` | 禁止 |
 
@@ -296,18 +339,18 @@ environment proof + hard governance proof + Data bounded bootstrap support + MAL
 | 5 | `malf_service_day.duckdb` |
 | 6 | `pipeline.duckdb` |
 
-但这些库只能在 MALF 卡冻结并进入 bounded proof 实现卡后创建。
+其中 MALF day 三库已由 bounded proof 创建并通过 release evidence 追溯；其余库仍需等待对应 gate。
 
 ## 14. 当前明确没有的东西
 
 | 尚未拥有 | 原因 |
 |---|---|
-| 正式 MALF engine | 当前只有 bounded proof scaffold；结构语义、WavePosition 发布与正式放行证据尚未实施 |
+| MALF week/month 正式构建 | 需在 day 放行后另开复制/扩展卡 |
 | 正式 Data Foundation builder | Data 仍未冻结；当前只有 bounded bootstrap support，不抢第一施工位 |
 | Alpha/Signal 实现 | 等 MALF WavePosition 放行 |
 | Position/Portfolio/Trade/System 实现 | 等上游模块依次放行 |
 | Pipeline 全链路运行 | Pipeline 不能先于业务模块定义语义 |
-| 正式 DuckDB 文件 | 尚未进入 bounded proof |
+| 除 MALF day 三库外的正式 DuckDB 文件 | 需等待对应模块 gate |
 | 旧系统代码迁移 | 必须等目标模块设计冻结后逐文件审查 |
 
 ## 15. 当前下一步
@@ -315,37 +358,30 @@ environment proof + hard governance proof + Data bounded bootstrap support + MAL
 当前唯一自然下一步：
 
 ```text
-MALF day bounded proof
+Alpha freeze review
 ```
 
-首轮目标：
+该评审目标：
 
 | 目标 | 状态 |
 |---|---|
-| Data 输入 | `market_base_day` 最小输入契约可供 MALF day bounded proof 消费 |
-| MALF Core day | scaffold 已实现；结构事实算法尚未实现 |
-| MALF Lifespan day | scaffold 已实现；lifespan 统计语义尚未实现 |
-| MALF Service WavePosition | service ledger 与接口审计 scaffold 已实现；WavePosition 尚未正式发布 |
-| hard audit | 审计报告 scaffold 已形成；硬规则审计尚未实现 |
-
-通过后才进入：
-
-```text
-Alpha freeze review
-```
+| MALF Contract Review | 确认 Alpha 只读消费 WavePosition，不回写 MALF |
+| Alpha Six-doc Review | 基于已放行 WavePosition 重审 Alpha 六件套 |
+| Freeze Decision | 只在 review 通过后更新 Alpha 冻结状态 |
+| Build Card | 若 Alpha 冻结，再写下一张 Alpha 施工卡 |
 
 ## 16. 一句话总结
 
 当前 Asteria 已经拥有：
 
 ```text
-名字、根目录、环境、治理规则、主线图、数据库拓扑、历史总账协议、MALF 冻结文档、机器可读治理 registry、最小 Python 骨架、Data bounded bootstrap support、MALF bounded proof scaffold、治理检查和基础测试。
+名字、根目录、环境、治理规则、主线图、数据库拓扑、历史总账协议、MALF 冻结文档、机器可读治理 registry、Data bounded bootstrap support、MALF day bounded proof、release evidence、文档权威链检查、治理检查和基础测试。
 ```
 
 当前 Asteria 还没有：
 
 ```text
-正式 Data Foundation builder、MALF 正式语义引擎与 release evidence、下游主线实现、pipeline runtime 或任何未经放行证据支撑的正式主线运行。
+正式 Data Foundation builder、MALF week/month 放行、Alpha freeze decision、下游主线实现、pipeline runtime 或任何未经放行证据支撑的正式主线运行。
 ```
 
 这正是本轮重构想要的状态：先把地基、边界和证据摆正，再让第一个主线模块进入施工。

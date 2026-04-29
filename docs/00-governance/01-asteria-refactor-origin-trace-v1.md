@@ -338,7 +338,34 @@ design freeze
 | Pipeline 只编排 | 防止调度层长出业务语义 |
 | 下游不得回写 MALF | 防止结构真值被策略反向污染 |
 
-## 12. 当前状态
+## 12. 第十阶段：剖切面研究与逻辑总账
+
+`Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*`
+把重构系统切成四个面：
+
+| 切面 | 问题 | 后续裁决 |
+|---|---|---|
+| 治理 | 主线是不是法律 | 用 gate ledger、registry、execution conclusion 固化状态 |
+| 主线 | 模块是否越界 | Data 只喂主线，Pipeline 只编排，MALF 不被下游回写 |
+| 数据 | 多 DuckDB 是否散乱 | 视为一个逻辑历史总账本的分账本体系 |
+| 编排 | 系统能否日更 | 用 dirty scope、watermark、checkpoint、resume 支撑每日增量 |
+
+这份报告没有改变 MALF 语义权威。它补强的是工程治理口径：
+
+```text
+先 staging，后审计；
+先单库 promote，后更新 pipeline ledger；
+任何失败都不允许直接覆盖正式库。
+```
+
+因此，Asteria 现在同时保留两类权威输入：
+
+| 权威输入 | 回答的问题 |
+|---|---|
+| MALF 三份终稿 | MALF 是什么，WavePosition 如何定义 |
+| 剖切面研究报告 | 多库、日更、pipeline ledger、release evidence 如何治理 |
+
+## 13. 当前状态
 
 截至本文件创建时：
 
@@ -350,15 +377,22 @@ design freeze
 | 目标 DuckDB 拓扑 | 已冻结 |
 | MALF 三份语义终稿 | 已进入 Validated |
 | 前辈系统资产清单 | 已建立 |
-| 当前活跃设计卡 | `01-malf-schema-and-runner-contract-freeze-card-20260427` |
+| MALF 六件套 | frozen |
+| MALF day bounded proof | passed |
+| governance release gate closure | passed |
+| docs authority refresh | passed |
+| 当前允许下一卡 | `Alpha freeze review` |
 
 当前唯一自然下一步：
 
 ```text
-把 MALF 三份语义终稿映射为 Asteria day 三库 schema / runner contract / audit spec。
+Alpha freeze review
 ```
 
-## 13. 一句话结论
+该卡只允许基于已放行的 WavePosition 重新审阅 Alpha 六件套和只读契约，
+不允许直接进入 Alpha 代码施工。
+
+## 14. 一句话结论
 
 Asteria 不是旧系统的第六次补丁。
 
