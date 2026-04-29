@@ -19,8 +19,8 @@
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip`
 
-当前已打开 `Alpha bounded proof build card`；唯一允许推进的业务动作是 Alpha bounded
-proof。Alpha full build 和下游模块施工仍未放行。
+当前已打开 `Signal bounded proof build card`；唯一允许推进的业务动作是 Signal bounded
+proof。Alpha full build、Signal full build 和下游模块施工仍未放行。
 
 ## 1. 与其他目录的分工
 
@@ -85,12 +85,23 @@ docs/04-execution/
 - [MALF day bounded proof record](records/malf/malf-day-bounded-proof-20260428-01.record.md)
 - [MALF day bounded proof conclusion](records/malf/malf-day-bounded-proof-20260428-01.conclusion.md)
 
+已登记的 MALF blocked gap：
+
+- [MALF Lifespan dense bar snapshot gap card](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.card.md)
+- [MALF Lifespan dense bar snapshot gap evidence index](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.evidence-index.md)
+- [MALF Lifespan dense bar snapshot gap record](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.record.md)
+- [MALF Lifespan dense bar snapshot gap conclusion](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.conclusion.md)
+
 已闭环的 Alpha freeze review：
 
 - [Alpha freeze review card](records/alpha/alpha-freeze-review-20260429-01.card.md)
 - [Alpha freeze review evidence index](records/alpha/alpha-freeze-review-20260429-01.evidence-index.md)
 - [Alpha freeze review record](records/alpha/alpha-freeze-review-20260429-01.record.md)
 - [Alpha freeze review conclusion](records/alpha/alpha-freeze-review-20260429-01.conclusion.md)
+
+已打开的 Signal bounded proof build card：
+
+- [Signal bounded proof build card](records/signal/signal-bounded-proof-build-card-20260429-01.card.md)
 
 已闭环的 governance gate：
 

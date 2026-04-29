@@ -145,24 +145,27 @@ Pipeline orchestrates, but does not redefine business meaning.
 docs-authority-refresh-20260429-01
 ```
 
-当前唯一冻结主线模块：
+当前已冻结主线模块：
 
 ```text
 MALF
+Alpha
+Signal
 ```
 
-当前最新通过主线门禁：
+当前已通过 bounded proof：
 
 ```text
 MALF day bounded proof
+Alpha day bounded proof
 ```
 
 下一张允许进入的卡：
 
 ```text
-Alpha bounded proof build card
+Signal bounded proof build card
 ```
 
 MALF 语义继续以 `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` 为唯一权威。
-Alpha freeze review 已通过并冻结 Alpha 六件套；下一卡只允许先写 Alpha bounded proof
-build card，不直接授权 Alpha 代码施工或正式 Alpha DB。
+Signal freeze review 已通过并冻结 Signal 六件套；下一卡只允许先写 Signal bounded proof
+build card，不直接授权 Signal full build、下游施工或全链路 pipeline。

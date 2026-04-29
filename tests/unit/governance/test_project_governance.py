@@ -52,6 +52,44 @@ def test_project_governance_rejects_multiple_build_allowed_mainline_modules(
     )
 
 
+def test_project_governance_rejects_pyproject_next_card_state(tmp_path: Path) -> None:
+    repo_root = _copy_governance_repo(tmp_path)
+    pyproject_path = repo_root / "pyproject.toml"
+    pyproject_text = pyproject_path.read_text(encoding="utf-8")
+    if "current_allowed_next_card" not in pyproject_text:
+        pyproject_path.write_text(
+            pyproject_text.replace(
+                "max_python_file_lines = 500",
+                'current_allowed_next_card = "signal_freeze_review"\nmax_python_file_lines = 500',
+            ),
+            encoding="utf-8",
+        )
+
+    assert any(
+        "pyproject governance must not define current_allowed_next_card" in message
+        for message in _messages(repo_root)
+    )
+
+
+def test_project_governance_rejects_missing_current_next_card_file(tmp_path: Path) -> None:
+    repo_root = _copy_governance_repo(tmp_path)
+    card_path = (
+        repo_root
+        / "docs"
+        / "04-execution"
+        / "records"
+        / "signal"
+        / "signal-bounded-proof-build-card-20260429-01.card.md"
+    )
+    if card_path.exists():
+        card_path.unlink()
+
+    assert any(
+        "current allowed next card is missing matching execution card" in message
+        for message in _messages(repo_root)
+    )
+
+
 def test_project_governance_rejects_unregistered_topology_database(tmp_path: Path) -> None:
     repo_root = _copy_governance_repo(tmp_path)
     topology_doc = repo_root / "docs" / "01-architecture" / "01-database-topology-v1.md"
@@ -226,6 +264,39 @@ def test_project_governance_rejects_missing_release_gate_manifest(
     assert any(
         "release gate evidence asset does not exist: manifest" in message
         for message in _messages(repo_root)
+    )
+
+
+def test_project_governance_allows_blocked_gap_conclusion_without_release_assets(
+    tmp_path: Path,
+) -> None:
+    repo_root = _copy_governance_repo(tmp_path)
+    run_id = "malf-lifespan-dense-bar-snapshot-gap-20260429-01"
+    record_dir = repo_root / "docs" / "04-execution" / "records" / "malf"
+    for suffix in ["card", "record", "evidence-index", "conclusion"]:
+        (record_dir / f"{run_id}.{suffix}.md").write_text(
+            "# MALF Lifespan Dense Bar Snapshot Gap\n\n状态：`blocked`\n",
+            encoding="utf-8",
+        )
+    index_path = repo_root / "docs" / "04-execution" / "00-conclusion-index-v1.md"
+    index_text = index_path.read_text(encoding="utf-8")
+    conclusion_link = (
+        "[conclusion](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.conclusion.md)"
+    )
+    evidence_link = (
+        "[evidence-index]"
+        "(records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.evidence-index.md)"
+    )
+    index_path.write_text(
+        index_text + "\n| MALF | `malf-lifespan-dense-bar-snapshot-gap-20260429-01` | `blocked` | "
+        f"{conclusion_link} | {evidence_link} |\n",
+        encoding="utf-8",
+    )
+
+    messages = _messages(repo_root)
+
+    assert not any(
+        "release gate evidence-index missing required asset" in message for message in messages
     )
 
 

@@ -81,6 +81,21 @@ def _check_required_docs(repo_root: Path, required_docs: list[str]) -> list[Find
     return findings
 
 
+def _check_pyproject_static_governance(
+    repo_root: Path,
+    governance: dict[str, Any],
+) -> list[Finding]:
+    findings: list[Finding] = []
+    if "current_allowed_next_card" in governance:
+        findings.append(
+            Finding(
+                repo_root / "pyproject.toml",
+                "pyproject governance must not define current_allowed_next_card",
+            )
+        )
+    return findings
+
+
 def _check_file_sizes(repo_root: Path, governance: dict[str, Any]) -> list[Finding]:
     findings: list[Finding] = []
     limits = {
@@ -114,6 +129,7 @@ def _check_gate_registry(repo_root: Path, gate_registry: dict[str, Any]) -> list
     findings: list[Finding] = []
     modules = _module_map(gate_registry)
     active = gate_registry.get("active_mainline_module")
+    current_allowed_next_card = gate_registry.get("current_allowed_next_card")
     action_allowed = [
         module_id
         for module_id, module in modules.items()
@@ -127,6 +143,18 @@ def _check_gate_registry(repo_root: Path, gate_registry: dict[str, Any]) -> list
         findings.append(
             Finding(path, "active_mainline_module must be the action-allowed mainline module")
         )
+    if current_allowed_next_card:
+        active_module = modules.get(str(active), {})
+        if active_module.get("next_card") != current_allowed_next_card:
+            findings.append(
+                Finding(path, "current_allowed_next_card must match active module next_card")
+            )
+        if not _current_next_card_file_exists(
+            repo_root, str(active), str(current_allowed_next_card)
+        ):
+            findings.append(
+                Finding(path, "current allowed next card is missing matching execution card")
+            )
     if "system" in modules or "system_readout" not in modules:
         findings.append(
             Finding(path, "module_id must be system_readout; system is only a DB display shorthand")
@@ -148,6 +176,18 @@ def _check_gate_registry(repo_root: Path, gate_registry: dict[str, Any]) -> list
                     Finding(path, f"module {module_id} missing required six-doc file: {doc_name}")
                 )
     return findings
+
+
+def _current_next_card_file_exists(repo_root: Path, module_id: str, next_card: str) -> bool:
+    record_dir = repo_root / "docs" / "04-execution" / "records" / module_id
+    if not record_dir.exists():
+        return False
+    card_prefix = next_card.replace("_", "-")
+    for card_path in record_dir.glob("*.card.md"):
+        run_id = card_path.name.removesuffix(".card.md")
+        if run_id == card_prefix or run_id.startswith(f"{card_prefix}-"):
+            return True
+    return False
 
 
 def _check_database_topology(
@@ -404,6 +444,7 @@ def _check_forbidden_pre_gate_sources(
 def run_checks(repo_root: Path) -> list[Finding]:
     governance = _load_governance(repo_root)
     findings: list[Finding] = []
+    findings.extend(_check_pyproject_static_governance(repo_root, governance))
     findings.extend(_check_required_docs(repo_root, list(governance["required_docs"])))
     findings.extend(_check_file_sizes(repo_root, governance))
 
