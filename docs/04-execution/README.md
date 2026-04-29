@@ -9,6 +9,15 @@
 3. 证据资产放在哪里。
 4. 最后结论是什么。
 
+当前执行层权威锚点：
+
+- `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md`
+- `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip`
+
+当前唯一允许推进的业务动作是 `Alpha freeze review`；Alpha 施工和下游模块施工仍未放行。
+
 ## 1. 与其他目录的分工
 
 | 位置 | 负责什么 |
@@ -63,11 +72,29 @@ docs/04-execution/
 3. `conclusion` 是单卡唯一正式结论入口。
 4. `evidence-index` 只索引和摘要，不复制大报告或二进制资产。
 
-## 5. 当前样板
+## 5. 当前正式记录
 
-第一张完整样板卡：
+已闭环的 MALF proof：
 
 - [MALF day bounded proof card](records/malf/malf-day-bounded-proof-20260428-01.card.md)
 - [MALF day bounded proof evidence index](records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md)
 - [MALF day bounded proof record](records/malf/malf-day-bounded-proof-20260428-01.record.md)
 - [MALF day bounded proof conclusion](records/malf/malf-day-bounded-proof-20260428-01.conclusion.md)
+
+已闭环的 governance gate：
+
+- [governance release gate closure card](records/governance/governance-release-gate-closure-20260428-01.card.md)
+- [governance release gate closure evidence index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md)
+- [governance release gate closure record](records/governance/governance-release-gate-closure-20260428-01.record.md)
+- [governance release gate closure conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md)
+
+已闭环的 docs authority refresh：
+
+- [docs authority refresh card](records/governance/docs-authority-refresh-20260429-01.card.md)
+- [docs authority refresh evidence index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md)
+- [docs authority refresh record](records/governance/docs-authority-refresh-20260429-01.record.md)
+- [docs authority refresh conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md)
+
+总索引：
+
+- [execution conclusion index](00-conclusion-index-v1.md)

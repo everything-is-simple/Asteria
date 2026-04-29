@@ -15,8 +15,13 @@
 | 资产 | 路径 |
 |---|---|
 | report_dir | `<path>` |
-| validated_asset | `<path>` |
-| formal_db | `<path>` |
+| closeout | `<path or not applicable>` |
+| manifest | `<path or not applicable>` |
+| gate_snapshot | `<path or not applicable>` |
+| run_manifest | `<path or not applicable>` |
+| source_manifest | `<path or not applicable>` |
+| validated_asset | `<path or not applicable>` |
+| formal_db | `<path or not applicable>` |
 
 ## 3. 关键结果
 
@@ -29,3 +34,11 @@
 | 项 | 值 |
 |---|---:|
 | <audit metric> | <value> |
+
+## 5. 门禁影响
+
+| 项 | 值 |
+|---|---|
+| allowed next action | `<next action>` |
+| construction opened | `<yes / no>` |
+| downstream writeback opened | `<yes / no>` |

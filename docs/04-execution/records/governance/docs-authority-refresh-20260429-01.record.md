@@ -20,6 +20,7 @@
 6. 运行 docs authority 回归测试、governance 单元测试和项目治理检查。
 7. 补齐本卡 repo 内 card、evidence-index、record、conclusion，并登记 conclusion index。
 8. 生成本卡外部 closeout、manifest 与 Validated zip。
+9. 将深度研究报告、`214427` docs/code 快照和 MALF 三份终稿目录登记为执行层权威锚点。
 
 ## 3. 关键验证
 
@@ -34,9 +35,26 @@
 | `H:\Asteria\.venv\Scripts\mypy.exe src --cache-dir H:\Asteria-temp\mypy-cache` | `passed` |
 | `H:\Asteria\.venv\Scripts\pytest.exe --basetemp=H:/Asteria-temp/pytest-tmp-docs-authority-refresh-20260429-01 -o cache_dir=H:/Asteria-temp/pytest-cache-docs-authority-refresh-20260429-01` | `35 passed` |
 
-## 4. 文档更新
+## 4. 外部证据资产
+
+| 资产 | 路径 |
+|---|---|
+| report_dir | `H:\Asteria-report\governance\2026-04-29\docs-authority-refresh-20260429-01` |
+| manifest | `H:\Asteria-report\governance\2026-04-29\docs-authority-refresh-20260429-01\manifest.json` |
+| validated_zip | `H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip` |
+| formal_db | `not applicable` |
+
+## 5. 文档更新
 
 - [card](docs-authority-refresh-20260429-01.card.md)
 - [evidence-index](docs-authority-refresh-20260429-01.evidence-index.md)
 - [conclusion](docs-authority-refresh-20260429-01.conclusion.md)
 - [conclusion index](../../00-conclusion-index-v1.md)
+
+## 6. 门禁更新
+
+| 项 | 结果 |
+|---|---|
+| conclusion index registered | `yes` |
+| allowed next action after card | `Alpha freeze review` |
+| still blocked | `Alpha code construction; Alpha formal DB; downstream module construction; full-chain pipeline` |

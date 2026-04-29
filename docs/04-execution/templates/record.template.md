@@ -22,7 +22,23 @@
 |---|---|
 | <check> | <result> |
 
-## 4. 文档更新
+## 4. 外部证据资产
+
+| 资产 | 路径 |
+|---|---|
+| report_dir | `<path or not applicable>` |
+| manifest | `<path or not applicable>` |
+| validated_zip | `<path or not applicable>` |
+
+## 5. 文档更新
 
 - <updated doc>
 - <updated doc>
+
+## 6. 门禁更新
+
+| 项 | 结果 |
+|---|---|
+| conclusion index registered | `<yes / no>` |
+| allowed next action after card | `<next action>` |
+| still blocked | `<blocked scope>` |

@@ -22,18 +22,28 @@
 | source | `<source path or contract>` |
 | scope | `<timeframe / date range / symbol scope>` |
 | prerequisite docs | `<docs>` |
+| authority assets | `<validated assets / authority directories>` |
 
-## 4. 允许动作
+## 4. 权威边界
+
+| 项 | 值 |
+|---|---|
+| upstream semantics | `<read-only / redefined / not applicable>` |
+| formal DB permission | `<allowed path / not allowed>` |
+| allowed next action before card | `<current next action>` |
+
+## 5. 允许动作
 
 - <allowed action 1>
 - <allowed action 2>
 
-## 5. 禁止动作
+## 6. 禁止动作
 
 - <forbidden action 1>
 - <forbidden action 2>
 
-## 6. 关联入口
+## 7. 关联入口
 
 - [gate ledger](../../03-refactor/00-module-gate-ledger-v1.md)
+- [conclusion index](../00-conclusion-index-v1.md)
 - [build card or checklist](<related doc>)

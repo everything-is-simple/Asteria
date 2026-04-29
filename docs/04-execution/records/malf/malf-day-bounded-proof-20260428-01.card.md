@@ -25,6 +25,18 @@
 | symbol_limit | `4` |
 | core_rule_version | `core-rule-fractal-1bar-v1` |
 | sample_version | `sample-v1` |
+| MALF authority directory | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` |
+| MALF authority zip | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` |
+| docs/code snapshot | `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` |
+| deep research report | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md` |
+
+## 3.1 权威边界
+
+| 项 | 值 |
+|---|---|
+| upstream semantics | `MALF three-part design set is authoritative; no downstream rewrite` |
+| formal DB permission | `allowed only for MALF Core / Lifespan / Service day DBs after hard audit` |
+| allowed next action before card | `MALF day bounded proof` |
 
 ## 4. 允许动作
 

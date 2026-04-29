@@ -24,6 +24,7 @@
 4. 审计通过后，将正式库落到 `H:\Asteria-data\malf_core_day.duckdb`、`H:\Asteria-data\malf_lifespan_day.duckdb`、`H:\Asteria-data\malf_service_day.duckdb`。
 5. 生成 `closeout.md`、`manifest.json`、`table-counts.json`、`audit-summary.json`，并归档 `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip`。
 6. 更新门禁文档，明确 MALF day bounded proof 已通过，下一步只允许进入 `Alpha freeze review`。
+7. 确认本卡不打开 Alpha 代码施工、不创建 Alpha 正式 DB、不允许任何下游写回 MALF。
 
 ## 4. 关键验证
 
@@ -37,13 +38,30 @@
 | formal promote consistency | staging 与正式三库计数一致 |
 | release gate checks | governance、ruff、format、mypy、pytest 全通过 |
 
-## 5. 文档更新
+## 5. 外部证据资产
+
+| 资产 | 路径 |
+|---|---|
+| report_dir | `H:\Asteria-report\malf\2026-04-28\malf-day-bounded-proof-20260428-01` |
+| manifest | `H:\Asteria-report\malf\2026-04-28\malf-day-bounded-proof-20260428-01\manifest.json` |
+| validated_zip | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` |
+| formal DBs | `H:\Asteria-data\malf_core_day.duckdb`; `H:\Asteria-data\malf_lifespan_day.duckdb`; `H:\Asteria-data\malf_service_day.duckdb` |
+
+## 6. 文档更新
 
 - [MALF bounded proof checklist](../../../03-refactor/03-malf-day-bounded-proof-construction-checklist-v1.md)
 - [module gate ledger](../../../03-refactor/00-module-gate-ledger-v1.md)
 - report closeout: `H:\Asteria-report\malf\2026-04-28\malf-day-bounded-proof-20260428-01\closeout.md`
 
-## 6. 关联页面
+## 7. 门禁更新
+
+| 项 | 结果 |
+|---|---|
+| conclusion index registered | `yes` |
+| allowed next action after card | `Alpha freeze review` |
+| still blocked | `Alpha code construction; Alpha formal DB; downstream module construction; full-chain pipeline; downstream writeback to MALF` |
+
+## 8. 关联页面
 
 - [card](malf-day-bounded-proof-20260428-01.card.md)
 - [evidence-index](malf-day-bounded-proof-20260428-01.evidence-index.md)

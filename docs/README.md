@@ -8,7 +8,8 @@ flowchart TD
     B --> C[Database Topology]
     C --> D[Module Design Standard]
     D --> E[Module Gate Ledger]
-    E --> F[Module Construction]
+    E --> F[Execution Records]
+    F --> G[Module Construction]
 ```
 
 ## 文件分层
@@ -19,6 +20,7 @@ flowchart TD
 | `01-architecture` | 主线模块图、数据库拓扑、跨模块依赖 |
 | `02-modules` | 单模块权威设计与设计模板 |
 | `03-refactor` | 当前施工状态、门禁账本、执行顺序 |
+| `04-execution` | 执行四件套、证据索引、结论索引 |
 
 ## 外部权威锚点
 
@@ -49,6 +51,21 @@ H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
 
 该 zip 是快照锚点；快照之后的仓库更新以执行记录、closeout、manifest 和后续
 Validated 归档为准。
+
+深度研究报告：
+
+```text
+H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md
+H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.docx
+H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.pdf
+```
+
+执行结论索引：
+
+- [Asteria 执行结论索引](H:/Asteria/docs/04-execution/00-conclusion-index-v1.md)
+
+当前唯一允许推进的业务动作仍是 `Alpha freeze review`；Alpha 代码施工、Alpha 正式 DB
+和下游模块施工必须等待对应 freeze review / bounded proof 门禁。
 
 前辈系统资产清单：
 

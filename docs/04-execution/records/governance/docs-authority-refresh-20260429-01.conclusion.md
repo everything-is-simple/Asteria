@@ -17,15 +17,20 @@ MALF 权威 zip、MALF 权威目录和 MALF 权威桥接引用。
 | allowed next action | `Alpha freeze review` |
 | governance impact | `docs authority freshness checks active` |
 | still blocked | `Alpha code construction; Signal / Position / Portfolio Plan / Trade / System construction; full-chain pipeline` |
+| conclusion index registered | `yes` |
+| downstream writeback opened | `no` |
 
 ## 3. 不放行范围
 
 本卡不冻结 Alpha，不创建 Alpha DB，不授权 Alpha bounded runner，也不打开任何下游施工。
 本卡不修改 MALF 业务语义；MALF 语义权威仍是
 `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`。
+`H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` 是本卡使用的 docs/code
+快照锚点；之后的 HEAD 变更由本卡记录和后续 Validated 归档补齐。
 
 ## 4. 证据入口
 
 - [evidence-index](docs-authority-refresh-20260429-01.evidence-index.md)
 - [record](docs-authority-refresh-20260429-01.record.md)
 - closeout report: `H:\Asteria-report\governance\2026-04-29\docs-authority-refresh-20260429-01\closeout.md`
+- validated zip: `H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip`

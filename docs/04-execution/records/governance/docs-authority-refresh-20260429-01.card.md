@@ -22,9 +22,18 @@
 | 项 | 值 |
 |---|---|
 | primary snapshot | `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` |
+| deep research report | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md` |
 | MALF authority | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` |
 | MALF authority directory | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` |
 | prerequisite docs | `README.md`, `AGENTS.md`, `docs/00-governance/00-asteria-refactor-charter-v1.md`, `docs/01-architecture/00-mainline-authoritative-map-v1.md`, `docs/01-architecture/01-database-topology-v1.md`, `docs/03-refactor/00-module-gate-ledger-v1.md` |
+
+## 3.1 权威边界
+
+| 项 | 值 |
+|---|---|
+| upstream semantics | `read-only; MALF semantics remain in Validated three-part design set` |
+| formal DB permission | `not allowed` |
+| allowed next action before card | `Alpha freeze review` |
 
 ## 4. 允许动作
 

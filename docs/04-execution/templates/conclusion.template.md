@@ -14,8 +14,12 @@
 |---|---|
 | allowed next action | `<next action>` |
 | still blocked | `<blocked scope>` |
+| conclusion index registered | `<yes / no>` |
+| downstream writeback opened | `<yes / no>` |
 
 ## 3. 证据入口
 
 - [evidence-index](<evidence-index link>)
 - [record](<record link>)
+- report_dir: `<path or not applicable>`
+- validated_zip: `<path or not applicable>`
