@@ -14,6 +14,8 @@
 - `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md`
 - `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip`
 - `H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip`
+- `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0`
+- `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip`
 
@@ -116,6 +118,13 @@ docs/04-execution/
 - [MALF authority compatibility audit evidence index](records/governance/malf-authority-compatibility-audit-20260429-01.evidence-index.md)
 - [MALF authority compatibility audit record](records/governance/malf-authority-compatibility-audit-20260429-01.record.md)
 - [MALF authority compatibility audit conclusion](records/governance/malf-authority-compatibility-audit-20260429-01.conclusion.md)
+
+已闭环的 Asteria system design set refresh：
+
+- [Asteria system design set refresh card](records/governance/asteria-system-design-set-refresh-20260429-01.card.md)
+- [Asteria system design set refresh evidence index](records/governance/asteria-system-design-set-refresh-20260429-01.evidence-index.md)
+- [Asteria system design set refresh record](records/governance/asteria-system-design-set-refresh-20260429-01.record.md)
+- [Asteria system design set refresh conclusion](records/governance/asteria-system-design-set-refresh-20260429-01.conclusion.md)
 
 总索引：
 

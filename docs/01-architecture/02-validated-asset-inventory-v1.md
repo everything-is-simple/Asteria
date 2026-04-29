@@ -23,6 +23,8 @@
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 架构级剖切面研究报告 | 作为治理、历史总账、增量协议与下一阶段施工路径的分析输入 |
 | `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` | 当前仓库文档与代码归档 | 作为 2026-04-28 release gate closure 前的正式代码/文档快照 |
 | `H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip` | 当前系统文档与代码归档 | 作为三天重构成果的最新 docs/code 快照；其语义必须通过 repo 执行记录和 MALF 兼容审计解释 |
+| `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0` | 全系统权威设计整理包 | 覆盖 Data / MALF / Alpha / Signal / Position / Portfolio Plan / Trade / System Readout / Pipeline 的当前设计状态 |
+| `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip` | 全系统权威设计整理包归档 | 与同名目录一致；作为系统级设计包 validated archive |
 | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` | MALF day 放行证据 | 证明 MALF day Core/Lifespan/Service 三库 bounded proof 已通过 |
 | `H:\Asteria-Validated\Asteria-governance-release-gate-closure-20260428-01.zip` | 治理 release gate 证据 | 证明 release gate 四件套与外部 evidence 检查已落地 |
 | `H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip` | 文档权威链刷新证据 | 证明 Validated 资产、repo 文档、docs sync 检查已形成闭环 |
@@ -84,6 +86,8 @@ H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研
 H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.docx
 H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
 H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip
+H:\Asteria-Validated\Asteria_System_Design_Set_v1_0
+H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip
 ```
 
 用途：
@@ -93,6 +97,8 @@ H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip
 3. 作为 hard governance 落地与 release gate closure 前后的对照快照。
 4. `20260429-130309` 作为三天重构后的当前系统文档与代码快照，必须结合
    `malf-authority-compatibility-audit-20260429-01` 解释其没有偏移 MALF 权威。
+5. `Asteria_System_Design_Set_v1_0` 是当前系统全模块设计整理包，明确记录 MALF
+   frozen、Data foundation contract、下游 pre-gate 的当前事实。
 
 裁决：
 
@@ -114,6 +120,7 @@ H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip
 H:\Asteria-Validated\Asteria-external-root-assets-refresh-20260429-01.zip
 H:\Asteria-Validated\Asteria-validated-root-manifest-refresh-20260429-01.zip
 H:\Asteria-Validated\Asteria-malf-authority-compatibility-audit-20260429-01.zip
+H:\Asteria-Validated\Asteria-system-design-set-refresh-20260429-01.zip
 ```
 
 用途：
@@ -124,6 +131,7 @@ H:\Asteria-Validated\Asteria-malf-authority-compatibility-audit-20260429-01.zip
 4. 证明 repo 外三根目录的职责分区和资产 inventory 已经形成治理证据。
 5. 证明 Validated 根目录的人读 README 与机器 manifest 已经形成治理证据。
 6. 证明当前系统 docs/code 快照已按 MALF 权威目录与 zip 做兼容审计，结论为不偏移。
+7. 证明全系统设计整理包已落入 Validated，并且不改变当前门禁。
 
 裁决：
 
@@ -279,6 +287,8 @@ H:\Asteria-Validated\Market-Average-Lifespan-system\marketlifespan-quant\system-
 7. 把剖切面研究报告作为逻辑历史总账、每日增量、pipeline ledger 的架构依据。
 8. 把 `Asteria-docs-code-20260429-130309.zip` 作为当前系统 docs/code 快照，但只通过
    repo 执行结论和 MALF 兼容审计解释其状态。
+9. 把 `Asteria_System_Design_Set_v1_0` 作为全系统当前设计状态入口，不把它解释为
+   Alpha 或下游施工许可。
 
 ### 6.2 现在不要做
 

@@ -13,6 +13,8 @@
 - `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.pdf`
 - `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip`
 - `H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip`
+- `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0`
+- `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip`
 
@@ -30,10 +32,11 @@ docs/code 快照。快照之后的 repo HEAD 变更必须通过本索引、执�
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
 | Governance | `validated-root-manifest-refresh-20260429-01` | `passed` | [conclusion](records/governance/validated-root-manifest-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/validated-root-manifest-refresh-20260429-01.evidence-index.md) |
 | Governance | `malf-authority-compatibility-audit-20260429-01` | `passed` | [conclusion](records/governance/malf-authority-compatibility-audit-20260429-01.conclusion.md) | [evidence-index](records/governance/malf-authority-compatibility-audit-20260429-01.evidence-index.md) |
+| Governance | `asteria-system-design-set-refresh-20260429-01` | `passed` | [conclusion](records/governance/asteria-system-design-set-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/asteria-system-design-set-refresh-20260429-01.evidence-index.md) |
 
 ## 2. 当前说明
 
-- 当前 MALF day bounded proof、Phase 0 governance closure、docs authority refresh、external root assets refresh、Validated root manifest refresh 与 MALF authority compatibility audit 已完成 repo 内执行闭环。
+- 当前 MALF day bounded proof、Phase 0 governance closure、docs authority refresh、external root assets refresh、Validated root manifest refresh、MALF authority compatibility audit 与 Asteria system design set refresh 已完成 repo 内执行闭环。
 - 当前唯一允许推进的业务动作仍是 `Alpha freeze review`。
 - Alpha 代码施工、Alpha 正式 DB、Alpha bounded runner、Signal / Position / Portfolio Plan / Trade / System
   施工和全链路 pipeline 仍未放行。
