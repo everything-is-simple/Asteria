@@ -1,5 +1,27 @@
-registry_version = "2026-04-28.v1"
+registry_version = "2026-04-29.v1"
 formal_root = "H:/Asteria-data"
+authority_assets = [
+    "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
+    "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+    "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2",
+    "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2.zip",
+]
+release_evidence_index = "docs/04-execution/00-conclusion-index-v1.md"
+released_formal_dbs = [
+    "malf_core_day.duckdb",
+    "malf_lifespan_day.duckdb",
+    "malf_service_day.duckdb",
+]
+blocked_formal_db_modules = [
+    "alpha",
+    "signal",
+    "position",
+    "portfolio_plan",
+    "trade",
+    "system_readout",
+    "pipeline",
+]
+topology_status = "target topology; only released_formal_dbs may exist as formal DBs without a new gate"
 
 [[databases]]
 db_name = "raw_market.duckdb"

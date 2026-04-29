@@ -2,11 +2,17 @@ module_id = "portfolio_plan"
 display_name = "Portfolio Plan"
 contract_version = "v1"
 status = "pre_gate_draft"
+authority_assets = [
+    "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+]
+gate_state = "pre_gate_draft; wait_for_position_release"
+formal_db_permission = "not_allowed"
+writeback_boundary = "consume released Position only; never write back upstream"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from portfolio checkpoint after Position release"
 source_manifest_fields = ["source_position_release_version", "source_position_run_id"]
-forbidden_inputs = ["alpha_internal", "malf_internal", "mock_formal_data"]
-forbidden_outputs = ["actual_fill", "broker_order_id"]
+forbidden_inputs = ["alpha_internal", "malf_internal", "signal_internal", "mock_formal_data"]
+forbidden_outputs = ["position_writeback", "signal_writeback", "alpha_writeback", "malf_writeback", "actual_fill", "broker_order_id"]
 
 [[official_inputs]]
 input_type = "database"

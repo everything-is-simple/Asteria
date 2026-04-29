@@ -1,8 +1,15 @@
-registry_version = "2026-04-28.v1"
+registry_version = "2026-04-29.v1"
 source_authority = "tdx"
 legacy_raw_base_role = "read_only_audit"
 legacy_downstream_role = "evidence_only"
 mock_role = "tests_only"
+authority_assets = [
+    "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
+    "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+    "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2",
+    "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2.zip",
+]
+release_evidence_index = "docs/04-execution/00-conclusion-index-v1.md"
 initialization_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 incremental_modes = ["daily_incremental", "resume", "audit-only"]
 initial_batch_strategy = "time_window_first"
@@ -14,7 +21,12 @@ logical_ledger_required = [
     "checkpoint",
     "replay_scope",
     "audit_summary",
+    "closeout",
+    "release_manifest",
+    "gate_snapshot_or_not_applicable",
+    "validated_asset_or_not_applicable",
 ]
+current_incremental_status = "protocol declared; full daily chain runtime is not released"
 
 [[daily_incremental_chain]]
 step_seq = 1

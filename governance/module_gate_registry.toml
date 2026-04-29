@@ -1,5 +1,21 @@
-registry_version = "2026-04-28.v1"
+registry_version = "2026-04-29.v1"
 active_mainline_module = "malf"
+authority_assets = [
+    "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
+    "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+    "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2",
+    "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2.zip",
+]
+latest_governance_run_id = "docs-authority-refresh-20260429-01"
+latest_mainline_release_run_id = "malf-day-bounded-proof-20260428-01"
+current_allowed_next_card = "alpha_freeze_review"
+construction_lock = [
+    "alpha_code_construction",
+    "alpha_formal_db",
+    "signal_position_portfolio_trade_system_construction",
+    "full_chain_pipeline",
+    "downstream_writeback_to_malf",
+]
 
 [[modules]]
 module_id = "data"
@@ -10,6 +26,8 @@ doc_status = "foundation six-doc draft"
 allow_build = false
 doc_path = "docs/02-modules/data"
 exception = "bounded_bootstrap_support"
+formal_db_permission = "not_released; bounded bootstrap support only"
+gate_basis = "docs/02-modules/data six-doc draft"
 
 [[modules]]
 module_id = "malf"
@@ -20,6 +38,11 @@ doc_status = "delivered six-doc set"
 allow_build = true
 doc_path = "docs/02-modules/malf"
 next_card = "alpha_freeze_review"
+proof_status = "day_bounded_proof_passed"
+release_conclusion = "docs/04-execution/records/malf/malf-day-bounded-proof-20260428-01.conclusion.md"
+evidence_index = "docs/04-execution/records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md"
+formal_db_permission = "released_day_dbs_only; week_month_full_build_require_new_card"
+allowed_downstream_use = "read_only_wave_position_for_alpha_freeze_review"
 
 [[modules]]
 module_id = "alpha"
@@ -30,6 +53,9 @@ doc_status = "pre-gate six-doc draft"
 allow_build = false
 doc_path = "docs/02-modules/alpha"
 waits_for = "malf_service_released"
+next_allowed_action = "freeze_review_only"
+formal_db_permission = "not_allowed"
+input_boundary = "read_only_malf_wave_position"
 
 [[modules]]
 module_id = "signal"
@@ -40,6 +66,8 @@ doc_status = "pre-gate six-doc draft"
 allow_build = false
 doc_path = "docs/02-modules/signal"
 waits_for = "alpha_released"
+formal_db_permission = "not_allowed"
+input_boundary = "wait_for_alpha_release"
 
 [[modules]]
 module_id = "position"
@@ -50,6 +78,8 @@ doc_status = "pre-gate six-doc draft"
 allow_build = false
 doc_path = "docs/02-modules/position"
 waits_for = "signal_released"
+formal_db_permission = "not_allowed"
+input_boundary = "wait_for_signal_release"
 
 [[modules]]
 module_id = "portfolio_plan"
@@ -60,6 +90,8 @@ doc_status = "pre-gate six-doc draft"
 allow_build = false
 doc_path = "docs/02-modules/portfolio_plan"
 waits_for = "position_released"
+formal_db_permission = "not_allowed"
+input_boundary = "wait_for_position_release"
 
 [[modules]]
 module_id = "trade"
@@ -70,6 +102,8 @@ doc_status = "pre-gate six-doc draft"
 allow_build = false
 doc_path = "docs/02-modules/trade"
 waits_for = "portfolio_plan_released"
+formal_db_permission = "not_allowed"
+input_boundary = "wait_for_portfolio_plan_release"
 
 [[modules]]
 module_id = "system_readout"
@@ -81,6 +115,8 @@ allow_build = false
 doc_path = "docs/02-modules/system_readout"
 db_name = "system.duckdb"
 waits_for = "trade_released"
+formal_db_permission = "not_allowed"
+input_boundary = "wait_for_trade_release"
 
 [[modules]]
 module_id = "pipeline"
@@ -92,3 +128,5 @@ doc_status = "pre-gate six-doc draft"
 allow_build = false
 doc_path = "docs/02-modules/pipeline"
 waits_for = "malf_bounded_proof_gate"
+formal_db_permission = "not_allowed"
+input_boundary = "orchestration_metadata_only_after_gate"

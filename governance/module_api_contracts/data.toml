@@ -2,11 +2,17 @@ module_id = "data"
 display_name = "Data Foundation"
 contract_version = "v1"
 status = "foundation_contract"
+authority_assets = [
+    "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
+    "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+]
+gate_state = "foundation_contract; bounded bootstrap support only"
+formal_db_permission = "not_released_until_data_foundation_gate"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
 resume_behavior = "resume from source manifest, checkpoint, or dirty scope"
 source_manifest_fields = ["source_path", "source_size_bytes", "source_mtime", "source_content_hash"]
 forbidden_inputs = ["legacy_downstream", "mock_formal_data"]
-forbidden_outputs = ["strategy_signal", "position_size", "order_intent"]
+forbidden_outputs = ["malf_semantics", "strategy_signal", "position_size", "portfolio_allocation", "order_intent"]
 
 [[official_inputs]]
 input_type = "source"

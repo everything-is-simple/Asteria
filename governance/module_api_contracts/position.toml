@@ -2,11 +2,17 @@ module_id = "position"
 display_name = "Position"
 contract_version = "v1"
 status = "pre_gate_draft"
+authority_assets = [
+    "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+]
+gate_state = "pre_gate_draft; wait_for_signal_release"
+formal_db_permission = "not_allowed"
+writeback_boundary = "consume released Signal only; never write back upstream"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from position checkpoint after Signal release"
 source_manifest_fields = ["source_signal_release_version", "source_signal_run_id"]
-forbidden_inputs = ["raw_market.duckdb.raw_market_bar", "malf_internal", "mock_formal_data"]
-forbidden_outputs = ["portfolio_allocation", "actual_fill"]
+forbidden_inputs = ["raw_market.duckdb.raw_market_bar", "malf_internal", "alpha_internal", "mock_formal_data"]
+forbidden_outputs = ["signal_writeback", "alpha_writeback", "malf_writeback", "portfolio_allocation", "actual_fill"]
 
 [[official_inputs]]
 input_type = "database"

@@ -2,6 +2,13 @@ module_id = "pipeline"
 display_name = "Pipeline"
 contract_version = "v1"
 status = "pre_gate_draft"
+authority_assets = [
+    "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
+    "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+]
+gate_state = "pre_gate_draft; metadata protocol only"
+formal_db_permission = "not_allowed_until_pipeline_gate"
+business_boundary = "orchestrate and record only; never define module semantics"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
 resume_behavior = "resume from pipeline step checkpoint after module gate validation"
 source_manifest_fields = ["gate_registry_version", "manifest_version", "module_scope"]

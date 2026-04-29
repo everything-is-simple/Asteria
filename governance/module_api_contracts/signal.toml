@@ -2,11 +2,17 @@ module_id = "signal"
 display_name = "Signal"
 contract_version = "v1"
 status = "pre_gate_draft"
+authority_assets = [
+    "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+]
+gate_state = "pre_gate_draft; wait_for_alpha_release"
+formal_db_permission = "not_allowed"
+writeback_boundary = "consume released Alpha only; never write back to Alpha or MALF"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from signal checkpoint after Alpha release"
 source_manifest_fields = ["source_alpha_release_version", "source_alpha_run_id"]
-forbidden_inputs = ["malf_core_internal", "legacy_downstream", "mock_formal_data"]
-forbidden_outputs = ["position_size", "portfolio_allocation", "order_intent"]
+forbidden_inputs = ["malf_core_internal", "malf_service_unreleased", "legacy_downstream", "mock_formal_data"]
+forbidden_outputs = ["alpha_writeback", "malf_writeback", "position_size", "portfolio_allocation", "order_intent"]
 
 [[official_inputs]]
 input_type = "database"

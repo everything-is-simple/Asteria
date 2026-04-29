@@ -2,11 +2,18 @@ module_id = "alpha"
 display_name = "Alpha"
 contract_version = "v1"
 status = "pre_gate_draft"
+authority_assets = [
+    "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2",
+    "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+]
+gate_state = "freeze_review_next_only"
+formal_db_permission = "not_allowed_until_alpha_freeze_review_and_build_card"
+writeback_boundary = "read_malf_wave_position_only; never write back to MALF"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from alpha family checkpoint after MALF service release"
 source_manifest_fields = ["source_malf_service_version", "source_malf_run_id"]
-forbidden_inputs = ["raw_market.duckdb.raw_market_bar", "legacy_downstream", "mock_formal_data"]
-forbidden_outputs = ["position_size", "portfolio_allocation", "order_intent"]
+forbidden_inputs = ["raw_market.duckdb.raw_market_bar", "malf_core_internal", "malf_lifespan_internal", "legacy_downstream", "mock_formal_data"]
+forbidden_outputs = ["malf_writeback", "wave_core_state_redefinition", "system_state_redefinition", "position_size", "portfolio_allocation", "order_intent"]
 
 [[official_inputs]]
 input_type = "database"
@@ -14,7 +21,7 @@ db_name = "malf_service_day.duckdb"
 table = "malf_wave_position"
 source_role = "official"
 natural_key = ["symbol", "timeframe", "bar_dt", "service_version"]
-required_fields = ["symbol", "timeframe", "bar_dt", "life_state", "position_quadrant"]
+required_fields = ["symbol", "timeframe", "bar_dt", "system_state", "wave_core_state", "direction", "life_state", "position_quadrant"]
 
 [[official_outputs]]
 db_name = "alpha_bof.duckdb"
