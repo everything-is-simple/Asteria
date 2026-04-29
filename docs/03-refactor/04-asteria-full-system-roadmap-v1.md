@@ -87,6 +87,7 @@ Pipeline schedules and records only
 - [x] 审计 Signal 不做资金分配、不生成订单、不回写 Alpha/MALF。
 - [x] 产出 Signal evidence 与 release conclusion。
 - [x] Release gate 通过后，只授权 `Position freeze review`。
+- [x] Position freeze review 已登记 blocked，当前回退到 `MALF Lifespan dense bar snapshot resolution`。
 
 ## 7. Phase 4: Position Freeze + Bounded Proof
 
@@ -173,7 +174,7 @@ Pipeline schedules and records only
 
 - 当前事实基线以 `MALF day bounded proof passed`、`Alpha bounded proof passed` 和
   `Signal bounded proof passed` 为准。
-- 当前下一卡固定为 `Position freeze review`，不是 Position construction。
+- 当前下一卡固定为 `MALF Lifespan dense bar snapshot resolution`，不是 Position construction。
 - Data Foundation 是地基轨道，不进入策略主线排序。
 - Pipeline 是编排与记录轨道，不进入业务主线排序。
 - 不同时施工两个策略主线模块。

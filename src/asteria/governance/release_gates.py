@@ -48,7 +48,7 @@ def run_release_gate_checks(
         return [ReleaseGateFinding(gate_ledger, "module gate ledger is missing")]
 
     records = _parse_conclusion_index(conclusion_index)
-    latest_by_module = _latest_passed_by_module(records)
+    latest_by_module = _latest_by_module(records)
     ledger_text = gate_ledger.read_text(encoding="utf-8")
     modules = {module["module_id"]: module for module in gate_registry.get("modules", [])}
     for record in records:
@@ -70,7 +70,8 @@ def run_release_gate_checks(
             )
         findings.extend(_check_evidence_assets(repo_root, record.evidence_path, evidence_text))
         if record.module_id in modules:
-            findings.extend(_check_gate_ledger(record, ledger_text))
+            allowed_next_action = _extract_table_value(conclusion_text, "allowed next action")
+            findings.extend(_check_gate_ledger(record, ledger_text, allowed_next_action))
     return findings
 
 
@@ -103,11 +104,10 @@ def _parse_conclusion_index(path: Path) -> list[ReleaseGateRecord]:
     return records
 
 
-def _latest_passed_by_module(records: list[ReleaseGateRecord]) -> dict[str, str]:
+def _latest_by_module(records: list[ReleaseGateRecord]) -> dict[str, str]:
     latest: dict[str, str] = {}
     for record in records:
-        if record.status == "passed":
-            latest[record.module_id] = record.run_id
+        latest[record.module_id] = record.run_id
     return latest
 
 
@@ -190,8 +190,18 @@ def _check_evidence_assets(
     return findings
 
 
-def _check_gate_ledger(record: ReleaseGateRecord, ledger_text: str) -> list[ReleaseGateFinding]:
-    if record.run_id in ledger_text and "Alpha freeze review" in ledger_text:
+def _check_gate_ledger(
+    record: ReleaseGateRecord,
+    ledger_text: str,
+    allowed_next_action: str | None,
+) -> list[ReleaseGateFinding]:
+    ledger_text_lower = ledger_text.lower()
+    if (
+        record.run_id in ledger_text
+        and record.module_id.lower() in ledger_text_lower
+        and allowed_next_action is not None
+        and allowed_next_action.lower() in ledger_text_lower
+    ):
         return []
     return [
         ReleaseGateFinding(

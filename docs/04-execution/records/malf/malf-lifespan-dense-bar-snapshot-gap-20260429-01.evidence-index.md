@@ -43,6 +43,6 @@
 
 | 项 | 值 |
 |---|---|
-| allowed next action | `Signal bounded proof build card` |
+| allowed next action | `MALF Lifespan dense bar snapshot resolution` |
 | construction opened | `no` |
 | downstream writeback opened | `no` |

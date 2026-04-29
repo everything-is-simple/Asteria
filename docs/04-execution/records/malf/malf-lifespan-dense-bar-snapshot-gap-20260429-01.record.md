@@ -21,7 +21,7 @@
 |---|---|
 | runtime change | `none` |
 | formal DB change | `none` |
-| gate state change | `none` |
+| gate state change | `current next card moved to MALF dense resolution` |
 | gap status | `blocked until dedicated MALF dense snapshot fix card` |
 
 ## 4. 后续要求

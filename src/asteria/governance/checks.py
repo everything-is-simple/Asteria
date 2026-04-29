@@ -155,6 +155,15 @@ def _check_gate_registry(repo_root: Path, gate_registry: dict[str, Any]) -> list
             findings.append(
                 Finding(path, "current allowed next card is missing matching execution card")
             )
+        if _current_next_card_has_blocked_conclusion(
+            repo_root, str(active), str(current_allowed_next_card)
+        ):
+            findings.append(
+                Finding(
+                    path,
+                    "current allowed next card must not point to a blocked execution conclusion",
+                )
+            )
     if "system" in modules or "system_readout" not in modules:
         findings.append(
             Finding(path, "module_id must be system_readout; system is only a DB display shorthand")
@@ -190,6 +199,23 @@ def _current_next_card_file_exists(repo_root: Path, module_id: str, next_card: s
     return False
 
 
+def _current_next_card_has_blocked_conclusion(
+    repo_root: Path, module_id: str, next_card: str
+) -> bool:
+    record_dir = repo_root / "docs" / "04-execution" / "records" / module_id
+    if not record_dir.exists():
+        return False
+    card_prefix = next_card.replace("_", "-")
+    for conclusion_path in record_dir.glob("*.conclusion.md"):
+        run_id = conclusion_path.name.removesuffix(".conclusion.md")
+        if run_id != card_prefix and not run_id.startswith(f"{card_prefix}-"):
+            continue
+        text = conclusion_path.read_text(encoding="utf-8")
+        if re.search(r"状态：`blocked`", text):
+            return True
+    return False
+
+
 def _check_database_topology(
     repo_root: Path,
     gate_registry: dict[str, Any],
@@ -212,7 +238,6 @@ def _check_database_topology(
         "replay_scope",
         "promote_rule",
     }
-
     for database in databases:
         db_name = str(database.get("db_name", ""))
         missing = sorted(required_fields - database.keys())

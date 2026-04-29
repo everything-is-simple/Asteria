@@ -302,3 +302,94 @@ def test_malf_lifespan_service_and_audit_publish_wave_position(tmp_path: Path) -
     assert report_payload["run_id"] == "malf-full-run-001"
     assert report_payload["hard_fail_count"] == 0
     assert report_payload["published_row_count"] > 0
+
+
+def test_malf_lifespan_and_service_publish_dense_bar_level_wave_position(
+    tmp_path: Path,
+) -> None:
+    _seed_market_base_day(tmp_path / "asteria-data" / "market_base_day.duckdb")
+    request = _request(tmp_path, "malf-dense-run-001")
+
+    run_malf_day_core_build(request)
+    run_malf_day_lifespan_build(request)
+    service_summary = run_malf_day_service_build(request)
+
+    with duckdb.connect(
+        str(tmp_path / "asteria-data" / "malf_lifespan_day.duckdb"), read_only=True
+    ) as con:
+        dense_rows = con.execute(
+            """
+            select symbol, bar_dt, system_state, new_count, no_new_span
+            from malf_lifespan_snapshot
+            where symbol = 'UPCASE.SH'
+            order by bar_dt
+            """
+        ).fetchall()
+        first_dense_dt = con.execute("select min(bar_dt) from malf_lifespan_snapshot").fetchone()[0]
+    with duckdb.connect(
+        str(tmp_path / "asteria-data" / "market_base_day.duckdb"), read_only=True
+    ) as con:
+        source_dates = [
+            row[0]
+            for row in con.execute(
+                """
+                select bar_dt
+                from market_base_bar
+                where symbol = 'UPCASE.SH'
+                  and timeframe = 'day'
+                  and bar_dt >= ?
+                order by bar_dt
+                """,
+                [first_dense_dt],
+            ).fetchall()
+        ]
+
+    dense_dates = [row[1] for row in dense_rows]
+    assert dense_dates == source_dates
+    assert any(row[2] == "transition" for row in dense_rows)
+    assert any(row[2] != "transition" and row[4] > 1 for row in dense_rows)
+
+    with duckdb.connect(
+        str(tmp_path / "asteria-data" / "malf_service_day.duckdb"), read_only=True
+    ) as con:
+        service_dates = [
+            row[0]
+            for row in con.execute(
+                """
+                select bar_dt
+                from malf_wave_position
+                where symbol = 'UPCASE.SH'
+                order by bar_dt
+                """
+            ).fetchall()
+        ]
+
+    assert service_dates == source_dates
+    assert service_summary.published_row_count >= len(source_dates)
+
+
+def test_malf_dense_transition_rows_increment_span_per_bar(tmp_path: Path) -> None:
+    _seed_market_base_day(tmp_path / "asteria-data" / "market_base_day.duckdb")
+    request = _request(tmp_path, "malf-dense-transition-run-001")
+
+    run_malf_day_core_build(request)
+    run_malf_day_lifespan_build(request)
+    run_malf_day_service_build(request)
+
+    with duckdb.connect(
+        str(tmp_path / "asteria-data" / "malf_service_day.duckdb"), read_only=True
+    ) as con:
+        transition_rows = con.execute(
+            """
+            select bar_dt, wave_core_state, system_state, direction, transition_span
+            from malf_wave_position
+            where symbol = 'UPCASE.SH' and system_state = 'transition'
+            order by bar_dt
+            """
+        ).fetchall()
+
+    assert len(transition_rows) >= 2
+    assert [row[4] for row in transition_rows] == list(range(1, len(transition_rows) + 1))
+    assert {row[1] for row in transition_rows} == {"terminated"}
+    assert {row[2] for row in transition_rows} == {"transition"}
+    assert {row[3] for row in transition_rows} == {"up"}

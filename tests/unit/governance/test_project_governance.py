@@ -3,6 +3,8 @@ from shutil import copy2, copytree
 
 from scripts.governance.check_project_governance import run_checks
 
+from asteria.governance.release_gates import ReleaseGateRecord, _check_gate_ledger
+
 
 def _copy_governance_repo(tmp_path: Path) -> Path:
     source_root = Path(__file__).resolve().parents[3]
@@ -78,14 +80,47 @@ def test_project_governance_rejects_missing_current_next_card_file(tmp_path: Pat
         / "docs"
         / "04-execution"
         / "records"
-        / "position"
-        / "position-freeze-review-20260429-01.card.md"
+        / "malf"
+        / "malf-lifespan-dense-bar-snapshot-resolution-20260429-01.card.md"
     )
     if card_path.exists():
         card_path.unlink()
 
     assert any(
         "current allowed next card is missing matching execution card" in message
+        for message in _messages(repo_root)
+    )
+
+
+def test_project_governance_rejects_current_next_card_that_is_already_blocked(
+    tmp_path: Path,
+) -> None:
+    repo_root = _copy_governance_repo(tmp_path)
+    registry_path = repo_root / "governance" / "module_gate_registry.toml"
+    registry_text = registry_path.read_text(encoding="utf-8")
+    registry_path.write_text(
+        registry_text.replace(
+            'active_mainline_module = "malf"',
+            'active_mainline_module = "position"',
+        )
+        .replace(
+            'current_allowed_next_card = "malf_lifespan_dense_bar_snapshot_resolution"',
+            'current_allowed_next_card = "position_freeze_review"',
+        )
+        .replace(
+            'status = "blocked_upstream_gap"\nallow_build = false\nallow_review = false',
+            'status = "pre_gate_draft"\nallow_build = false\nallow_review = true',
+        )
+        .replace(
+            'next_card = "malf_lifespan_dense_bar_snapshot_resolution"',
+            'next_card = "position_freeze_review"',
+            1,
+        ),
+        encoding="utf-8",
+    )
+
+    assert any(
+        "current allowed next card must not point to a blocked execution conclusion" in message
         for message in _messages(repo_root)
     )
 
@@ -160,14 +195,15 @@ def test_project_governance_rejects_docs_sync_next_card_mismatch(tmp_path: Path)
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'next_card = "alpha_freeze_review"',
-            'next_card = "malf_day_bounded_proof"',
+            '\nnext_card = "malf_lifespan_dense_bar_snapshot_resolution"',
+            '\nnext_card = "malf_day_bounded_proof"',
         ),
         encoding="utf-8",
     )
 
     assert any(
-        "MALF next_card must be alpha_freeze_review" in message for message in _messages(repo_root)
+        "current_allowed_next_card must match active module next_card" in message
+        for message in _messages(repo_root)
     )
 
 
@@ -309,12 +345,12 @@ def test_project_governance_rejects_release_gate_next_card_mismatch(
         / "docs"
         / "04-execution"
         / "records"
-        / "malf"
-        / "malf-day-bounded-proof-20260428-01.conclusion.md"
+        / "signal"
+        / "signal-bounded-proof-20260429-01.conclusion.md"
     )
     conclusion_text = conclusion_path.read_text(encoding="utf-8")
     conclusion_path.write_text(
-        conclusion_text.replace("`Alpha freeze review`", "`Signal freeze review`", 1),
+        conclusion_text.replace("`Position freeze review`", "`MALF dense resolution`", 1),
         encoding="utf-8",
     )
 
@@ -322,3 +358,21 @@ def test_project_governance_rejects_release_gate_next_card_mismatch(
         "release gate allowed next action must match registry next_card" in message
         for message in _messages(repo_root)
     )
+
+
+def test_release_gate_ledger_check_does_not_depend_on_alpha_freeze_review_phrase() -> None:
+    record = ReleaseGateRecord(
+        module_id="signal",
+        run_id="signal-bounded-proof-20260429-01",
+        status="passed",
+        conclusion_path=Path("docs/04-execution/records/signal/signal.conclusion.md"),
+        evidence_path=Path("docs/04-execution/records/signal/signal.evidence-index.md"),
+    )
+    ledger_text = """
+    ## Signal Bounded Proof 放行记录
+    | run_id | `signal-bounded-proof-20260429-01` |
+    | module | `signal` |
+    | allowed next action | `Position freeze review` |
+    """
+
+    assert _check_gate_ledger(record, ledger_text, "Position freeze review") == []

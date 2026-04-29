@@ -163,9 +163,10 @@ Alpha day bounded proof
 下一张允许进入的卡：
 
 ```text
-Position freeze review card
+MALF Lifespan dense bar snapshot resolution card
 ```
 
 MALF 语义继续以 `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` 为唯一权威。
-Signal bounded proof 已通过；下一卡只允许 Position freeze review，不直接授权 Signal
-full build、Position 施工、下游施工或全链路 pipeline。
+Signal bounded proof 已通过；Position freeze review 已登记 blocked。下一卡只允许
+MALF Lifespan dense bar snapshot resolution，不直接授权 Signal full build、Position
+施工、下游施工或全链路 pipeline。

@@ -81,9 +81,17 @@ def plan_docs_sync(repo_root: Path) -> SyncReport:
     registry = _load_toml(repo_root / GATE_REGISTRY, report.findings)
     conclusions = _discover_conclusions(repo_root, report.findings)
     latest_by_module = _latest_passed_by_module(conclusions)
+    latest_conclusion_by_module = _latest_conclusion_by_module(conclusions)
 
     if registry is not None:
-        _check_registry_next_cards(repo_root, registry, conclusions, latest_by_module, report)
+        _check_registry_next_cards(
+            repo_root,
+            registry,
+            conclusions,
+            latest_by_module,
+            latest_conclusion_by_module,
+            report,
+        )
         _check_pre_gate_sources(repo_root, registry, report)
     _check_gate_ledger(repo_root, conclusions, latest_by_module, report)
     _check_roadmap(repo_root, conclusions, latest_by_module, report)
@@ -162,6 +170,16 @@ def _latest_passed_by_module(conclusions: list[ExecutionConclusion]) -> dict[str
     return {module_id: run_id for module_id, (_, run_id) in latest.items()}
 
 
+def _latest_conclusion_by_module(conclusions: list[ExecutionConclusion]) -> dict[str, str]:
+    latest: dict[str, tuple[float, str]] = {}
+    for conclusion in conclusions:
+        mtime = conclusion.conclusion_path.stat().st_mtime
+        previous = latest.get(conclusion.module_id)
+        if previous is None or mtime >= previous[0]:
+            latest[conclusion.module_id] = (mtime, conclusion.run_id)
+    return {module_id: run_id for module_id, (_, run_id) in latest.items()}
+
+
 def _parse_status(text: str) -> str:
     match = re.search(r"状态：`([^`]+)`", text)
     return match.group(1) if match else "unknown"
@@ -181,16 +199,25 @@ def _check_registry_next_cards(
     gate_registry: dict[str, Any],
     conclusions: list[ExecutionConclusion],
     latest_by_module: dict[str, str],
+    latest_conclusion_by_module: dict[str, str],
     report: SyncReport,
 ) -> None:
     modules = _module_map(gate_registry)
+    active_module = gate_registry.get("active_mainline_module")
     for conclusion in conclusions:
         expected = conclusion.expected_next_card
         if (
-            conclusion.status != "passed"
+            conclusion.status not in {"passed", "blocked", "opened"}
             or expected is None
             or conclusion.module_id not in modules
-            or latest_by_module.get(conclusion.module_id) != conclusion.run_id
+            or latest_conclusion_by_module.get(conclusion.module_id) != conclusion.run_id
+        ):
+            continue
+        if conclusion.status in {"blocked", "opened"} and conclusion.module_id != active_module:
+            continue
+        if (
+            conclusion.status == "passed"
+            and latest_by_module.get(conclusion.module_id) != conclusion.run_id
         ):
             continue
         actual = modules.get(conclusion.module_id, {}).get("next_card")

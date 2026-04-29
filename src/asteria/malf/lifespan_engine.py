@@ -46,16 +46,20 @@ def build_lifespan_rows(
     core_db: Path, request: MalfDayRequest, created_at: datetime
 ) -> tuple[list[tuple[object, ...]], list[tuple[object, ...]]]:
     waves = _load_waves(core_db)
+    symbols = {wave.symbol for wave in waves}
+    bar_dates = _load_bar_dates(request, symbols)
     progress_pivots = _load_progress_pivots(core_db)
     pivot_dates = _load_pivot_dates(core_db)
+    pivot_ids_by_date = _load_pivot_ids_by_date(core_db)
     transitions = _load_transitions(core_db)
     snapshots: list[Snapshot] = []
     final_stats: dict[str, Snapshot] = {}
 
     for wave in waves:
+        symbol_dates = bar_dates.get(wave.symbol, pivot_dates.get(wave.symbol, []))
         dates = [
             dt
-            for dt in pivot_dates.get(wave.symbol, [])
+            for dt in symbol_dates
             if dt >= wave.confirm_dt and (wave.terminated_dt is None or dt < wave.terminated_dt)
         ]
         if wave.confirm_dt not in dates:
@@ -64,7 +68,7 @@ def build_lifespan_rows(
         no_new_span = 0
         wave_progress = {wave.confirm_pivot_id, *progress_pivots.get(wave.wave_id, set())}
         for bar_dt in sorted(set(dates)):
-            pivot_ids = _pivot_ids_at(core_db, wave.symbol, bar_dt)
+            pivot_ids = pivot_ids_by_date.get((wave.symbol, bar_dt), set())
             progress_updated = bool(wave_progress.intersection(pivot_ids))
             if progress_updated:
                 new_count += 1
@@ -95,9 +99,17 @@ def build_lifespan_rows(
         frozen = final_stats.get(transition.old_wave_id)
         if frozen is None:
             continue
-        dates = [transition.break_dt, *transition.candidate_dates]
-        if transition.confirmed_dt is not None:
-            dates = [dt for dt in dates if dt < transition.confirmed_dt]
+        symbol_dates = bar_dates.get(transition.symbol, pivot_dates.get(transition.symbol, []))
+        dates = [
+            dt
+            for dt in symbol_dates
+            if dt >= transition.break_dt
+            and (transition.confirmed_dt is None or dt < transition.confirmed_dt)
+        ]
+        if not dates:
+            dates = [transition.break_dt, *transition.candidate_dates]
+            if transition.confirmed_dt is not None:
+                dates = [dt for dt in dates if dt < transition.confirmed_dt]
         for index, bar_dt in enumerate(sorted(set(dates)), start=1):
             snapshots.append(
                 _snapshot(
@@ -122,6 +134,36 @@ def build_lifespan_rows(
     ranked_rows = _rank_snapshots(snapshots)
     profiles = _profiles(request, created_at, ranked_rows)
     return [item.row for item in ranked_rows], profiles
+
+
+def _load_bar_dates(request: MalfDayRequest, symbols: set[str]) -> dict[str, list[date]]:
+    if not symbols or not request.source_db.exists():
+        return {}
+    clauses = ["timeframe = ?"]
+    params: list[object] = [request.timeframe]
+    if request.start_date:
+        clauses.append("bar_dt >= ?")
+        params.append(request.start_date)
+    if request.end_date:
+        clauses.append("bar_dt <= ?")
+        params.append(request.end_date)
+    symbol_list = sorted(symbols)
+    clauses.append(f"symbol in ({', '.join(['?'] * len(symbol_list))})")
+    params.extend(symbol_list)
+
+    output: dict[str, list[date]] = {}
+    with duckdb.connect(str(request.source_db), read_only=True) as con:
+        for symbol, bar_dt in con.execute(
+            f"""
+            select symbol, bar_dt
+            from market_base_bar
+            where {" and ".join(clauses)}
+            order by symbol, bar_dt
+            """,
+            params,
+        ).fetchall():
+            output.setdefault(str(symbol), []).append(cast(date, bar_dt))
+    return output
 
 
 def _load_waves(core_db: Path) -> list[WaveRow]:
@@ -174,6 +216,20 @@ def _load_pivot_dates(core_db: Path) -> dict[str, list[date]]:
             "select symbol, pivot_dt from malf_pivot_ledger order by symbol, pivot_dt"
         ).fetchall():
             output.setdefault(str(symbol), []).append(cast(date, pivot_dt))
+    return output
+
+
+def _load_pivot_ids_by_date(core_db: Path) -> dict[tuple[str, date], set[str]]:
+    output: dict[tuple[str, date], set[str]] = {}
+    with duckdb.connect(str(core_db), read_only=True) as con:
+        for symbol, pivot_dt, pivot_id in con.execute(
+            """
+            select symbol, pivot_dt, pivot_id
+            from malf_pivot_ledger
+            order by symbol, pivot_dt, pivot_id
+            """
+        ).fetchall():
+            output.setdefault((str(symbol), cast(date, pivot_dt)), set()).add(str(pivot_id))
     return output
 
 

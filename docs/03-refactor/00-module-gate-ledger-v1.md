@@ -50,13 +50,13 @@ Signal bounded proof
 当前已打开执行卡：
 
 ```text
-Position freeze review card
+MALF Lifespan dense bar snapshot resolution card
 ```
 
 当前只允许施工对象：
 
 ```text
-Position freeze review
+MALF Lifespan dense bar snapshot resolution
 ```
 
 当前已通过 bounded proof 的主线模块：
@@ -67,18 +67,19 @@ Alpha day
 Signal day
 ```
 
-Signal freeze review 与 Signal bounded proof 已通过。当前只允许 Position freeze review；
-不得扩展为 Position 施工、Signal full build、下游施工或全链路 pipeline。
+Signal freeze review 与 Signal bounded proof 已通过。Position freeze review 已登记为
+blocked。当前只允许 MALF Lifespan dense bar snapshot resolution；不得扩展为
+Position 施工、Signal full build、下游施工或全链路 pipeline。
 
 ## 2. 模块状态表
 
 | 顺序 | 模块 | 文档状态 | 冻结状态 | 是否允许施工 | 文档位置 | 说明 |
 |---:|---|---|---|---:|---|---|
 | 0 | Data Foundation | foundation six-doc draft | not frozen | 否 | `docs/02-modules/data/` | 地基输入契约，非策略主线，不占主线施工位 |
-| 1 | MALF | delivered six-doc set / day proof passed | frozen | 否 | `docs/02-modules/malf/` | day bounded proof 已通过；week/month 或 full build 需另开卡 |
+| 1 | MALF | delivered six-doc set / day proof passed | frozen | 是，dense resolution only | `docs/02-modules/malf/` | day bounded proof 已通过；当前只允许 dense bar-level WavePosition resolution |
 | 2 | Alpha | frozen six-doc set / bounded proof passed | released | 否 | `docs/02-modules/alpha/` | bounded proof 已通过；full build 需另开卡 |
 | 3 | Signal | frozen six-doc set / bounded proof passed | released | 否 | `docs/02-modules/signal/` | bounded proof 已通过；full build 需另开卡 |
-| 4 | Position | pre-gate six-doc draft | not frozen | 是，review-only | `docs/02-modules/position/` | 当前只允许 freeze review，不允许施工 |
+| 4 | Position | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/position/` | freeze review 已 blocked；不允许 bounded proof 或施工 |
 | 5 | Portfolio Plan | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/portfolio_plan/` | 等 Position 放行后重新审阅并冻结 |
 | 6 | Trade | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/trade/` | 等 Portfolio Plan 放行后重新审阅并冻结 |
 | 7 | System Readout | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/system_readout/` | 等 Trade 放行后重新审阅并冻结 |
@@ -192,9 +193,9 @@ MALF day bounded proof 已通过。
 | hard audit | `hard_fail_count = 0` |
 
 MALF day 放行后打开的 Alpha freeze review、Alpha bounded proof、Signal freeze
-review 和 Signal bounded proof 均已通过。当前下一步唯一允许动作是 Position freeze
-review；Signal full build、Position 施工、Portfolio Plan、Trade、System Readout、
-Pipeline 仍不允许直接施工。
+review 和 Signal bounded proof 均已通过。Position freeze review 已登记为 blocked。
+当前下一步唯一允许动作是 MALF Lifespan dense bar snapshot resolution；Signal full
+build、Position 施工、Portfolio Plan、Trade、System Readout、Pipeline 仍不允许直接施工。
 
 ## 6. Alpha Freeze Review 放行记录
 
@@ -210,6 +211,7 @@ Alpha freeze review 已通过。
 | validated evidence | `H:\Asteria-Validated\Asteria-alpha-freeze-review-20260429-01.zip` |
 | execution conclusion | `docs/04-execution/records/alpha/alpha-freeze-review-20260429-01.conclusion.md` |
 | hard review | `hard_fail_count = 0` |
+| allowed next action | `Alpha bounded proof build card` |
 
 Alpha freeze review 只冻结 Alpha 六件套，不创建正式 Alpha DB，不授权直接代码施工。
 后续 Alpha bounded proof 已通过；该放行仍不授权 Alpha full build 或下游施工。
@@ -250,12 +252,14 @@ Signal freeze review 已通过。
 | validated evidence | `H:\Asteria-Validated\Asteria-signal-freeze-review-20260429-01.zip` |
 | execution conclusion | `docs/04-execution/records/signal/signal-freeze-review-20260429-01.conclusion.md` |
 | hard review | `hard_fail_count = 0` |
+| allowed next action | `Signal bounded proof build card` |
 
 Signal freeze review 只冻结 Signal 六件套，不创建正式 Signal DB，不创建 Signal runner，
 不授权 Position / Portfolio Plan / Trade / System / Pipeline 施工。
 
-后续 Signal bounded proof 已通过；当前下一卡为 Position freeze review，不得扩展为
-Signal full build、Position construction 或下游施工。
+后续 Signal bounded proof 已通过；Position freeze review 已登记为 blocked。当前下一卡为
+MALF Lifespan dense bar snapshot resolution，不得扩展为 Signal full build、Position
+construction 或下游施工。
 
 ## 9. Signal Bounded Proof 放行记录
 
@@ -273,11 +277,12 @@ Signal bounded proof 已通过。
 | hard audit | `hard_fail_count = 0` |
 
 Signal bounded proof 只放行 bounded proof 产物和 `signal.duckdb` 当前表面，不授权
-Signal full build、Position 施工或全链路 pipeline。下一步只允许 Position freeze review。
+Signal full build、Position 施工或全链路 pipeline。下一步只允许 MALF Lifespan dense
+bar snapshot resolution。
 
 ## 10. 施工锁
 
-在 Position freeze review 未闭环并另有明确 build card 前，不允许：
+在 MALF dense bar-level WavePosition resolution 未闭环并另有明确下游 build card 前，不允许：
 
 | 禁止项 |
 |---|
