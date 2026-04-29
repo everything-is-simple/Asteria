@@ -22,6 +22,20 @@ flowchart LR
     PL -.run order / status.-> SY
 ```
 
+## 1.1 当前门禁状态
+
+截至 `docs-authority-refresh-20260429-01`：
+
+| 项 | 当前状态 |
+|---|---|
+| 当前唯一冻结主线模块 | `MALF` |
+| 当前已通过 bounded proof | `MALF day` |
+| 当前允许下一卡 | `Alpha freeze review` |
+| 当前仍禁止 | Alpha 代码施工、Signal/Position/Portfolio Plan/Trade/System/Pipeline 施工 |
+
+`Alpha freeze review` 只允许基于已放行的 WavePosition 重审 Alpha 六件套和只读契约。
+它不是 Alpha 实现卡，不创建 Alpha 正式 DB，也不授权全链路 pipeline。
+
 ## 2. 主线模块
 
 | 顺序 | 模块 | 是否主线 | 核心职责 |
@@ -173,3 +187,21 @@ design freeze
 | schema version | 必须 |
 | rule version | 语义模块必须 |
 | sample version | 统计模块必须 |
+
+## 7. 权威来源与状态更新
+
+主线语义权威与工程治理权威分开：
+
+| 权威输入 | 回答的问题 | 当前用途 |
+|---|---|---|
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` | MALF 是什么，WavePosition 如何定义 | MALF 六件套、MALF day proof、Alpha freeze review 的语义锚点 |
+| `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 多 DuckDB、日更、pipeline ledger、release evidence 如何治理 | 支撑逻辑历史总账和增量构建协议 |
+| `docs/04-execution/00-conclusion-index-v1.md` | 哪些执行卡已经正式落档 | 当前放行状态入口 |
+
+当前主线图不是“全系统已上线图”。它是模块依赖和施工顺序的法律图：
+
+```text
+MALF day passed -> Alpha freeze review
+```
+
+任何下游实现都必须等前置模块完成 freeze / proof / release evidence。

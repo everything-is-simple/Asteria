@@ -36,6 +36,16 @@ Asteria 采用 DuckDB 多库拓扑，以空间换时间。
 
 这些是目标拓扑，不要求第一天全部物理建出。只有模块进入施工并通过 schema gate 后，才创建对应正式库。
 
+当前已由 release evidence 证明存在的正式库只有：
+
+| DB | 状态 | 证据 |
+|---|---|---|
+| `malf_core_day.duckdb` | MALF day bounded proof passed | `docs/04-execution/records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md` |
+| `malf_lifespan_day.duckdb` | MALF day bounded proof passed | `docs/04-execution/records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md` |
+| `malf_service_day.duckdb` | MALF day bounded proof passed | `docs/04-execution/records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md` |
+
+其他目标库仍是 schema / topology 裁决，不得在对应模块 gate 前创建为正式库。
+
 ## 2. 总图
 
 ```mermaid
@@ -179,6 +189,10 @@ Alpha 库可跨 timeframe 存储，以 `timeframe` 字段区分。
 
 Pipeline 只能调度和记录，不得定义业务语义。
 
+剖切面研究报告进一步裁定：多 DuckDB 不是散乱中间库，而是一个逻辑历史总账本的
+分账本体系。Pipeline ledger 的职责是记录 run、step、checkpoint、manifest 和 gate
+snapshot；每个模块仍在自己的单库事务中 promote，不能假设跨库原子写。
+
 ## 8. 命名规则
 
 | 对象 | 规则 |
@@ -201,4 +215,14 @@ Pipeline 只能调度和记录，不得定义业务语义。
 | 5 | `malf_service_day.duckdb` | WavePosition 服务接口 |
 | 6 | `pipeline.duckdb` | 记录本轮 build 和 gate |
 
-待 day 通过后，再复制到 week / month。
+当前状态：
+
+| 项 | 裁决 |
+|---|---|
+| MALF day 三库 | 已通过 bounded proof 并落入 `H:\Asteria-data` |
+| `market_meta.duckdb` / `market_base_day.duckdb` 正式化 | 仍受 Data Foundation gate 约束；本轮只承认 bounded bootstrap support |
+| `pipeline.duckdb` runtime | 仍未冻结，不得先于业务模块定义语义 |
+| week / month MALF | 待另开复制/扩展卡 |
+
+待 Alpha freeze review 通过后，才允许写下一张 Alpha 施工卡；不得因为 topology 中列出
+Alpha DB 就提前创建正式 Alpha 库。

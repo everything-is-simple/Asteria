@@ -60,6 +60,14 @@ flowchart TD
 | 脚本继承 | 优先继承 runner contract、checkpoint、audit ledger 思路 |
 | 历史概念 | 可作为反例或旧语义说明，不得反向修改新主线 |
 
+当前补充裁决：
+
+```text
+MALF day bounded proof 已通过。
+前辈系统资产对 MALF day 的直接使用阶段已经结束；后续只能作为 week/month 扩展、
+Alpha freeze review 和下游模块设计的旁证，不得用来改写已放行的 MALF day 语义。
+```
+
 ## 4. 系统级可复用资产
 
 ### 4.1 astock_lifespan-alpha
@@ -307,25 +315,26 @@ Trade 不回改 Portfolio Plan 历史裁决。
 
 ## 7. 下一步使用方式
 
-当前唯一活跃设计卡仍然是：
+当前唯一允许下一卡是：
 
 ```text
-01-malf-schema-and-runner-contract-freeze-card-20260427
+Alpha freeze review
 ```
 
-MALF 首轮施工前，只允许读取和摘取以下经验：
+Alpha freeze review 只允许读取和摘取以下经验：
 
 | 来源 | 读取目标 |
 |---|---|
-| `H:\astock_lifespan-alpha` | MALF contracts / schema / runner / audit / tests |
-| `G:\history-lifespan\lifespan-0.01` | canonical MALF、wave_life、zero-one audit、governance |
-| `G:\history-lifespan\MarketLifespan-Quant` | checkpoint、resumable、table ownership、data canonical audit |
-| `G:\history-lifespan\EmotionQuant-gamma` | lifespan/gene 样本与 detector 历史行为 |
+| `H:\astock_lifespan-alpha` | Alpha family contracts / schema / runner / tests 的工程形态 |
+| `G:\history-lifespan\lifespan-0.01` | trigger、formal signal、governance、checkpoint 经验 |
+| `G:\history-lifespan\MarketLifespan-Quant` | PAS detector、trigger ledger、selector 与批处理经验 |
+| `G:\history-lifespan\EmotionQuant-gamma` | BOF/PAS 早期 detector、normandy 诊断、positioning 旁证 |
 
-进入正式实现前，必须先冻结：
+进入 Alpha 正式实现前，必须先完成：
 
 ```text
-MALF day schema -> runner contract -> audit spec -> bounded proof card
+MALF Contract Review -> Alpha Six-doc Review -> Freeze Decision -> Alpha Build Card
 ```
 
-本清单不解除模块施工锁，不授权迁移旧代码。
+本清单不解除模块施工锁，不授权迁移旧代码。Alpha、Signal、Position、Portfolio Plan、
+Trade、System Readout 和 Pipeline 仍不得施工。
