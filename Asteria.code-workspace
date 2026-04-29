@@ -23,22 +23,6 @@
 		{
 			"name": "tdx_offline_Data",
 			"path": "../tdx_offline_Data"
-		},
-		{
-			"name": "astock_lifespan-alpha",
-			"path": "../astock_lifespan-alpha"
-		},
-		{
-			"name": "lifespan-0.01",
-			"path": "G:/history-lifespan/lifespan-0.01"
-		},
-		{
-			"name": "MarketLifespan-Quant",
-			"path": "G:/history-lifespan/MarketLifespan-Quant"
-		},
-		{
-			"name": "EmotionQuant-gamma",
-			"path": "G:/history-lifespan/EmotionQuant-gamma"
 		}
 	],
 	"settings": {
