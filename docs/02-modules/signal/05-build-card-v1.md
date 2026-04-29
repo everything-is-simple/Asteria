@@ -2,63 +2,64 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / superseded by Signal bounded proof build card
 
 ## 1. 本卡目标
 
-补齐 Signal pre-gate 六件套 draft，为 Alpha released 之后的 Signal 设计冻结做准备。
+记录 Signal freeze review 通过后的冻结边界，为下一张 Signal bounded proof build card 做准备。
 
-本卡不允许代码施工，不允许创建正式 DuckDB，不允许冻结 Signal。
+本卡不允许代码施工，不允许创建正式 DuckDB。Signal freeze review 已冻结 Signal 六件套，但不授权
+Signal construction。
 
 ## 2. 当前卡位
 
 | 项 | 值 |
 |---|---|
 | active_module | `signal` |
-| card_type | pre-gate documentation draft |
+| card_type | freeze review closure |
 | implementation_allowed | no |
 | formal_db_write_allowed | no |
-| freeze_allowed | no |
+| freeze_allowed | yes; completed by `signal-freeze-review-20260429-01` |
 
 ## 3. 前置门槛
 
-Signal 进入 design freeze 前必须等待：
+Signal bounded proof build card 前必须等待：
 
 ```text
-Alpha released
+Signal freeze review passed
 ```
 
 ## 4. 本轮允许
 
 | 项 | 裁决 |
 |---|---|
-| 创建 Signal 六件套 draft | 允许 |
-| 明确 Signal 只读消费 Alpha 输出 | 允许 |
-| 定义 Signal 不回写 Alpha / MALF 的硬边界 | 允许 |
-| 定义 `signal.duckdb` 的 draft schema | 允许 |
-| 定义 runner / audit draft contract | 允许 |
-| 更新模块文档索引和门禁账本中的 draft 状态 | 允许 |
+| 审阅并冻结 Signal 六件套 | 已完成 |
+| 明确 Signal 只读消费 Alpha 输出 | 已完成 |
+| 定义 Signal 不回写 Alpha / MALF 的硬边界 | 已完成 |
+| 定义 `signal.duckdb` 的目标 schema contract | 已完成 |
+| 定义 runner / audit contract | 已完成 |
+| 更新模块文档索引和门禁账本中的 freeze review passed 状态 | 允许 |
 
 ## 5. 本轮不允许
 
 | 项 | 裁决 |
 |---|---|
-| 冻结 Signal 设计 | 禁止 |
 | 迁移旧 Signal engine | 禁止 |
 | 创建正式 Signal DuckDB | 禁止 |
 | 修改 MALF / Alpha / Position / Portfolio / Trade / System 代码 | 禁止 |
 | 建立 Position 持仓逻辑 | 禁止 |
-| 把 Alpha pre-gate draft 直接当作 released 上游 | 禁止 |
+| 把 Alpha 以外的 MALF/legacy/downstream 输入当作 Signal 正式输入 | 禁止 |
+| 直接打开 Signal bounded proof 代码施工 | 禁止，必须另开 build card |
 
 ## 6. 下一步入口
 
-Alpha released 后，Signal 才能进入：
+Signal freeze review 通过后的唯一下一步为：
 
 ```text
-Signal design freeze review
+Signal bounded proof build card
 ```
 
-该 review 必须重新审阅：
+该下一卡必须继续遵守本次冻结的六件套：
 
 ```text
 docs/02-modules/signal/00-authority-design-v1.md

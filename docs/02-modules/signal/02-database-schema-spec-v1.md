@@ -2,14 +2,15 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed
 
 ## 1. 规格范围
 
-本规格为 Signal pre-gate draft。正式 schema 冻结必须等待：
+本规格已在 Signal freeze review 中冻结为目标 schema。物理建库仍必须等待单独的 bounded proof
+build card。
 
 ```text
-Alpha released
+Alpha bounded proof passed -> Signal freeze review passed
 ```
 
 目标 Signal DB：
@@ -18,7 +19,8 @@ Alpha released
 H:\Asteria-data\signal.duckdb
 ```
 
-该库在 Signal 设计冻结前不得创建。
+该库在 Signal bounded proof build card 前不得创建；Signal freeze review 只冻结 schema contract，
+不创建正式 DuckDB。
 
 ## 2. 上游关系
 
@@ -153,7 +155,8 @@ erDiagram
 | 同库多写 | 禁止 |
 | 旧数据替换 | staging 审计通过后 promote |
 | `run_id` | 审计字段，不作为业务自然键 |
-| formal DB create | Signal design freeze 后才允许 |
+| formal DB create | Signal bounded proof build card 明确授权后才允许 |
+| freeze review effect | 只冻结 schema contract，不创建 `signal.duckdb` |
 
 ## 11. 不允许的 schema
 
@@ -164,3 +167,4 @@ erDiagram
 | `order_intent_id` | 禁止，归属 Trade |
 | `fill_id` | 禁止，归属 Trade |
 | 自定义 MALF WavePosition 字段 | 禁止 |
+| `portfolio_allocation` | 禁止，归属 Portfolio Plan |

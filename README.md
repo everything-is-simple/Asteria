@@ -41,11 +41,11 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
 当前门禁状态：
 
 ```text
-MALF day bounded proof passed -> Alpha freeze review passed -> Alpha bounded proof passed -> Signal freeze review
+MALF day bounded proof passed -> Alpha freeze review passed -> Alpha bounded proof passed -> Signal freeze review passed -> Signal bounded proof build card
 ```
 
-Alpha bounded proof 已完成五个 family 的 day bounded proof；当前只授权 Signal freeze
-review，不授权 Signal construction、Alpha full build、下游施工或全链路 pipeline。
+Signal freeze review 已完成 Signal 六件套冻结；当前只授权 Signal bounded proof build card，
+不授权 Signal construction、Signal 正式 DB、Alpha full build、下游施工或全链路 pipeline。
 
 ## 阅读入口
 

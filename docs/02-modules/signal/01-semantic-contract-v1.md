@@ -2,7 +2,7 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed
 
 ## 1. 合同目的
 
@@ -10,10 +10,10 @@
 
 ## 2. 前置门槛
 
-本合同在以下条件满足前不得冻结：
+本合同已在以下条件满足后冻结：
 
 ```text
-Alpha released
+Alpha bounded proof passed -> Signal freeze review passed
 ```
 
 Signal 的任何正式输入字段必须以 Alpha 已放行字段为准。
@@ -39,6 +39,7 @@ Signal 只读消费 Alpha 的最小字段：
 | `source_malf_service_version` | Alpha provenance |
 
 Signal 不得把 Alpha 缺行解释为 MALF 数据错误。缺行只表示该 Alpha family 未发布候选输入。
+Signal 不得直接读取 MALF Service 形成 formal signal，也不得修改 Alpha DB。
 
 ## 4. Signal 语义
 
@@ -106,6 +107,8 @@ Signal 正式输出分三层：
 | Signal 直接读取 MALF 并绕过 Alpha | 禁止 |
 | Signal 输出 position size / target exposure | 禁止 |
 | Signal 输出 order intent / fill | 禁止 |
+| Signal 创建或写入正式 Signal DB | Signal bounded proof build card 前禁止 |
+| Signal 打开 Position / Portfolio / Trade / System / Pipeline | 禁止 |
 | Position 回写 Signal | 禁止 |
 | Portfolio Plan 用 signal 字段替代组合约束 | 禁止 |
 

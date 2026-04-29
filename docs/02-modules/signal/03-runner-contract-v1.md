@@ -2,23 +2,27 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed
 
 ## 1. Runner 目标
 
 Signal runner 负责在 Alpha released 之后，读取 Alpha family candidate，构建 formal signal ledger，并执行边界与一致性审计。
 
-在 Signal 设计冻结前，本文件只冻结草案方向，不要求创建代码文件。
+本文件只冻结未来 runner contract，不创建代码文件。Signal freeze review 不授权
+`scripts/signal/run_*.py`，也不授权正式 `signal.duckdb`。
 
 ## 2. 前置门槛
 
 所有 Signal runner 必须在运行前验证：
 
 ```text
-Alpha released
+Alpha bounded proof passed
+Signal freeze review passed
+Signal bounded proof build card
 ```
 
 缺少 Alpha release evidence、缺少 alpha family 输出、或 Alpha hard audit 未通过时，runner 必须拒绝正式 build。
+Signal bounded proof build card 打开前，任何正式 runner 文件都不得创建。
 
 ## 3. Runner 列表
 
@@ -49,7 +53,7 @@ flowchart TD
 |---|---|
 | `bounded` | 必须传 `start_dt / end_dt` 或 `symbol_limit` |
 | `segmented` | 必须传 symbol range、batch id 或 timeframe |
-| `full` | 只能在 bounded proof 通过后开启 |
+| `full` | 只能在 bounded proof 通过且另有 full build card 后开启 |
 | `resume` | 必须读取 checkpoint |
 | `audit-only` | 不写业务表，只写 audit 或报告 |
 
@@ -102,3 +106,4 @@ flowchart TD
 | 创建 Position DB | 禁止 |
 | 写入 position / portfolio / trade 字段 | 禁止 |
 | 绕过 Alpha release gate 启动 full build | 禁止 |
+| 在 Signal bounded proof build card 前创建 Signal runner | 禁止 |

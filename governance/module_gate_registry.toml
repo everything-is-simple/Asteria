@@ -7,12 +7,13 @@ authority_assets = [
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2.zip",
 ]
 latest_governance_run_id = "docs-authority-refresh-20260429-01"
-latest_mainline_release_run_id = "alpha-bounded-proof-20260429-01"
-current_allowed_next_card = "signal_freeze_review"
+latest_mainline_release_run_id = "signal-freeze-review-20260429-01"
+current_allowed_next_card = "signal_bounded_proof_build_card"
 construction_lock = [
     "alpha_full_build",
     "alpha_segmented_production_build",
-    "signal_position_portfolio_trade_system_construction",
+    "signal_construction_without_build_card",
+    "position_portfolio_trade_system_construction",
     "full_chain_pipeline",
     "downstream_writeback_to_malf",
     "wave_core_state_system_state_redefinition",
@@ -70,14 +71,19 @@ input_boundary = "read_only_malf_wave_position"
 module_id = "signal"
 display_name = "Signal"
 mainline = true
-status = "pre_gate_draft"
-doc_status = "pre-gate six-doc draft"
+status = "frozen"
+doc_status = "frozen six-doc set / freeze review passed"
 allow_build = false
 allow_review = true
 doc_path = "docs/02-modules/signal"
 waits_for = "alpha_released"
+next_card = "signal_bounded_proof_build_card"
+freeze_review_status = "passed"
+freeze_review_run_id = "signal-freeze-review-20260429-01"
+release_conclusion = "docs/04-execution/records/signal/signal-freeze-review-20260429-01.conclusion.md"
+evidence_index = "docs/04-execution/records/signal/signal-freeze-review-20260429-01.evidence-index.md"
 formal_db_permission = "not_allowed"
-input_boundary = "wait_for_alpha_release"
+input_boundary = "read_only_released_alpha_signal_candidate"
 
 [[modules]]
 module_id = "position"

@@ -2,7 +2,7 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed
 
 ## 1. 模块定义
 
@@ -12,10 +12,11 @@ Signal 只负责把已放行的 Alpha family 输出聚合为正式 signal ledger
 
 ## 2. 前置门槛
 
-Signal 设计冻结和施工必须等待：
+Signal 设计冻结已在 `signal-freeze-review-20260429-01` 中通过。Signal 施工仍必须等待单独的
+Signal bounded proof build card。
 
 ```text
-Alpha released
+Alpha bounded proof passed -> Signal freeze review passed
 ```
 
 该门槛至少要求：
@@ -27,7 +28,8 @@ Alpha released
 | Alpha Contract | `alpha_signal_candidate` 可被 Signal 只读消费 |
 | Release Evidence | Alpha bounded proof / release evidence 已落档 |
 
-在上述条件满足前，本文件只作为 pre-gate draft，不允许施工。
+上述条件已由 Alpha bounded proof release evidence 和 Signal freeze review 复核满足。本文件
+只冻结 Signal 设计边界，不授权 Signal runner、Signal 正式 DB、下游施工或全链路 pipeline。
 
 ## 3. 权威来源
 
@@ -106,7 +108,8 @@ H:\Asteria-data\signal.duckdb
 | `signal_component_ledger` | 构成 signal 的 Alpha component |
 | `signal_audit` | Signal 审计 |
 
-该 DB 只能在 Signal 设计冻结且 Alpha released 后创建。
+该 DB 只能在 Signal bounded proof build card 明确授权后创建；Signal freeze review 本身不创建
+`H:\Asteria-data\signal.duckdb`。
 
 ## 8. 数据流
 
@@ -170,13 +173,17 @@ Signal 不得修改 Alpha 历史输出。Position、Portfolio Plan、Trade、Sys
 
 ## 12. 上线门禁
 
-Signal 未来冻结必须满足：
+Signal bounded proof build card 必须满足：
 
 | 门禁 | 要求 |
 |---|---|
-| Alpha Release | Alpha released |
-| Design | Signal 六件套从 pre-gate draft 升级并审阅 |
+| Alpha Release | Alpha bounded proof passed |
+| Design | Signal 六件套已在 `signal-freeze-review-20260429-01` 中冻结 |
 | Schema | `signal.duckdb` 表族、自然键、版本字段冻结 |
 | Runner | bounded / segmented / full / resume 语义冻结 |
 | Audit | 只读 Alpha、无资金订单输出、自然键唯一等硬审计冻结 |
 | Evidence | Signal bounded proof 证据落入 `H:\Asteria-report` 或 `H:\Asteria-Validated` |
+
+Signal freeze review 通过后的唯一下一步是 `Signal bounded proof build card`。该下一卡打开前，
+仍不得创建 Signal runner、Signal 正式 DB、Position / Portfolio Plan / Trade / System runner
+或全链路 Pipeline。

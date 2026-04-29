@@ -21,8 +21,11 @@ Current authority assets:
 Current gate:
 
 - `MALF day bounded proof passed`
-- Next allowed action: `Alpha freeze review`
-- Alpha freeze review is review-only; it does not authorize Alpha code, Alpha formal DBs, downstream construction, or a full-chain pipeline.
+- `Alpha freeze review passed`
+- `Alpha bounded proof passed`
+- `Signal freeze review passed`
+- Next allowed action: `Signal bounded proof build card`
+- Signal freeze review is review-only; it does not authorize Signal code, Signal formal DBs, downstream construction, or a full-chain pipeline.
 
 Hard rules:
 

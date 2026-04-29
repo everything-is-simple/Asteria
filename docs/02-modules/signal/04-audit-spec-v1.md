@@ -2,11 +2,13 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed
 
 ## 1. 审计目标
 
 Signal 审计用于证明 Signal 只读消费 Alpha 输出，输出仅限 formal signal ledger，并且没有越界写入 Alpha、MALF、Position、Portfolio Plan、Trade 或 System。
+
+本审计规格已在 `signal-freeze-review-20260429-01` 中冻结。该冻结不创建 Signal DB 或 runner。
 
 ## 2. 前置审计
 
@@ -23,6 +25,7 @@ Signal 审计用于证明 Signal 只读消费 Alpha 输出，输出仅限 formal
 | 检查 | 失败裁决 |
 |---|---|
 | Signal 不得修改 Alpha DB | hard fail |
+| Signal 不得创建或写入 Signal 正式 DB，除非 bounded proof build card 已打开 | hard fail |
 | Signal 输入必须能追溯到 Alpha candidate 自然键 | hard fail |
 | Signal 不得伪造 Alpha candidate | hard fail |
 | Signal 不得把 Alpha 缺行解释为 MALF 错误 | hard fail |
@@ -40,6 +43,7 @@ Signal 审计用于证明 Signal 只读消费 Alpha 输出，输出仅限 formal
 | formal signal 不得包含 `target_weight` | hard fail |
 | formal signal 不得包含 `order_intent_id` | hard fail |
 | Signal 输出不得写入 Position DB | hard fail |
+| Signal 输出不得打开 Portfolio / Trade / System / Pipeline | hard fail |
 
 ## 5. 聚合规则硬审计
 

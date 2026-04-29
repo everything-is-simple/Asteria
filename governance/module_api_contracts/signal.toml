@@ -1,18 +1,21 @@
 module_id = "signal"
 display_name = "Signal"
 contract_version = "v1"
-status = "pre_gate_draft"
+status = "frozen"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+    "H:/Asteria-Validated/Asteria-alpha-bounded-proof-20260429-01.zip",
 ]
-gate_state = "pre_gate_draft; wait_for_alpha_release"
+release_conclusion = "docs/04-execution/records/signal/signal-freeze-review-20260429-01.conclusion.md"
+evidence_index = "docs/04-execution/records/signal/signal-freeze-review-20260429-01.evidence-index.md"
+gate_state = "freeze_review_passed; signal_bounded_proof_build_card_next"
 formal_db_permission = "not_allowed"
 writeback_boundary = "consume released Alpha only; never write back to Alpha or MALF"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from signal checkpoint after Alpha release"
 source_manifest_fields = ["source_alpha_release_version", "source_alpha_run_id"]
-forbidden_inputs = ["malf_core_internal", "malf_service_unreleased", "legacy_downstream", "mock_formal_data"]
-forbidden_outputs = ["alpha_writeback", "malf_writeback", "position_size", "portfolio_allocation", "order_intent"]
+forbidden_inputs = ["malf_core_internal", "malf_service_unreleased", "malf_service_direct_business_input", "legacy_downstream", "mock_formal_data"]
+forbidden_outputs = ["alpha_writeback", "malf_writeback", "position_size", "target_weight", "portfolio_allocation", "order_intent", "fill_id"]
 
 [[official_inputs]]
 input_type = "database"
@@ -20,7 +23,39 @@ db_name = "alpha_bof.duckdb"
 table = "alpha_signal_candidate"
 source_role = "official"
 natural_key = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "alpha_rule_version"]
-required_fields = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_score"]
+required_fields = ["alpha_candidate_id", "alpha_event_id", "alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "candidate_state", "opportunity_bias", "confidence_bucket", "reason_code", "candidate_score", "alpha_rule_version", "source_malf_service_version"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "alpha_tst.duckdb"
+table = "alpha_signal_candidate"
+source_role = "official"
+natural_key = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "alpha_rule_version"]
+required_fields = ["alpha_candidate_id", "alpha_event_id", "alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "candidate_state", "opportunity_bias", "confidence_bucket", "reason_code", "candidate_score", "alpha_rule_version", "source_malf_service_version"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "alpha_pb.duckdb"
+table = "alpha_signal_candidate"
+source_role = "official"
+natural_key = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "alpha_rule_version"]
+required_fields = ["alpha_candidate_id", "alpha_event_id", "alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "candidate_state", "opportunity_bias", "confidence_bucket", "reason_code", "candidate_score", "alpha_rule_version", "source_malf_service_version"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "alpha_cpb.duckdb"
+table = "alpha_signal_candidate"
+source_role = "official"
+natural_key = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "alpha_rule_version"]
+required_fields = ["alpha_candidate_id", "alpha_event_id", "alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "candidate_state", "opportunity_bias", "confidence_bucket", "reason_code", "candidate_score", "alpha_rule_version", "source_malf_service_version"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "alpha_bpb.duckdb"
+table = "alpha_signal_candidate"
+source_role = "official"
+natural_key = ["alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "alpha_rule_version"]
+required_fields = ["alpha_candidate_id", "alpha_event_id", "alpha_family", "symbol", "timeframe", "bar_dt", "candidate_type", "candidate_state", "opportunity_bias", "confidence_bucket", "reason_code", "candidate_score", "alpha_rule_version", "source_malf_service_version"]
 
 [[official_outputs]]
 db_name = "signal.duckdb"
