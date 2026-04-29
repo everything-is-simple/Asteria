@@ -1,10 +1,23 @@
 # Asteria 全系统重构 Roadmap / Master Todo v1
 
-日期：2026-04-28
+日期：2026-04-29
 
 ## 1. Summary
 
 当前基线：`MALF day bounded proof` 已通过；下一步只允许 `Alpha freeze review`。
+
+本路线图依据以下权威资产刷新：
+
+```text
+H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md
+H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
+```
+
+深度研究报告中的 “机器可读门禁、统一 schema registry、模块 API 合同、pipeline ledger
+运行时” 缺口已部分被 repo 后续治理实现补齐；尚未放行的是 pipeline runtime 与
+全系统日更/断点续传运行时。
 
 系统完成路径固定为：
 
@@ -31,10 +44,10 @@ Pipeline schedules and records only
 ## 2. Phase 0: Governance Closure
 
 - [x] 修正 `governance/module_gate_registry.toml`：把 MALF `next_card` 从 `malf_day_bounded_proof` 改为 `alpha_freeze_review`。
-- [ ] 增加治理检查：校验 gate ledger、execution conclusion、registry 的 current/next 状态一致。
-- [ ] 增加 evidence 完备性检查：每个 release gate 必须有 `card`、`record`、`evidence-index`、`conclusion`、report manifest、validated zip。
+- [x] 增加治理检查：校验 gate ledger、execution conclusion、registry 的 current/next 状态一致。
+- [x] 增加 evidence 完备性检查：当前 MALF day release 与 docs authority refresh 必须有 `card`、`record`、`evidence-index`、`conclusion`、report manifest、validated zip。
 - [ ] 建立统一 release gate checklist：governance、ruff、format、mypy、pytest、DB audit、evidence audit 全部记录。
-- [ ] 通过后只授权 `Alpha freeze review`，不打开 Alpha 代码施工，也不打开任何下游施工。
+- [x] 通过后只授权 `Alpha freeze review`，不打开 Alpha 代码施工，也不打开任何下游施工。
 
 ## 3. Foundation Track: Data Foundation
 
@@ -111,6 +124,7 @@ Pipeline schedules and records only
 
 ## 11. Phase 8: Pipeline Integration
 
+- [ ] 在任何 Pipeline runtime 施工前，先确认当前 active card 明确授权 Pipeline freeze review。
 - [ ] 重审 Pipeline 六件套，确认 Pipeline 只调度、记录、汇总状态，不定义业务语义。
 - [ ] 冻结 `pipeline.duckdb` schema：pipeline_run、pipeline_step_run、module_gate_snapshot、build_manifest。
 - [ ] 实现单模块调度。

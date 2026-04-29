@@ -1,6 +1,8 @@
 # 01 MALF Schema 与 Runner Contract 冻结卡
 
-日期：2026-04-27
+日期：2026-04-29
+
+状态：frozen / completed / superseded by `malf-day-bounded-proof-20260428-01`
 
 ## 1. 当前卡位
 
@@ -11,6 +13,7 @@
 | card_type | design / schema / runner / audit freeze |
 | implementation_allowed | no |
 | formal_db_write_allowed | no |
+| current_card_status | completed |
 
 ## 2. 目标
 
@@ -27,6 +30,8 @@ malf_service_day.duckdb
 | 输入 | 路径 |
 |---|---|
 | MALF 三份终稿 | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` |
+| MALF 三份终稿 zip | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` |
+| docs/code 快照基线 | `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` |
 | Asteria 主线图 | `docs/01-architecture/00-mainline-authoritative-map-v1.md` |
 | Asteria DB 拓扑 | `docs/01-architecture/01-database-topology-v1.md` |
 | MALF schema spec | `docs/02-modules/03-malf-schema-runner-audit-spec-v1.md` |
@@ -39,7 +44,7 @@ malf_service_day.duckdb
 | 补充 MALF runner contract |
 | 补充 MALF audit spec |
 | 明确 bounded proof 样本要求 |
-| 决定是否冻结本卡 |
+| 记录本卡冻结裁决 |
 
 ## 5. 本卡禁止做什么
 
@@ -55,23 +60,23 @@ malf_service_day.duckdb
 
 | 条件 | 状态 |
 |---|---|
-| Core 表族字段完整 | draft |
-| Lifespan 表族字段完整 | draft |
-| Service WavePosition 字段完整 | draft |
-| 自然键定义完整 | draft |
-| Runner build modes 定义完整 | draft |
-| 硬审计清单完整 | draft |
-| 首轮 bounded proof 范围明确 | draft |
+| Core 表族字段完整 | frozen |
+| Lifespan 表族字段完整 | frozen |
+| Service WavePosition 字段完整 | frozen |
+| 自然键定义完整 | frozen |
+| Runner build modes 定义完整 | frozen |
+| 硬审计清单完整 | frozen |
+| 首轮 bounded proof 范围明确 | frozen |
 
 ## 7. 冻结后下一卡
 
-冻结后下一张卡：
+冻结后下一张卡已由后续执行闭环承接：
 
 ```text
-02-malf-day-bounded-proof-implementation-card-20260427
+malf-day-bounded-proof-20260428-01
 ```
 
-下一卡才允许：
+该后续闭环已经完成：
 
 | 允许项 |
 |---|
@@ -82,12 +87,24 @@ malf_service_day.duckdb
 | 实现 Service WavePosition bounded build |
 | 实现 hard audit |
 
+执行结论：
+
+```text
+docs/04-execution/records/malf/malf-day-bounded-proof-20260428-01.conclusion.md
+```
+
 ## 8. 当前裁决
 
 本卡当前状态：
 
 ```text
-draft
+completed
 ```
 
-还不能开始代码施工。下一步是人工/系统审阅 `docs/02-modules/03-malf-schema-runner-audit-spec-v1.md`，确认是否冻结。
+本卡不再是当前施工入口。MALF day bounded proof 已通过；当前唯一允许推进的是：
+
+```text
+Alpha freeze review
+```
+
+该 review 不授权 Alpha 代码施工、正式 Alpha DB 创建或下游模块施工。
