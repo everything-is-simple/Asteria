@@ -105,11 +105,11 @@ def test_docs_sync_rejects_data_foundation_inside_strategy_mainline(
     )
 
 
-def test_docs_sync_rejects_pre_gate_alpha_formal_runner(tmp_path: Path) -> None:
+def test_docs_sync_rejects_pre_gate_signal_formal_runner(tmp_path: Path) -> None:
     repo_root = _copy_docs_sync_repo(tmp_path)
-    alpha_runner = repo_root / "scripts" / "alpha" / "run_alpha_bounded_proof.py"
-    alpha_runner.parent.mkdir(parents=True)
-    alpha_runner.write_text("raise SystemExit(0)\n", encoding="utf-8")
+    signal_runner = repo_root / "scripts" / "signal" / "run_signal_bounded_proof.py"
+    signal_runner.parent.mkdir(parents=True)
+    signal_runner.write_text("raise SystemExit(0)\n", encoding="utf-8")
 
     assert any(
         "pre-gate module has forbidden formal runner" in message for message in _messages(repo_root)

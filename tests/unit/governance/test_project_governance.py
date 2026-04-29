@@ -40,8 +40,8 @@ def test_project_governance_rejects_multiple_build_allowed_mainline_modules(
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'allow_build = false\ndoc_path = "docs/02-modules/alpha"',
-            'allow_build = true\ndoc_path = "docs/02-modules/alpha"',
+            'allow_build = false\ndoc_path = "docs/02-modules/signal"',
+            'allow_build = true\ndoc_path = "docs/02-modules/signal"',
         ),
         encoding="utf-8",
     )
@@ -85,9 +85,9 @@ def test_project_governance_rejects_mock_or_legacy_official_input(tmp_path: Path
 
 def test_project_governance_rejects_pre_gate_runner_script(tmp_path: Path) -> None:
     repo_root = _copy_governance_repo(tmp_path)
-    alpha_script = repo_root / "scripts" / "alpha" / "run_alpha_bounded_proof.py"
-    alpha_script.parent.mkdir(parents=True)
-    alpha_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
+    signal_script = repo_root / "scripts" / "signal" / "run_signal_bounded_proof.py"
+    signal_script.parent.mkdir(parents=True)
+    signal_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
 
     assert any(
         "pre-gate module has forbidden formal runner" in message for message in _messages(repo_root)
@@ -96,9 +96,9 @@ def test_project_governance_rejects_pre_gate_runner_script(tmp_path: Path) -> No
 
 def test_project_governance_rejects_pre_gate_db_create_script(tmp_path: Path) -> None:
     repo_root = _copy_governance_repo(tmp_path)
-    alpha_script = repo_root / "scripts" / "alpha" / "create_alpha_schema.py"
-    alpha_script.parent.mkdir(parents=True)
-    alpha_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
+    signal_script = repo_root / "scripts" / "signal" / "create_signal_schema.py"
+    signal_script.parent.mkdir(parents=True)
+    signal_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
 
     assert any(
         "pre-gate module has forbidden formal DB create script" in message

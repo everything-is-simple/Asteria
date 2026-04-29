@@ -19,7 +19,8 @@
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip`
 
-当前唯一允许推进的业务动作是 `Alpha bounded proof build card`；Alpha 施工和下游模块施工仍未放行。
+当前已打开 `Alpha bounded proof build card`；唯一允许推进的业务动作是 Alpha bounded
+proof。Alpha full build 和下游模块施工仍未放行。
 
 ## 1. 与其他目录的分工
 

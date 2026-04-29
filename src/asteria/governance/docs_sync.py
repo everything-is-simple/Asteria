@@ -336,6 +336,7 @@ def _check_pre_gate_sources(
     for module_id, module in _module_map(gate_registry).items():
         if (
             bool(module.get("allow_build"))
+            or module.get("status") in {"released", "integrated"}
             or module.get("exception") == "bounded_bootstrap_support"
         ):
             continue

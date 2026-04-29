@@ -8,8 +8,8 @@ authority_assets = [
 ]
 release_conclusion = "docs/04-execution/records/alpha/alpha-freeze-review-20260429-01.conclusion.md"
 evidence_index = "docs/04-execution/records/alpha/alpha-freeze-review-20260429-01.evidence-index.md"
-gate_state = "freeze_review_passed; bounded_proof_build_card_next"
-formal_db_permission = "not_allowed_until_alpha_bounded_proof_build_card"
+gate_state = "freeze_review_passed; bounded_proof_build_card_opened"
+formal_db_permission = "allowed_for_alpha_bounded_proof_under_active_card"
 writeback_boundary = "read_malf_wave_position_only; never write back to MALF"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from alpha family checkpoint after MALF service release"

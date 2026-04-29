@@ -4,8 +4,8 @@
 
 ## 1. Summary
 
-当前基线：`MALF day bounded proof` 与 `Alpha freeze review` 已通过；下一步只允许
-`Alpha bounded proof build card`。
+当前基线：`MALF day bounded proof` 与 `Alpha freeze review` 已通过；`Alpha bounded
+proof build card` 已打开，下一步只允许 Alpha bounded proof。
 
 本路线图依据以下权威资产刷新：
 
@@ -66,7 +66,7 @@ Pipeline schedules and records only
 - [ ] 明确 Alpha 输出：alpha event、alpha score、alpha signal candidate。
 - [ ] 明确禁止输出：position size、portfolio allocation、order intent。
 - [ ] 冻结 `alpha_bof/tst/pb/cpb/bpb.duckdb` schema 与自然键。
-- [ ] 写 Alpha build card，只允许 Alpha bounded proof。
+- [x] 写 Alpha build card，只允许 Alpha bounded proof。
 - [x] Alpha freeze review 通过后，更新 gate ledger 与 registry。
 
 ## 5. Phase 2: Alpha Bounded Proof
@@ -171,7 +171,7 @@ Pipeline schedules and records only
 ## 16. Assumptions
 
 - 当前事实基线以 `MALF day bounded proof passed` 为准。
-- 下一张卡固定为 `Alpha bounded proof build card`，不是无卡 Alpha 代码施工。
+- 当前卡固定为 `Alpha bounded proof build card`，不是无卡 Alpha 代码施工。
 - Data Foundation 是地基轨道，不进入策略主线排序。
 - Pipeline 是编排与记录轨道，不进入业务主线排序。
 - 不同时施工两个策略主线模块。
