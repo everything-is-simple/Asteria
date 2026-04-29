@@ -1,4 +1,4 @@
 interface:
   display_name: "Asteria Governance"
-  short_description: "Asteria module gates and checks"
-  default_prompt: "Use Asteria governance to make a doc-first, one-module-at-a-time change."
+  short_description: "Asteria authority chain, module gates, and execution evidence"
+  default_prompt: "Use Asteria governance to keep changes doc-first, one-module-at-a-time, anchored to the Validated authority assets, and blocked from Alpha construction until Alpha freeze review passes."

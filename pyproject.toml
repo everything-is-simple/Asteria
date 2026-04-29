@@ -31,8 +31,8 @@ packages = ["src/asteria"]
 [tool.pytest.ini_options]
 pythonpath = ["src", "."]
 testpaths = ["tests"]
-addopts = "--basetemp=H:/Asteria-temp/pytest-tmp"
-cache_dir = "H:/Asteria-temp/pytest-cache"
+addopts = "--basetemp=H:/Asteria-temp/pytest-tmp-default"
+cache_dir = "H:/Asteria-temp/pytest-cache-default"
 
 [tool.ruff]
 target-version = "py310"
@@ -73,9 +73,18 @@ required_docs = [
     "docs/00-governance/00-asteria-refactor-charter-v1.md",
     "docs/01-architecture/00-mainline-authoritative-map-v1.md",
     "docs/01-architecture/01-database-topology-v1.md",
+    "docs/01-architecture/02-validated-asset-inventory-v1.md",
     "docs/01-architecture/04-historical-ledger-incremental-protocol-v1.md",
     "docs/03-refactor/00-module-gate-ledger-v1.md",
+    "docs/04-execution/00-conclusion-index-v1.md",
 ]
+authority_assets = [
+    "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
+    "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+    "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2",
+    "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2.zip",
+]
+current_allowed_next_card = "alpha_freeze_review"
 max_python_file_lines = 500
 max_script_file_lines = 240
 max_markdown_file_lines = 1200

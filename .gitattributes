@@ -1,1 +1,18 @@
 * text=auto eol=lf
+
+*.md text eol=lf
+*.py text eol=lf
+*.toml text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+
+*.duckdb binary
+*.duckdb.wal binary
+*.duckdb.tmp binary
+*.parquet binary
+*.zip binary
+*.pdf binary
+*.docx binary
+*.xlsx binary
+*.xls binary

@@ -3,8 +3,9 @@ repos:
     rev: v0.14.3
     hooks:
       - id: ruff-check
-        args: [--fix]
+        args: [--fix, --cache-dir, H:/Asteria-temp/ruff-cache]
       - id: ruff-format
+        args: [--cache-dir, H:/Asteria-temp/ruff-cache]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:

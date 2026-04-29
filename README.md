@@ -27,6 +27,26 @@ MALF = Market Lifespan Framework
 5. 主线从 `MALF` 开始，经 `Alpha -> Signal -> Position -> Portfolio Plan -> Trade -> System` 向外展开。
 6. DuckDB 采用空间换时间：模块分库、时间级别分库、冷热事实分库。
 
+## 当前权威状态
+
+当前权威资产：
+
+```text
+H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md
+H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
+```
+
+当前门禁状态：
+
+```text
+MALF day bounded proof passed -> Alpha freeze review
+```
+
+`Alpha freeze review` 只允许评审 Alpha 六件套和 WavePosition 只读契约，不授权
+Alpha 代码施工、Alpha 正式 DB、下游施工或全链路 pipeline。
+
 ## 阅读入口
 
 1. [重构总纲](docs/00-governance/00-asteria-refactor-charter-v1.md)
@@ -59,8 +79,8 @@ D:\miniconda\py310\Scripts\conda.exe env create -f environment.yml
 ```powershell
 H:\Asteria\.venv\Scripts\python.exe scripts\dev\doctor.py
 H:\Asteria\.venv\Scripts\python.exe scripts\governance\check_project_governance.py
-H:\Asteria\.venv\Scripts\ruff.exe check .
-H:\Asteria\.venv\Scripts\ruff.exe format --check .
-H:\Asteria\.venv\Scripts\mypy.exe src
-H:\Asteria\.venv\Scripts\pytest.exe
+H:\Asteria\.venv\Scripts\ruff.exe check . --cache-dir H:\Asteria-temp\ruff-cache
+H:\Asteria\.venv\Scripts\ruff.exe format --check . --cache-dir H:\Asteria-temp\ruff-cache
+H:\Asteria\.venv\Scripts\mypy.exe src --cache-dir H:\Asteria-temp\mypy-cache
+H:\Asteria\.venv\Scripts\pytest.exe --basetemp=H:/Asteria-temp/pytest-tmp-<run_id> -o cache_dir=H:/Asteria-temp/pytest-cache-<run_id>
 ```

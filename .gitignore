@@ -25,7 +25,6 @@ temp/
 # Editor
 .vscode/
 .idea/
-Asteria.code-workspace
 
 # Agent local state
 .claude/

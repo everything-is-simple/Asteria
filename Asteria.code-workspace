@@ -1,0 +1,69 @@
+{
+	"folders": [
+		{
+			"name": "Asteria",
+			"path": "."
+		},
+		{
+			"name": "Asteria-data",
+			"path": "../Asteria-data"
+		},
+		{
+			"name": "Asteria-report",
+			"path": "../Asteria-report"
+		},
+		{
+			"name": "Asteria-Validated",
+			"path": "../Asteria-Validated"
+		},
+		{
+			"name": "Asteria-temp",
+			"path": "../Asteria-temp"
+		},
+		{
+			"name": "tdx_offline_Data",
+			"path": "../tdx_offline_Data"
+		},
+		{
+			"name": "astock_lifespan-alpha",
+			"path": "../astock_lifespan-alpha"
+		},
+		{
+			"name": "lifespan-0.01",
+			"path": "G:/history-lifespan/lifespan-0.01"
+		},
+		{
+			"name": "MarketLifespan-Quant",
+			"path": "G:/history-lifespan/MarketLifespan-Quant"
+		},
+		{
+			"name": "EmotionQuant-gamma",
+			"path": "G:/history-lifespan/EmotionQuant-gamma"
+		}
+	],
+	"settings": {
+		"asteria.authority.currentAllowedNextCard": "alpha_freeze_review",
+		"asteria.authority.docsCodeSnapshot": "H:\\Asteria-Validated\\Asteria-docs-code-20260428-214427.zip",
+		"asteria.authority.malfDesignSet": "H:\\Asteria-Validated\\MALF_Three_Part_Design_Set_v1_2",
+		"asteria.authority.releaseConclusionIndex": "H:\\Asteria\\docs\\04-execution\\00-conclusion-index-v1.md",
+		"python.defaultInterpreterPath": "H:\\Asteria\\.venv\\Scripts\\python.exe",
+		"python.testing.pytestArgs": [
+			"tests",
+			"--basetemp=H:/Asteria-temp/pytest-tmp-vscode",
+			"-o",
+			"cache_dir=H:/Asteria-temp/pytest-cache-vscode"
+		],
+		"python.testing.pytestEnabled": true,
+		"workbench.editorAssociations": {
+			"*.parquet": "duckdb.dataFileViewer",
+			"*.csv": "duckdb.dataFileViewer",
+			"*.tsv": "duckdb.dataFileViewer"
+		},
+		"files.exclude": {
+			"**/.mypy_cache": true,
+			"**/.pytest_cache": true,
+			"**/.ruff_cache": true,
+			"**/__pycache__": true
+		}
+	}
+}

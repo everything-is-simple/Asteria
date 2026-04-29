@@ -9,6 +9,20 @@ Before changing code, every agent must read:
 3. `docs/01-architecture/00-mainline-authoritative-map-v1.md`
 4. `docs/01-architecture/01-database-topology-v1.md`
 5. `docs/03-refactor/00-module-gate-ledger-v1.md`
+6. `docs/04-execution/00-conclusion-index-v1.md`
+
+Current authority assets:
+
+- `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md`
+- `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip`
+
+Current gate:
+
+- `MALF day bounded proof passed`
+- Next allowed action: `Alpha freeze review`
+- Alpha freeze review is review-only; it does not authorize Alpha code, Alpha formal DBs, downstream construction, or a full-chain pipeline.
 
 Hard rules:
 
@@ -32,7 +46,7 @@ Python environment:
 Governance checks:
 
 - Run `python scripts\governance\check_project_governance.py` before committing structural changes.
-- Run `ruff check .`, `ruff format --check .`, `mypy src`, and `pytest` before release gates.
+- Run `ruff check . --cache-dir H:\Asteria-temp\ruff-cache`, `ruff format --check . --cache-dir H:\Asteria-temp\ruff-cache`, `mypy src --cache-dir H:\Asteria-temp\mypy-cache`, and pytest with run-scoped `H:\Asteria-temp` cache/temp paths before release gates.
 - Python files should stay under 500 lines. Script wrappers should stay under 240 lines.
 - Markdown design/spec files should stay under 1200 lines; split by module when they grow past that.
 - Comments should explain intent, boundaries, and non-obvious invariants. Avoid comments that restate code.

@@ -2,6 +2,7 @@ name: asteria
 channels:
   - conda-forge
 dependencies:
+  # D:\miniconda\py310 is the preferred provider; this file is the reproducible env fallback.
   - python=3.10
   - pip
   - pip:
