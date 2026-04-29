@@ -8,7 +8,7 @@ authority_assets = [
 ]
 latest_governance_run_id = "docs-authority-refresh-20260429-01"
 latest_mainline_release_run_id = "malf-day-bounded-proof-20260428-01"
-current_allowed_next_card = "alpha_freeze_review"
+current_allowed_next_card = "alpha_bounded_proof_build_card"
 construction_lock = [
     "alpha_code_construction",
     "alpha_formal_db",
@@ -48,13 +48,18 @@ allowed_downstream_use = "read_only_wave_position_for_alpha_freeze_review"
 module_id = "alpha"
 display_name = "Alpha"
 mainline = true
-status = "pre_gate_draft"
-doc_status = "pre-gate six-doc draft"
+status = "frozen"
+doc_status = "frozen six-doc set / freeze review passed"
 allow_build = false
 doc_path = "docs/02-modules/alpha"
-waits_for = "malf_service_released"
-next_allowed_action = "freeze_review_only"
-formal_db_permission = "not_allowed"
+waits_for = "alpha_bounded_proof_build_card"
+next_card = "alpha_bounded_proof_build_card"
+freeze_review_status = "passed"
+freeze_review_run_id = "alpha-freeze-review-20260429-01"
+release_conclusion = "docs/04-execution/records/alpha/alpha-freeze-review-20260429-01.conclusion.md"
+evidence_index = "docs/04-execution/records/alpha/alpha-freeze-review-20260429-01.evidence-index.md"
+next_allowed_action = "bounded_proof_build_card_only"
+formal_db_permission = "not_allowed_until_alpha_bounded_proof_build_card"
 input_boundary = "read_only_malf_wave_position"
 
 [[modules]]

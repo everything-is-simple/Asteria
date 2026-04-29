@@ -1,13 +1,15 @@
 module_id = "alpha"
 display_name = "Alpha"
 contract_version = "v1"
-status = "pre_gate_draft"
+status = "frozen"
 authority_assets = [
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2",
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
 ]
-gate_state = "freeze_review_next_only"
-formal_db_permission = "not_allowed_until_alpha_freeze_review_and_build_card"
+release_conclusion = "docs/04-execution/records/alpha/alpha-freeze-review-20260429-01.conclusion.md"
+evidence_index = "docs/04-execution/records/alpha/alpha-freeze-review-20260429-01.evidence-index.md"
+gate_state = "freeze_review_passed; bounded_proof_build_card_next"
+formal_db_permission = "not_allowed_until_alpha_bounded_proof_build_card"
 writeback_boundary = "read_malf_wave_position_only; never write back to MALF"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from alpha family checkpoint after MALF service release"

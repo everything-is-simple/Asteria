@@ -2,14 +2,15 @@
 
 日期：2026-04-29
 
-状态：draft / pre-gate / not frozen / freeze review next
+状态：frozen / freeze review passed
 
 ## 1. Runner 目标
 
-Alpha runner 负责在 MALF WavePosition released 且 Alpha freeze review 通过之后，
+Alpha runner 负责在 MALF WavePosition released、Alpha freeze review passed 且后续
+Alpha bounded proof build card 打开之后，
 对单个 alpha family 执行 bounded proof、segmented build、full build、resume 和 audit-only。
 
-在 Alpha 设计冻结前，本文件只冻结草案方向，不要求创建代码文件。
+本文件冻结 runner contract；本次 freeze review 不创建代码文件。
 
 ## 2. 前置门槛
 
@@ -17,7 +18,8 @@ Alpha runner 负责在 MALF WavePosition released 且 Alpha freeze review 通过
 
 ```text
 MALF day WavePosition release evidence passed
-pending Alpha freeze review conclusion
+Alpha freeze review passed
+Alpha bounded proof build card opened
 ```
 
 缺少 `malf_wave_position`、缺少 `malf_interface_audit` 通过结论、或缺少 MALF release evidence 时，runner 必须拒绝正式 build。
@@ -30,10 +32,10 @@ pending Alpha freeze review conclusion
 | `scripts/alpha/run_alpha_family_audit.py` | 对单个 alpha family 执行输入、输出、边界审计 |
 | `scripts/alpha/run_alpha_bounded_proof.py` | 编排五个 family 的 bounded proof |
 
-这些 runner 在 pre-gate draft 阶段不创建代码文件。
+这些 runner 在本次 freeze review 阶段不创建代码文件。
 
-截至 2026-04-29，MALF day 前置已满足，但 Alpha freeze review 尚未形成 passed
-结论；因此仍不得创建正式 Alpha runner。
+截至 2026-04-29，MALF day 前置和 Alpha freeze review 已满足；但在 Alpha bounded
+proof build card 打开前，仍不得创建正式 Alpha runner。
 
 ## 4. 构建顺序
 

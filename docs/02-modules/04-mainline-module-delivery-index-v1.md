@@ -69,7 +69,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2\
 |---:|---|---|---|---:|---|
 | 0 | Data Foundation | `docs/02-modules/data/` | foundation six-doc draft | 否 | 作为地基输入契约继续审阅，不占主线施工位 |
 | 1 | MALF | `docs/02-modules/malf/` | frozen / day bounded proof passed | 否 | day 已通过；week/month 或 full build 另需新卡 |
-| 2 | Alpha | `docs/02-modules/alpha/` | pre-gate six-doc draft / freeze review next | 否 | 只允许 Alpha freeze review，不允许代码施工 |
+| 2 | Alpha | `docs/02-modules/alpha/` | frozen six-doc set / freeze review passed | 否 | 只允许 Alpha bounded proof build card，不允许直接代码施工 |
 | 3 | Signal | `docs/02-modules/signal/` | pre-gate six-doc draft | 否 | 等 Alpha 放行后重新审阅并冻结 |
 | 4 | Position | `docs/02-modules/position/` | pre-gate six-doc draft | 否 | 等 Signal 放行后重新审阅并冻结 |
 | 5 | Portfolio Plan | `docs/02-modules/portfolio_plan/` | pre-gate six-doc draft | 否 | 等 Position 放行后重新审阅并冻结 |
@@ -108,14 +108,13 @@ MALF day bounded proof
 当前唯一允许推进：
 
 ```text
-Alpha freeze review
+Alpha bounded proof build card
 ```
 
-除 MALF day proof 外，仍只保留 foundation draft 或 pre-gate draft，不冻结：
+除 MALF day proof 与 Alpha freeze review passed 外，仍只保留 foundation draft 或
+pre-gate draft，不冻结：
 
 ```text
-Data Foundation
-Alpha
 Signal
 Position
 Portfolio Plan
@@ -124,8 +123,9 @@ System Readout
 Pipeline
 ```
 
-Data Foundation foundation draft 与 Alpha / Signal / Position / Portfolio Plan / Trade /
+Data Foundation foundation draft 与 Signal / Position / Portfolio Plan / Trade /
 System Readout / Pipeline pre-gate draft 都不得被解释为语义冻结、schema 冻结或施工许可。
+Alpha freeze review passed 只冻结 Alpha 六件套，不授权直接施工或正式 DB 创建。
 
 ## 6. 硬边界
 

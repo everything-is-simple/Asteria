@@ -19,7 +19,7 @@
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip`
 
-当前唯一允许推进的业务动作是 `Alpha freeze review`；Alpha 施工和下游模块施工仍未放行。
+当前唯一允许推进的业务动作是 `Alpha bounded proof build card`；Alpha 施工和下游模块施工仍未放行。
 
 ## 1. 与其他目录的分工
 
@@ -83,6 +83,13 @@ docs/04-execution/
 - [MALF day bounded proof evidence index](records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md)
 - [MALF day bounded proof record](records/malf/malf-day-bounded-proof-20260428-01.record.md)
 - [MALF day bounded proof conclusion](records/malf/malf-day-bounded-proof-20260428-01.conclusion.md)
+
+已闭环的 Alpha freeze review：
+
+- [Alpha freeze review card](records/alpha/alpha-freeze-review-20260429-01.card.md)
+- [Alpha freeze review evidence index](records/alpha/alpha-freeze-review-20260429-01.evidence-index.md)
+- [Alpha freeze review record](records/alpha/alpha-freeze-review-20260429-01.record.md)
+- [Alpha freeze review conclusion](records/alpha/alpha-freeze-review-20260429-01.conclusion.md)
 
 已闭环的 governance gate：
 

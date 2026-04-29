@@ -2,14 +2,15 @@
 
 日期：2026-04-29
 
-状态：draft / pre-gate / not frozen / freeze review next
+状态：frozen / freeze review passed
 
 ## 1. 审计目标
 
 Alpha 审计用于证明 Alpha 只读消费 MALF WavePosition，输出仅限 opportunity event / score / candidate，并且没有越界写入 MALF、Signal、Position、Portfolio Plan、Trade 或 System。
 
-当前只允许在 Alpha freeze review 中审阅本审计规格。MALF day proof passed
-只证明上游 WavePosition 可供只读审阅，不证明 Alpha 审计已实现或已放行。
+本审计规格已在 Alpha freeze review 中冻结。MALF day proof passed 证明上游
+WavePosition 可供只读审阅；Alpha freeze review passed 只冻结审计要求，不证明
+Alpha 审计已实现或已放行。
 
 ## 2. 前置审计
 

@@ -2,22 +2,22 @@
 
 日期：2026-04-29
 
-状态：draft / pre-gate / not frozen / freeze review next
+状态：frozen / freeze review passed
 
 ## 1. 合同目的
 
 本合同定义 Alpha 在 Asteria 主线中的语义边界。Alpha 只能解释 MALF 已发布结构位置上的机会，不得重定义 WavePosition，不得写回 MALF，不得输出资金、仓位或订单语义。
 
-MALF day bounded proof 已通过，Alpha 可在 freeze review 中只读审阅 WavePosition
-接口是否满足本合同；该状态不授权 Alpha 代码施工或正式 DB 创建。
+MALF day bounded proof 与 Alpha freeze review 均已通过。本合同已冻结为 Alpha
+后续 bounded proof 的语义边界；该状态仍不授权 Alpha 代码施工或正式 DB 创建。
 
 ## 2. 前置门槛
 
-本合同在以下条件满足前不得冻结：
+本合同冻结依据：
 
 ```text
 MALF day WavePosition release evidence passed
-pending Alpha freeze review conclusion
+Alpha freeze review passed
 ```
 
 Alpha 的任何正式输入字段必须以 MALF Service 已放行字段为准。
@@ -73,7 +73,8 @@ Alpha 不得在自身 schema 中重新定义这些事实的权威含义。
 | CPB | Alpha opportunity family |
 | BPB | Alpha opportunity family |
 
-具体规则必须在 Alpha 设计冻结前另行审阅，不能由旧系统报告直接继承。
+具体解释规则必须在后续 Alpha bounded proof build card 中按本合同实现和审计，
+不能由旧系统报告直接继承。
 
 ## 6. 输出语义
 

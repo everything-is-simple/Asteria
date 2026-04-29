@@ -2,26 +2,28 @@
 
 日期：2026-04-29
 
-状态：pre-gate draft / not frozen / freeze review next
+状态：frozen / freeze review passed / bounded proof build card next
 
 ## 1. 当前裁决
 
-Alpha 是 MALF 之后的第一下游主线模块。本目录已补齐 pre-gate 六件套 draft，但本轮不冻结 Alpha 设计，不允许进入施工。
+Alpha 是 MALF 之后的第一下游主线模块。本目录六件套已由
+`alpha-freeze-review-20260429-01` 冻结，但本轮不允许进入施工。
 
 截至 2026-04-29，MALF day bounded proof 已通过，WavePosition release evidence 已落档。
-该事实只打开 Alpha freeze review，不等于 Alpha 设计已冻结。
+Alpha freeze review 已通过；下一步只能写 Alpha bounded proof build card。
 
 ## 2. 等待条件
 
-Alpha 必须等待：
+Alpha 施工必须等待：
 
 ```text
 MALF day WavePosition release evidence passed
-Alpha freeze review conclusion
+Alpha freeze review passed
+Alpha bounded proof build card
 ```
 
-freeze review 前必须已经存在可审计的 `malf_wave_position` 和接口审计结论；
-施工放行前还必须有 Alpha freeze review 的 `passed` 结论。
+`malf_wave_position` 和接口审计结论已可审计；施工放行前还必须有独立的
+Alpha bounded proof build card。
 
 ## 3. 只允许继承的上游语义
 
@@ -53,18 +55,17 @@ position_quadrant
 | 输出 order | 归属 Trade |
 | 把可交易性客观事实当作 Alpha 语义 | 客观事实属于 Data Foundation |
 
-## 5. 已补齐的 pre-gate draft
+## 5. 已冻结的六件套
 
-以下文档只表示预门禁草案，不表示设计冻结或施工许可：
+以下文档已通过 freeze review，但不表示代码施工或正式 DB 创建许可：
 
 | 文档 | 状态 |
 |---|---|
-| `00-authority-design-v1.md` | draft / pre-gate / not frozen |
-| `01-semantic-contract-v1.md` | draft / pre-gate / not frozen |
-| `02-database-schema-spec-v1.md` | draft / pre-gate / not frozen |
-| `03-runner-contract-v1.md` | draft / pre-gate / not frozen |
-| `04-audit-spec-v1.md` | draft / pre-gate / not frozen |
-| `05-build-card-v1.md` | draft / pre-gate / not frozen |
+| `00-authority-design-v1.md` | frozen / freeze review passed |
+| `01-semantic-contract-v1.md` | frozen / freeze review passed |
+| `02-database-schema-spec-v1.md` | frozen / freeze review passed |
+| `03-runner-contract-v1.md` | frozen / freeze review passed |
+| `04-audit-spec-v1.md` | frozen / freeze review passed |
+| `05-build-card-v1.md` | frozen / freeze review passed |
 
-Alpha 进入设计冻结前必须基于已放行的 MALF day WavePosition 重新审阅这些文档。
-当前下一步只允许 `Alpha freeze review`。
+当前下一步只允许 `Alpha bounded proof build card`。

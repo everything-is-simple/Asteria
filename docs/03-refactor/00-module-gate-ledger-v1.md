@@ -42,10 +42,10 @@ MALF
 MALF day bounded proof
 ```
 
-当前允许进入下一评审卡的模块：
+当前允许进入下一执行卡的模块：
 
 ```text
-Alpha freeze review
+Alpha bounded proof build card
 ```
 
 当前唯一已通过 bounded proof 的主线模块：
@@ -54,8 +54,9 @@ Alpha freeze review
 MALF day
 ```
 
-Alpha、Signal、Position、Portfolio Plan、Trade、System Readout 和 Pipeline 为 pre-gate six-doc draft，不允许施工。
-Alpha 只允许进入 freeze review，不允许直接施工。
+Alpha 已通过 freeze review 并冻结六件套，但仍不允许直接施工。Signal、Position、
+Portfolio Plan、Trade、System Readout 和 Pipeline 为 pre-gate six-doc draft，不允许施工。
+当前只允许写 Alpha bounded proof build card。
 
 ## 2. 模块状态表
 
@@ -63,7 +64,7 @@ Alpha 只允许进入 freeze review，不允许直接施工。
 |---:|---|---|---|---:|---|---|
 | 0 | Data Foundation | foundation six-doc draft | not frozen | 否 | `docs/02-modules/data/` | 地基输入契约，非策略主线，不占主线施工位 |
 | 1 | MALF | delivered six-doc set / day proof passed | frozen | 否 | `docs/02-modules/malf/` | day bounded proof 已通过；week/month 或 full build 需另开卡 |
-| 2 | Alpha | pre-gate six-doc draft / freeze review next | not frozen | 否 | `docs/02-modules/alpha/` | 只允许 Alpha freeze review，不允许代码施工 |
+| 2 | Alpha | frozen six-doc set / freeze review passed | frozen | 否 | `docs/02-modules/alpha/` | 只允许 Alpha bounded proof build card，不允许直接代码施工 |
 | 3 | Signal | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/signal/` | 等 Alpha 放行后重新审阅并冻结 |
 | 4 | Position | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/position/` | 等 Signal 放行后重新审阅并冻结 |
 | 5 | Portfolio Plan | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/portfolio_plan/` | 等 Position 放行后重新审阅并冻结 |
@@ -104,12 +105,12 @@ MALF 冻结文档与当前 proof 状态：
 
 | 模块 | 占位文档 | 状态 |
 |---|---|---|
-| Alpha | `docs/02-modules/alpha/00-authority-design-v1.md` | draft / pre-gate / not frozen / freeze review next |
-| Alpha | `docs/02-modules/alpha/01-semantic-contract-v1.md` | draft / pre-gate / not frozen / freeze review next |
-| Alpha | `docs/02-modules/alpha/02-database-schema-spec-v1.md` | draft / pre-gate / not frozen / freeze review next |
-| Alpha | `docs/02-modules/alpha/03-runner-contract-v1.md` | draft / pre-gate / not frozen / freeze review next |
-| Alpha | `docs/02-modules/alpha/04-audit-spec-v1.md` | draft / pre-gate / not frozen / freeze review next |
-| Alpha | `docs/02-modules/alpha/05-build-card-v1.md` | draft / pre-gate / not frozen / freeze review next |
+| Alpha | `docs/02-modules/alpha/00-authority-design-v1.md` | frozen / freeze review passed |
+| Alpha | `docs/02-modules/alpha/01-semantic-contract-v1.md` | frozen / freeze review passed |
+| Alpha | `docs/02-modules/alpha/02-database-schema-spec-v1.md` | frozen / freeze review passed |
+| Alpha | `docs/02-modules/alpha/03-runner-contract-v1.md` | frozen / freeze review passed |
+| Alpha | `docs/02-modules/alpha/04-audit-spec-v1.md` | frozen / freeze review passed |
+| Alpha | `docs/02-modules/alpha/05-build-card-v1.md` | frozen / freeze review passed / superseded by next build card |
 | Signal | `docs/02-modules/signal/00-authority-design-v1.md` | draft / pre-gate / not frozen |
 | Signal | `docs/02-modules/signal/01-semantic-contract-v1.md` | draft / pre-gate / not frozen |
 | Signal | `docs/02-modules/signal/02-database-schema-spec-v1.md` | draft / pre-gate / not frozen |
@@ -178,29 +179,46 @@ MALF day bounded proof 已通过。
 | execution conclusion | `docs/04-execution/records/malf/malf-day-bounded-proof-20260428-01.conclusion.md` |
 | hard audit | `hard_fail_count = 0` |
 
-MALF day 放行后，只授权 Alpha freeze review。Alpha、Signal、Position、Portfolio
-Plan、Trade、System Readout、Pipeline 仍不允许施工。
+MALF day 放行后打开的 Alpha freeze review 已通过。Alpha、Signal、Position、Portfolio
+Plan、Trade、System Readout、Pipeline 仍不允许直接施工。
 
-## 6. 下一张施工卡
+## 6. Alpha Freeze Review 放行记录
 
-下一张施工卡必须先针对 Alpha freeze review，不得直接进入 Alpha 代码施工：
+Alpha freeze review 已通过。
+
+| 项 | 值 |
+|---|---|
+| run_id | `alpha-freeze-review-20260429-01` |
+| source DB | `H:\Asteria-data\malf_service_day.duckdb` |
+| review scope | Alpha 六件套 / MALF WavePosition 只读契约 / module API contracts |
+| report dir | `H:\Asteria-report\alpha\2026-04-29\alpha-freeze-review-20260429-01` |
+| closeout | `H:\Asteria-report\alpha\2026-04-29\alpha-freeze-review-20260429-01\closeout.md` |
+| validated evidence | `H:\Asteria-Validated\Asteria-alpha-freeze-review-20260429-01.zip` |
+| execution conclusion | `docs/04-execution/records/alpha/alpha-freeze-review-20260429-01.conclusion.md` |
+| hard review | `hard_fail_count = 0` |
+
+Alpha freeze review 只冻结 Alpha 六件套，不创建正式 Alpha DB，不授权直接代码施工。
+
+## 7. 下一张施工卡
+
+下一张施工卡必须先针对 Alpha bounded proof build card，不得直接进入无卡施工：
 
 ```text
-Alpha freeze review
+Alpha bounded proof build card
 ```
 
 目标：
 
 | 内容 | 要求 |
 |---|---|
-| MALF Contract Review | 确认 Alpha 只读消费 WavePosition，不回写 MALF |
-| Alpha Six-doc Review | 基于已放行 WavePosition 重审 Alpha 六件套 |
-| Freeze Decision | 只在 review 通过后更新 Alpha 冻结状态 |
-| Build Card | 若 Alpha 冻结，再写下一张 Alpha 施工卡 |
+| Build Scope | 只允许 Alpha bounded proof，不打开 full build |
+| MALF Contract Boundary | 继续确认 Alpha 只读消费 WavePosition，不回写 MALF |
+| Formal DB Permission | 只有 build card 明确授权后才允许创建 working / formal Alpha DB |
+| Downstream Lock | 不打开 Signal / Position / Portfolio / Trade / System 施工 |
 
-## 7. 施工锁
+## 8. 施工锁
 
-在 Alpha freeze review 未通过前，不允许：
+在 Alpha bounded proof build card 未打开前，不允许：
 
 | 禁止项 |
 |---|
@@ -211,7 +229,7 @@ Alpha freeze review
 | 让 Alpha、Signal、Portfolio、Trade、System 写回 MALF |
 | 合并 `wave_core_state` 与 `system_state` |
 
-## 8. MALF 放行定义
+## 9. MALF 放行定义
 
 MALF day 首轮放行标准：
 

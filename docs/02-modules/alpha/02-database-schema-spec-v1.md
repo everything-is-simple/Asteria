@@ -2,19 +2,20 @@
 
 日期：2026-04-29
 
-状态：draft / pre-gate / not frozen / freeze review next
+状态：frozen / freeze review passed
 
 ## 1. 规格范围
 
-本规格为 Alpha pre-gate draft。正式 schema 冻结必须等待：
+本规格已由 `alpha-freeze-review-20260429-01` 冻结。正式 Alpha DB 创建仍必须等待：
 
 ```text
 MALF day WavePosition release evidence passed
-pending Alpha freeze review conclusion
+Alpha freeze review passed
+Alpha bounded proof build card
 ```
 
-当前只允许对本规格做 freeze review。不得创建正式 Alpha DuckDB，不得把
-pre-gate schema 当作 released schema。
+当前冻结的是 schema 规格，不是正式 DB release。不得在 Alpha bounded proof build card
+打开前创建正式 Alpha DuckDB。
 
 目标 Alpha DB：
 
@@ -26,7 +27,7 @@ H:\Asteria-data\alpha_cpb.duckdb
 H:\Asteria-data\alpha_bpb.duckdb
 ```
 
-这些库在 Alpha 设计冻结前不得创建。
+这些库在 Alpha bounded proof build card 打开前不得创建。
 
 ## 2. 五库关系
 
@@ -163,7 +164,7 @@ erDiagram
 | 同库多写 | 禁止 |
 | 旧数据替换 | staging 审计通过后 promote |
 | `run_id` | 审计字段，不作为业务自然键 |
-| formal DB create | Alpha design freeze 后才允许 |
+| formal DB create | Alpha bounded proof build card 明确授权后才允许 |
 
 ## 11. 不允许的 schema
 

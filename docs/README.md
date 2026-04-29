@@ -64,8 +64,8 @@ H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研
 
 - [Asteria 执行结论索引](H:/Asteria/docs/04-execution/00-conclusion-index-v1.md)
 
-当前唯一允许推进的业务动作仍是 `Alpha freeze review`；Alpha 代码施工、Alpha 正式 DB
-和下游模块施工必须等待对应 freeze review / bounded proof 门禁。
+当前唯一允许推进的业务动作是 `Alpha bounded proof build card`；Alpha 代码施工、
+Alpha 正式 DB 和下游模块施工必须等待该 build card 与后续 bounded proof 门禁。
 
 前辈系统资产清单：
 

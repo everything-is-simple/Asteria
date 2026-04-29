@@ -41,11 +41,12 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
 当前门禁状态：
 
 ```text
-MALF day bounded proof passed -> Alpha freeze review
+MALF day bounded proof passed -> Alpha freeze review passed -> Alpha bounded proof build card
 ```
 
-`Alpha freeze review` 只允许评审 Alpha 六件套和 WavePosition 只读契约，不授权
-Alpha 代码施工、Alpha 正式 DB、下游施工或全链路 pipeline。
+`Alpha freeze review` 已冻结 Alpha 六件套和 WavePosition 只读契约。下一步只允许写
+Alpha bounded proof build card；在该卡打开前仍不授权 Alpha 代码施工、Alpha 正式 DB、
+下游施工或全链路 pipeline。
 
 ## 阅读入口
 

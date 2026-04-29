@@ -160,8 +160,9 @@ MALF day bounded proof
 下一张允许进入的卡：
 
 ```text
-Alpha freeze review
+Alpha bounded proof build card
 ```
 
 MALF 语义继续以 `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` 为唯一权威。
-Alpha freeze review 只允许评审 Alpha 六件套和 WavePosition 只读契约，不授权 Alpha 代码施工。
+Alpha freeze review 已通过并冻结 Alpha 六件套；下一卡只允许先写 Alpha bounded proof
+build card，不直接授权 Alpha 代码施工或正式 Alpha DB。

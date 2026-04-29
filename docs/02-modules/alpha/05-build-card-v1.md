@@ -2,51 +2,52 @@
 
 日期：2026-04-29
 
-状态：draft / pre-gate / not frozen / freeze review next
+状态：frozen / freeze review passed / superseded by next build card
 
 ## 1. 本卡目标
 
-补齐 Alpha pre-gate 六件套 draft，为 MALF day WavePosition released 之后的
-Alpha freeze review 做准备。
+记录 Alpha 六件套已通过 freeze review，并为下一张 Alpha bounded proof build card
+划定边界。
 
-本卡不允许代码施工，不允许创建正式 DuckDB，不允许冻结 Alpha。
+本卡不允许代码施工，不允许创建正式 DuckDB；Alpha 冻结结论由
+`alpha-freeze-review-20260429-01` 形成。
 
 ## 2. 当前卡位
 
 | 项 | 值 |
 |---|---|
 | active_module | `alpha` |
-| card_type | pre-gate documentation draft |
+| card_type | freeze review closure |
 | implementation_allowed | no |
 | formal_db_write_allowed | no |
-| freeze_allowed | no |
-| current_allowed_next_action | `Alpha freeze review` |
+| freeze_allowed | completed |
+| current_allowed_next_action | `Alpha bounded proof build card` |
 
 ## 3. 前置门槛
 
-Alpha 进入 design freeze 前必须等待：
+Alpha 进入 bounded proof 施工前必须等待：
 
 ```text
 MALF day WavePosition release evidence passed
-pending Alpha freeze review conclusion
+Alpha freeze review passed
+Alpha bounded proof build card
 ```
 
 ## 4. 本轮允许
 
 | 项 | 裁决 |
 |---|---|
-| 创建 Alpha 六件套 draft | 允许 |
+| 冻结 Alpha 六件套 | 已完成 |
 | 明确 Alpha 只读消费 WavePosition | 允许 |
 | 定义 Alpha 不写回 MALF 的硬边界 | 允许 |
-| 定义五个 alpha family DB 的 draft schema | 允许 |
-| 定义 runner / audit draft contract | 允许 |
-| 更新模块文档索引和门禁账本中的 draft 状态 | 允许 |
+| 定义五个 alpha family DB 的 schema | 允许 |
+| 定义 runner / audit contract | 允许 |
+| 更新模块文档索引和门禁账本中的 freeze review passed 状态 | 允许 |
 
 ## 5. 本轮不允许
 
 | 项 | 裁决 |
 |---|---|
-| 冻结 Alpha 设计 | 禁止 |
 | 迁移旧 Alpha engine | 禁止 |
 | 创建正式 Alpha DuckDB | 禁止 |
 | 修改 MALF / Signal / Position / Portfolio / Trade / System 代码 | 禁止 |
@@ -55,13 +56,14 @@ pending Alpha freeze review conclusion
 
 ## 6. 下一步入口
 
-MALF day bounded proof 已通过并发布 WavePosition。当前 Alpha 只能进入：
+MALF day bounded proof 已通过并发布 WavePosition，Alpha freeze review 已通过。当前
+Alpha 只能进入：
 
 ```text
-Alpha freeze review
+Alpha bounded proof build card
 ```
 
-该 review 必须重新审阅：
+该下一卡必须引用并遵守：
 
 ```text
 docs/02-modules/alpha/00-authority-design-v1.md
@@ -70,6 +72,7 @@ docs/02-modules/alpha/02-database-schema-spec-v1.md
 docs/02-modules/alpha/03-runner-contract-v1.md
 docs/02-modules/alpha/04-audit-spec-v1.md
 docs/02-modules/alpha/05-build-card-v1.md
+docs/04-execution/records/alpha/alpha-freeze-review-20260429-01.conclusion.md
 ```
 
 ## 7. 验收命令
