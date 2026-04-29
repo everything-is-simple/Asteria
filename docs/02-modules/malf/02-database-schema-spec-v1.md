@@ -1,8 +1,8 @@
 # MALF Database Schema Spec v1
 
-日期：2026-04-27
+日期：2026-04-29
 
-状态：frozen
+状态：frozen / day bounded proof passed
 
 ## 1. 规格范围
 
@@ -14,7 +14,8 @@ H:\Asteria-data\malf_lifespan_day.duckdb
 H:\Asteria-data\malf_service_day.duckdb
 ```
 
-week / month 在 day gate 通过后复用同一规格。
+week / month 在 day gate 通过后复用同一规格，但仍必须另走施工卡和 release
+gate。MALF day gate 已通过，不自动放行 week/month 或 full build。
 
 ## 2. 三库关系
 

@@ -1,8 +1,11 @@
 # Data Foundation Database Schema Spec v1
 
-日期：2026-04-27
+日期：2026-04-29
 
 状态：draft / foundation-contract / not frozen
+
+当前裁决：MALF day proof 曾使用最小 `raw_market` / `market_base_day`
+bootstrap 支撑；五个正式 Data Foundation 目标库仍未因该 proof 自动放行。
 
 ## 1. 目标拓扑
 

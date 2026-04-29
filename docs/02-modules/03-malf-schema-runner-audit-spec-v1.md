@@ -1,6 +1,6 @@
 # MALF Schema / Runner / Audit 规格 v1
 
-日期：2026-04-27
+日期：2026-04-29
 
 ## 1. 规格目标
 
@@ -21,6 +21,10 @@ H:\Asteria-data\malf_service_day.duckdb
 ```
 
 week / month 在 day 通过 gate 后复制同一规格。
+
+当前状态：`malf-day-bounded-proof-20260428-01` 已记录为 `passed`，并形成
+MALF day release evidence。该状态不自动放行 week/month、full build、Alpha
+施工或下游正式 DB；下一步只允许 `Alpha freeze review`。
 
 ## 2. 语义来源
 
@@ -373,6 +377,9 @@ scripts/malf/run_malf_day_service_build.py
 scripts/malf/run_malf_day_audit.py
 ```
 
+上述 runner 已用于 MALF day bounded proof 闭环；后续 `segmented` / `full` /
+`resume` 的扩大执行仍必须另走门禁，不得因 day proof passed 自动放行。
+
 构建模式：
 
 | 模式 | 要求 |
@@ -414,7 +421,11 @@ scripts/malf/run_malf_day_audit.py
 
 ## 10. 首轮验收样本
 
-首轮只做 bounded proof。
+首轮只做 bounded proof。该 bounded proof 已通过，结论索引在：
+
+```text
+docs/04-execution/records/malf/malf-day-bounded-proof-20260428-01.conclusion.md
+```
 
 建议范围：
 

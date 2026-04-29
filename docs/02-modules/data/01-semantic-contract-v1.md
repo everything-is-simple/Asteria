@@ -1,8 +1,11 @@
 # Data Foundation Semantic Contract v1
 
-日期：2026-04-27
+日期：2026-04-29
 
 状态：draft / foundation-contract / not frozen
+
+当前裁决：最小 bounded bootstrap support 已服务 MALF day proof，但完整 Data
+Foundation 合同仍未冻结；下游只能把 Data 当作客观事实来源，不得引入策略语义。
 
 ## 1. 目的
 

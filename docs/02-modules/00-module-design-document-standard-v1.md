@@ -1,10 +1,15 @@
 # Asteria 模块设计文档标准 v1
 
-日期：2026-04-27
+日期：2026-04-29
 
 ## 1. 目的
 
 本标准规定：任何模块进入 `src/` 或正式 DuckDB 实现之前，必须先拥有可审阅、可冻结、可测试的权威设计文档。
+
+本标准已按 `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip`
+之后的执行记录刷新。`214427` 快照是重要 docs/code 基线，但不得覆盖
+repo HEAD；快照之后的事实必须由 `docs/04-execution/`、治理 registry
+和新的 Validated 归档补充。
 
 ## 2. 每个模块必须有的文档
 
@@ -160,3 +165,17 @@ docs/04-execution/
 | `conclusion` | 给出 passed / blocked / superseded / failed 结论 |
 
 `H:\Asteria-report` 与 `H:\Asteria-Validated` 继续承载真实证据资产；repo 内执行区只负责索引、摘要、记录与结论。
+
+## 10. 文档新鲜度要求
+
+模块文档必须随治理结论保持新鲜：
+
+| 事件 | 文档动作 |
+|---|---|
+| 权威输入资产更新 | 刷新 `docs/01-architecture/02-validated-asset-inventory-v1.md` 和相关模块桥接页 |
+| 模块 proof / release 通过 | 更新对应模块六件套的当前裁决、交付索引和门禁账本 |
+| 下一施工卡变化 | 明确唯一 allowed next action，禁止下游自行解释为施工许可 |
+| 快照资产早于 repo HEAD | 以执行记录和 commit history 补足差异，不用旧 zip 覆盖当前仓库 |
+
+截至 2026-04-29，MALF day bounded proof 已通过；唯一允许推进的业务动作是
+`Alpha freeze review`，不是 Alpha 代码施工、正式 Alpha DB 创建或下游模块施工。

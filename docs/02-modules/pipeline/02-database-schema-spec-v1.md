@@ -1,6 +1,6 @@
 # Pipeline Database Schema Spec v1
 
-日期：2026-04-27
+日期：2026-04-29
 
 状态：draft / pre-gate / not frozen
 
@@ -9,7 +9,8 @@
 本规格为 Pipeline pre-gate draft。正式 schema 冻结必须等待：
 
 ```text
-MALF bounded proof gate
+MALF bounded proof gate passed
+active card explicitly authorizes Pipeline freeze review
 ```
 
 目标 Pipeline DB：
@@ -18,7 +19,8 @@ MALF bounded proof gate
 H:\Asteria-data\pipeline.duckdb
 ```
 
-该库在 Pipeline 设计冻结前不得创建。
+该库在 Pipeline 设计冻结前不得创建。MALF bounded proof gate passed 本身不授权
+创建正式 Pipeline DB。
 
 ## 2. 上游关系
 

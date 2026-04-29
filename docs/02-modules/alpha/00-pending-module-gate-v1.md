@@ -1,22 +1,27 @@
 # Alpha Pending Module Gate v1
 
-日期：2026-04-27
+日期：2026-04-29
 
-状态：pre-gate draft / not frozen
+状态：pre-gate draft / not frozen / freeze review next
 
 ## 1. 当前裁决
 
 Alpha 是 MALF 之后的第一下游主线模块。本目录已补齐 pre-gate 六件套 draft，但本轮不冻结 Alpha 设计，不允许进入施工。
+
+截至 2026-04-29，MALF day bounded proof 已通过，WavePosition release evidence 已落档。
+该事实只打开 Alpha freeze review，不等于 Alpha 设计已冻结。
 
 ## 2. 等待条件
 
 Alpha 必须等待：
 
 ```text
-MALF WavePosition service released
+MALF day WavePosition release evidence passed
+Alpha freeze review conclusion
 ```
 
-放行前必须已经存在可审计的 `malf_wave_position` 和接口审计结论。
+freeze review 前必须已经存在可审计的 `malf_wave_position` 和接口审计结论；
+施工放行前还必须有 Alpha freeze review 的 `passed` 结论。
 
 ## 3. 只允许继承的上游语义
 
@@ -61,4 +66,5 @@ position_quadrant
 | `04-audit-spec-v1.md` | draft / pre-gate / not frozen |
 | `05-build-card-v1.md` | draft / pre-gate / not frozen |
 
-Alpha 进入设计冻结前必须在 MALF WavePosition service released 之后重新审阅这些文档。
+Alpha 进入设计冻结前必须基于已放行的 MALF day WavePosition 重新审阅这些文档。
+当前下一步只允许 `Alpha freeze review`。

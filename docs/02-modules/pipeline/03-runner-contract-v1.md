@@ -1,12 +1,13 @@
 # Pipeline Runner Contract v1
 
-日期：2026-04-27
+日期：2026-04-29
 
 状态：draft / pre-gate / not frozen
 
 ## 1. Runner 目标
 
-Pipeline runner 负责在 MALF bounded proof gate 之后，记录单模块或受限范围内的编排运行、步骤记录、门禁快照和构建 manifest。
+Pipeline runner 负责在 MALF bounded proof gate passed 且有明确 Pipeline 卡之后，
+记录单模块或受限范围内的编排运行、步骤记录、门禁快照和构建 manifest。
 
 在 Pipeline 设计冻结前，本文件只冻结草案方向，不要求创建代码文件。
 
@@ -15,10 +16,13 @@ Pipeline runner 负责在 MALF bounded proof gate 之后，记录单模块或受
 所有 Pipeline runner 必须在运行前验证：
 
 ```text
-MALF bounded proof gate
+MALF bounded proof gate passed
+active card explicitly authorizes Pipeline freeze review
 ```
 
 缺少门禁账本、缺少最小模块运行证据、或当前施工位不允许该模块进入时，runner 必须拒绝推进编排。
+
+当前唯一业务下一步是 `Alpha freeze review`；Pipeline runner 仍不得创建。
 
 ## 3. Runner 列表
 

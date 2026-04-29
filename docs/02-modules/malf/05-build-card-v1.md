@@ -1,12 +1,13 @@
 # MALF Build Card v1
 
-日期：2026-04-27
+日期：2026-04-29
 
-状态：frozen
+状态：frozen / superseded by passed day proof
 
 ## 1. 本卡目标
 
-冻结 MALF day 的文档、schema、runner、audit 契约，为下一轮 MALF bounded proof 施工提供唯一依据。
+冻结 MALF day 的文档、schema、runner、audit 契约。本卡已被
+`malf-day-bounded-proof-20260428-01` 的 passed 执行闭环承接。
 
 ## 2. 本轮允许
 
@@ -31,7 +32,7 @@
 
 ## 4. 下一施工入口
 
-下一轮 MALF 施工只允许从 bounded proof 开始：
+本卡原授权的 bounded proof 已完成：
 
 ```text
 scripts/malf/run_malf_day_core_build.py
@@ -40,7 +41,11 @@ scripts/malf/run_malf_day_service_build.py
 scripts/malf/run_malf_day_audit.py
 ```
 
-代码文件尚未在本轮创建。
+当前下一步不再是继续扩大 MALF 施工，而是：
+
+```text
+Alpha freeze review
+```
 
 ## 5. 验收命令
 

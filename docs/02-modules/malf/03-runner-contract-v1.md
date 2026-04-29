@@ -1,8 +1,8 @@
 # MALF Runner Contract v1
 
-日期：2026-04-27
+日期：2026-04-29
 
-状态：frozen
+状态：frozen / day bounded proof passed
 
 ## 1. Runner 目标
 
@@ -17,7 +17,8 @@ MALF runner 必须支持 bounded proof 先行，再进入 segmented / full / res
 | `scripts/malf/run_malf_day_service_build.py` | 基于 Lifespan 发布 WavePosition |
 | `scripts/malf/run_malf_day_audit.py` | 执行 Core / Lifespan / Service 审计 |
 
-这些 runner 在本轮文档交付中只冻结契约，不要求创建代码文件。
+这些 runner 已用于 `malf-day-bounded-proof-20260428-01` 执行闭环并形成
+`passed` 结论。后续扩大到 segmented / full / resume 仍需单独门禁。
 
 ## 3. 构建顺序
 

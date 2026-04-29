@@ -1,12 +1,15 @@
 # MALF Audit Spec v1
 
-日期：2026-04-27
+日期：2026-04-29
 
-状态：frozen
+状态：frozen / day bounded proof passed
 
 ## 1. 审计目标
 
 MALF 审计用于证明 Core、Lifespan、Service 三层没有破坏权威语义，并且 WavePosition 可被 Alpha 只读消费。
+
+`malf-day-bounded-proof-20260428-01` 已按本审计规格形成 `hard_fail_count = 0`
+的 passed 结论。该结论是 Alpha freeze review 的前置证据，不是下游施工许可。
 
 ## 2. Core 硬审计
 

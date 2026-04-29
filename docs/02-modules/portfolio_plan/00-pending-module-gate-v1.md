@@ -1,12 +1,15 @@
 # Portfolio Plan Pending Module Gate v1
 
-日期：2026-04-27
+日期：2026-04-29
 
 状态：pre-gate draft / not frozen
 
 ## 1. 当前裁决
 
 Portfolio Plan 是 Position 之后的主线模块。本目录已补齐 pre-gate 六件套 draft，但本轮不冻结 Portfolio Plan 设计，不允许进入施工。
+
+截至 2026-04-29，当前唯一允许推进的是 `Alpha freeze review`。Portfolio Plan
+仍必须等待 Position release，不得绕过 Position 定义组合资金或目标暴露。
 
 ## 2. 等待条件
 

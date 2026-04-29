@@ -1,6 +1,6 @@
 # Data Foundation Runner Contract v1
 
-日期：2026-04-27
+日期：2026-04-29
 
 状态：draft / foundation-contract / not frozen
 
@@ -8,7 +8,7 @@
 
 本合同定义 Data Foundation 后续正式 runner 的命令边界、输入输出、幂等与断点规则。
 
-当前只存在 `scripts/data/run_data_bootstrap.py` 最小 bounded bootstrap support。它服务
+当前只存在 `scripts/data/run_data_bootstrap.py` 最小 bounded bootstrap support。它已服务
 MALF day bounded proof 的输入准备，不等于完整 Data Foundation runner 放行。
 
 ## 2. 目标 runner
@@ -139,8 +139,9 @@ Data Foundation runner 至少必须支持：
 | `segmented` | 参数已接受，当前仍走最小 bootstrap 路径 | 后续实现日期窗口和 symbol batch 分片语义 |
 | `full` | 参数已接受，当前仍走最小 bootstrap 路径 | 后续实现完整 universe / timeframe 全量构建语义 |
 
-因此，当前实现可证明 Data bounded bootstrap support 已存在，但不得被解释为正式
-`segmented` / `full` Data Foundation builder 已经放行。
+因此，当前实现可证明 Data bounded bootstrap support 已存在，并已支撑
+`malf-day-bounded-proof-20260428-01` 通过；但不得被解释为正式 `segmented` /
+`full` Data Foundation builder 已经放行。
 
 ## 5. 幂等与断点
 

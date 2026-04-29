@@ -1,6 +1,6 @@
 # Data Foundation Authority Design v1
 
-日期：2026-04-27
+日期：2026-04-29
 
 状态：draft / foundation-contract / not frozen
 
@@ -9,6 +9,9 @@
 Data Foundation 是 Asteria 的基础建设层，负责把外部或本地来源的客观市场事实整理为稳定、可追溯、可重复构建的 source-fact 与 market-base 数据产品。
 
 它不是策略主线模块，也不参与机会解释、持仓裁决、交易执行或系统读出。
+
+截至 2026-04-29，Data Foundation 仅有最小 bounded bootstrap support 支撑过
+MALF day proof；完整 Data Foundation 设计、schema、runner 仍未冻结。
 
 ```text
 Data Foundation = raw facts + metadata + market base
@@ -173,3 +176,6 @@ Data Foundation 未来冻结与放行必须满足：
 | Runner | raw / meta / base build runner 契约冻结 |
 | Audit | source traceability、客观性、去重、日历一致性审计冻结 |
 | Evidence | bounded proof 或首次构建证据落入 `H:\Asteria-report` 或 `H:\Asteria-Validated` |
+
+当前唯一业务下一步是 `Alpha freeze review`。Data Foundation 不因此取得新的
+正式施工许可，也不得被当作策略模块。

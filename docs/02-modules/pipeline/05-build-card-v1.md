@@ -1,12 +1,13 @@
 # Pipeline Build Card v1
 
-日期：2026-04-27
+日期：2026-04-29
 
 状态：draft / pre-gate / not frozen
 
 ## 1. 本卡目标
 
-补齐 Pipeline pre-gate 六件套 draft，为 MALF bounded proof gate 之后的 Pipeline 设计冻结做准备。
+补齐 Pipeline pre-gate 六件套 draft，为后续明确授权的 Pipeline 设计冻结做准备。
+MALF bounded proof gate 已通过，但当前主线下一步仍是 `Alpha freeze review`。
 
 本卡不允许代码施工，不允许建立全链路业务运行，不允许冻结 Pipeline。
 
@@ -25,7 +26,8 @@
 Pipeline 进入 design freeze 前必须等待：
 
 ```text
-MALF bounded proof gate
+MALF bounded proof gate passed
+active card explicitly authorizes Pipeline freeze review
 ```
 
 ## 4. 本轮允许
@@ -52,7 +54,7 @@ MALF bounded proof gate
 
 ## 6. 下一步入口
 
-MALF bounded proof gate 之后，Pipeline 才能进入：
+MALF bounded proof gate 已通过后，Pipeline 仍必须等待明确 Pipeline 卡，才可进入：
 
 ```text
 Pipeline design freeze review

@@ -1,19 +1,23 @@
 # Alpha Semantic Contract v1
 
-日期：2026-04-27
+日期：2026-04-29
 
-状态：draft / pre-gate / not frozen
+状态：draft / pre-gate / not frozen / freeze review next
 
 ## 1. 合同目的
 
 本合同定义 Alpha 在 Asteria 主线中的语义边界。Alpha 只能解释 MALF 已发布结构位置上的机会，不得重定义 WavePosition，不得写回 MALF，不得输出资金、仓位或订单语义。
+
+MALF day bounded proof 已通过，Alpha 可在 freeze review 中只读审阅 WavePosition
+接口是否满足本合同；该状态不授权 Alpha 代码施工或正式 DB 创建。
 
 ## 2. 前置门槛
 
 本合同在以下条件满足前不得冻结：
 
 ```text
-MALF WavePosition service released
+MALF day WavePosition release evidence passed
+Alpha freeze review passed
 ```
 
 Alpha 的任何正式输入字段必须以 MALF Service 已放行字段为准。

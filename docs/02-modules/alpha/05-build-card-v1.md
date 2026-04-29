@@ -1,12 +1,13 @@
 # Alpha Build Card v1
 
-日期：2026-04-27
+日期：2026-04-29
 
-状态：draft / pre-gate / not frozen
+状态：draft / pre-gate / not frozen / freeze review next
 
 ## 1. 本卡目标
 
-补齐 Alpha pre-gate 六件套 draft，为 MALF WavePosition released 之后的 Alpha 设计冻结做准备。
+补齐 Alpha pre-gate 六件套 draft，为 MALF day WavePosition released 之后的
+Alpha freeze review 做准备。
 
 本卡不允许代码施工，不允许创建正式 DuckDB，不允许冻结 Alpha。
 
@@ -19,13 +20,15 @@
 | implementation_allowed | no |
 | formal_db_write_allowed | no |
 | freeze_allowed | no |
+| current_allowed_next_action | `Alpha freeze review` |
 
 ## 3. 前置门槛
 
 Alpha 进入 design freeze 前必须等待：
 
 ```text
-MALF WavePosition service released
+MALF day WavePosition release evidence passed
+Alpha freeze review passed
 ```
 
 ## 4. 本轮允许
@@ -52,10 +55,10 @@ MALF WavePosition service released
 
 ## 6. 下一步入口
 
-MALF day bounded proof 通过并发布 WavePosition 后，Alpha 才能进入：
+MALF day bounded proof 已通过并发布 WavePosition。当前 Alpha 只能进入：
 
 ```text
-Alpha design freeze review
+Alpha freeze review
 ```
 
 该 review 必须重新审阅：

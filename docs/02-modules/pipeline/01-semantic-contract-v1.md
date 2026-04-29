@@ -1,6 +1,6 @@
 # Pipeline Semantic Contract v1
 
-日期：2026-04-27
+日期：2026-04-29
 
 状态：draft / pre-gate / not frozen
 
@@ -13,10 +13,14 @@
 本合同在以下条件满足前不得冻结：
 
 ```text
-MALF bounded proof gate
+MALF bounded proof gate passed
+active card explicitly authorizes Pipeline freeze review
 ```
 
 Pipeline 的正式输入字段必须来自模块运行元数据、门禁账本或 manifest 约定，而不是业务表语义。
+
+当前唯一业务下一步是 `Alpha freeze review`。Pipeline 不得因 MALF gate passed
+自行进入冻结、建库或全链路编排。
 
 ## 3. 输入语义
 

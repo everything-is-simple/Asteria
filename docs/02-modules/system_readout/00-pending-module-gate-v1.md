@@ -1,12 +1,15 @@
 # System Readout Pending Module Gate v1
 
-日期：2026-04-27
+日期：2026-04-29
 
 状态：pre-gate draft / not frozen
 
 ## 1. 当前裁决
 
 System Readout 是 Trade 之后的只读主线读出模块。本目录已补齐 pre-gate 六件套 draft，但本轮不冻结 System Readout 设计，不允许进入施工。
+
+截至 2026-04-29，当前唯一允许推进的是 `Alpha freeze review`。System Readout
+仍必须等待 Trade release，不得触发全链路重算或重定义上游字段。
 
 ## 2. 等待条件
 

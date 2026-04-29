@@ -1,12 +1,15 @@
 # MALF Semantic Contract v1
 
-日期：2026-04-27
+日期：2026-04-29
 
-状态：frozen
+状态：frozen / day bounded proof passed
 
 ## 1. 合同目的
 
 本合同定义 MALF 对 Asteria 主线提供的语义边界。下游只能消费这些语义，不得重定义、修补或写回 MALF。
+
+MALF day bounded proof 已通过；Alpha freeze review 可以只读审阅 WavePosition
+合同，但任何下游模块仍不得重定义、修补或写回 MALF。
 
 ## 2. 输入语义
 

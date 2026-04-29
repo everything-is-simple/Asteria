@@ -1,12 +1,13 @@
 # Alpha Runner Contract v1
 
-日期：2026-04-27
+日期：2026-04-29
 
-状态：draft / pre-gate / not frozen
+状态：draft / pre-gate / not frozen / freeze review next
 
 ## 1. Runner 目标
 
-Alpha runner 负责在 MALF WavePosition released 之后，对单个 alpha family 执行 bounded proof、segmented build、full build、resume 和 audit-only。
+Alpha runner 负责在 MALF WavePosition released 且 Alpha freeze review 通过之后，
+对单个 alpha family 执行 bounded proof、segmented build、full build、resume 和 audit-only。
 
 在 Alpha 设计冻结前，本文件只冻结草案方向，不要求创建代码文件。
 
@@ -15,7 +16,8 @@ Alpha runner 负责在 MALF WavePosition released 之后，对单个 alpha famil
 所有 Alpha runner 必须在运行前验证：
 
 ```text
-MALF WavePosition service released
+MALF day WavePosition release evidence passed
+Alpha freeze review passed
 ```
 
 缺少 `malf_wave_position`、缺少 `malf_interface_audit` 通过结论、或缺少 MALF release evidence 时，runner 必须拒绝正式 build。
@@ -29,6 +31,9 @@ MALF WavePosition service released
 | `scripts/alpha/run_alpha_bounded_proof.py` | 编排五个 family 的 bounded proof |
 
 这些 runner 在 pre-gate draft 阶段不创建代码文件。
+
+截至 2026-04-29，MALF day 前置已满足，但 Alpha freeze review 尚未形成 passed
+结论；因此仍不得创建正式 Alpha runner。
 
 ## 4. 构建顺序
 

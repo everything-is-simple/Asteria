@@ -1,12 +1,16 @@
 # Data Foundation Design Bridge v1
 
-日期：2026-04-27
+日期：2026-04-29
 
 ## 1. 目的
 
 本文件作为 Data Foundation 的稳定入口页，用来把旧的单文档入口桥接到新的六件套文档集。
 
 Data Foundation 仍然是 Asteria 的基础建设层，不是策略主线模块。
+
+本页按 `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip`
+之后的治理结论刷新。该快照是文档基线；MALF day bounded proof 已通过的事实
+来自 repo 内执行记录和 Validated release evidence，不来自旧快照覆盖。
 
 ## 2. 六件套位置
 
@@ -53,17 +57,28 @@ flowchart LR
 
 ## 5. 当前裁决
 
-Data Foundation 本轮已补齐 foundation six-doc draft，但仍不作为当前施工模块。
+Data Foundation 已补齐 foundation six-doc draft，并已有最小 bounded bootstrap
+support 服务过 MALF day bounded proof 的输入准备；这不等于完整 Data Foundation
+runner、schema 或五库正式构建已经放行。
 
-第一主线施工模块仍是：
+当前已完成的第一主线放行事实是：
 
 ```text
-MALF
+MALF day bounded proof passed
 ```
 
-但 MALF day bounded proof 的最小输入契约仍依赖：
+MALF day bounded proof 的最小输入契约仍依赖：
 
 ```text
 market_meta.duckdb
 market_base_day.duckdb
 ```
+
+下一步只允许进入：
+
+```text
+Alpha freeze review
+```
+
+Data Foundation 仍不得被当作策略模块，也不得借 Alpha freeze review 扩大为正式
+Data 全量施工卡。

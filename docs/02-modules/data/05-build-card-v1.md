@@ -1,6 +1,6 @@
 # Data Foundation Build Card v1
 
-日期：2026-04-27
+日期：2026-04-29
 
 状态：draft / foundation-contract / bounded-bootstrap-support
 
@@ -12,7 +12,7 @@
 TDX txt -> raw_market.duckdb -> market_base_day.duckdb
 ```
 
-该实现只服务 MALF day bounded proof 的输入准备，不放行完整 Data Foundation，也不占用
+该实现已服务 MALF day bounded proof 的输入准备，不放行完整 Data Foundation，也不占用
 Alpha / Signal / Position / Portfolio / Trade / System 的主线施工位。
 
 ## 2. 本轮允许修改
@@ -79,7 +79,13 @@ git diff --check
 
 ## 6. 下一轮建议
 
-Data Foundation 文档补齐后，下一轮建议输出总审查清单，明确：
+Data Foundation 文档补齐且 MALF day proof passed 后，当前唯一业务下一步是：
+
+```text
+Alpha freeze review
+```
+
+后续 Data Foundation 另需输出总审查清单，明确：
 
 ```text
 Data / MALF / Alpha / Signal / Position / Portfolio Plan / Trade / System Readout / Pipeline

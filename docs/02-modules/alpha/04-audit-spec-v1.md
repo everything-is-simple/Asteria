@@ -1,18 +1,22 @@
 # Alpha Audit Spec v1
 
-日期：2026-04-27
+日期：2026-04-29
 
-状态：draft / pre-gate / not frozen
+状态：draft / pre-gate / not frozen / freeze review next
 
 ## 1. 审计目标
 
 Alpha 审计用于证明 Alpha 只读消费 MALF WavePosition，输出仅限 opportunity event / score / candidate，并且没有越界写入 MALF、Signal、Position、Portfolio Plan、Trade 或 System。
 
+当前只允许在 Alpha freeze review 中审阅本审计规格。MALF day proof passed
+只证明上游 WavePosition 可供只读审阅，不证明 Alpha 审计已实现或已放行。
+
 ## 2. 前置审计
 
 | 检查 | 失败裁决 |
 |---|---|
-| MALF WavePosition service 已 release | hard fail |
+| MALF WavePosition service 已 release 且 MALF day proof passed | hard fail |
+| Alpha freeze review 已 passed | hard fail |
 | `malf_wave_position` 可读取 | hard fail |
 | `malf_interface_audit` 硬规则通过 | hard fail |
 | source MALF service version 已记录 | hard fail |

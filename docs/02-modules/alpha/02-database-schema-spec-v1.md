@@ -1,16 +1,20 @@
 # Alpha Database Schema Spec v1
 
-日期：2026-04-27
+日期：2026-04-29
 
-状态：draft / pre-gate / not frozen
+状态：draft / pre-gate / not frozen / freeze review next
 
 ## 1. 规格范围
 
 本规格为 Alpha pre-gate draft。正式 schema 冻结必须等待：
 
 ```text
-MALF WavePosition service released
+MALF day WavePosition release evidence passed
+Alpha freeze review passed
 ```
+
+当前只允许对本规格做 freeze review。不得创建正式 Alpha DuckDB，不得把
+pre-gate schema 当作 released schema。
 
 目标 Alpha DB：
 
