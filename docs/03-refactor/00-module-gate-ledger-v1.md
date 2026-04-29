@@ -7,11 +7,13 @@
 ```text
 H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md
 H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
+H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
 ```
 
-`214427` 快照是 docs/code 基线；快照之后的 repo HEAD 事实以执行记录、
+`214427` 快照是 2026-04-28 docs/code 基线；`130309` 快照是三天重构成果的
+当前系统 docs/code 归档。快照之后的 repo HEAD 事实以执行记录、
 conclusion index、governance registry 和 Validated release evidence 为准。
 
 ## 1. 当前状态
@@ -96,6 +98,7 @@ MALF 冻结文档与当前 proof 状态：
 | `docs/02-modules/malf/03-runner-contract-v1.md` | frozen / day bounded proof passed |
 | `docs/02-modules/malf/04-audit-spec-v1.md` | frozen / day bounded proof passed |
 | `docs/02-modules/malf/05-build-card-v1.md` | frozen / superseded by passed day proof |
+| `docs/02-modules/malf/06-implementation-traceability-annex-v1.md` | annex / traceability only / no semantic amendment |
 
 下游本轮 pre-gate / 占位文档：
 
@@ -151,6 +154,7 @@ MALF 冻结文档与当前 proof 状态：
 ```text
 H:\Asteria-Validated\Asteria-mainline-module-docs-v1.zip
 H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
+H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip
 H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip
 ```
 

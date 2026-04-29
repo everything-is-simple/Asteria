@@ -29,10 +29,12 @@ H:\Asteria-Validated\Asteria-mainline-module-docs-v1.zip
 
 ```text
 H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
+H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip
 ```
 
-该快照之后的 repo HEAD 事实由治理执行记录、commit history 和新的 Validated
-归档补充，不得用旧 zip 覆盖当前仓库。
+`214427` 是 2026-04-28 锚点；`130309` 是三天重构成果的当前系统 docs/code
+快照。快照之后的 repo HEAD 事实由治理执行记录、commit history 和新的 Validated
+归档补充，不得用任何旧 zip 覆盖当前仓库。
 
 ## 2. 权威来源
 
@@ -59,6 +61,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2\
 | `docs/04-execution/records/malf/malf-day-bounded-proof-20260428-01.conclusion.md` | MALF day bounded proof 已通过 |
 | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` | MALF day release evidence |
 | `H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip` | 文档权威链刷新归档 |
+| `docs/04-execution/records/governance/malf-authority-compatibility-audit-20260429-01.conclusion.md` | 当前系统快照未偏移 MALF 权威 |
 
 ## 3. 交付状态表
 

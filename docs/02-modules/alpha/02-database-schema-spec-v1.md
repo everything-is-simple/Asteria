@@ -10,7 +10,7 @@
 
 ```text
 MALF day WavePosition release evidence passed
-Alpha freeze review passed
+pending Alpha freeze review conclusion
 ```
 
 当前只允许对本规格做 freeze review。不得创建正式 Alpha DuckDB，不得把

@@ -16,7 +16,7 @@ Alpha 设计冻结和施工必须等待：
 
 ```text
 MALF day WavePosition release evidence passed
-Alpha freeze review passed
+pending Alpha freeze review conclusion
 ```
 
 该门槛至少要求：

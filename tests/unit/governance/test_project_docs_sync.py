@@ -121,7 +121,7 @@ def test_docs_sync_rejects_stale_validated_docs_code_snapshot(tmp_path: Path) ->
     inventory_path = repo_root / "docs" / "01-architecture" / "02-validated-asset-inventory-v1.md"
     inventory_path.write_text(
         inventory_path.read_text(encoding="utf-8").replace(
-            "Asteria-docs-code-20260428-214427.zip",
+            "Asteria-docs-code-20260429-130309.zip",
             "Asteria-docs-code-20260428-123534.zip",
         ),
         encoding="utf-8",

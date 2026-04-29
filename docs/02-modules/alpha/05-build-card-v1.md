@@ -28,7 +28,7 @@ Alpha 进入 design freeze 前必须等待：
 
 ```text
 MALF day WavePosition release evidence passed
-Alpha freeze review passed
+pending Alpha freeze review conclusion
 ```
 
 ## 4. 本轮允许

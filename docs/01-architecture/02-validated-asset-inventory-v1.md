@@ -22,6 +22,7 @@
 | `H:\Asteria-Validated\validated-asset-manifest-20260429-01.json` | Validated 根目录机器清单 | 记录顶层资产角色、大小、时间和 SHA256 |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 架构级剖切面研究报告 | 作为治理、历史总账、增量协议与下一阶段施工路径的分析输入 |
 | `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` | 当前仓库文档与代码归档 | 作为 2026-04-28 release gate closure 前的正式代码/文档快照 |
+| `H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip` | 当前系统文档与代码归档 | 作为三天重构成果的最新 docs/code 快照；其语义必须通过 repo 执行记录和 MALF 兼容审计解释 |
 | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` | MALF day 放行证据 | 证明 MALF day Core/Lifespan/Service 三库 bounded proof 已通过 |
 | `H:\Asteria-Validated\Asteria-governance-release-gate-closure-20260428-01.zip` | 治理 release gate 证据 | 证明 release gate 四件套与外部 evidence 检查已落地 |
 | `H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip` | 文档权威链刷新证据 | 证明 Validated 资产、repo 文档、docs sync 检查已形成闭环 |
@@ -82,6 +83,7 @@ H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研
 H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.pdf
 H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.docx
 H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
+H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip
 ```
 
 用途：
@@ -89,13 +91,16 @@ H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
 1. 记录 2026-04-28 时点对治理、主线、数据、编排四个切面的剖切面判断。
 2. 作为“为什么要把多 DuckDB 视为逻辑历史总账本”的正式分析依据。
 3. 作为 hard governance 落地与 release gate closure 前后的对照快照。
+4. `20260429-130309` 作为三天重构后的当前系统文档与代码快照，必须结合
+   `malf-authority-compatibility-audit-20260429-01` 解释其没有偏移 MALF 权威。
 
 裁决：
 
 ```text
-报告是分析输入，zip 是代码/文档快照；二者都进入 Validated。`214427` 快照之后的
-repo HEAD 变更必须由 repo 内执行记录、closeout、manifest 和新的 Validated 归档补齐，
-不得用旧 zip 覆盖当前仓库真相。
+报告是分析输入，zip 是代码/文档快照；二者都进入 Validated。`214427` 是 2026-04-28
+锚点，`130309` 是 2026-04-29 当前系统快照。快照之间和快照之后的 repo HEAD 变更必须由
+repo 内执行记录、closeout、manifest 和新的 Validated 归档补齐，不得用任何旧 zip 覆盖
+当前仓库真相。
 ```
 
 ### 3.4 当前 release evidence
@@ -108,6 +113,7 @@ H:\Asteria-Validated\Asteria-governance-release-gate-closure-20260428-01.zip
 H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip
 H:\Asteria-Validated\Asteria-external-root-assets-refresh-20260429-01.zip
 H:\Asteria-Validated\Asteria-validated-root-manifest-refresh-20260429-01.zip
+H:\Asteria-Validated\Asteria-malf-authority-compatibility-audit-20260429-01.zip
 ```
 
 用途：
@@ -117,6 +123,7 @@ H:\Asteria-Validated\Asteria-validated-root-manifest-refresh-20260429-01.zip
 3. 证明 docs authority refresh 已经把 Validated 资产锚点纳入 docs sync 检查。
 4. 证明 repo 外三根目录的职责分区和资产 inventory 已经形成治理证据。
 5. 证明 Validated 根目录的人读 README 与机器 manifest 已经形成治理证据。
+6. 证明当前系统 docs/code 快照已按 MALF 权威目录与 zip 做兼容审计，结论为不偏移。
 
 裁决：
 
@@ -269,7 +276,9 @@ H:\Asteria-Validated\Market-Average-Lifespan-system\marketlifespan-quant\system-
 4. 把 `A股市场` 与 `申万行业分类` 作为 `market_meta` 的 reference 资料池。
 5. 把五份当前 release / governance evidence zip 作为门禁状态证明。
 6. 使用 `README.md` 和 `validated-asset-manifest-20260429-01.json` 快速判断 Validated 顶层资产职责。
-6. 把剖切面研究报告作为逻辑历史总账、每日增量、pipeline ledger 的架构依据。
+7. 把剖切面研究报告作为逻辑历史总账、每日增量、pipeline ledger 的架构依据。
+8. 把 `Asteria-docs-code-20260429-130309.zip` 作为当前系统 docs/code 快照，但只通过
+   repo 执行结论和 MALF 兼容审计解释其状态。
 
 ### 6.2 现在不要做
 

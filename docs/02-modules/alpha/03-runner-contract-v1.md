@@ -17,7 +17,7 @@ Alpha runner 负责在 MALF WavePosition released 且 Alpha freeze review 通过
 
 ```text
 MALF day WavePosition release evidence passed
-Alpha freeze review passed
+pending Alpha freeze review conclusion
 ```
 
 缺少 `malf_wave_position`、缺少 `malf_interface_audit` 通过结论、或缺少 MALF release evidence 时，runner 必须拒绝正式 build。

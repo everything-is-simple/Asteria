@@ -17,7 +17,7 @@ MALF day bounded proof 已通过，Alpha 可在 freeze review 中只读审阅 Wa
 
 ```text
 MALF day WavePosition release evidence passed
-Alpha freeze review passed
+pending Alpha freeze review conclusion
 ```
 
 Alpha 的任何正式输入字段必须以 MALF Service 已放行字段为准。
