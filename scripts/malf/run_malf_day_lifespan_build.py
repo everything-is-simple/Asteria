@@ -20,6 +20,7 @@ def main() -> int:
     parser.add_argument(
         "--mode", choices=["bounded", "segmented", "full", "resume", "audit-only"], required=True
     )
+    parser.add_argument("--source-db", required=True)
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--schema-version", default=MALF_SCHEMA_VERSION)
     parser.add_argument("--rule-version", required=True)
@@ -31,7 +32,7 @@ def main() -> int:
 
     summary = run_malf_day_lifespan_build(
         MalfDayRequest(
-            source_db=Path("NUL"),
+            source_db=Path(args.source_db),
             core_db=Path(args.core_db),
             lifespan_db=Path(args.target_db),
             service_db=Path("NUL"),

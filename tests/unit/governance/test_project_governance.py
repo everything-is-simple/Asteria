@@ -5,6 +5,11 @@ from scripts.governance.check_project_governance import run_checks
 
 from asteria.governance.release_gates import ReleaseGateRecord, _check_gate_ledger
 
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python 3.10
+    import tomli as tomllib
+
 
 def _copy_governance_repo(tmp_path: Path) -> Path:
     source_root = Path(__file__).resolve().parents[3]
@@ -32,6 +37,33 @@ def test_project_governance_passes_current_repo() -> None:
     repo_root = Path(__file__).resolve().parents[3]
 
     assert run_checks(repo_root) == []
+
+
+def test_current_gate_reopens_position_reentry_after_malf_dense_passed() -> None:
+    repo_root = Path(__file__).resolve().parents[3]
+    registry_path = repo_root / "governance" / "module_gate_registry.toml"
+    with registry_path.open("rb") as handle:
+        registry = tomllib.load(handle)
+    modules = {module["module_id"]: module for module in registry["modules"]}
+    conclusion_index = (
+        repo_root / "docs" / "04-execution" / "00-conclusion-index-v1.md"
+    ).read_text(encoding="utf-8")
+    malf_conclusion = (
+        repo_root
+        / "docs"
+        / "04-execution"
+        / "records"
+        / "malf"
+        / "malf-lifespan-dense-bar-snapshot-resolution-20260429-01.conclusion.md"
+    ).read_text(encoding="utf-8")
+
+    assert registry["active_mainline_module"] == "position"
+    assert registry["current_allowed_next_card"] == "position_freeze_review_reentry"
+    assert modules["position"]["allow_review"] is True
+    assert modules["position"]["allow_build"] is False
+    assert modules["position"]["next_card"] == "position_freeze_review_reentry"
+    assert "position-freeze-review-reentry-20260430-01" in conclusion_index
+    assert "状态：`passed`" in malf_conclusion
 
 
 def test_project_governance_rejects_multiple_build_allowed_mainline_modules(
@@ -80,8 +112,8 @@ def test_project_governance_rejects_missing_current_next_card_file(tmp_path: Pat
         / "docs"
         / "04-execution"
         / "records"
-        / "malf"
-        / "malf-lifespan-dense-bar-snapshot-resolution-20260429-01.card.md"
+        / "position"
+        / "position-freeze-review-reentry-20260430-01.card.md"
     )
     if card_path.exists():
         card_path.unlink()
@@ -100,21 +132,11 @@ def test_project_governance_rejects_current_next_card_that_is_already_blocked(
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'active_mainline_module = "malf"',
-            'active_mainline_module = "position"',
-        )
-        .replace(
-            'current_allowed_next_card = "malf_lifespan_dense_bar_snapshot_resolution"',
+            'current_allowed_next_card = "position_freeze_review_reentry"',
             'current_allowed_next_card = "position_freeze_review"',
-        )
-        .replace(
-            'status = "blocked_upstream_gap"\nallow_build = false\nallow_review = false',
-            'status = "pre_gate_draft"\nallow_build = false\nallow_review = true',
-        )
-        .replace(
-            'next_card = "malf_lifespan_dense_bar_snapshot_resolution"',
+        ).replace(
+            'next_card = "position_freeze_review_reentry"',
             'next_card = "position_freeze_review"',
-            1,
         ),
         encoding="utf-8",
     )
@@ -195,7 +217,7 @@ def test_project_governance_rejects_docs_sync_next_card_mismatch(tmp_path: Path)
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            '\nnext_card = "malf_lifespan_dense_bar_snapshot_resolution"',
+            '\nnext_card = "position_freeze_review_reentry"',
             '\nnext_card = "malf_day_bounded_proof"',
         ),
         encoding="utf-8",

@@ -27,8 +27,10 @@ def build_wave_position_rows(
                    update_rank, stagnation_rank, life_state, position_quadrant,
                    guard_boundary_price, sample_version, lifespan_rule_version
             from malf_lifespan_snapshot
+            where run_id = ?
             order by symbol, bar_dt, snapshot_id
-            """
+            """,
+            [request.run_id],
         ).fetchall()
 
     for snapshot in snapshots:

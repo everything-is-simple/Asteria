@@ -5,8 +5,8 @@
 ## 1. Summary
 
 当前基线：`MALF day bounded proof`、`Alpha freeze review`、`Alpha bounded proof`、
-`Signal freeze review` 与 `Signal bounded proof` 已通过；下一步只允许 Position freeze
-review。
+`Signal freeze review`、`Signal bounded proof` 与 `MALF dense resolution` 已通过；
+下一步只允许 Position freeze review reentry 的 review-only 审查。
 
 本路线图依据以下权威资产刷新：
 
@@ -88,9 +88,11 @@ Pipeline schedules and records only
 - [x] 产出 Signal evidence 与 release conclusion。
 - [x] Release gate 通过后，只授权 `Position freeze review`。
 - [x] Position freeze review 已登记 blocked，当前回退到 `MALF Lifespan dense bar snapshot resolution`。
+- [x] MALF Lifespan dense bar snapshot resolution 已通过，当前只授权 `Position freeze review reentry`。
 
 ## 7. Phase 4: Position Freeze + Bounded Proof
 
+- [ ] 先执行 `Position freeze review reentry`，只做 review-only，不创建 Position runner 或 DB。
 - [ ] 重审 Position 六件套，确认 Position 把 formal signal 转为 position candidate / entry plan / exit plan。
 - [ ] 冻结 `position.duckdb` schema、自然键、状态机、幂等写入规则。
 - [ ] 实现 Position bounded runner 与 replay/checkpoint。
@@ -172,9 +174,9 @@ Pipeline schedules and records only
 
 ## 16. Assumptions
 
-- 当前事实基线以 `MALF day bounded proof passed`、`Alpha bounded proof passed` 和
-  `Signal bounded proof passed` 为准。
-- 当前下一卡固定为 `MALF Lifespan dense bar snapshot resolution`，不是 Position construction。
+- 当前事实基线以 `MALF day bounded proof passed`、`Alpha bounded proof passed`、
+  `Signal bounded proof passed` 和 `MALF dense resolution passed` 为准。
+- 当前下一卡固定为 `Position freeze review reentry`，不是 Position construction。
 - Data Foundation 是地基轨道，不进入策略主线排序。
 - Pipeline 是编排与记录轨道，不进入业务主线排序。
 - 不同时施工两个策略主线模块。

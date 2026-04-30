@@ -25,6 +25,7 @@ refactor-governance
 Alpha bounded proof passed
 Signal freeze review passed
 Signal bounded proof passed
+MALF Lifespan dense bar snapshot resolution passed
 ```
 
 当前已交付主线模块文档索引：
@@ -44,19 +45,19 @@ Signal
 当前最新通过门禁：
 
 ```text
-Signal bounded proof
+MALF Lifespan dense bar snapshot resolution
 ```
 
 当前已打开执行卡：
 
 ```text
-MALF Lifespan dense bar snapshot resolution card
+Position freeze review reentry card
 ```
 
 当前只允许施工对象：
 
 ```text
-MALF Lifespan dense bar snapshot resolution
+Position freeze review reentry / review-only
 ```
 
 当前已通过 bounded proof 的主线模块：
@@ -65,21 +66,23 @@ MALF Lifespan dense bar snapshot resolution
 MALF day
 Alpha day
 Signal day
+MALF dense bar-level WavePosition
 ```
 
 Signal freeze review 与 Signal bounded proof 已通过。Position freeze review 已登记为
-blocked。当前只允许 MALF Lifespan dense bar snapshot resolution；不得扩展为
-Position 施工、Signal full build、下游施工或全链路 pipeline。
+blocked。MALF Lifespan dense bar snapshot resolution 已通过。当前只允许 Position
+freeze review reentry 的 review-only 审查；不得扩展为 Position bounded proof、Position
+施工、Signal full build、下游施工或全链路 pipeline。
 
 ## 2. 模块状态表
 
 | 顺序 | 模块 | 文档状态 | 冻结状态 | 是否允许施工 | 文档位置 | 说明 |
 |---:|---|---|---|---:|---|---|
 | 0 | Data Foundation | foundation six-doc draft | not frozen | 否 | `docs/02-modules/data/` | 地基输入契约，非策略主线，不占主线施工位 |
-| 1 | MALF | delivered six-doc set / day proof passed | frozen | 是，dense resolution only | `docs/02-modules/malf/` | day bounded proof 已通过；当前只允许 dense bar-level WavePosition resolution |
+| 1 | MALF | delivered six-doc set / dense resolution passed | frozen | 否 | `docs/02-modules/malf/` | day bounded proof 与 dense bar-level WavePosition resolution 已通过 |
 | 2 | Alpha | frozen six-doc set / bounded proof passed | released | 否 | `docs/02-modules/alpha/` | bounded proof 已通过；full build 需另开卡 |
 | 3 | Signal | frozen six-doc set / bounded proof passed | released | 否 | `docs/02-modules/signal/` | bounded proof 已通过；full build 需另开卡 |
-| 4 | Position | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/position/` | freeze review 已 blocked；不允许 bounded proof 或施工 |
+| 4 | Position | pre-gate six-doc draft | not frozen | 是，review-only | `docs/02-modules/position/` | freeze review reentry 已打开；不允许 bounded proof 或施工 |
 | 5 | Portfolio Plan | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/portfolio_plan/` | 等 Position 放行后重新审阅并冻结 |
 | 6 | Trade | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/trade/` | 等 Portfolio Plan 放行后重新审阅并冻结 |
 | 7 | System Readout | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/system_readout/` | 等 Trade 放行后重新审阅并冻结 |
@@ -194,8 +197,9 @@ MALF day bounded proof 已通过。
 
 MALF day 放行后打开的 Alpha freeze review、Alpha bounded proof、Signal freeze
 review 和 Signal bounded proof 均已通过。Position freeze review 已登记为 blocked。
-当前下一步唯一允许动作是 MALF Lifespan dense bar snapshot resolution；Signal full
-build、Position 施工、Portfolio Plan、Trade、System Readout、Pipeline 仍不允许直接施工。
+MALF Lifespan dense bar snapshot resolution 已通过。当前下一步唯一允许动作是
+Position freeze review reentry；Signal full build、Position bounded proof、Position 施工、
+Portfolio Plan、Trade、System Readout、Pipeline 仍不允许直接施工。
 
 ## 6. Alpha Freeze Review 放行记录
 
@@ -277,12 +281,35 @@ Signal bounded proof 已通过。
 | hard audit | `hard_fail_count = 0` |
 
 Signal bounded proof 只放行 bounded proof 产物和 `signal.duckdb` 当前表面，不授权
-Signal full build、Position 施工或全链路 pipeline。下一步只允许 MALF Lifespan dense
-bar snapshot resolution。
+Signal full build、Position 施工或全链路 pipeline。后续 Position freeze review 已登记
+blocked，MALF dense resolution 已通过，下一步只允许 Position freeze review reentry。
 
-## 10. 施工锁
+## 10. MALF Dense Resolution 放行记录
 
-在 MALF dense bar-level WavePosition resolution 未闭环并另有明确下游 build card 前，不允许：
+MALF Lifespan dense bar snapshot resolution 已通过。
+
+| 项 | 值 |
+|---|---|
+| run_id | `malf-lifespan-dense-bar-snapshot-resolution-20260429-01` |
+| source DB | `H:\Asteria-temp\data-bootstrap-smoke-all-2\market_base_day.duckdb` |
+| sample scope | `day / 2024-01-01..2024-12-31 / symbol_limit=4` |
+| Core DB | `H:\Asteria-data\malf_core_day.duckdb` |
+| Lifespan DB | `H:\Asteria-data\malf_lifespan_day.duckdb` |
+| Service DB | `H:\Asteria-data\malf_service_day.duckdb` |
+| closeout | `H:\Asteria-report\malf\2026-04-30\malf-lifespan-dense-bar-snapshot-resolution-20260429-01\closeout.md` |
+| validated evidence | `H:\Asteria-Validated\Asteria-malf-lifespan-dense-bar-snapshot-resolution-20260429-01.zip` |
+| execution conclusion | `docs/04-execution/records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.conclusion.md` |
+| hard audit | `hard_fail_count = 0` |
+| allowed next action | `Position freeze review reentry` |
+| module | `malf` |
+
+MALF dense resolution 只放行 dense bar-level Lifespan snapshot 与对应
+`malf_wave_position` 表面，不授权 Position bounded proof、Position 施工、Signal
+pinning、下游施工或全链路 pipeline。
+
+## 11. 施工锁
+
+在 Position freeze review reentry 未闭环并另有明确 build card 前，不允许：
 
 | 禁止项 |
 |---|
@@ -294,7 +321,7 @@ bar snapshot resolution。
 | 让 Alpha、Signal、Portfolio、Trade、System 写回 MALF |
 | 合并 `wave_core_state` 与 `system_state` |
 
-## 11. MALF 放行定义
+## 12. MALF 放行定义
 
 MALF day 首轮放行标准：
 

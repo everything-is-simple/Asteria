@@ -29,14 +29,14 @@ def test_docs_sync_rejects_malf_next_card_that_repeats_completed_proof(
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            '\nnext_card = "malf_lifespan_dense_bar_snapshot_resolution"',
+            '\nnext_card = "position_freeze_review_reentry"',
             '\nnext_card = "malf_day_bounded_proof"',
         ),
         encoding="utf-8",
     )
 
     assert any(
-        "MALF next_card must be malf_lifespan_dense_bar_snapshot_resolution" in message
+        "MALF next_card must be position_freeze_review_reentry" in message
         for message in _messages(repo_root)
     )
 

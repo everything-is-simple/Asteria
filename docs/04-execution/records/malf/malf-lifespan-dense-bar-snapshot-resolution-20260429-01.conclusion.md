@@ -1,28 +1,41 @@
 # MALF Lifespan Dense Bar Snapshot Resolution Conclusion
 
-日期：2026-04-29
+日期：2026-04-30
 
-状态：`opened`
+状态：`passed`
 
 ## 1. 结论
 
-`malf-lifespan-dense-bar-snapshot-resolution-20260429-01` 已正式打开为当前主线
-next card。该卡接管已被 Position freeze review 暴露的 MALF dense bar-level
-WavePosition gap，避免门禁继续指向已完成且 blocked 的 `position_freeze_review`。
+`malf-lifespan-dense-bar-snapshot-resolution-20260429-01` 已形成正式闭环。MALF
+Lifespan 已按 source bar 生成 dense snapshot，MALF Service 已按本次 Lifespan run 发布
+dense `malf_wave_position`，增强 audit 的 hard checks 全部通过。
 
 ## 2. 放行影响
 
 | 项 | 结果 |
 |---|---|
-| allowed next action | `MALF Lifespan dense bar snapshot resolution` |
+| allowed next action | `Position freeze review reentry` |
 | MALF day bounded proof | `still valid` |
+| MALF dense resolution | `passed` |
+| Position freeze review re-entry | `opened / review-only` |
 | Position bounded proof | `not opened` |
 | Position construction opened | `no` |
 | downstream writeback opened | `no` |
 | Signal pinning scope | `deferred to independent card` |
 
-## 3. 证据入口
+## 3. 结论依据
+
+- `hard_fail_count = 0`
+- `lifespan_snapshot_count = 935`
+- `service_wave_position_count = 935`
+- `lifespan_dense_source_bar_coverage`、`service_dense_lifespan_coverage` 与
+  `service_transition_semantics` 均为 `pass`
+- 正式证据资产已落到 `H:\Asteria-report` 与 `H:\Asteria-Validated`
+
+## 4. 证据入口
 
 - [card](malf-lifespan-dense-bar-snapshot-resolution-20260429-01.card.md)
 - [record](malf-lifespan-dense-bar-snapshot-resolution-20260429-01.record.md)
 - [evidence-index](malf-lifespan-dense-bar-snapshot-resolution-20260429-01.evidence-index.md)
+- closeout report: `H:\Asteria-report\malf\2026-04-30\malf-lifespan-dense-bar-snapshot-resolution-20260429-01\closeout.md`
+- validated zip: `H:\Asteria-Validated\Asteria-malf-lifespan-dense-bar-snapshot-resolution-20260429-01.zip`

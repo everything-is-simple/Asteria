@@ -29,14 +29,15 @@ flowchart LR
 | 项 | 当前状态 |
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal` |
-| 当前已通过 bounded proof | `MALF day`; `Alpha day`; `Signal day` |
-| 当前已打开执行卡 | `MALF Lifespan dense bar snapshot resolution card` |
-| 当前只允许施工 | `MALF Lifespan dense bar snapshot resolution` |
-| 当前仍禁止 | Alpha full build、Signal full build、Position/Portfolio Plan/Trade/System/Pipeline 施工 |
+| 当前已通过 bounded proof | `MALF day`; `Alpha day`; `Signal day`; `MALF dense bar-level WavePosition` |
+| 当前已打开执行卡 | `Position freeze review reentry card` |
+| 当前只允许施工 | `Position freeze review reentry / review-only` |
+| 当前仍禁止 | Alpha full build、Signal full build、Position bounded proof、Position construction、Portfolio Plan/Trade/System/Pipeline 施工 |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Position freeze
-review 已登记 blocked；后续只允许 MALF Lifespan dense bar snapshot resolution，但仍不授权
-Alpha full build、Signal full build、Position construction、下游施工或全链路 pipeline。
+review 已登记 blocked；MALF Lifespan dense bar snapshot resolution 已通过。后续只允许
+Position freeze review reentry 的 review-only 审查，但仍不授权 Alpha full build、Signal
+full build、Position bounded proof、Position construction、下游施工或全链路 pipeline。
 
 ## 2. 主线模块
 
@@ -203,7 +204,7 @@ design freeze
 当前主线图不是“全系统已上线图”。它是模块依赖和施工顺序的法律图：
 
 ```text
-MALF day passed -> Alpha freeze review passed -> Alpha bounded proof passed -> Signal freeze review passed -> Signal bounded proof passed -> Position freeze review blocked -> MALF dense resolution card
+MALF day passed -> Alpha freeze review passed -> Alpha bounded proof passed -> Signal freeze review passed -> Signal bounded proof passed -> Position freeze review blocked -> MALF dense resolution passed -> Position freeze review reentry card
 ```
 
 任何下游实现都必须等前置模块完成 freeze / proof / release evidence。
