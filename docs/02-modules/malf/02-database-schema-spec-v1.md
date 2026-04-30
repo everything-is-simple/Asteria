@@ -1,8 +1,8 @@
 # MALF Database Schema Spec v1
 
-日期：2026-04-29
+日期：2026-04-30
 
-状态：frozen / day bounded proof passed
+状态：frozen / day bounded proof passed / complete alignment closeout passed
 
 ## 1. 规格范围
 

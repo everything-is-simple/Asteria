@@ -39,7 +39,7 @@ def test_project_governance_passes_current_repo() -> None:
     assert run_checks(repo_root) == []
 
 
-def test_current_gate_reopens_position_reentry_after_malf_dense_passed() -> None:
+def test_current_gate_reopens_position_reentry_after_malf_closeout_passed() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     with registry_path.open("rb") as handle:
@@ -54,11 +54,14 @@ def test_current_gate_reopens_position_reentry_after_malf_dense_passed() -> None
         / "04-execution"
         / "records"
         / "malf"
-        / "malf-lifespan-dense-bar-snapshot-resolution-20260429-01.conclusion.md"
+        / "malf-complete-alignment-closeout-20260430-01.conclusion.md"
     ).read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == "position"
     assert registry["current_allowed_next_card"] == "position_freeze_review_reentry"
+    assert registry["latest_mainline_release_run_id"] == (
+        "malf-complete-alignment-closeout-20260430-01"
+    )
     assert modules["position"]["allow_review"] is True
     assert modules["position"]["allow_build"] is False
     assert modules["position"]["next_card"] == "position_freeze_review_reentry"

@@ -41,13 +41,14 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
 当前门禁状态：
 
 ```text
-MALF day bounded proof passed -> Alpha freeze review passed -> Alpha bounded proof passed -> Signal freeze review passed -> Signal bounded proof passed -> Position freeze review blocked -> MALF dense resolution card
--> MALF dense resolution passed -> Position freeze review reentry card
+MALF day bounded proof passed -> Alpha freeze review passed -> Alpha bounded proof passed -> Signal freeze review passed -> Signal bounded proof passed -> Position freeze review blocked
+-> MALF complete alignment closeout passed -> Position freeze review reentry card
 ```
 
-Signal bounded proof 已完成；Position freeze review 已登记为 blocked；MALF Lifespan
-dense bar snapshot resolution 已通过。当前只授权 Position freeze review reentry
-的 review-only 审查，不授权 Signal full build、Position 施工、Alpha full build、下游施工或全链路 pipeline。
+Signal bounded proof 已完成；Position freeze review 已登记为 blocked；MALF complete
+alignment closeout 已通过并取代旧 dense/hard-audit evidence 作为当前 MALF day dense
+正式证据。当前只授权 Position freeze review reentry 的 review-only 审查，不授权 Signal
+full build、Position 施工、Alpha full build、下游施工或全链路 pipeline。
 
 ## 阅读入口
 

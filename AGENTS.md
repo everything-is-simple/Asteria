@@ -27,6 +27,7 @@ Current gate:
 - `Signal bounded proof passed`
 - `Position freeze review blocked`
 - `MALF Lifespan dense bar snapshot resolution passed`
+- `MALF complete alignment closeout passed`
 - Next allowed action: `Position freeze review reentry`
 - Signal bounded proof only releases the bounded `signal.duckdb` surface; it does not authorize Signal full build, Position construction, downstream construction, or a full-chain pipeline.
 

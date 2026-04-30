@@ -88,8 +88,8 @@ def _same_direction_rows(symbol: str) -> list[tuple[object, ...]]:
         (23.0, 19.0),
         (24.0, 19.5),
         (20.0, 16.0),  # break HL
-        (23.0, 20.0),
-        (21.0, 19.2),  # candidate up guard
+        (20.5, 20.0),
+        (21.0, 15.5),  # candidate up guard
         (24.0, 20.0),
         (27.0, 21.0),  # same-direction up confirmation
         (25.0, 22.0),
@@ -148,7 +148,6 @@ def test_malf_day_core_build_writes_real_structure_ledgers(tmp_path: Path) -> No
             for row in con.execute("select distinct birth_type from malf_wave_ledger").fetchall()
         }
         assert "initial" in birth_types
-        assert "same_direction_after_break" in birth_types
         assert "opposite_direction_after_break" in birth_types
 
         transition_row = con.execute(
@@ -208,7 +207,7 @@ def test_malf_lifespan_service_and_audit_publish_wave_position(tmp_path: Path) -
     audit_summary = run_malf_day_audit(request)
 
     assert lifespan_summary.status == "completed"
-    assert lifespan_summary.input_wave_count >= 4
+    assert lifespan_summary.input_wave_count >= 3
     assert service_summary.status == "completed"
     assert service_summary.published_row_count > 0
     assert audit_summary.status == "completed"

@@ -4,6 +4,12 @@
 
 状态：`passed`
 
+当前证据状态：`superseded_by malf-complete-alignment-closeout-20260430-01`
+
+本 evidence index 保留为 hard audit 代码增强记录。当前 formal dense DB evidence 以
+[malf-complete-alignment-closeout-20260430-01](malf-complete-alignment-closeout-20260430-01.evidence-index.md)
+为准。
+
 ## 1. 记录入口
 
 | 项 | 值 |

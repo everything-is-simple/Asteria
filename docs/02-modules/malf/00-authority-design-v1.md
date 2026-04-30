@@ -1,8 +1,8 @@
 # MALF Authority Design v1
 
-日期：2026-04-29
+日期：2026-04-30
 
-状态：frozen / day bounded proof passed / dense bar snapshot resolution passed
+状态：frozen / day bounded proof passed / complete alignment closeout passed
 
 ## 1. 模块定义
 
@@ -24,10 +24,10 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
 ```
 
 本文件按 `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip`
-之后的执行结论刷新：MALF day bounded proof 与 MALF Lifespan dense bar snapshot
-resolution 均已通过。当前下一步只允许 `Position freeze review reentry` 的
-review-only 审查；不授权 Position bounded proof、Position construction、Signal
-pinning、下游施工或 full-chain Pipeline。
+之后的执行结论刷新：MALF day bounded proof 与 MALF complete alignment closeout 均已
+通过。当前下一步只允许 `Position freeze review reentry` 的 review-only 审查；不授权
+Position bounded proof、Position construction、Signal pinning、下游施工或 full-chain
+Pipeline。
 
 | 权威文档 | 本模块承接范围 |
 |---|---|
@@ -156,6 +156,6 @@ MALF day 首轮放行必须满足：
 | Evidence | 构建证据落入 `H:\Asteria-report` 或 `H:\Asteria-Validated` |
 
 当前 `malf-day-bounded-proof-20260428-01` 与
-`malf-lifespan-dense-bar-snapshot-resolution-20260429-01` 均已形成 `passed` 结论。
-该结论只覆盖 day bounded proof 与 dense bar-level WavePosition resolution；
+`malf-complete-alignment-closeout-20260430-01` 均已形成 `passed` 结论。
+该结论只覆盖 day bounded proof 与 dense bar-level WavePosition complete alignment；
 week/month、full build 和下游施工仍需后续卡。

@@ -449,11 +449,7 @@ def _candidate_from_pivot(
     if pivot.pivot_type not in {"H", "L"}:
         return None
     direction = "up" if pivot.pivot_type == "L" else "down"
-    reference = (
-        transition.old_progress.pivot_price
-        if direction == transition.old_direction
-        else transition.old_guard.pivot_price
-    )
+    reference = transition.old_progress.pivot_price
     candidate_id = (
         f"{transition.transition_id}|candidate|{pivot.pivot_id}|"
         f"{direction}|{request.core_rule_version}"

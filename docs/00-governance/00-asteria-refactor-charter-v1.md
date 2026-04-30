@@ -159,7 +159,7 @@ Signal
 MALF day bounded proof
 Alpha day bounded proof
 Signal day bounded proof
-MALF dense bar-level WavePosition resolution
+MALF dense bar-level complete alignment closeout
 ```
 
 下一张允许进入的卡：
@@ -169,7 +169,7 @@ Position freeze review reentry card
 ```
 
 MALF 语义继续以 `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` 为唯一权威。
-Signal bounded proof 已通过；Position freeze review 已登记 blocked；MALF Lifespan
-dense bar snapshot resolution 已通过。下一卡只允许 Position freeze review reentry
-的 review-only 审查，不直接授权 Signal full build、Position bounded proof、Position
-施工、下游施工或全链路 pipeline。
+Signal bounded proof 已通过；Position freeze review 已登记 blocked；MALF complete
+alignment closeout 已通过并取代旧 dense/hard-audit evidence 作为当前 MALF dense
+正式证据。下一卡只允许 Position freeze review reentry 的 review-only 审查，不直接授权
+Signal full build、Position bounded proof、Position 施工、下游施工或全链路 pipeline。

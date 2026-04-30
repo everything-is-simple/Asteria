@@ -4,11 +4,16 @@
 
 状态：`passed`
 
+当前证据状态：`superseded_by malf-complete-alignment-closeout-20260430-01`
+
 ## 1. 结论
 
 `malf-alignment-hard-audit-hardening-20260430-01` 已形成 repo 内闭环。MALF Core
 设计铁律与 Service WavePosition 自然键已纳入 hard audit，MALF 本地 authority design
 已同步到 dense bar snapshot resolution passed 后的当前状态。
+
+本记录只证明 hard audit 代码增强已完成。当前 formal DB evidence 已由
+`malf-complete-alignment-closeout-20260430-01` 用新 audit 重新构建并闭环。
 
 ## 2. 放行影响
 

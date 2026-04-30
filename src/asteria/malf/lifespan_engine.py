@@ -62,7 +62,8 @@ def build_lifespan_rows(
             for dt in symbol_dates
             if dt >= wave.confirm_dt and (wave.terminated_dt is None or dt < wave.terminated_dt)
         ]
-        if wave.confirm_dt not in dates:
+        can_publish_confirm_bar = wave.terminated_dt is None or wave.confirm_dt < wave.terminated_dt
+        if wave.confirm_dt not in dates and can_publish_confirm_bar:
             dates.insert(0, wave.confirm_dt)
         new_count = 0
         no_new_span = 0
@@ -94,6 +95,24 @@ def build_lifespan_rows(
             )
             snapshots.append(snapshot)
             final_stats[wave.wave_id] = snapshot
+        if wave.wave_id not in final_stats:
+            final_stats[wave.wave_id] = _snapshot(
+                request,
+                created_at,
+                wave.wave_id,
+                None,
+                wave.symbol,
+                wave.timeframe,
+                wave.confirm_dt,
+                "alive",
+                f"{wave.direction}_alive",
+                wave.direction,
+                True,
+                1,
+                0,
+                0,
+                wave.final_guard_price,
+            )
 
     for transition in transitions:
         frozen = final_stats.get(transition.old_wave_id)

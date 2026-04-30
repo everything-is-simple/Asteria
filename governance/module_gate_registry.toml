@@ -1,4 +1,4 @@
-registry_version = "2026-04-29.v1"
+registry_version = "2026-04-30.v1"
 active_mainline_module = "position"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
@@ -7,7 +7,7 @@ authority_assets = [
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2.zip",
 ]
 latest_governance_run_id = "docs-authority-refresh-20260429-01"
-latest_mainline_release_run_id = "malf-lifespan-dense-bar-snapshot-resolution-20260429-01"
+latest_mainline_release_run_id = "malf-complete-alignment-closeout-20260430-01"
 current_allowed_next_card = "position_freeze_review_reentry"
 construction_lock = [
     "alpha_full_build",
@@ -40,11 +40,11 @@ doc_status = "delivered six-doc set"
 allow_build = false
 doc_path = "docs/02-modules/malf"
 next_card = "position_freeze_review_reentry"
-active_card = "docs/04-execution/records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.card.md"
+active_card = "docs/04-execution/records/malf/malf-complete-alignment-closeout-20260430-01.card.md"
 allow_review = false
-proof_status = "day_bounded_proof_passed; dense_bar_snapshot_resolution_passed"
-release_conclusion = "docs/04-execution/records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.conclusion.md"
-evidence_index = "docs/04-execution/records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.evidence-index.md"
+proof_status = "day_bounded_proof_passed; dense_bar_snapshot_resolution_passed; complete_alignment_closeout_passed"
+release_conclusion = "docs/04-execution/records/malf/malf-complete-alignment-closeout-20260430-01.conclusion.md"
+evidence_index = "docs/04-execution/records/malf/malf-complete-alignment-closeout-20260430-01.evidence-index.md"
 formal_db_permission = "released_day_dbs_only; week_month_full_build_require_new_card"
 allowed_downstream_use = "read_only_wave_position_for_alpha_freeze_review"
 

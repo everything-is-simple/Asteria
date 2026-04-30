@@ -1,11 +1,21 @@
 from __future__ import annotations
 
-from datetime import date, datetime
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 import duckdb
 
+from asteria.malf.audit_support import (
+    _as_int,
+    _count,
+    _count_for_run,
+    _lifespan_dense_missing_count,
+    _missing_run_count,
+    _resolve_audit_source_runs,
+    _service_dense_missing_count,
+    _transition_semantics_failure_count,
+)
 from asteria.malf.contracts import MalfDayRequest
 
 
@@ -16,13 +26,20 @@ def build_audit_rows(
     request: MalfDayRequest,
     created_at: datetime,
 ) -> tuple[list[tuple[object, ...]], dict[str, Any]]:
+    source_core_run_id, source_lifespan_run_id = _resolve_audit_source_runs(
+        core_db, lifespan_db, service_db, request
+    )
     checks = [
         _check(
             service_db,
             request,
             created_at,
             "service_wave_core_state_not_transition",
-            "select count(*) from malf_wave_position where wave_core_state = 'transition'",
+            """
+            select count(*) from malf_wave_position
+            where run_id = ? and wave_core_state = 'transition'
+            """,
+            [request.run_id],
         ),
         _check(
             service_db,
@@ -31,9 +48,11 @@ def build_audit_rows(
             "service_transition_old_wave_required",
             """
             select count(*) from malf_wave_position
-            where system_state = 'transition'
+            where run_id = ?
+              and system_state = 'transition'
               and (old_wave_id is null or wave_id is not null)
             """,
+            [request.run_id],
         ),
         _check(
             service_db,
@@ -42,8 +61,21 @@ def build_audit_rows(
             "service_transition_direction_required",
             """
             select count(*) from malf_wave_position
-            where system_state = 'transition' and direction is null
+            where run_id = ? and system_state = 'transition' and direction is null
             """,
+            [request.run_id],
+        ),
+        _manual_check(
+            request,
+            created_at,
+            "audit_source_core_run_bound",
+            _missing_run_count(core_db, "malf_wave_ledger", source_core_run_id),
+        ),
+        _manual_check(
+            request,
+            created_at,
+            "audit_source_lifespan_run_bound",
+            _missing_run_count(lifespan_db, "malf_lifespan_snapshot", source_lifespan_run_id),
         ),
         _check(
             service_db,
@@ -70,10 +102,12 @@ def build_audit_rows(
             select count(*) from (
                 select symbol, timeframe, service_version, count(*) row_count
                 from malf_wave_position_latest
+                where run_id = ?
                 group by symbol, timeframe, service_version
                 having row_count > 1
             )
             """,
+            [request.run_id],
         ),
         _check(
             lifespan_db,
@@ -82,8 +116,9 @@ def build_audit_rows(
             "lifespan_confirmation_no_new_span_zero",
             """
             select count(*) from malf_lifespan_snapshot
-            where progress_updated and no_new_span <> 0
+            where run_id = ? and progress_updated and no_new_span <> 0
             """,
+            [source_lifespan_run_id],
         ),
         _check(
             core_db,
@@ -100,7 +135,7 @@ def build_audit_rows(
                   or terminated_by_break_id is null
               )
             """,
-            [request.run_id],
+            [source_core_run_id],
         ),
         _check(
             core_db,
@@ -119,13 +154,13 @@ def build_audit_rows(
               and (
                   w.final_progress_extreme_pivot_id is null
                   or progress.pivot_dt is null
-                  or progress.pivot_dt >= w.terminated_dt
+                  or progress.pivot_dt > w.terminated_dt
                   or w.final_guard_pivot_id is null
                   or guard.pivot_dt is null
-                  or guard.pivot_dt >= w.terminated_dt
+                  or guard.pivot_dt > w.terminated_dt
               )
             """,
-            [request.run_id],
+            [source_core_run_id],
         ),
         _check(
             core_db,
@@ -141,7 +176,7 @@ def build_audit_rows(
                 having row_count > 1
             )
             """,
-            [request.run_id],
+            [source_core_run_id],
         ),
         _check(
             core_db,
@@ -173,7 +208,7 @@ def build_audit_rows(
                   or invalidated_by_candidate_id <> next_candidate_id
               )
             """,
-            [request.run_id],
+            [source_core_run_id],
         ),
         _check(
             core_db,
@@ -199,7 +234,7 @@ def build_audit_rows(
                   )
               )
             """,
-            [request.run_id],
+            [source_core_run_id],
         ),
         _check(
             core_db,
@@ -229,7 +264,23 @@ def build_audit_rows(
                   )
               )
             """,
-            [request.run_id],
+            [source_core_run_id],
+        ),
+        _check(
+            core_db,
+            request,
+            created_at,
+            "core_candidate_reference_matches_old_progress",
+            """
+            select count(*)
+            from malf_candidate_ledger c
+            join malf_transition_ledger t
+              on t.transition_id = c.transition_id
+             and t.run_id = c.run_id
+            where c.run_id = ?
+              and c.reference_progress_extreme_price <> t.old_progress_extreme_price
+            """,
+            [source_core_run_id],
         ),
         _check(
             core_db,
@@ -238,45 +289,53 @@ def build_audit_rows(
             "core_confirmed_transition_new_wave_required",
             """
             select count(*) from malf_transition_ledger
-            where state = 'confirmed' and new_wave_id is null
+            where run_id = ? and state = 'confirmed' and new_wave_id is null
             """,
+            [source_core_run_id],
         ),
         _check(
             core_db,
             request,
             created_at,
             "core_transition_old_wave_required",
-            "select count(*) from malf_transition_ledger where old_wave_id is null",
+            "select count(*) from malf_transition_ledger where run_id = ? and old_wave_id is null",
+            [source_core_run_id],
         ),
         _manual_check(
             request,
             created_at,
             "lifespan_dense_source_bar_coverage",
-            _lifespan_dense_missing_count(core_db, lifespan_db, request),
+            _lifespan_dense_missing_count(
+                core_db, lifespan_db, request, source_core_run_id, source_lifespan_run_id
+            ),
         ),
         _manual_check(
             request,
             created_at,
             "service_dense_lifespan_coverage",
-            _service_dense_missing_count(lifespan_db, service_db, request),
+            _service_dense_missing_count(lifespan_db, service_db, request, source_lifespan_run_id),
         ),
         _manual_check(
             request,
             created_at,
             "service_transition_semantics",
-            _transition_semantics_failure_count(core_db, service_db, request.run_id),
+            _transition_semantics_failure_count(
+                core_db, service_db, request.run_id, source_core_run_id
+            ),
         ),
     ]
     hard_fail_count = sum(_as_int(row[5]) for row in checks)
     payload = {
         "run_id": request.run_id,
+        "source_core_run_id": source_core_run_id,
+        "source_lifespan_run_id": source_lifespan_run_id,
         "timeframe": request.timeframe,
         "schema_version": request.schema_version,
         "hard_fail_count": hard_fail_count,
         "published_row_count": _count_for_run(service_db, "malf_wave_position", request.run_id),
         "core_wave_count": _count(core_db, "malf_wave_ledger"),
         "lifespan_snapshot_count": _count_for_run(
-            lifespan_db, "malf_lifespan_snapshot", request.run_id
+            lifespan_db, "malf_lifespan_snapshot", source_lifespan_run_id
         ),
         "service_audit_rows": len(checks),
         "generated_at": created_at.isoformat(),
@@ -325,168 +384,3 @@ def _check(
         "{}" if failed_count == 0 else f'{{"failed_count": {failed_count}}}',
         created_at,
     )
-
-
-def _count(db_path: Path, table_name: str) -> int:
-    if not db_path.exists():
-        return 0
-    with duckdb.connect(str(db_path), read_only=True) as con:
-        row = con.execute(f"select count(*) from {table_name}").fetchone()
-        return 0 if row is None else int(row[0])
-
-
-def _count_for_run(db_path: Path, table_name: str, run_id: str) -> int:
-    if not db_path.exists():
-        return 0
-    with duckdb.connect(str(db_path), read_only=True) as con:
-        row = con.execute(
-            f"select count(*) from {table_name} where run_id = ?", [run_id]
-        ).fetchone()
-        return 0 if row is None else int(row[0])
-
-
-def _lifespan_dense_missing_count(core_db: Path, lifespan_db: Path, request: MalfDayRequest) -> int:
-    expected = _expected_lifespan_dense_keys(core_db, request)
-    if not expected:
-        return 0
-    with duckdb.connect(str(lifespan_db), read_only=True) as con:
-        actual = {
-            (str(row[0]), str(row[1]), str(row[2]), row[3], str(row[4]))
-            for row in con.execute(
-                """
-                select wave_id, symbol, timeframe, bar_dt, system_state
-                from malf_lifespan_snapshot
-                where run_id = ?
-                """,
-                [request.run_id],
-            ).fetchall()
-        }
-    return len(expected - actual)
-
-
-def _expected_lifespan_dense_keys(
-    core_db: Path, request: MalfDayRequest
-) -> set[tuple[str, str, str, date, str]]:
-    if not core_db.exists() or not request.source_db.exists():
-        return set()
-    bar_dates = _source_bar_dates(request)
-    expected: set[tuple[str, str, str, date, str]] = set()
-    with duckdb.connect(str(core_db), read_only=True) as con:
-        for wave_id, symbol, timeframe, direction, confirm_dt, terminated_dt in con.execute(
-            """
-            select wave_id, symbol, timeframe, direction, confirm_dt, terminated_dt
-            from malf_wave_ledger
-            """
-        ).fetchall():
-            for bar_dt in bar_dates.get((str(symbol), str(timeframe)), []):
-                if bar_dt >= confirm_dt and (terminated_dt is None or bar_dt < terminated_dt):
-                    expected.add(
-                        (str(wave_id), str(symbol), str(timeframe), bar_dt, f"{direction}_alive")
-                    )
-        for old_wave_id, symbol, timeframe, break_dt, confirmed_dt in con.execute(
-            """
-            select t.old_wave_id, w.symbol, w.timeframe, t.break_dt, t.confirmed_dt
-            from malf_transition_ledger t
-            join malf_wave_ledger w on w.wave_id = t.old_wave_id
-            """
-        ).fetchall():
-            for bar_dt in bar_dates.get((str(symbol), str(timeframe)), []):
-                if bar_dt >= break_dt and (confirmed_dt is None or bar_dt < confirmed_dt):
-                    expected.add(
-                        (str(old_wave_id), str(symbol), str(timeframe), bar_dt, "transition")
-                    )
-    return expected
-
-
-def _source_bar_dates(request: MalfDayRequest) -> dict[tuple[str, str], list[date]]:
-    clauses = ["timeframe = ?"]
-    params: list[object] = [request.timeframe]
-    if request.start_date:
-        clauses.append("bar_dt >= ?")
-        params.append(request.start_date)
-    if request.end_date:
-        clauses.append("bar_dt <= ?")
-        params.append(request.end_date)
-    query = f"""
-        select symbol, timeframe, bar_dt
-        from market_base_bar
-        where {" and ".join(clauses)}
-        order by symbol, timeframe, bar_dt
-    """
-    output: dict[tuple[str, str], list[date]] = {}
-    with duckdb.connect(str(request.source_db), read_only=True) as con:
-        for symbol, timeframe, bar_dt in con.execute(query, params).fetchall():
-            output.setdefault((str(symbol), str(timeframe)), []).append(bar_dt)
-    return output
-
-
-def _service_dense_missing_count(
-    lifespan_db: Path, service_db: Path, request: MalfDayRequest
-) -> int:
-    with duckdb.connect(str(lifespan_db), read_only=True) as con:
-        expected = {
-            (
-                str(row[0]),
-                str(row[1]),
-                row[2],
-                str(row[3]),
-                None if str(row[3]) == "transition" else str(row[4]),
-                str(row[5]) if str(row[3]) == "transition" else None,
-            )
-            for row in con.execute(
-                """
-                select symbol, timeframe, bar_dt, system_state, wave_id, old_wave_id
-                from malf_lifespan_snapshot
-                where run_id = ?
-                """,
-                [request.run_id],
-            ).fetchall()
-        }
-    with duckdb.connect(str(service_db), read_only=True) as con:
-        actual = {
-            (str(row[0]), str(row[1]), row[2], str(row[3]), row[4], row[5])
-            for row in con.execute(
-                """
-                select symbol, timeframe, bar_dt, system_state, wave_id, old_wave_id
-                from malf_wave_position
-                where run_id = ?
-                """,
-                [request.run_id],
-            ).fetchall()
-        }
-    return len(expected - actual)
-
-
-def _transition_semantics_failure_count(core_db: Path, service_db: Path, run_id: str) -> int:
-    with duckdb.connect(str(core_db), read_only=True) as con:
-        old_directions = {
-            str(row[0]): str(row[1])
-            for row in con.execute(
-                "select old_wave_id, old_direction from malf_transition_ledger"
-            ).fetchall()
-        }
-    with duckdb.connect(str(service_db), read_only=True) as con:
-        transition_rows = con.execute(
-            """
-            select old_wave_id, wave_core_state, system_state, direction, transition_span
-            from malf_wave_position
-            where system_state = 'transition' and run_id = ?
-            """,
-            [run_id],
-        ).fetchall()
-    failed = 0
-    for old_wave_id, wave_core_state, system_state, direction, transition_span in transition_rows:
-        if (
-            wave_core_state != "terminated"
-            or system_state != "transition"
-            or int(transition_span) < 1
-            or old_directions.get(str(old_wave_id)) != direction
-        ):
-            failed += 1
-    return failed
-
-
-def _as_int(value: object) -> int:
-    if isinstance(value, int):
-        return value
-    return int(str(value))

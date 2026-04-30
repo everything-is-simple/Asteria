@@ -4,11 +4,17 @@
 
 状态：`passed`
 
+当前证据状态：`superseded_by malf-complete-alignment-closeout-20260430-01`
+
 ## 1. 结论
 
 `malf-lifespan-dense-bar-snapshot-resolution-20260429-01` 已形成正式闭环。MALF
 Lifespan 已按 source bar 生成 dense snapshot，MALF Service 已按本次 Lifespan run 发布
 dense `malf_wave_position`，增强 audit 的 hard checks 全部通过。
+
+2026-04-30 后续复核发现该历史 formal DB evidence 存在 zero-day wave 导致的
+Service natural-key duplicate。本记录保留为当时的 resolution 历史事实，当前 MALF
+dense formal evidence 以 `malf-complete-alignment-closeout-20260430-01` 为准。
 
 ## 2. 放行影响
 

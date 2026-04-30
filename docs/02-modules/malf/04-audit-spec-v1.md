@@ -1,15 +1,16 @@
 # MALF Audit Spec v1
 
-日期：2026-04-29
+日期：2026-04-30
 
-状态：frozen / day bounded proof passed
+状态：frozen / day bounded proof passed / complete alignment closeout passed
 
 ## 1. 审计目标
 
 MALF 审计用于证明 Core、Lifespan、Service 三层没有破坏权威语义，并且 WavePosition 可被 Alpha 只读消费。
 
-`malf-day-bounded-proof-20260428-01` 已按本审计规格形成 `hard_fail_count = 0`
-的 passed 结论。该结论是 Alpha freeze review 的前置证据，不是下游施工许可。
+`malf-complete-alignment-closeout-20260430-01` 已按本审计规格形成
+`hard_fail_count = 0` 的 passed 结论。该结论是当前 MALF dense formal evidence，
+不是下游施工许可。
 
 ## 2. Core 硬审计
 
@@ -23,6 +24,7 @@ MALF 审计用于证明 Core、Lifespan、Service 三层没有破坏权威语义
 | new wave 必须由 active candidate 和 progress confirmation 创建 | hard fail |
 | candidate up confirmation 必须高于 old final HH | hard fail |
 | candidate down confirmation 必须低于 old final LL | hard fail |
+| candidate reference 必须等于 transition old progress extreme | hard fail |
 
 ## 3. Lifespan 硬审计
 
@@ -33,6 +35,7 @@ MALF 审计用于证明 Core、Lifespan、Service 三层没有破坏权威语义
 | transition 中 `direction` 必须为 old_direction | hard fail |
 | rank 样本必须能追溯到 `sample_version` | hard fail |
 | lifespan 规则必须能追溯到 `lifespan_rule_version` | hard fail |
+| audit 必须能解析 `source_lifespan_run_id` 且查到 source rows | hard fail |
 
 ## 4. Service 硬审计
 
@@ -44,6 +47,7 @@ MALF 审计用于证明 Core、Lifespan、Service 三层没有破坏权威语义
 | `system_state = transition` 时 `direction` 必须为 old_direction | hard fail |
 | WavePosition 自然键唯一 | hard fail |
 | `malf_wave_position_latest` 每个 `symbol + timeframe + service_version` 只有一行 | hard fail |
+| audit 必须能解析 `source_core_run_id` 且查到 source rows | hard fail |
 
 ## 5. 接口审计输出
 
