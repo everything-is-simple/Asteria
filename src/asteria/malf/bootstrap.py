@@ -20,6 +20,7 @@ from asteria.malf.service_engine import build_wave_position_rows
 
 
 def run_malf_day_core_build(request: MalfDayRequest) -> MalfBuildSummary:
+    _require_build_mode(request, "core")
     _require(request.core_rule_version, "core_rule_version")
     checkpoint = _load_completed_checkpoint(request, "core")
     if checkpoint:
@@ -157,6 +158,7 @@ def run_malf_day_core_build(request: MalfDayRequest) -> MalfBuildSummary:
 
 
 def run_malf_day_lifespan_build(request: MalfDayRequest) -> MalfBuildSummary:
+    _require_build_mode(request, "lifespan")
     _require(request.lifespan_rule_version, "lifespan_rule_version")
     _require(request.sample_version, "sample_version")
     checkpoint = _load_completed_checkpoint(request, "lifespan")
@@ -223,6 +225,7 @@ def run_malf_day_lifespan_build(request: MalfDayRequest) -> MalfBuildSummary:
 
 
 def run_malf_day_service_build(request: MalfDayRequest) -> MalfBuildSummary:
+    _require_build_mode(request, "service")
     _require(request.service_version, "service_version")
     checkpoint = _load_completed_checkpoint(request, "service")
     if checkpoint:
@@ -475,6 +478,11 @@ def _report_path(report_root: Path, run_id: str) -> Path:
 def _require(value: str | None, name: str) -> None:
     if not value:
         raise ValueError(f"{name} is required for this MALF runner stage")
+
+
+def _require_build_mode(request: MalfDayRequest, stage: str) -> None:
+    if request.mode == "audit-only":
+        raise ValueError(f"{stage} build does not support audit-only mode")
 
 
 def _utc_now() -> datetime:

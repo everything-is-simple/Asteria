@@ -69,6 +69,22 @@ def test_current_gate_reopens_position_reentry_after_malf_closeout_passed() -> N
     assert "状态：`passed`" in malf_conclusion
 
 
+def test_malf_module_contract_points_at_complete_alignment_closeout() -> None:
+    repo_root = Path(__file__).resolve().parents[3]
+    contract_path = repo_root / "governance" / "module_api_contracts" / "malf.toml"
+    with contract_path.open("rb") as handle:
+        contract = tomllib.load(handle)
+
+    assert contract["release_conclusion"] == (
+        "docs/04-execution/records/malf/malf-complete-alignment-closeout-20260430-01.conclusion.md"
+    )
+    assert contract["evidence_index"] == (
+        "docs/04-execution/records/malf/"
+        "malf-complete-alignment-closeout-20260430-01.evidence-index.md"
+    )
+    assert "daily_incremental" not in contract["run_modes"]
+
+
 def test_project_governance_rejects_multiple_build_allowed_mainline_modules(
     tmp_path: Path,
 ) -> None:

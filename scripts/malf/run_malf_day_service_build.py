@@ -18,9 +18,7 @@ def main() -> int:
     parser.add_argument("--temp-root", default="H:/Asteria-temp")
     parser.add_argument("--report-root", default="H:/Asteria-report")
     parser.add_argument("--validated-root", default="H:/Asteria-Validated")
-    parser.add_argument(
-        "--mode", choices=["bounded", "segmented", "full", "resume", "audit-only"], required=True
-    )
+    parser.add_argument("--mode", choices=["bounded", "segmented", "full", "resume"], required=True)
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--schema-version", default=MALF_SCHEMA_VERSION)
     parser.add_argument("--service-version", required=True)

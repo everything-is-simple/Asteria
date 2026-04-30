@@ -5,6 +5,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 import duckdb
+import pytest
 
 from asteria.data.schema import bootstrap_market_base_day_database
 from asteria.malf.bootstrap import (
@@ -192,6 +193,25 @@ def test_malf_day_core_resume_reuses_completed_checkpoint(tmp_path: Path) -> Non
     assert first.status == "completed"
     assert second.status == "completed"
     assert second.resume_reused is True
+
+
+@pytest.mark.parametrize(
+    ("runner_name", "runner"),
+    [
+        ("core", run_malf_day_core_build),
+        ("lifespan", run_malf_day_lifespan_build),
+        ("service", run_malf_day_service_build),
+    ],
+)
+def test_malf_day_build_runners_reject_audit_only_mode(
+    tmp_path: Path,
+    runner_name: str,
+    runner,
+) -> None:
+    request = _request(tmp_path, f"malf-audit-only-{runner_name}-run-001", mode="audit-only")
+
+    with pytest.raises(ValueError, match="audit-only mode"):
+        runner(request)
 
 
 def test_malf_lifespan_service_and_audit_publish_wave_position(tmp_path: Path) -> None:

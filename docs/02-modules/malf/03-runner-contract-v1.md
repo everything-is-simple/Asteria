@@ -7,6 +7,7 @@
 ## 1. Runner 目标
 
 MALF runner 必须支持 bounded proof 先行，再进入 segmented / full / resume。第一阶段只执行 day。
+`audit-only` 仅用于 audit runner，不用于 Core / Lifespan / Service build runner。
 
 ## 2. Runner 列表
 
@@ -40,14 +41,14 @@ flowchart TD
 | `segmented` | 必须传 symbol range 或 batch id |
 | `full` | 只能在 bounded proof 通过后开启 |
 | `resume` | 必须读取 checkpoint |
-| `audit-only` | 不写业务表，只写 audit 或报告 |
+| `audit-only` | 仅 audit runner 使用；不写业务表，只写 audit 或报告 |
 
 ## 5. 公共参数
 
 | 参数 | 要求 |
 |---|---|
 | `--timeframe` | 第一阶段固定为 `day` |
-| `--mode` | `bounded / segmented / full / resume / audit-only` |
+| `--mode` | build runner: `bounded / segmented / full / resume`; audit runner: `bounded / segmented / full / resume / audit-only` |
 | `--run-id` | 可传入；未传入时由 runner 生成 |
 | `--source-db` | 输入 DB 路径 |
 | `--target-db` | 当前层目标 DB 路径 |

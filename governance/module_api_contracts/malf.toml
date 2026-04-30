@@ -7,11 +7,11 @@ authority_assets = [
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2.zip",
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
 ]
-release_conclusion = "docs/04-execution/records/malf/malf-day-bounded-proof-20260428-01.conclusion.md"
-evidence_index = "docs/04-execution/records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md"
+release_conclusion = "docs/04-execution/records/malf/malf-complete-alignment-closeout-20260430-01.conclusion.md"
+evidence_index = "docs/04-execution/records/malf/malf-complete-alignment-closeout-20260430-01.evidence-index.md"
 gate_state = "day_bounded_proof_passed"
 formal_db_permission = "released_day_core_lifespan_service_only"
-run_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from MALF replay scope and checkpoint"
 source_manifest_fields = ["source_market_base_run_id", "source_core_run_id", "source_lifespan_run_id"]
 forbidden_inputs = ["raw_market.duckdb.raw_market_bar", "legacy_malf_day.duckdb", "mock_formal_data"]
