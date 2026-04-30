@@ -49,6 +49,22 @@ def build_audit_rows(
             service_db,
             request,
             created_at,
+            "service_wave_position_natural_key_unique",
+            """
+            select count(*) from (
+                select symbol, timeframe, bar_dt, service_version, count(*) row_count
+                from malf_wave_position
+                where run_id = ?
+                group by symbol, timeframe, bar_dt, service_version
+                having row_count > 1
+            )
+            """,
+            [request.run_id],
+        ),
+        _check(
+            service_db,
+            request,
+            created_at,
             "service_latest_unique",
             """
             select count(*) from (
@@ -68,6 +84,152 @@ def build_audit_rows(
             select count(*) from malf_lifespan_snapshot
             where progress_updated and no_new_span <> 0
             """,
+        ),
+        _check(
+            core_db,
+            request,
+            created_at,
+            "core_terminated_wave_not_alive",
+            """
+            select count(*) from malf_wave_ledger
+            where run_id = ?
+              and (terminated_dt is not null or terminated_by_break_id is not null)
+              and (
+                  wave_core_state <> 'terminated'
+                  or terminated_dt is null
+                  or terminated_by_break_id is null
+              )
+            """,
+            [request.run_id],
+        ),
+        _check(
+            core_db,
+            request,
+            created_at,
+            "core_break_does_not_extend_old_wave",
+            """
+            select count(*)
+            from malf_wave_ledger w
+            left join malf_pivot_ledger progress
+              on progress.pivot_id = w.final_progress_extreme_pivot_id
+            left join malf_pivot_ledger guard
+              on guard.pivot_id = w.final_guard_pivot_id
+            where w.run_id = ?
+              and w.terminated_dt is not null
+              and (
+                  w.final_progress_extreme_pivot_id is null
+                  or progress.pivot_dt is null
+                  or progress.pivot_dt >= w.terminated_dt
+                  or w.final_guard_pivot_id is null
+                  or guard.pivot_dt is null
+                  or guard.pivot_dt >= w.terminated_dt
+              )
+            """,
+            [request.run_id],
+        ),
+        _check(
+            core_db,
+            request,
+            created_at,
+            "core_single_active_candidate_per_transition",
+            """
+            select count(*) from (
+                select transition_id, count(*) row_count
+                from malf_candidate_ledger
+                where run_id = ? and is_active_at_close
+                group by transition_id
+                having row_count > 1
+            )
+            """,
+            [request.run_id],
+        ),
+        _check(
+            core_db,
+            request,
+            created_at,
+            "core_new_candidate_replaces_previous",
+            """
+            with ordered_candidates as (
+                select
+                    candidate_id,
+                    transition_id,
+                    confirmed_wave_id,
+                    is_active_at_close,
+                    invalidated_by_candidate_id,
+                    lead(candidate_id) over (
+                        partition by transition_id
+                        order by candidate_dt, candidate_id
+                    ) as next_candidate_id
+                from malf_candidate_ledger
+                where run_id = ?
+            )
+            select count(*)
+            from ordered_candidates
+            where next_candidate_id is not null
+              and confirmed_wave_id is null
+              and (
+                  is_active_at_close
+                  or invalidated_by_candidate_id is null
+                  or invalidated_by_candidate_id <> next_candidate_id
+              )
+            """,
+            [request.run_id],
+        ),
+        _check(
+            core_db,
+            request,
+            created_at,
+            "core_new_wave_candidate_confirmation_required",
+            """
+            select count(*)
+            from malf_wave_ledger w
+            where w.run_id = ?
+              and w.birth_type <> 'initial'
+              and (
+                  w.candidate_guard_pivot_id is null
+                  or w.confirm_pivot_id is null
+                  or not exists (
+                      select 1
+                      from malf_candidate_ledger c
+                      where c.run_id = w.run_id
+                        and c.confirmed_wave_id = w.wave_id
+                        and c.candidate_guard_pivot_id = w.candidate_guard_pivot_id
+                        and c.confirmed_by_pivot_id = w.confirm_pivot_id
+                        and c.is_active_at_close
+                  )
+              )
+            """,
+            [request.run_id],
+        ),
+        _check(
+            core_db,
+            request,
+            created_at,
+            "core_candidate_confirmation_threshold",
+            """
+            select count(*)
+            from malf_candidate_ledger c
+            join malf_pivot_ledger p on p.pivot_id = c.confirmed_by_pivot_id
+            where c.run_id = ?
+              and c.confirmed_wave_id is not null
+              and (
+                  (
+                      c.candidate_direction = 'up'
+                      and (
+                          p.pivot_type <> 'H'
+                          or p.pivot_price <= c.reference_progress_extreme_price
+                      )
+                  )
+                  or (
+                      c.candidate_direction = 'down'
+                      and (
+                          p.pivot_type <> 'L'
+                          or p.pivot_price >= c.reference_progress_extreme_price
+                      )
+                  )
+              )
+            """,
+            [request.run_id],
         ),
         _check(
             core_db,
@@ -146,11 +308,12 @@ def _check(
     created_at: datetime,
     check_name: str,
     failure_query: str,
+    params: list[object] | None = None,
 ) -> tuple[object, ...]:
     failed_count = 0
     if db_path.exists():
         with duckdb.connect(str(db_path), read_only=True) as con:
-            row = con.execute(failure_query).fetchone()
+            row = con.execute(failure_query, params or []).fetchone()
             failed_count = 0 if row is None else int(row[0])
     return (
         f"{request.run_id}|{check_name}",

@@ -109,11 +109,11 @@ MALF 冻结文档与当前 proof 状态：
 
 | 文档 | 状态 |
 |---|---|
-| `docs/02-modules/malf/00-authority-design-v1.md` | frozen / day bounded proof passed |
-| `docs/02-modules/malf/01-semantic-contract-v1.md` | frozen / day bounded proof passed |
-| `docs/02-modules/malf/02-database-schema-spec-v1.md` | frozen / day bounded proof passed |
-| `docs/02-modules/malf/03-runner-contract-v1.md` | frozen / day bounded proof passed |
-| `docs/02-modules/malf/04-audit-spec-v1.md` | frozen / day bounded proof passed |
+| `docs/02-modules/malf/00-authority-design-v1.md` | frozen / day bounded proof passed / dense resolution passed |
+| `docs/02-modules/malf/01-semantic-contract-v1.md` | frozen / day bounded proof passed / dense resolution passed |
+| `docs/02-modules/malf/02-database-schema-spec-v1.md` | frozen / day bounded proof passed / dense resolution passed |
+| `docs/02-modules/malf/03-runner-contract-v1.md` | frozen / day bounded proof passed / dense resolution passed |
+| `docs/02-modules/malf/04-audit-spec-v1.md` | frozen / day bounded proof passed / dense resolution passed / hard audit coverage hardened |
 | `docs/02-modules/malf/05-build-card-v1.md` | frozen / superseded by passed day proof |
 | `docs/02-modules/malf/06-implementation-traceability-annex-v1.md` | annex / traceability only / no semantic amendment |
 
@@ -333,3 +333,22 @@ MALF day 首轮放行标准：
 | Invariant Audit | 硬规则全通过 |
 | Alpha Contract | WavePosition 字段满足 Alpha 只读消费 |
 | Evidence | 证据落入 `H:\Asteria-report` 或 `H:\Asteria-Validated` |
+
+## 13. MALF Alignment Hard Audit Hardening 记录
+
+MALF alignment hard audit hardening 已通过。
+
+| 项 | 值 |
+|---|---|
+| run_id | `malf-alignment-hard-audit-hardening-20260430-01` |
+| scope | MALF audit coverage and MALF authority design status sync |
+| code surface | `src/asteria/malf/audit_engine.py` |
+| test surface | `tests/unit/malf/test_dense_closeout.py` |
+| execution conclusion | `docs/04-execution/records/malf/malf-alignment-hard-audit-hardening-20260430-01.conclusion.md` |
+| gate impact | no new construction gate opened |
+| allowed next action | `Position freeze review reentry` |
+
+本次只补齐 MALF Core 设计铁律与 Service WavePosition 自然键的 hard audit 覆盖，并同步
+MALF 本地 authority design 状态；不改变 MALF dense resolution 的 passed 结论，不授权
+Position bounded proof、Position construction、Signal pinning、下游施工或 full-chain
+Pipeline。

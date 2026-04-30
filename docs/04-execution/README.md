@@ -19,8 +19,9 @@
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip`
 
-当前已通过 `Signal bounded proof`；唯一允许推进的业务动作是 Position freeze review。
-Alpha full build、Signal full build、Position 施工和下游模块施工仍未放行。
+当前已通过 `Signal bounded proof` 与 `MALF Lifespan dense bar snapshot resolution`；
+唯一允许推进的业务动作是 Position freeze review reentry 的 review-only 审查。Alpha
+full build、Signal full build、Position 施工和下游模块施工仍未放行。
 
 ## 1. 与其他目录的分工
 
@@ -91,6 +92,20 @@ docs/04-execution/
 - [MALF Lifespan dense bar snapshot gap evidence index](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.evidence-index.md)
 - [MALF Lifespan dense bar snapshot gap record](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.record.md)
 - [MALF Lifespan dense bar snapshot gap conclusion](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.conclusion.md)
+
+已闭环的 MALF dense resolution：
+
+- [MALF Lifespan dense bar snapshot resolution card](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.card.md)
+- [MALF Lifespan dense bar snapshot resolution evidence index](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.evidence-index.md)
+- [MALF Lifespan dense bar snapshot resolution record](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.record.md)
+- [MALF Lifespan dense bar snapshot resolution conclusion](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.conclusion.md)
+
+已闭环的 MALF hard audit hardening：
+
+- [MALF alignment hard audit hardening card](records/malf/malf-alignment-hard-audit-hardening-20260430-01.card.md)
+- [MALF alignment hard audit hardening evidence index](records/malf/malf-alignment-hard-audit-hardening-20260430-01.evidence-index.md)
+- [MALF alignment hard audit hardening record](records/malf/malf-alignment-hard-audit-hardening-20260430-01.record.md)
+- [MALF alignment hard audit hardening conclusion](records/malf/malf-alignment-hard-audit-hardening-20260430-01.conclusion.md)
 
 已闭环的 Alpha freeze review：
 
