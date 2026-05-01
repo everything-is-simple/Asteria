@@ -207,7 +207,8 @@ def test_malf_audit_hard_fails_for_core_design_rule_violations(tmp_path: Path) -
             select candidate_id || '|dup-active', transition_id, candidate_guard_pivot_id,
                    candidate_direction, candidate_dt, true, invalidated_by_candidate_id,
                    reference_progress_extreme_price, confirmed_by_pivot_id, confirmed_wave_id,
-                   run_id, schema_version, core_rule_version, created_at
+                   run_id, schema_version, core_rule_version, created_at,
+                   candidate_status, confirmation_pivot_id, new_wave_id
             from malf_candidate_ledger
             where run_id = ?
             limit 1
@@ -220,7 +221,8 @@ def test_malf_audit_hard_fails_for_core_design_rule_violations(tmp_path: Path) -
             select '000-stale-candidate|' || candidate_id, transition_id, candidate_guard_pivot_id,
                    candidate_direction, candidate_dt, false, null,
                    reference_progress_extreme_price, null, null,
-                   run_id, schema_version, core_rule_version, created_at
+                   run_id, schema_version, core_rule_version, created_at,
+                   'invalidated', null, null
             from malf_candidate_ledger
             where run_id = ?
             limit 1

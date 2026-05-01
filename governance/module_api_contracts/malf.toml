@@ -1,17 +1,20 @@
 module_id = "malf"
 display_name = "MALF"
-contract_version = "v1"
+contract_version = "v1.3-code-revision"
 status = "frozen"
 authority_assets = [
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2",
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2.zip",
+    "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_3",
+    "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_3.zip",
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
 ]
 release_conclusion = "docs/04-execution/records/malf/malf-complete-alignment-closeout-20260430-01.conclusion.md"
 evidence_index = "docs/04-execution/records/malf/malf-complete-alignment-closeout-20260430-01.evidence-index.md"
 gate_state = "day_bounded_proof_passed"
 formal_db_permission = "released_day_core_lifespan_service_only"
-run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+run_modes = ["bounded", "segmented", "full", "resume"]
+audit_run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from MALF replay scope and checkpoint"
 source_manifest_fields = ["source_market_base_run_id", "source_core_run_id", "source_lifespan_run_id"]
 forbidden_inputs = ["raw_market.duckdb.raw_market_bar", "legacy_malf_day.duckdb", "mock_formal_data"]
@@ -41,5 +44,15 @@ public_fields = [
     "transition_span",
     "life_state",
     "position_quadrant",
+    "transition_boundary_high",
+    "transition_boundary_low",
+    "active_candidate_guard_pivot_id",
+    "confirmation_pivot_id",
+    "new_wave_id",
+    "birth_type",
+    "candidate_wait_span",
+    "candidate_replacement_count",
+    "confirmation_distance_abs",
+    "confirmation_distance_pct",
 ]
 version_fields = ["run_id", "schema_version", "lifespan_rule_version", "service_version"]

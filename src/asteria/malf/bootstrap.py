@@ -65,7 +65,7 @@ def run_malf_day_core_build(request: MalfDayRequest) -> MalfBuildSummary:
         con.executemany(
             """
             insert into malf_wave_ledger
-            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             [
                 (
@@ -90,16 +90,18 @@ def run_malf_day_core_build(request: MalfDayRequest) -> MalfBuildSummary:
                     request.schema_version,
                     request.core_rule_version,
                     now,
+                    item.final_guard.pivot_id,
+                    item.final_guard.pivot_price,
                 )
                 for item in rows.waves
             ],
         )
         con.executemany(
-            "insert into malf_break_ledger values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "insert into malf_break_ledger values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             rows.breaks,
         )
         con.executemany(
-            "insert into malf_transition_ledger values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            _insert_values_sql("malf_transition_ledger", 17),
             [
                 (
                     item.transition_id,
@@ -116,12 +118,15 @@ def run_malf_day_core_build(request: MalfDayRequest) -> MalfBuildSummary:
                     request.schema_version,
                     request.core_rule_version,
                     now,
+                    item.old_guard.pivot_id,
+                    item.transition_boundary_high,
+                    item.transition_boundary_low,
                 )
                 for item in rows.transitions
             ],
         )
         con.executemany(
-            "insert into malf_candidate_ledger values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            _insert_values_sql("malf_candidate_ledger", 17),
             [
                 (
                     item.candidate_id,
@@ -138,6 +143,9 @@ def run_malf_day_core_build(request: MalfDayRequest) -> MalfBuildSummary:
                     request.schema_version,
                     request.core_rule_version,
                     now,
+                    item.status,
+                    item.confirmed_by_pivot_id,
+                    item.confirmed_wave_id,
                 )
                 for item in rows.candidates
             ],
@@ -174,10 +182,7 @@ def run_malf_day_lifespan_build(request: MalfDayRequest) -> MalfBuildSummary:
         con.execute("begin transaction")
         _delete_run(con, request.run_id, _LIFESPAN_RUN_TABLES)
         con.executemany(
-            """
-            insert into malf_lifespan_snapshot
-            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
+            _insert_values_sql("malf_lifespan_snapshot", 33),
             snapshots,
         )
         con.executemany(
@@ -242,17 +247,11 @@ def run_malf_day_service_build(request: MalfDayRequest) -> MalfBuildSummary:
         con.execute("begin transaction")
         _delete_run(con, request.run_id, _SERVICE_RUN_TABLES)
         con.executemany(
-            """
-            insert into malf_wave_position
-            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
+            _insert_values_sql("malf_wave_position", 35),
             rows,
         )
         con.executemany(
-            """
-            insert into malf_wave_position_latest
-            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
+            _insert_values_sql("malf_wave_position_latest", 35),
             latest_rows,
         )
         _insert_service_run(
@@ -356,6 +355,11 @@ def _insert_core_run(
             created_at,
         ],
     )
+
+
+def _insert_values_sql(table_name: str, column_count: int) -> str:
+    placeholders = ", ".join(["?"] * column_count)
+    return f"insert into {table_name} values ({placeholders})"
 
 
 def _insert_lifespan_run(

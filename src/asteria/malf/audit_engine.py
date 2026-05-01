@@ -270,7 +270,24 @@ def build_audit_rows(
             core_db,
             request,
             created_at,
-            "core_candidate_reference_matches_old_progress",
+            "core_transition_boundaries_required",
+            """
+            select count(*) from malf_transition_ledger
+            where run_id = ?
+              and (
+                  broken_guard_pivot_id is null
+                  or transition_boundary_high is null
+                  or transition_boundary_low is null
+                  or transition_boundary_high <= transition_boundary_low
+              )
+            """,
+            [source_core_run_id],
+        ),
+        _check(
+            core_db,
+            request,
+            created_at,
+            "core_candidate_reference_matches_transition_boundary",
             """
             select count(*)
             from malf_candidate_ledger c
@@ -278,7 +295,13 @@ def build_audit_rows(
               on t.transition_id = c.transition_id
              and t.run_id = c.run_id
             where c.run_id = ?
-              and c.reference_progress_extreme_price <> t.old_progress_extreme_price
+              and (
+                  (c.candidate_direction = 'up'
+                   and c.reference_progress_extreme_price <> t.transition_boundary_high)
+                  or
+                  (c.candidate_direction = 'down'
+                   and c.reference_progress_extreme_price <> t.transition_boundary_low)
+              )
             """,
             [source_core_run_id],
         ),
@@ -321,6 +344,14 @@ def build_audit_rows(
             "service_transition_semantics",
             _transition_semantics_failure_count(
                 core_db, service_db, request.run_id, source_core_run_id
+            ),
+        ),
+        _manual_check(
+            request,
+            created_at,
+            "service_v13_trace_matches_lifespan",
+            _service_v13_trace_mismatch_count(
+                lifespan_db, service_db, request.run_id, source_lifespan_run_id
             ),
         ),
     ]
@@ -384,3 +415,53 @@ def _check(
         "{}" if failed_count == 0 else f'{{"failed_count": {failed_count}}}',
         created_at,
     )
+
+
+_TRACE_FIELDS = (
+    "transition_boundary_high",
+    "transition_boundary_low",
+    "active_candidate_guard_pivot_id",
+    "confirmation_pivot_id",
+    "new_wave_id",
+    "birth_type",
+    "candidate_wait_span",
+    "candidate_replacement_count",
+    "confirmation_distance_abs",
+    "confirmation_distance_pct",
+)
+
+
+def _service_v13_trace_mismatch_count(
+    lifespan_db: Path,
+    service_db: Path,
+    service_run_id: str,
+    lifespan_run_id: str | None,
+) -> int:
+    if lifespan_run_id is None or not lifespan_db.exists() or not service_db.exists():
+        return 0
+    lifespan_rows: dict[tuple[object, ...], tuple[object, ...]] = {}
+    with duckdb.connect(str(lifespan_db), read_only=True) as con:
+        for row in con.execute(
+            f"""
+            select symbol, timeframe, bar_dt, system_state, wave_id, {", ".join(_TRACE_FIELDS)}
+            from malf_lifespan_snapshot
+            where run_id = ?
+            """,
+            [lifespan_run_id],
+        ).fetchall():
+            lifespan_rows[(row[0], row[1], row[2], row[3], row[4])] = tuple(row[5:])
+    failed = 0
+    with duckdb.connect(str(service_db), read_only=True) as con:
+        for row in con.execute(
+            f"""
+            select symbol, timeframe, bar_dt, system_state,
+                   coalesce(wave_id, old_wave_id), {", ".join(_TRACE_FIELDS)}
+            from malf_wave_position
+            where run_id = ?
+            """,
+            [service_run_id],
+        ).fetchall():
+            expected = lifespan_rows.get((row[0], row[1], row[2], row[3], row[4]))
+            if expected is None or expected != tuple(row[5:]):
+                failed += 1
+    return failed

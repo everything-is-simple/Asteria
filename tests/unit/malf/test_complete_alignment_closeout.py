@@ -151,7 +151,7 @@ def test_malf_core_candidate_reference_uses_old_progress_for_all_directions(
             """
             select c.candidate_direction, t.old_direction,
                    c.reference_progress_extreme_price,
-                   t.old_progress_extreme_price
+                   t.transition_boundary_high, t.transition_boundary_low
             from malf_candidate_ledger c
             join malf_transition_ledger t on t.transition_id = c.transition_id
             where c.run_id = ? and c.confirmed_wave_id is not null
@@ -164,7 +164,10 @@ def test_malf_core_candidate_reference_uses_old_progress_for_all_directions(
     assert any(
         candidate_direction != old_direction for candidate_direction, old_direction, *_ in rows
     )
-    assert all(reference == old_progress for *_, reference, old_progress in rows)
+    assert all(
+        reference == (boundary_high if candidate_direction == "up" else boundary_low)
+        for candidate_direction, _, reference, boundary_high, boundary_low in rows
+    )
 
 
 def _force_first_terminated_wave_to_zero_day(core_db: Path) -> tuple[str, object]:

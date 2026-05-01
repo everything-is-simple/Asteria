@@ -5,7 +5,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-MALF_SCHEMA_VERSION = "malf-day-bounded-proof-v1"
+MALF_SCHEMA_VERSION = "malf-v1-3-code-revision-v1"
 VALID_TIMEFRAMES = {"day"}
 VALID_RUN_MODES = {"bounded", "segmented", "full", "resume", "audit-only"}
 
@@ -40,6 +40,10 @@ class MalfDayRequest:
             self.start_dt or self.end_dt or self.symbol_limit is not None
         ):
             raise ValueError("bounded MALF runs require start_dt, end_dt, or symbol_limit")
+        if self.mode == "segmented" and not (
+            self.start_dt or self.end_dt or self.symbol_limit is not None
+        ):
+            raise ValueError("segmented MALF runs require segmented scope")
         if self.start_date and self.end_date and self.start_date > self.end_date:
             raise ValueError("start_dt cannot be later than end_dt")
 

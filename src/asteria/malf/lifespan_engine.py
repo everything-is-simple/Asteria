@@ -7,6 +7,7 @@ from typing import cast
 
 import duckdb
 
+from asteria.malf.birth_descriptors import BirthDescriptor, load_birth_descriptors
 from asteria.malf.contracts import MalfDayRequest
 
 
@@ -16,6 +17,7 @@ class WaveRow:
     symbol: str
     timeframe: str
     direction: str
+    birth_type: str
     confirm_dt: date
     state: str
     terminated_dt: date | None
@@ -52,6 +54,7 @@ def build_lifespan_rows(
     pivot_dates = _load_pivot_dates(core_db)
     pivot_ids_by_date = _load_pivot_ids_by_date(core_db)
     transitions = _load_transitions(core_db)
+    descriptors = load_birth_descriptors(core_db, request)
     snapshots: list[Snapshot] = []
     final_stats: dict[str, Snapshot] = {}
 
@@ -92,6 +95,7 @@ def build_lifespan_rows(
                 no_new_span,
                 0,
                 wave.final_guard_price,
+                descriptors[wave.wave_id],
             )
             snapshots.append(snapshot)
             final_stats[wave.wave_id] = snapshot
@@ -112,6 +116,7 @@ def build_lifespan_rows(
                 0,
                 0,
                 wave.final_guard_price,
+                descriptors[wave.wave_id],
             )
 
     for transition in transitions:
@@ -147,6 +152,7 @@ def build_lifespan_rows(
                     frozen.no_new_span,
                     index,
                     transition.old_progress_extreme_price,
+                    descriptors[transition.old_wave_id],
                 )
             )
 
@@ -193,16 +199,17 @@ def _load_waves(core_db: Path) -> list[WaveRow]:
                 str(row[1]),
                 str(row[2]),
                 str(row[3]),
-                cast(date, row[4]),
-                str(row[5]),
-                cast(date | None, row[6]),
-                str(row[7]),
-                cast(float | None, row[8]),
+                str(row[4]),
+                cast(date, row[5]),
+                str(row[6]),
+                cast(date | None, row[7]),
+                str(row[8]),
+                cast(float | None, row[9]),
             )
             for row in con.execute(
                 """
-                select wave_id, symbol, timeframe, direction, confirm_dt, wave_core_state,
-                       terminated_dt, confirm_pivot_id, final_guard_price
+                select wave_id, symbol, timeframe, direction, birth_type, confirm_dt,
+                       wave_core_state, terminated_dt, confirm_pivot_id, final_guard_price
                 from malf_wave_ledger
                 order by symbol, wave_seq
                 """
@@ -321,6 +328,7 @@ def _snapshot(
     no_new_span: int,
     transition_span: int,
     guard_boundary_price: float | None,
+    birth: BirthDescriptor,
 ) -> Snapshot:
     life_state = _life_state(wave_core_state, 0.0, 0.0)
     position_quadrant = "developing"
@@ -350,6 +358,7 @@ def _snapshot(
             request.lifespan_rule_version,
             request.sample_version,
             created_at,
+            *birth.as_row(),
         ),
         new_count,
         no_new_span,

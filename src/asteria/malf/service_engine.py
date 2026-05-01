@@ -25,7 +25,12 @@ def build_wave_position_rows(
             select wave_id, old_wave_id, symbol, timeframe, bar_dt, wave_core_state,
                    system_state, direction, new_count, no_new_span, transition_span,
                    update_rank, stagnation_rank, life_state, position_quadrant,
-                   guard_boundary_price, sample_version, lifespan_rule_version
+                   guard_boundary_price, sample_version, lifespan_rule_version,
+                   transition_boundary_high, transition_boundary_low,
+                   active_candidate_guard_pivot_id, confirmation_pivot_id,
+                   new_wave_id, birth_type, candidate_wait_span,
+                   candidate_replacement_count, confirmation_distance_abs,
+                   confirmation_distance_pct
             from malf_lifespan_snapshot
             where run_id = ?
             order by symbol, bar_dt, snapshot_id
@@ -53,6 +58,16 @@ def build_wave_position_rows(
             guard_boundary_price,
             sample_version,
             lifespan_rule_version,
+            transition_boundary_high,
+            transition_boundary_low,
+            active_candidate_guard_pivot_id,
+            confirmation_pivot_id,
+            new_wave_id,
+            birth_type,
+            candidate_wait_span,
+            candidate_replacement_count,
+            confirmation_distance_abs,
+            confirmation_distance_pct,
         ) = snapshot
         publish_wave_id = None if system_state == "transition" else wave_id
         publish_old_wave_id = old_wave_id if system_state == "transition" else None
@@ -83,6 +98,16 @@ def build_wave_position_rows(
                 source_core_run_id,
                 source_lifespan_run_id,
                 created_at,
+                transition_boundary_high,
+                transition_boundary_low,
+                active_candidate_guard_pivot_id,
+                confirmation_pivot_id,
+                new_wave_id,
+                birth_type,
+                candidate_wait_span,
+                candidate_replacement_count,
+                confirmation_distance_abs,
+                confirmation_distance_pct,
             )
         )
 

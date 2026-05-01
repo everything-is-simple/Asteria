@@ -2,7 +2,7 @@
 
 日期：2026-05-01
 
-状态：`prepared / not executed`
+状态：`code-only executed / no formal DB promotion`
 
 ## 1. 背景
 
@@ -10,7 +10,7 @@
 本包明确了 `current_effective_HL/LH`、transition 双边界、active candidate guard、
 progress confirmation、birth descriptors 与 Service 只读追溯字段。
 
-本卡准备后续代码修订范围。它不在本轮执行代码改造，不创建 DuckDB，不改变当前 gate。
+本卡执行 MALF v1.3 代码修订范围。它不创建或 promote 正式 DuckDB，不改变当前 gate。
 
 ## 2. 基本信息
 
@@ -19,7 +19,7 @@ progress confirmation、birth descriptors 与 Service 只读追溯字段。
 | module | `malf` |
 | run_id | `malf-v1-3-authority-sync-code-revision-20260501-01` |
 | stage | `authority-sync / code-revision-card` |
-| status | `prepared / not executed` |
+| status | `code-only executed / no formal DB promotion` |
 | owner | `Asteria governance` |
 
 ## 3. 输入范围
@@ -29,7 +29,7 @@ progress confirmation、birth descriptors 与 Service 只读追溯字段。
 | authority source | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3` |
 | repo docs | `docs/02-modules/malf/` |
 | implementation scope | `src/asteria/malf/`; `scripts/malf/`; `tests/unit/malf/`; `governance/module_api_contracts/malf.toml` |
-| formal DB scope | not allowed in this prepared card |
+| formal DB scope | not allowed in this code-only execution |
 | current evidence baseline | `malf-complete-alignment-closeout-20260430-01` |
 
 ## 4. 权威边界
@@ -51,7 +51,7 @@ full-chain pipeline 授权。
 - 修订 runner mode enforcement。
 - 修订 MALF API contract metadata。
 - 扩展 hard audit 与 MALF unit tests。
-- 在后续执行卡中按治理要求重建 MALF v1.3 evidence。
+- 落档 code-only conclusion，作为后续正式 evidence 重建前的代码修订结论。
 
 ## 6. 禁止动作
 
@@ -82,10 +82,23 @@ H:\Asteria\.venv\Scripts\ruff.exe format --check . --cache-dir H:\Asteria-temp\r
 H:\Asteria\.venv\Scripts\mypy.exe src --cache-dir H:\Asteria-temp\mypy-cache
 ```
 
-若正式 DB 重建进入本卡后续执行范围，还必须新增 execution record、evidence index 与
-conclusion。
+本卡不新增正式 DB evidence index。若后续单独授权正式 DB 重建，必须另开执行记录、
+evidence index 与 conclusion，并明确 promotion 边界。
 
-## 9. 关联入口
+## 9. 执行结果
+
+| 项 | 结果 |
+|---|---|
+| code revision | `passed by unit/governance/static checks` |
+| formal DB creation / promotion | `not performed` |
+| v1.3 release evidence | `not claimed` |
+| gate effect | `none` |
+| current allowed next action | `Position freeze review reentry / review-only` |
+
+本卡只证明 MALF v1.3 代码修订面已通过本地单测、治理检查与静态检查；它不替代
+`malf-complete-alignment-closeout-20260430-01` 的当前正式 release evidence。
+
+## 10. 关联入口
 
 - [MALF v1.3 sync plan](../../../02-modules/malf/07-v1-3-authority-sync-and-code-revision-plan.md)
 - [gate ledger](../../../03-refactor/00-module-gate-ledger-v1.md)

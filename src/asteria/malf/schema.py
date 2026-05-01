@@ -94,7 +94,9 @@ def bootstrap_malf_core_day_database(path: Path) -> None:
                 run_id varchar,
                 schema_version varchar,
                 core_rule_version varchar,
-                created_at timestamp
+                created_at timestamp,
+                current_effective_guard_pivot_id varchar,
+                current_effective_guard_price double
             )
             """
         )
@@ -111,7 +113,8 @@ def bootstrap_malf_core_day_database(path: Path) -> None:
                 run_id varchar,
                 schema_version varchar,
                 core_rule_version varchar,
-                created_at timestamp
+                created_at timestamp,
+                broken_guard_pivot_id varchar
             )
             """
         )
@@ -131,7 +134,10 @@ def bootstrap_malf_core_day_database(path: Path) -> None:
                 run_id varchar,
                 schema_version varchar,
                 core_rule_version varchar,
-                created_at timestamp
+                created_at timestamp,
+                broken_guard_pivot_id varchar,
+                transition_boundary_high double,
+                transition_boundary_low double
             )
             """
         )
@@ -151,9 +157,39 @@ def bootstrap_malf_core_day_database(path: Path) -> None:
                 run_id varchar,
                 schema_version varchar,
                 core_rule_version varchar,
-                created_at timestamp
+                created_at timestamp,
+                candidate_status varchar,
+                confirmation_pivot_id varchar,
+                new_wave_id varchar
             )
             """
+        )
+        _ensure_columns(
+            con,
+            "malf_wave_ledger",
+            [
+                ("current_effective_guard_pivot_id", "varchar"),
+                ("current_effective_guard_price", "double"),
+            ],
+        )
+        _ensure_columns(con, "malf_break_ledger", [("broken_guard_pivot_id", "varchar")])
+        _ensure_columns(
+            con,
+            "malf_transition_ledger",
+            [
+                ("broken_guard_pivot_id", "varchar"),
+                ("transition_boundary_high", "double"),
+                ("transition_boundary_low", "double"),
+            ],
+        )
+        _ensure_columns(
+            con,
+            "malf_candidate_ledger",
+            [
+                ("candidate_status", "varchar"),
+                ("confirmation_pivot_id", "varchar"),
+                ("new_wave_id", "varchar"),
+            ],
         )
 
 
@@ -202,7 +238,17 @@ def bootstrap_malf_lifespan_day_database(path: Path) -> None:
                 schema_version varchar,
                 lifespan_rule_version varchar,
                 sample_version varchar,
-                created_at timestamp
+                created_at timestamp,
+                transition_boundary_high double,
+                transition_boundary_low double,
+                active_candidate_guard_pivot_id varchar,
+                confirmation_pivot_id varchar,
+                new_wave_id varchar,
+                birth_type varchar,
+                candidate_wait_span bigint,
+                candidate_replacement_count bigint,
+                confirmation_distance_abs double,
+                confirmation_distance_pct double
             )
             """
         )
@@ -251,6 +297,11 @@ def bootstrap_malf_lifespan_day_database(path: Path) -> None:
             )
             """
         )
+        _ensure_columns(
+            con,
+            "malf_lifespan_snapshot",
+            _V13_TRACE_COLUMNS,
+        )
 
 
 def bootstrap_malf_service_day_database(path: Path) -> None:
@@ -280,7 +331,17 @@ def bootstrap_malf_service_day_database(path: Path) -> None:
         schema_version varchar,
         source_core_run_id varchar,
         source_lifespan_run_id varchar,
-        created_at timestamp
+        created_at timestamp,
+        transition_boundary_high double,
+        transition_boundary_low double,
+        active_candidate_guard_pivot_id varchar,
+        confirmation_pivot_id varchar,
+        new_wave_id varchar,
+        birth_type varchar,
+        candidate_wait_span bigint,
+        candidate_replacement_count bigint,
+        confirmation_distance_abs double,
+        confirmation_distance_pct double
     """
     with duckdb.connect(str(path)) as con:
         con.execute(
@@ -317,4 +378,29 @@ def bootstrap_malf_service_day_database(path: Path) -> None:
                 created_at timestamp
             )
             """
+        )
+        _ensure_columns(con, "malf_wave_position", _V13_TRACE_COLUMNS)
+        _ensure_columns(con, "malf_wave_position_latest", _V13_TRACE_COLUMNS)
+
+
+_V13_TRACE_COLUMNS = [
+    ("transition_boundary_high", "double"),
+    ("transition_boundary_low", "double"),
+    ("active_candidate_guard_pivot_id", "varchar"),
+    ("confirmation_pivot_id", "varchar"),
+    ("new_wave_id", "varchar"),
+    ("birth_type", "varchar"),
+    ("candidate_wait_span", "bigint"),
+    ("candidate_replacement_count", "bigint"),
+    ("confirmation_distance_abs", "double"),
+    ("confirmation_distance_pct", "double"),
+]
+
+
+def _ensure_columns(
+    con: duckdb.DuckDBPyConnection, table_name: str, columns: list[tuple[str, str]]
+) -> None:
+    for column_name, column_type in columns:
+        con.execute(
+            f"alter table {table_name} add column if not exists {column_name} {column_type}"
         )

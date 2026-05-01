@@ -55,6 +55,8 @@ class Transition:
     old_progress: Pivot
     old_guard: Pivot
     break_dt: date
+    transition_boundary_high: float
+    transition_boundary_low: float
     state: str = "open"
     confirmed_dt: date | None = None
     new_wave_id: str | None = None
@@ -71,6 +73,14 @@ class Candidate:
     invalidated_by_candidate_id: str | None = None
     confirmed_by_pivot_id: str | None = None
     confirmed_wave_id: str | None = None
+
+    @property
+    def status(self) -> str:
+        if self.confirmed_wave_id is not None:
+            return "confirmed"
+        if self.invalidated_by_candidate_id is not None:
+            return "invalidated"
+        return "active"
 
 
 @dataclass(frozen=True)
@@ -410,6 +420,13 @@ def _break_transition(
         request.schema_version,
         request.core_rule_version,
         created_at,
+        wave.final_guard.pivot_id,
+    )
+    boundary_high = (
+        wave.final_progress.pivot_price if wave.direction == "up" else wave.final_guard.pivot_price
+    )
+    boundary_low = (
+        wave.final_guard.pivot_price if wave.direction == "up" else wave.final_progress.pivot_price
     )
     transition = Transition(
         transition_id,
@@ -419,6 +436,8 @@ def _break_transition(
         wave.final_progress,
         wave.final_guard,
         pivot.pivot_dt,
+        boundary_high,
+        boundary_low,
     )
     return break_row, transition
 
@@ -449,7 +468,11 @@ def _candidate_from_pivot(
     if pivot.pivot_type not in {"H", "L"}:
         return None
     direction = "up" if pivot.pivot_type == "L" else "down"
-    reference = transition.old_progress.pivot_price
+    reference = (
+        transition.transition_boundary_high
+        if direction == "up"
+        else transition.transition_boundary_low
+    )
     candidate_id = (
         f"{transition.transition_id}|candidate|{pivot.pivot_id}|"
         f"{direction}|{request.core_rule_version}"
