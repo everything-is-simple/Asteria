@@ -17,7 +17,8 @@
 
 | 路径 | 资产性质 | 当前用途裁决 |
 |---|---|---|
-| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` | 现行权威设计 | 直接作为 Asteria 的 MALF 权威输入 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` | 已通过实现证据的 MALF 历史权威设计 | 作为当前 complete alignment closeout 的历史语义锚点 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3` | MALF v1.3 语义升级权威设计 | 作为后续 repo 文档同步与代码修订卡依据，不声明当前实现已覆盖 |
 | `H:\Asteria-Validated\README.md` | Validated 根目录人读索引 | 声明 Validated 资产区职责、当前权威锚点和禁止用途 |
 | `H:\Asteria-Validated\validated-asset-manifest-20260429-01.json` | Validated 根目录机器清单 | 记录顶层资产角色、大小、时间和 SHA256 |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 架构级剖切面研究报告 | 作为治理、历史总账、增量协议与下一阶段施工路径的分析输入 |
@@ -35,12 +36,13 @@
 
 ## 3. 可直接复用
 
-### 3.1 MALF 三份终稿
+### 3.1 MALF 权威定义包
 
 路径：
 
 ```text
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
 ```
 
 用途：
@@ -52,7 +54,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
 裁决：
 
 ```text
-这是 Asteria 当前唯一应被直接继承的语义权威组。
+v1.2 是当前已通过实现证据的历史锚点；v1.3 是后续语义升级与代码修订的权威依据。
 ```
 
 ### 3.2 A 股市场参考资料

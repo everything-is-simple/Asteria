@@ -18,10 +18,13 @@
 - `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip`
 
-当前已通过 `Signal bounded proof` 与 `MALF Lifespan dense bar snapshot resolution`；
-唯一允许推进的业务动作是 Position freeze review reentry 的 review-only 审查。Alpha
-full build、Signal full build、Position 施工和下游模块施工仍未放行。
+当前已通过 `Signal bounded proof` 与 `MALF complete alignment closeout`；MALF v1.3
+authority package 已形成但仍需后续代码修订卡执行。唯一允许推进的业务动作是 Position
+freeze review reentry 的 review-only 审查。Alpha full build、Signal full build、Position
+施工和下游模块施工仍未放行。
 
 ## 1. 与其他目录的分工
 

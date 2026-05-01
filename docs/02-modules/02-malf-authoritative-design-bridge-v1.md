@@ -4,19 +4,34 @@
 
 ## 1. 权威锚点
 
-Asteria 的 MALF 设计以以下文件为唯一语义权威：
+Asteria 当前已通过实现证据承接的 MALF 设计锚点为：
 
 ```text
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
 ```
 
+2026-05-01 已形成新的 MALF v1.3 语义升级权威包：
+
+```text
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
+```
+
+v1.3 定义清晰、定理自洽，可以作为后续 repo 文档同步与代码修订依据；但在
+`malf-v1-3-authority-sync-code-revision-20260501-01` 或后续执行卡通过前，不声明
+当前实现已经覆盖 v1.3 全语义。
+
 | 文件 | Asteria 内部地位 |
 |---|---|
-| `MALF_01_Core_Definitions_Theorems_v1_3.md` | Core 真值定义 |
-| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_2.md` | Lifespan 统计定义 |
-| `MALF_03_System_Service_Interface_v1_2.md` | Service 接口定义 |
-| `MALF_00_Three_Documents_Bridge_v1_2.md` | 三文件关系定义 |
+| `MALF_00_Three_Documents_Bridge_v1_2.md` | v1.2 三文件关系定义；当前已通过 closeout 的历史 baseline |
+| `MALF_01_Core_Definitions_Theorems_v1_3.md` | Core 真值定义；v1.2 baseline 已引用同名 Core 语义 |
+| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_2.md` | v1.2 Lifespan 统计定义；当前已通过 closeout 的历史 baseline |
+| `MALF_03_System_Service_Interface_v1_2.md` | v1.2 Service 接口定义；当前已通过 closeout 的历史 baseline |
+| `MALF_00_Three_Documents_Bridge_v1_3.md` | v1.3 三文件关系与边界 |
+| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_3.md` | Lifespan 统计定义与 birth descriptors |
+| `MALF_03_System_Service_Interface_v1_3.md` | Service 接口定义与 transition trace |
+| `MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_3.md` | v1.3 评审结论与实现差异 |
 
 `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` 是本桥接页的
 重要 repo 快照基线；快照之后的 MALF day 放行事实由 `docs/04-execution/`
@@ -55,6 +70,9 @@ MALF 在 Asteria 中按 timeframe 拆为三库：
 | Break | `malf_break_ledger` |
 | Transition | `malf_transition_ledger` |
 | Candidate Guard | `malf_candidate_ledger` |
+| Current Effective Guard | v1.3 待同步到 `malf_wave_ledger` / `malf_break_ledger` |
+| Transition Boundary | v1.3 待同步到 `malf_transition_ledger` |
+| Progress Confirmation | v1.3 待同步到 `malf_candidate_ledger` 与 new wave creation |
 
 ## 5. Lifespan 必须实现的对象
 
@@ -67,6 +85,7 @@ MALF 在 Asteria 中按 timeframe 拆为三库：
 | life-state | `malf_lifespan_snapshot` |
 | sample scope | `malf_sample_version` |
 | rule version | `malf_rule_version` |
+| birth descriptors | v1.3 待同步到 Lifespan / Service 字段 |
 
 ## 6. Service 必须实现的对象
 
@@ -106,6 +125,9 @@ flowchart TD
 bounded proof 与 Alpha 只读 WavePosition 前置条件；week/month 复制、全量构建、
 Pipeline 全链路和 Alpha 代码施工仍需要后续卡。
 
+截至 2026-04-30，`malf-complete-alignment-closeout-20260430-01` 已取代旧 dense /
+hard-audit evidence 作为当前 MALF day dense formal evidence。v1.3 仍是待实现语义升级。
+
 ## 9. 必须验收的不变量
 
 | 不变量 | 来源 |
@@ -122,12 +144,11 @@ Pipeline 全链路和 Alpha 代码施工仍需要后续卡。
 
 ## 10. 当前下游授权
 
-MALF day 放行后的唯一业务下一步是：
+当前唯一业务下一步是：
 
 ```text
-Alpha freeze review
+Position freeze review reentry / review-only
 ```
 
-Alpha 只能在 freeze review 中重审其六件套是否可冻结。Alpha、Signal、Position、
-Portfolio Plan、Trade、System Readout 和 Pipeline 仍不得写回 MALF，也不得把
-WavePosition 的发布解释为自身代码施工许可。
+Alpha、Signal、Position、Portfolio Plan、Trade、System Readout 和 Pipeline 仍不得写回
+MALF，也不得把 WavePosition 的发布解释为自身代码施工许可。

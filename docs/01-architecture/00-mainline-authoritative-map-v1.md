@@ -197,7 +197,8 @@ design freeze
 
 | 权威输入 | 回答的问题 | 当前用途 |
 |---|---|---|
-| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` | MALF 是什么，WavePosition 如何定义 | MALF 六件套、MALF day proof、Alpha freeze review 的语义锚点 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` | 已通过实现证据所承接的 MALF 语义 | MALF complete alignment closeout 当前 formal evidence 的历史锚点 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip` | MALF v1.3 语义升级：current effective guard、transition boundary、birth descriptors、Service trace | 后续 repo 文档同步与代码修订卡依据；未执行前不声明代码已覆盖 |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 多 DuckDB、日更、pipeline ledger、release evidence 如何治理 | 支撑逻辑历史总账和增量构建协议 |
 | `docs/04-execution/00-conclusion-index-v1.md` | 哪些执行卡已经正式落档 | 当前放行状态入口 |
 
@@ -208,3 +209,7 @@ MALF day passed -> Alpha freeze review passed -> Alpha bounded proof passed -> S
 ```
 
 任何下游实现都必须等前置模块完成 freeze / proof / release evidence。
+
+MALF v1.3 authority package 已可作为下一轮 MALF 自身代码修订依据；该动作仍属于
+MALF 上游语义同步，不授权 Alpha full build、Signal full build、Position construction 或
+Pipeline 扩权。

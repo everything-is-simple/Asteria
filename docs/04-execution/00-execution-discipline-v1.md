@@ -21,9 +21,14 @@
 - `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip`
 
 深度研究报告要求 release evidence、manifest、checkpoint、audit、closeout 进入可恢复、
 可审计链条；因此执行记录不是旁路说明，而是门禁状态的一部分。
+
+MALF v1.3 authority package 是后续 MALF 自身代码修订的设计依据；在形成新的
+record、evidence-index 与 conclusion 前，不得把它解释为当前实现已通过 v1.3。
 
 ## 2. 闭环顺序
 

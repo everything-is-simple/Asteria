@@ -52,6 +52,18 @@ core_rule_version
 created_at
 ```
 
+v1.3 待同步字段：
+
+| 表 | 字段 | 说明 |
+|---|---|---|
+| `malf_wave_ledger` | `current_effective_guard_pivot_id` | active wave 当前有效 guard |
+| `malf_break_ledger` | `broken_guard_pivot_id` | 被击穿的 current effective guard |
+| `malf_transition_ledger` | `transition_boundary_high` | transition 上边界 |
+| `malf_transition_ledger` | `transition_boundary_low` | transition 下边界 |
+| `malf_candidate_ledger` | `candidate_status` | active / invalidated / confirmed-source 等候选状态 |
+| `malf_candidate_ledger` | `confirmation_pivot_id` | 触发 new wave 的 progress confirmation pivot |
+| `malf_candidate_ledger` | `new_wave_id` | confirmation 后创建的新 wave |
+
 ## 4. Lifespan DB
 
 | 表 | 自然键 | 说明 |
@@ -71,6 +83,16 @@ lifespan_rule_version
 sample_version
 created_at
 ```
+
+v1.3 待同步字段：
+
+| 字段 | 说明 |
+|---|---|
+| `birth_type` | initial / same-direction / opposite-direction |
+| `candidate_wait_span` | active candidate 到 confirmation 的等待跨度 |
+| `candidate_replacement_count` | transition 内 candidate 替换次数 |
+| `confirmation_distance_abs` | confirmation 越过 boundary 的绝对距离 |
+| `confirmation_distance_pct` | confirmation 越过 boundary 的比例距离 |
 
 ## 5. Service DB
 
@@ -114,6 +136,16 @@ created_at
 | `life_state` | 必填 |
 | `position_quadrant` | 必填 |
 | `guard_boundary_price` | 可空 |
+| `transition_boundary_high` | v1.3 待同步字段 |
+| `transition_boundary_low` | v1.3 待同步字段 |
+| `active_candidate_guard_pivot_id` | v1.3 待同步字段 |
+| `confirmation_pivot_id` | v1.3 待同步字段 |
+| `new_wave_id` | v1.3 待同步字段 |
+| `birth_type` | v1.3 待同步字段 |
+| `candidate_wait_span` | v1.3 待同步字段 |
+| `candidate_replacement_count` | v1.3 待同步字段 |
+| `confirmation_distance_abs` | v1.3 待同步字段 |
+| `confirmation_distance_pct` | v1.3 待同步字段 |
 | `sample_scope` | 必填 |
 | `sample_version` | 必填 |
 | `lifespan_rule_version` | 必填 |

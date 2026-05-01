@@ -16,12 +16,24 @@ Market Lifespan Framework
 
 ## 2. 权威来源
 
-MALF 的唯一语义权威为：
+MALF 当前已通过实现证据的语义锚点为：
 
 ```text
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
 ```
+
+MALF v1.3 已形成新的权威定义包：
+
+```text
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
+```
+
+v1.3 是语义升级依据，不是当前实现已覆盖声明。当前 repo 仍以
+`malf-complete-alignment-closeout-20260430-01` 作为已通过的 MALF day dense
+formal evidence；v1.3 新增字段、runner mode 修订和 hard audit 扩展必须另走
+`malf-v1-3-authority-sync-code-revision-20260501-01` 修订卡。
 
 本文件按 `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip`
 之后的执行结论刷新：MALF day bounded proof 与 MALF complete alignment closeout 均已
@@ -31,10 +43,11 @@ Pipeline。
 
 | 权威文档 | 本模块承接范围 |
 |---|---|
-| `MALF_01_Core_Definitions_Theorems_v1_3.md` | pivot、structure primitive、wave、break、transition、candidate |
-| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_2.md` | new-count、no-new-span、rank、life-state、position quadrant |
-| `MALF_03_System_Service_Interface_v1_2.md` | WavePosition 与 Alpha-facing interface |
-| `MALF_00_Three_Documents_Bridge_v1_2.md` | Core、Lifespan、Service 的关系 |
+| `MALF_00_Three_Documents_Bridge_v1_3.md` | Core、Lifespan、Service 的关系；v1.3 不改变当前 gate |
+| `MALF_01_Core_Definitions_Theorems_v1_3.md` | pivot、structure primitive、wave、current effective guard、break、transition boundary、candidate、new wave |
+| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_3.md` | new-count、no-new-span、rank、life-state、position quadrant、birth descriptors |
+| `MALF_03_System_Service_Interface_v1_3.md` | WavePosition、transition trace、birth descriptors 与 Alpha-facing readonly interface |
+| `MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_3.md` | v1.3 定义/定理评审结论与实现差异 |
 
 ## 3. 模块只回答什么
 
@@ -159,3 +172,19 @@ MALF day 首轮放行必须满足：
 `malf-complete-alignment-closeout-20260430-01` 均已形成 `passed` 结论。
 该结论只覆盖 day bounded proof 与 dense bar-level WavePosition complete alignment；
 week/month、full build 和下游施工仍需后续卡。
+
+## 11. v1.3 待同步裁决
+
+MALF v1.3 的定义与定理评审结论为：定义清晰、定理自洽，可以作为后续工程修订依据。
+
+但在修订卡通过前，以下内容只作为待实现要求：
+
+| 项 | 待同步要求 |
+|---|---|
+| Core | 显式追踪 `current_effective_HL` / `current_effective_LH` 与 broken guard |
+| Core | 记录 `transition_boundary_high` / `transition_boundary_low` |
+| Core | 区分 candidate guard 与 progress confirmation，不使用 `candidate confirmed` 混词 |
+| Lifespan | 增加 `birth_type`、`candidate_wait_span`、`candidate_replacement_count`、`confirmation_distance_abs`、`confirmation_distance_pct` |
+| Service | 发布 transition boundary、active candidate guard、confirmation pivot、new wave id 等追溯字段 |
+| Runner | build runner 不得以 `audit-only` 写业务表；`segmented` 必须有 segmented scope |
+| Audit | 新增 v1.3 hard audit 与回归测试 |

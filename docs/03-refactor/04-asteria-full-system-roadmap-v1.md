@@ -5,8 +5,9 @@
 ## 1. Summary
 
 当前基线：`MALF day bounded proof`、`Alpha freeze review`、`Alpha bounded proof`、
-`Signal freeze review`、`Signal bounded proof` 与 `MALF dense resolution` 已通过；
-下一步只允许 Position freeze review reentry 的 review-only 审查。
+`Signal freeze review`、`Signal bounded proof` 与 `MALF complete alignment closeout`
+已通过；MALF v1.3 authority package 已形成但仍需后续代码修订卡同步。下一步只允许
+Position freeze review reentry 的 review-only 审查。
 
 本路线图依据以下权威资产刷新：
 
@@ -15,6 +16,8 @@ H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研
 H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
 ```
 
 深度研究报告中的 “机器可读门禁、统一 schema registry、模块 API 合同、pipeline ledger

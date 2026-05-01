@@ -2,13 +2,18 @@
 
 日期：2026-04-29
 
-状态：Asteria-specific annex / traceability only
+状态：Asteria-specific annex / traceability only / v1.2-closeout baseline
 
 ## 1. 边界
 
 本附件不修改 `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` 中任何 MALF
 定义、定理或接口原文。它只把 MALF 权威语义追踪到 Asteria 的 schema、runner、
 audit rule 和 evidence，避免后续 Alpha freeze review 依赖人工记忆判断是否偏移。
+
+2026-05-01 已形成 `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3`。v1.3 的
+新语义差异与后续代码修订范围记录在
+`docs/02-modules/malf/07-v1-3-authority-sync-and-code-revision-plan.md`。本附件仍保留为
+`malf-complete-alignment-closeout-20260430-01` 的实现追溯基线，不声明 v1.3 已实现。
 
 ## 2. 权威输入
 

@@ -43,6 +43,8 @@ MALF 的语义权威来自：
 ```text
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2\
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3\
 ```
 
 该资产包含：
@@ -53,6 +55,10 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2\
 | `MALF_01_Core_Definitions_Theorems_v1_3.md` | Core 结构真值 |
 | `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_2.md` | Lifespan 统计真值 |
 | `MALF_03_System_Service_Interface_v1_2.md` | WavePosition 服务接口真值 |
+| `MALF_00_Three_Documents_Bridge_v1_3.md` | v1.3 三文档关系与边界 |
+| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_3.md` | v1.3 Lifespan 统计与 birth descriptors |
+| `MALF_03_System_Service_Interface_v1_3.md` | v1.3 WavePosition 服务接口与 trace 字段 |
+| `MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_3.md` | v1.3 定义/定理评审与实现差异 |
 
 当前执行权威补充：
 
@@ -68,13 +74,14 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2\
 | `H:\Asteria-Validated\Asteria-signal-bounded-proof-20260429-01.zip` | Signal bounded proof evidence |
 | `H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip` | 文档权威链刷新归档 |
 | `docs/04-execution/records/governance/malf-authority-compatibility-audit-20260429-01.conclusion.md` | 当前系统快照未偏移 MALF 权威 |
+| `docs/04-execution/records/malf/malf-v1-3-authority-sync-code-revision-20260501-01.card.md` | v1.3 代码修订卡已准备但未执行 |
 
 ## 3. 交付状态表
 
 | 顺序 | 模块 | 文档位置 | 文档状态 | 是否允许施工 | 等待条件 |
 |---:|---|---|---|---:|---|
 | 0 | Data Foundation | `docs/02-modules/data/` | foundation six-doc draft | 否 | 作为地基输入契约继续审阅，不占主线施工位 |
-| 1 | MALF | `docs/02-modules/malf/` | frozen / day bounded proof passed | 否 | day 已通过；week/month 或 full build 另需新卡 |
+| 1 | MALF | `docs/02-modules/malf/` | frozen / complete alignment closeout passed / v1.3 sync plan prepared | 否 | day dense evidence 已通过；v1.3 代码修订、week/month 或 full build 另需新卡 |
 | 2 | Alpha | `docs/02-modules/alpha/` | frozen six-doc set / bounded proof passed | 否 | full build 另需新卡 |
 | 3 | Signal | `docs/02-modules/signal/` | frozen six-doc set / bounded proof passed | 否 | full build 另需新卡 |
 | 4 | Position | `docs/02-modules/position/` | pre-gate six-doc draft | 是，review-only | 当前只允许 Position freeze review |

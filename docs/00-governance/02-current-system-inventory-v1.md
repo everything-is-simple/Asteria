@@ -26,8 +26,10 @@
 |---|---|
 | `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` | release gate closure 前的 docs/code 快照锚点 |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 治理、主线、数据、编排四切面研究输入 |
-| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` | MALF 语义权威 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` | 当前已通过实现证据的 MALF 历史语义锚点 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip` | MALF v1.3 语义升级权威，待代码修订卡同步 |
 | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` | MALF day bounded proof 证据 |
+| `H:\Asteria-Validated\Asteria-malf-complete-alignment-closeout-20260430-01.zip` | 当前 MALF day dense formal evidence |
 | `H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip` | 本轮文档权威链刷新证据 |
 
 快照不是当前仓库的替代品。快照之后的变更必须通过 `docs/04-execution/`

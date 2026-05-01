@@ -9,6 +9,10 @@
 MALF runner 必须支持 bounded proof 先行，再进入 segmented / full / resume。第一阶段只执行 day。
 `audit-only` 仅用于 audit runner，不用于 Core / Lifespan / Service build runner。
 
+当前待修 gap：build path 必须显式拒绝 `audit-only` 写业务表；`segmented` 必须校验
+symbol range、batch id 或等价 segmented scope。该修订纳入
+`malf-v1-3-authority-sync-code-revision-20260501-01`，不改变当前 closeout 结论。
+
 ## 2. Runner 列表
 
 | Runner | 职责 |
@@ -42,6 +46,26 @@ flowchart TD
 | `full` | 只能在 bounded proof 通过后开启 |
 | `resume` | 必须读取 checkpoint |
 | `audit-only` | 仅 audit runner 使用；不写业务表，只写 audit 或报告 |
+
+build runner 模式裁决：
+
+```text
+Core / Lifespan / Service build runner accepted modes:
+    bounded
+    segmented
+    full
+    resume
+
+Audit runner accepted modes:
+    bounded
+    segmented
+    full
+    resume
+    audit-only
+```
+
+任何 build runner 若收到 `audit-only`，必须 fail fast。任何 `segmented` run 若缺少
+segmented scope，也必须 fail fast。
 
 ## 5. 公共参数
 

@@ -26,6 +26,17 @@ MALF 审计用于证明 Core、Lifespan、Service 三层没有破坏权威语义
 | candidate down confirmation 必须低于 old final LL | hard fail |
 | candidate reference 必须等于 transition old progress extreme | hard fail |
 
+v1.3 待新增 Core hard audit：
+
+| 检查 | 失败裁决 |
+|---|---|
+| break(up wave) 必须击穿 `current_effective_HL`，不是任意历史 HL | hard fail |
+| break(down wave) 必须击穿 `current_effective_LH`，不是任意历史 LH | hard fail |
+| transition 必须同时具备 `transition_boundary_high` 与 `transition_boundary_low` | hard fail |
+| same-direction / opposite-direction new wave confirmation 必须使用 transition boundary | hard fail |
+| active candidate 必须等于最新有效 candidate guard | hard fail |
+| 被相反方向 candidate guard 替代的旧 candidate 不得继续确认 new wave | hard fail |
+
 ## 3. Lifespan 硬审计
 
 | 检查 | 失败裁决 |
@@ -36,6 +47,15 @@ MALF 审计用于证明 Core、Lifespan、Service 三层没有破坏权威语义
 | rank 样本必须能追溯到 `sample_version` | hard fail |
 | lifespan 规则必须能追溯到 `lifespan_rule_version` | hard fail |
 | audit 必须能解析 `source_lifespan_run_id` 且查到 source rows | hard fail |
+
+v1.3 待新增 Lifespan hard audit：
+
+| 检查 | 失败裁决 |
+|---|---|
+| birth descriptor 字段必须与 Core transition / candidate / confirmation 事实一致 | hard fail |
+| `candidate_wait_span` 必须从 active candidate guard 后开始计数 | hard fail |
+| `candidate_replacement_count` 必须等于 transition 内 candidate 替换事实 | hard fail |
+| `confirmation_distance_abs/pct` 必须使用 transition boundary 计算 | hard fail |
 
 ## 4. Service 硬审计
 
@@ -48,6 +68,15 @@ MALF 审计用于证明 Core、Lifespan、Service 三层没有破坏权威语义
 | WavePosition 自然键唯一 | hard fail |
 | `malf_wave_position_latest` 每个 `symbol + timeframe + service_version` 只有一行 | hard fail |
 | audit 必须能解析 `source_core_run_id` 且查到 source rows | hard fail |
+
+v1.3 待新增 Service hard audit：
+
+| 检查 | 失败裁决 |
+|---|---|
+| WavePosition transition trace 字段必须能回溯 Core break / transition / candidate ledger | hard fail |
+| WavePosition 不得发布未确认 new wave 为 alive | hard fail |
+| Service 发布的 `new_wave_id` 必须来自 Core confirmed new wave | hard fail |
+| Service 不得发明 Core / Lifespan 中不存在的 birth descriptor | hard fail |
 
 ## 5. 接口审计输出
 

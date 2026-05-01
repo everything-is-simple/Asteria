@@ -24,20 +24,26 @@ flowchart TD
 
 ## 外部权威锚点
 
-MALF 三份终稿位于：
+MALF 权威定义包位于：
 
 ```text
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
 ```
 
 其中：
 
 | 文件 | 职责 |
 |---|---|
+| `MALF_00_Three_Documents_Bridge_v1_3.md` | v1.3 三份文件关联总纲 |
 | `MALF_01_Core_Definitions_Theorems_v1_3.md` | Core 结构定义与定理 |
-| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_2.md` | 波段统计学定义 |
-| `MALF_03_System_Service_Interface_v1_2.md` | MALF 对系统其它模块的服务接口 |
-| `MALF_00_Three_Documents_Bridge_v1_2.md` | 三份文件关联总纲 |
+| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_3.md` | 波段统计学定义与 birth descriptors |
+| `MALF_03_System_Service_Interface_v1_3.md` | MALF 对系统其它模块的只读服务接口 |
+| `MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_3.md` | v1.3 定义/定理评审与实现差异 |
+
+v1.3 是新的语义升级权威包；当前代码实现仍以已通过的
+`malf-complete-alignment-closeout-20260430-01` 为 formal evidence，待后续 MALF v1.3
+代码修订卡同步。
 
 Validated 资产清单：
 
@@ -64,9 +70,9 @@ H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研
 
 - [Asteria 执行结论索引](H:/Asteria/docs/04-execution/00-conclusion-index-v1.md)
 
-当前已通过 `Signal bounded proof`；下一步只允许打开 `Position freeze review`。
-Signal full build、Position 施工、下游模块施工和全链路 pipeline 必须等待后续 release
-gate。
+当前已通过 `Signal bounded proof` 与 `MALF complete alignment closeout`；下一步只允许
+`Position freeze review reentry / review-only`。Signal full build、Position 施工、下游模块
+施工和全链路 pipeline 必须等待后续 release gate。
 
 前辈系统资产清单：
 

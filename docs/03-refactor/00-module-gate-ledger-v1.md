@@ -10,6 +10,8 @@ H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
 H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
 H:\Asteria-Validated\Asteria-malf-complete-alignment-closeout-20260430-01.zip
 ```
 
@@ -48,6 +50,15 @@ Signal
 ```text
 MALF complete alignment closeout
 ```
+
+当前最新语义升级资产：
+
+```text
+MALF_Three_Part_Design_Set_v1_3
+```
+
+v1.3 定义清晰、定理自洽，可以作为后续 MALF 代码修订依据；但它尚未改变当前
+passed evidence，也不打开下游施工。
 
 当前已打开执行卡：
 
@@ -118,6 +129,7 @@ MALF 冻结文档与当前 proof 状态：
 | `docs/02-modules/malf/04-audit-spec-v1.md` | frozen / day bounded proof passed / complete alignment closeout passed / hard audit source-bound |
 | `docs/02-modules/malf/05-build-card-v1.md` | frozen / superseded by passed day proof |
 | `docs/02-modules/malf/06-implementation-traceability-annex-v1.md` | annex / traceability only / no semantic amendment |
+| `docs/02-modules/malf/07-v1-3-authority-sync-and-code-revision-plan.md` | draft / v1.3 semantic sync plan / code revision prepared |
 
 下游本轮 pre-gate / 占位文档：
 

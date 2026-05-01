@@ -38,6 +38,8 @@
 |---|---|---|
 | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` | MALF 语义权威 | 定义 Core、Lifespan、System-Service 与 Bridge |
 | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2\` | MALF 语义权威目录 | 供文档桥接、审计和实现逐条引用 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip` | MALF v1.3 语义升级权威 | 定义 current effective guard、transition boundary、birth descriptors 与 Service 追溯字段 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3\` | MALF v1.3 语义升级目录 | 作为后续 repo 文档同步与代码修订卡依据，不声明当前实现已覆盖 |
 | `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` | docs/code 快照锚点 | 记录 release gate closure 前的仓库文档与代码基线 |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 架构剖切面研究 | 支撑治理、主线、数据、编排四个切面的后续裁决 |
 
@@ -168,7 +170,10 @@ MALF dense bar-level complete alignment closeout
 Position freeze review reentry card
 ```
 
-MALF 语义继续以 `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` 为唯一权威。
+MALF 已通过实现证据继续以 `malf-complete-alignment-closeout-20260430-01` 为当前
+formal evidence；MALF v1.3 已形成新的语义升级权威包，但必须通过
+`malf-v1-3-authority-sync-code-revision-20260501-01` 或后续执行卡同步后，才能声明
+代码实现覆盖 v1.3 全语义。
 Signal bounded proof 已通过；Position freeze review 已登记 blocked；MALF complete
 alignment closeout 已通过并取代旧 dense/hard-audit evidence 作为当前 MALF dense
 正式证据。下一卡只允许 Position freeze review reentry 的 review-only 审查，不直接授权
