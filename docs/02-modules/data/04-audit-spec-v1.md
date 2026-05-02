@@ -2,12 +2,15 @@
 
 日期：2026-05-02
 
-状态：production-foundation released / production audit active / market_meta hard checks active
+状态：production baseline sealed / production audit active / maintenance-card-only extensions
 
 当前裁决：Data Foundation 已通过生产级地基 release audit，并已增加 day execution
 line presence hard check。审计覆盖四个正式库、
 `analysis_price_line=backward`、`execution_price_line=none`、source trace、自然键、
 latest 指针、dirty scope、checkpoint/resume，以及最小正式 `market_meta.duckdb`。
+`data-foundation-production-baseline-seal-20260502-01` 后，当前 audit surface 是 Data
+主线输入底座封版的硬门禁；后续 Data 扩展必须继续通过该审计或在 maintenance card
+中显式扩展审计规则。
 
 ## 1. 目的
 

@@ -17,6 +17,7 @@ H:\Asteria-Validated\Asteria-data-production-release-closeout-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-execution-price-line-materialization-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip
+H:\Asteria-Validated\Asteria-data-foundation-production-baseline-seal-20260502-01.zip
 ```
 
 `214427` 快照是 2026-04-28 docs/code 基线；`130309` 快照是三天重构成果的
@@ -39,6 +40,7 @@ Data production foundation closeout 已通过
 Data execution price line materialization 已通过
 Data market meta formalization 已通过
 Data market meta SW industry snapshot 已通过
+Data foundation production baseline seal 已通过
 ```
 
 当前已交付主线模块文档索引：
@@ -100,7 +102,7 @@ bounded proof、Position 施工、Signal full build、下游施工或全链路 p
 
 | 顺序 | 模块 | 文档状态 | 冻结状态 | 是否允许施工 | 文档位置 | 说明 |
 |---:|---|---|---|---:|---|---|
-| 0 | Data Foundation | market_meta SW industry snapshot 已通过 | raw/base day-week-month 已放行 / day execution line live / market_meta SW industry snapshot partially released / reference gaps retained | 是，foundation maintenance surface | `docs/02-modules/data/` | 五个 Data DB 是本版最小正式底座；market_meta 已部分释放申万当前行业快照；ST/停牌/真实上市退市仍缺口；非策略主线，不占主线施工位 |
+| 0 | Data Foundation | production baseline seal 已通过 | 主线输入底座已封版 / maintenance-card-only extensions / reference gaps retained | 是，仅 maintenance card | `docs/02-modules/data/` | 五个 Data DB 是本版主线输入底座；market_meta 已部分释放申万当前行业快照；ST/停牌/真实上市退市仍缺口；非策略主线，不占主线施工位 |
 | 1 | MALF | 六件套已交付 / v1.3 formal-data bounded closeout 已通过 | frozen | 否 | `docs/02-modules/malf/` | day bounded formal-data proof 已通过；week/month 未执行 |
 | 2 | Alpha | 六件套已冻结 / bounded proof 已通过 | released | 否 | `docs/02-modules/alpha/` | bounded proof 已通过；full build 需另开卡 |
 | 3 | Signal | 六件套已冻结 / bounded proof 已通过 | released | 否 | `docs/02-modules/signal/` | bounded proof 已通过；full build 需另开卡 |
@@ -116,18 +118,19 @@ Data Foundation 本轮六件套草案：
 
 | 文档 | 状态 |
 |---|---|
-| `docs/02-modules/data/00-authority-design-v1.md` | production-foundation released / execution day line live / market_meta SW industry snapshot partially released |
-| `docs/02-modules/data/01-semantic-contract-v1.md` | production-foundation released / SW industry snapshot partially released / other gaps retained |
-| `docs/02-modules/data/02-database-schema-spec-v1.md` | production-foundation released / raw + base + meta schema frozen / SW industry snapshot policy |
-| `docs/02-modules/data/03-runner-contract-v1.md` | production-foundation released / execution day line materialized / SW industry snapshot runner live |
-| `docs/02-modules/data/04-audit-spec-v1.md` | production-foundation released / market_meta hard checks active / SW industry source policy active |
-| `docs/02-modules/data/05-build-card-v1.md` | data-market-meta-sw-industry-snapshot passed |
+| `docs/02-modules/data/00-authority-design-v1.md` | production baseline sealed / mainline input ready |
+| `docs/02-modules/data/01-semantic-contract-v1.md` | production baseline sealed / maintenance-card-only extensions |
+| `docs/02-modules/data/02-database-schema-spec-v1.md` | production baseline sealed / schema surface frozen |
+| `docs/02-modules/data/03-runner-contract-v1.md` | production baseline sealed / runner surface frozen |
+| `docs/02-modules/data/04-audit-spec-v1.md` | production baseline sealed / hard audit active |
+| `docs/02-modules/data/05-build-card-v1.md` | data-foundation-production-baseline-seal passed |
 
 Data Foundation 已完成生产级地基闭环和最小 `market_meta.duckdb` 正式化。当前放行范围为
 五个正式 Data DB、`analysis_price_line = backward`、`execution_price_line = none`、
 daily incremental、checkpoint/resume 与 release audit；其中 `market_meta` 覆盖
 可从正式 raw/base 推导的客观事实，并部分释放申万 2021 当前行业快照。index/block、
-ST、停牌、真实上市/退市与历史行业沿革仍需另开卡。
+ST、停牌、真实上市/退市与历史行业沿革仍需另开 maintenance card。当前 Data 已封为
+主线输入底座，不再作为 Position freeze review reentry 前的泛化补数入口。
 
 Data Foundation legacy source intake 当前执行结论：
 
@@ -141,6 +144,7 @@ Data Foundation legacy source intake 当前执行结论：
 | `data-execution-price-line-materialization-20260502-01` | `passed` | `Position freeze review reentry` |
 | `data-market-meta-formalization-20260502-01` | `passed` | `Position freeze review reentry` |
 | `data-market-meta-sw-industry-snapshot-20260502-01` | `passed` | `Position freeze review reentry` |
+| `data-foundation-production-baseline-seal-20260502-01` | `passed` | `Position freeze review reentry` |
 
 MALF v1.3 formal rebuild 当前执行结论：
 
@@ -224,6 +228,7 @@ H:\Asteria-Validated\Asteria-data-production-release-closeout-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-execution-price-line-materialization-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip
+H:\Asteria-Validated\Asteria-data-foundation-production-baseline-seal-20260502-01.zip
 ```
 
 这些 zip 是文档/治理快照或权威刷新归档，不是 DuckDB 产物。运行证据必须另有

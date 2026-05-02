@@ -26,6 +26,7 @@
 - `H:\Asteria-Validated\Asteria-data-execution-price-line-materialization-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip`
+- `H:\Asteria-Validated\Asteria-data-foundation-production-baseline-seal-20260502-01.zip`
 
 `214427` 是重要 docs/code 快照锚点；`130309` 是三天重构成果的历史系统
 docs/code 快照；`101006` 是 Data formal promotion（Data 正式提升）与 MALF v1.3
@@ -44,6 +45,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Data | `data-execution-price-line-materialization-20260502-01` | `passed` | [conclusion](records/data/data-execution-price-line-materialization-20260502-01.conclusion.md) | [evidence-index](records/data/data-execution-price-line-materialization-20260502-01.evidence-index.md) |
 | Data | `data-market-meta-formalization-20260502-01` | `passed` | [conclusion](records/data/data-market-meta-formalization-20260502-01.conclusion.md) | [evidence-index](records/data/data-market-meta-formalization-20260502-01.evidence-index.md) |
 | Data | `data-market-meta-sw-industry-snapshot-20260502-01` | `passed` | [conclusion](records/data/data-market-meta-sw-industry-snapshot-20260502-01.conclusion.md) | [evidence-index](records/data/data-market-meta-sw-industry-snapshot-20260502-01.evidence-index.md) |
+| Data | `data-foundation-production-baseline-seal-20260502-01` | `passed` | [conclusion](records/data/data-foundation-production-baseline-seal-20260502-01.conclusion.md) | [evidence-index](records/data/data-foundation-production-baseline-seal-20260502-01.evidence-index.md) |
 | MALF | `malf-day-bounded-proof-20260428-01` | `passed` | [conclusion](records/malf/malf-day-bounded-proof-20260428-01.conclusion.md) | [evidence-index](records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md) |
 | MALF | `malf-lifespan-dense-bar-snapshot-gap-20260429-01` | `blocked` | [conclusion](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.conclusion.md) | [evidence-index](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.evidence-index.md) |
 | MALF | `malf-lifespan-dense-bar-snapshot-resolution-20260429-01` | `passed` | [conclusion](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.conclusion.md) | [evidence-index](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.evidence-index.md) |
@@ -92,6 +94,9 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   Data market meta SW industry snapshot 已通过，`industry_classification` 已部分释放
   可匹配正式 Data A 股标的的申万 2021 当前行业快照。ST、停牌、真实上市/退市状态
   与历史行业沿革仍是 reference source gap，不得宣称齐全。
+- Data foundation production baseline seal 已通过；Data 已封为主线输入底座，后续
+  Data 只能通过明确 maintenance card 扩展，不再作为 Position freeze review reentry 前的
+  泛化补数入口。
 - Validated 历史 evidence zip 已对齐到 `H:\Asteria-Validated\2.backups` 冷归档路径；
   这是治理资产布局维护，不改变任何模块门禁。
 - Alpha full build、Signal construction without build card、Position / Portfolio Plan / Trade /

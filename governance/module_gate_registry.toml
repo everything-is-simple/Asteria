@@ -13,6 +13,7 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-data-execution-price-line-materialization-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-data-market-meta-formalization-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip",
+    "H:/Asteria-Validated/Asteria-data-foundation-production-baseline-seal-20260502-01.zip",
 ]
 latest_governance_run_id = "validated-historical-evidence-rehydration-20260502-01"
 latest_mainline_release_run_id = "malf-v1-3-formal-rebuild-closeout-20260502-01"
@@ -31,16 +32,16 @@ construction_lock = [
 module_id = "data"
 display_name = "Data Foundation"
 mainline = false
-status = "production_foundation_released"
-doc_status = "execution day line materialized / market_meta SW industry snapshot partially released / reference gaps retained"
+status = "production_baseline_sealed"
+doc_status = "production baseline sealed / mainline input ready / maintenance-card-only extensions"
 allow_build = true
-build_scope = "foundation_only_raw_market_market_meta_market_base_day_week_month_daily_incremental"
+build_scope = "maintenance_card_only_after_production_baseline_seal"
 doc_path = "docs/02-modules/data"
-exception = "data_foundation_maintenance_track"
-formal_db_permission = "released_raw_market_market_meta_and_market_base_day_week_month_plus_day_execution_line; sw_industry_snapshot_partially_released; reference_gaps_retained"
-gate_basis = "docs/04-execution/records/data/data-market-meta-sw-industry-snapshot-20260502-01.conclusion.md"
+exception = "data_foundation_maintenance_card_only"
+formal_db_permission = "released_raw_market_market_meta_and_market_base_day_week_month_plus_day_execution_line; sw_industry_snapshot_partially_released; production_baseline_sealed; reference_gaps_retained"
+gate_basis = "docs/04-execution/records/data/data-foundation-production-baseline-seal-20260502-01.conclusion.md"
 next_card = "position_freeze_review_reentry"
-latest_completed_card = "data_market_meta_sw_industry_snapshot"
+latest_completed_card = "data_foundation_production_baseline_seal"
 
 [[modules]]
 module_id = "malf"

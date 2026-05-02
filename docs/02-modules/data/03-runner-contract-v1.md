@@ -2,7 +2,7 @@
 
 日期：2026-05-02
 
-状态：production-foundation released / execution day line materialized / market_meta SW industry snapshot partially released
+状态：production baseline sealed / runner surface frozen / maintenance-card-only extensions
 
 ## 1. 目的
 
@@ -12,6 +12,8 @@
 的 Data foundation 实现；其中 `stock / none / full` 已通过 DuckDB native CSV bulk path
 正式物化到 live day execution line。`scripts/data/run_data_production_audit.py` 提供
 release audit，并已将 `market_meta.duckdb` 纳入 hard check。
+`data-foundation-production-baseline-seal-20260502-01` 后，Data runner surface 视为
+主线输入底座封版；后续新增或变更 runner 只能通过明确 maintenance card 进入。
 这不授权 Pipeline runtime 或下游施工。
 
 ## 2. 目标 runner

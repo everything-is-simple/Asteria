@@ -2,7 +2,7 @@
 
 日期：2026-05-02
 
-状态：data-market-meta-sw-industry-snapshot passed / reference gaps retained
+状态：data-foundation-production-baseline-seal passed / maintenance-card-only extensions
 
 ## 1. 本轮目标
 
@@ -18,6 +18,10 @@ SW industry xlsx -> market_meta staging update -> hard audit -> formal promote -
 
 该链路只放行 Data Foundation，不占用 Alpha / Signal / Position / Portfolio / Trade /
 System 的主线施工位，也不创建 Pipeline runtime。
+
+`data-foundation-production-baseline-seal-20260502-01` 不重建 DB，不新增 runner，只把当前
+Data 正式底座封为主线输入 baseline。封印后，Data 后续只能通过明确 maintenance card
+扩展，不再作为 Position freeze review reentry 前的泛化补数入口。
 
 ## 2. 本轮允许修改
 
@@ -131,6 +135,18 @@ Position/downstream 仍按门禁决定，不因 Data 地基卡自动打开。
 | 状态 | passed |
 | 放行表面 | `trade_calendar`、`instrument_master`、`instrument_alias`、`universe_membership`、`tradability_fact` |
 | 保留缺口 | `industry_classification` 为空；行业、ST、停牌、真实上市/退市状态后续另开参考源卡 |
+| allowed next action | `Position freeze review reentry` |
+
+## 11. Data Foundation 生产底座封印卡
+
+| 项 | 裁决 |
+|---|---|
+| run_id | `data-foundation-production-baseline-seal-20260502-01` |
+| 状态 | passed |
+| 放行表面 | 五个正式 Data DB 作为主线输入底座 |
+| 不重建 | 不重建 DB，不新增 runner，不扩展参考事实 |
+| 封印规则 | 后续 Data 只能通过 maintenance card 扩展 |
+| 保留缺口 | ST、停牌、真实上市/退市状态、历史行业沿革、index/block 主线接入 |
 | allowed next action | `Position freeze review reentry` |
 
 ## 10. Market meta 申万行业快照卡

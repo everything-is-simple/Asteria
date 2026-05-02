@@ -43,6 +43,7 @@
 | `H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip` | MALF v1.3 formal-data 证据 | 证明 MALF day v1.3 已用正式 Data 输入通过 bounded proof |
 | `H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip` | Data market_meta 最小正式证据 | 证明 `market_meta.duckdb` 已按可证事实优先口径落地 |
 | `H:\Asteria-Validated\Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip` | Data 申万行业快照证据 | 证明可匹配正式 Data 标的的申万 2021 当前行业快照已部分释放 |
+| `H:\Asteria-Validated\Asteria-data-foundation-production-baseline-seal-20260502-01.zip` | Data baseline seal 证据 | 证明 Data 已封为主线输入底座，后续只走 maintenance card |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 架构剖切面研究 | 支撑治理、主线、数据、编排四个切面的后续裁决 |
 
 裁决：
@@ -167,6 +168,7 @@ MALF dense bar-level complete alignment closeout 已通过
 Data legacy formal promotion 已通过
 Data market meta formalization 已通过
 Data market meta SW industry snapshot 已通过
+Data foundation production baseline seal 已通过
 MALF v1.3 formal-data bounded closeout 已通过
 ```
 
@@ -179,9 +181,9 @@ Position freeze review reentry card
 MALF 当前 formal evidence 以
 `malf-v1-3-formal-rebuild-closeout-20260502-01` 为准；该证据已经承接 MALF v1.3
 day formal-data bounded proof，但 week/month 证明尚未执行。
-`market_meta.duckdb` 当前已放行从正式 raw/base 行情库推导的最小客观事实，并部分释放
-可匹配正式 Data 标的的申万 2021 当前行业快照；ST、停牌、真实上市/退市和历史行业沿革
-仍不放行。
+Data Foundation 当前已封为主线输入底座；`market_meta.duckdb` 已放行从正式 raw/base
+行情库推导的最小客观事实，并部分释放可匹配正式 Data 标的的申万 2021 当前行业快照；
+ST、停牌、真实上市/退市和历史行业沿革仍不放行，后续只能通过明确 maintenance card 扩展。
 Signal bounded proof 已通过；Position freeze review 已登记 blocked；MALF complete
 alignment closeout 已被 v1.3 formal-data closeout supersede 为当前 MALF day 正式证据。
 下一卡只允许 Position freeze review reentry 的只读评审（review-only），不直接授权

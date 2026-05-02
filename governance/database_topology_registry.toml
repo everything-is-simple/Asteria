@@ -12,6 +12,7 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-data-execution-price-line-materialization-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-data-market-meta-formalization-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip",
+    "H:/Asteria-Validated/Asteria-data-foundation-production-baseline-seal-20260502-01.zip",
 ]
 release_evidence_index = "docs/04-execution/00-conclusion-index-v1.md"
 released_formal_dbs = [
@@ -62,7 +63,7 @@ checkpoint_policy = "reference_manifest_hash"
 checkpoint_key = ["reference_batch_id"]
 replay_scope = ["effective_date", "symbol"]
 promote_rule = "staging_audit_passed"
-coverage_policy = "minimal observable facts plus SW2021 current industry snapshot for matched A-share instruments; ST/suspension/listing/history gaps retained"
+coverage_policy = "production baseline sealed; minimal observable facts plus SW2021 current industry snapshot for matched A-share instruments; future changes require maintenance card; ST/suspension/listing/history gaps retained"
 
 [[databases]]
 db_name = "market_base_day.duckdb"

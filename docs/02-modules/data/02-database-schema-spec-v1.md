@@ -2,13 +2,14 @@
 
 日期：2026-05-02
 
-状态：production-foundation released / execution day line live / market_meta SW industry snapshot partially released / reference gaps retained
+状态：production baseline sealed / mainline input ready / maintenance-card-only extensions
 
 当前裁决：四个正式 Data DB 已作为本版全量底座放行；
 `market_base_day.duckdb` 已 live 物化 `stock / none / execution_price_line`：
 `raw_market.duckdb` 与 `market_base_day/week/month.duckdb`。`market_meta.duckdb`
 已按最小可证事实口径落地，并已部分释放申万 2021 当前行业快照；ST、停牌、
-真实上市/退市状态和历史行业沿革仍保留为 source gap。
+真实上市/退市状态和历史行业沿革仍保留为 source gap。当前五个 Data DB 已作为
+主线输入底座封版，后续 schema 变化只能通过 maintenance card 进入。
 
 ## 1. 目标拓扑
 
