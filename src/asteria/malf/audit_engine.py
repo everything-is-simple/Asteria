@@ -8,7 +8,6 @@ import duckdb
 
 from asteria.malf.audit_support import (
     _as_int,
-    _count,
     _count_for_run,
     _lifespan_dense_missing_count,
     _missing_run_count,
@@ -364,7 +363,7 @@ def build_audit_rows(
         "schema_version": request.schema_version,
         "hard_fail_count": hard_fail_count,
         "published_row_count": _count_for_run(service_db, "malf_wave_position", request.run_id),
-        "core_wave_count": _count(core_db, "malf_wave_ledger"),
+        "core_wave_count": _count_for_run(core_db, "malf_wave_ledger", source_core_run_id),
         "lifespan_snapshot_count": _count_for_run(
             lifespan_db, "malf_lifespan_snapshot", source_lifespan_run_id
         ),

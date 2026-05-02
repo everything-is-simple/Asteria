@@ -1,11 +1,11 @@
 # Data Foundation Audit Spec v1
 
-日期：2026-04-29
+日期：2026-05-02
 
-状态：draft / foundation-contract / not frozen
+状态：legacy-import-contract frozen / foundation-contract / formal promotion audit next
 
-当前裁决：Data bounded bootstrap 支撑过 MALF day proof；完整 Data hard audit
-仍需未来 Data Foundation freeze/build 卡，不随 MALF day proof 自动放行。
+当前裁决：旧版 Lifespan raw/base 库已通过首轮只读 source audit，且导入合同已冻结。
+正式 Data DB promote 前仍必须执行 hard audit；该结论不放行完整 Data full build。
 
 ## 1. 目的
 

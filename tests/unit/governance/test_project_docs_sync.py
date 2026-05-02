@@ -122,7 +122,7 @@ def test_docs_sync_rejects_stale_validated_docs_code_snapshot(tmp_path: Path) ->
     inventory_path = repo_root / "docs" / "01-architecture" / "02-validated-asset-inventory-v1.md"
     inventory_path.write_text(
         inventory_path.read_text(encoding="utf-8").replace(
-            "Asteria-docs-code-20260429-130309.zip",
+            "Asteria-docs-code-20260502-001327.zip",
             "Asteria-docs-code-20260428-123534.zip",
         ),
         encoding="utf-8",
@@ -139,7 +139,7 @@ def test_docs_sync_rejects_missing_malf_authority_bridge_file_reference(tmp_path
     bridge_path = repo_root / "docs" / "02-modules" / "02-malf-authoritative-design-bridge-v1.md"
     bridge_path.write_text(
         bridge_path.read_text(encoding="utf-8").replace(
-            "`MALF_03_System_Service_Interface_v1_2.md`",
+            "`MALF_03_System_Service_Interface_v1_3.md`",
             "`MALF_03_System_Service_Interface_REMOVED.md`",
         ),
         encoding="utf-8",

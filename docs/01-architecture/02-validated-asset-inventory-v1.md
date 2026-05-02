@@ -88,6 +88,7 @@ H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研
 H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.docx
 H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
 H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip
+H:\Asteria-Validated\Asteria-docs-code-20260502-001327.zip
 H:\Asteria-Validated\Asteria_System_Design_Set_v1_0
 H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip
 ```
@@ -123,6 +124,11 @@ H:\Asteria-Validated\Asteria-external-root-assets-refresh-20260429-01.zip
 H:\Asteria-Validated\Asteria-validated-root-manifest-refresh-20260429-01.zip
 H:\Asteria-Validated\Asteria-malf-authority-compatibility-audit-20260429-01.zip
 H:\Asteria-Validated\Asteria-system-design-set-refresh-20260429-01.zip
+H:\Asteria-Validated\Asteria-data-legacy-source-audit-20260502-01.zip
+H:\Asteria-Validated\Asteria-data-legacy-import-contract-freeze-20260502-01.zip
+H:\Asteria-Validated\Asteria-data-legacy-import-runner-working-build-20260502-01.zip
+H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip
+H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
 ```
 
 用途：
@@ -134,6 +140,10 @@ H:\Asteria-Validated\Asteria-system-design-set-refresh-20260429-01.zip
 5. 证明 Validated 根目录的人读 README 与机器 manifest 已经形成治理证据。
 6. 证明当前系统 docs/code 快照已按 MALF 权威目录与 zip 做兼容审计，结论为不偏移。
 7. 证明全系统设计整理包已落入 Validated，并且不改变当前门禁。
+8. 证明旧版 Lifespan raw/base source facts 已完成审计、合同冻结、working import 与首轮正式
+   Data DB promotion；该 Data 证据不声明 full Data release，也不打开下游施工。
+9. 证明 MALF v1.3 已用正式 Data day 输入完成 bounded formal-data proof；该证据不声明
+   week/month proof 已完成，也不打开 Position construction。
 
 裁决：
 

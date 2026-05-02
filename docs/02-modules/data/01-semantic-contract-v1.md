@@ -1,11 +1,12 @@
 # Data Foundation Semantic Contract v1
 
-日期：2026-04-29
+日期：2026-05-02
 
-状态：draft / foundation-contract / not frozen
+状态：legacy-import-contract frozen / foundation-contract / not full Data release
 
-当前裁决：最小 bounded bootstrap support 已服务 MALF day proof，但完整 Data
-Foundation 合同仍未冻结；下游只能把 Data 当作客观事实来源，不得引入策略语义。
+当前裁决：旧版 Lifespan 本地 raw/base DuckDB 的最小导入合同已冻结；
+首轮范围为 `stock-only + day/week/month + backward adjusted base`。完整 Data
+Foundation full build、market_meta 和 index/block 主线接入仍未放行。
 
 ## 1. 目的
 
@@ -42,6 +43,22 @@ source_revision
 ```
 
 缺失来源追溯字段的输入，不得写入正式 DB。
+
+### 3.1 Legacy Lifespan 字段映射
+
+首轮旧库导入采用固定字段映射：
+
+| Legacy 字段 | Asteria 字段 | 说明 |
+|---|---|---|
+| `code` | `symbol` / `source_symbol` | 首轮不重写代码语义，保留原始代码为统一消费代码 |
+| `trade_date` | `bar_dt` / `trade_date` | day/week/month 均沿用旧库交易日期键 |
+| `adjust_method` | `adj_mode` | 首轮只接收 `backward` |
+| `open/high/low/close` | `open_px/high_px/low_px/close_px` | 客观价格字段映射 |
+| `volume/amount` | `volume/amount` | 客观成交字段映射 |
+| `source_bar_nk` / `bar_nk` | `source_revision` 或 trace key | 用于追溯旧库来源行 |
+| `first_seen_run_id` / `last_materialized_run_id` | source/build audit 字段 | 用于 run lineage，不进入策略语义 |
+
+旧库 `index` / `block` 数据只登记审计可用性；不得在本合同下输入 MALF 首轮证明。
 
 ## 4. 输出合同
 

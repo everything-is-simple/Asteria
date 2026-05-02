@@ -105,8 +105,10 @@ def build_core_rows(request: MalfDayRequest, created_at: datetime) -> CoreBuildR
     for symbol, bars in bars_by_symbol.items():
         pivots = _detect_pivots(symbol, bars, request)
         all_pivots.extend(pivots)
-        structures.extend(_derive_structures(pivots, request, created_at))
         result = _build_symbol_core(pivots, request, created_at)
+        structures.extend(
+            _derive_structures(pivots, result.structure_contexts, request, created_at)
+        )
         waves.extend(result.waves)
         breaks.extend(result.breaks)
         transitions.extend(result.transitions)
@@ -208,7 +210,10 @@ def _pivot(
 
 
 def _derive_structures(
-    pivots: list[Pivot], request: MalfDayRequest, created_at: datetime
+    pivots: list[Pivot],
+    structure_contexts: dict[str, str],
+    request: MalfDayRequest,
+    created_at: datetime,
 ) -> list[tuple[object, ...]]:
     latest_by_type: dict[str, Pivot] = {}
     rows: list[tuple[object, ...]] = []
@@ -227,7 +232,7 @@ def _derive_structures(
             (
                 f"{pivot.pivot_id}|{primitive}|{reference.pivot_id}",
                 pivot.pivot_id,
-                "active_wave",
+                structure_contexts.get(pivot.pivot_id, "initial_candidate"),
                 reference.pivot_id,
                 reference.pivot_price,
                 primitive,
@@ -251,6 +256,7 @@ class _SymbolResult:
     breaks: list[tuple[object, ...]]
     transitions: list[Transition]
     candidates: list[Candidate]
+    structure_contexts: dict[str, str]
 
 
 def _build_symbol_core(
@@ -263,10 +269,12 @@ def _build_symbol_core(
     active_wave: Wave | None = None
     active_transition: Transition | None = None
     active_candidate: Candidate | None = None
+    structure_contexts: dict[str, str] = {}
     wave_seq = 0
 
     for index, pivot in enumerate(pivots):
         if active_wave is None and active_transition is None:
+            structure_contexts[pivot.pivot_id] = "initial_candidate"
             initial = _try_initial_wave(pivots, index, request, wave_seq + 1)
             if initial:
                 active_wave = initial
@@ -275,6 +283,7 @@ def _build_symbol_core(
             continue
 
         if active_wave is not None:
+            structure_contexts[pivot.pivot_id] = "active_wave"
             opened = _advance_or_break(active_wave, pivot, request, created_at)
             if opened is None:
                 continue
@@ -288,6 +297,7 @@ def _build_symbol_core(
 
         if active_transition is None:
             continue
+        structure_contexts[pivot.pivot_id] = "transition_candidate"
         confirmed = _confirm_candidate(active_transition, active_candidate, pivot)
         if confirmed:
             if active_candidate is None:
@@ -326,7 +336,7 @@ def _build_symbol_core(
             active_candidate.invalidated_by_candidate_id = new_candidate.candidate_id
         candidates.append(new_candidate)
         active_candidate = new_candidate
-    return _SymbolResult(waves, breaks, transitions, candidates)
+    return _SymbolResult(waves, breaks, transitions, candidates, structure_contexts)
 
 
 def _try_initial_wave(
@@ -422,12 +432,9 @@ def _break_transition(
         created_at,
         wave.final_guard.pivot_id,
     )
-    boundary_high = (
-        wave.final_progress.pivot_price if wave.direction == "up" else wave.final_guard.pivot_price
-    )
-    boundary_low = (
-        wave.final_guard.pivot_price if wave.direction == "up" else wave.final_progress.pivot_price
-    )
+    boundary_prices = (wave.final_progress.pivot_price, wave.final_guard.pivot_price)
+    boundary_high = max(boundary_prices)
+    boundary_low = min(boundary_prices)
     transition = Transition(
         transition_id,
         wave.wave_id,

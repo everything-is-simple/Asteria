@@ -45,16 +45,17 @@ class Snapshot:
 
 
 def build_lifespan_rows(
-    core_db: Path, request: MalfDayRequest, created_at: datetime
+    core_db: Path, request: MalfDayRequest, created_at: datetime, core_run_id: str | None = None
 ) -> tuple[list[tuple[object, ...]], list[tuple[object, ...]]]:
-    waves = _load_waves(core_db)
+    source_core_run_id = core_run_id or request.run_id
+    waves = _load_waves(core_db, source_core_run_id)
     symbols = {wave.symbol for wave in waves}
     bar_dates = _load_bar_dates(request, symbols)
-    progress_pivots = _load_progress_pivots(core_db)
-    pivot_dates = _load_pivot_dates(core_db)
-    pivot_ids_by_date = _load_pivot_ids_by_date(core_db)
-    transitions = _load_transitions(core_db)
-    descriptors = load_birth_descriptors(core_db, request)
+    progress_pivots = _load_progress_pivots(core_db, source_core_run_id)
+    pivot_dates = _load_pivot_dates(core_db, source_core_run_id)
+    pivot_ids_by_date = _load_pivot_ids_by_date(core_db, source_core_run_id)
+    transitions = _load_transitions(core_db, source_core_run_id)
+    descriptors = load_birth_descriptors(core_db, request, source_core_run_id)
     snapshots: list[Snapshot] = []
     final_stats: dict[str, Snapshot] = {}
 
@@ -191,7 +192,7 @@ def _load_bar_dates(request: MalfDayRequest, symbols: set[str]) -> dict[str, lis
     return output
 
 
-def _load_waves(core_db: Path) -> list[WaveRow]:
+def _load_waves(core_db: Path, run_id: str) -> list[WaveRow]:
     with duckdb.connect(str(core_db), read_only=True) as con:
         return [
             WaveRow(
@@ -211,49 +212,60 @@ def _load_waves(core_db: Path) -> list[WaveRow]:
                 select wave_id, symbol, timeframe, direction, birth_type, confirm_dt,
                        wave_core_state, terminated_dt, confirm_pivot_id, final_guard_price
                 from malf_wave_ledger
+                where run_id = ?
                 order by symbol, wave_seq
-                """
+                """,
+                [run_id],
             ).fetchall()
         ]
 
 
-def _load_progress_pivots(core_db: Path) -> dict[str, set[str]]:
+def _load_progress_pivots(core_db: Path, run_id: str) -> dict[str, set[str]]:
     query = """
         select w.wave_id, s.pivot_id
         from malf_wave_ledger w
         join malf_structure_ledger s
-          on s.symbol = w.symbol and s.timeframe = w.timeframe
+          on s.symbol = w.symbol and s.timeframe = w.timeframe and s.run_id = w.run_id
         where ((w.direction = 'up' and s.primitive = 'HH')
             or (w.direction = 'down' and s.primitive = 'LL'))
+          and w.run_id = ?
           and s.pivot_dt >= w.confirm_dt
           and (w.terminated_dt is null or s.pivot_dt < w.terminated_dt)
     """
     output: dict[str, set[str]] = {}
     with duckdb.connect(str(core_db), read_only=True) as con:
-        for wave_id, pivot_id in con.execute(query).fetchall():
+        for wave_id, pivot_id in con.execute(query, [run_id]).fetchall():
             output.setdefault(str(wave_id), set()).add(str(pivot_id))
     return output
 
 
-def _load_pivot_dates(core_db: Path) -> dict[str, list[date]]:
+def _load_pivot_dates(core_db: Path, run_id: str) -> dict[str, list[date]]:
     output: dict[str, list[date]] = {}
     with duckdb.connect(str(core_db), read_only=True) as con:
         for symbol, pivot_dt in con.execute(
-            "select symbol, pivot_dt from malf_pivot_ledger order by symbol, pivot_dt"
+            """
+            select symbol, pivot_dt
+            from malf_pivot_ledger
+            where run_id = ?
+            order by symbol, pivot_dt
+            """,
+            [run_id],
         ).fetchall():
             output.setdefault(str(symbol), []).append(cast(date, pivot_dt))
     return output
 
 
-def _load_pivot_ids_by_date(core_db: Path) -> dict[tuple[str, date], set[str]]:
+def _load_pivot_ids_by_date(core_db: Path, run_id: str) -> dict[tuple[str, date], set[str]]:
     output: dict[tuple[str, date], set[str]] = {}
     with duckdb.connect(str(core_db), read_only=True) as con:
         for symbol, pivot_dt, pivot_id in con.execute(
             """
             select symbol, pivot_dt, pivot_id
             from malf_pivot_ledger
+            where run_id = ?
             order by symbol, pivot_dt, pivot_id
-            """
+            """,
+            [run_id],
         ).fetchall():
             output.setdefault((str(symbol), cast(date, pivot_dt)), set()).add(str(pivot_id))
     return output
@@ -273,17 +285,18 @@ def _pivot_ids_at(core_db: Path, symbol: str, pivot_dt: date) -> set[str]:
         }
 
 
-def _load_transitions(core_db: Path) -> list[TransitionRow]:
+def _load_transitions(core_db: Path, run_id: str) -> list[TransitionRow]:
     query = """
         select t.transition_id, t.old_wave_id, w.symbol, t.old_direction,
                t.old_progress_extreme_price, t.break_dt, t.confirmed_dt
         from malf_transition_ledger t
-        join malf_wave_ledger w on w.wave_id = t.old_wave_id
+        join malf_wave_ledger w on w.wave_id = t.old_wave_id and w.run_id = t.run_id
+        where t.run_id = ?
         order by w.symbol, t.break_dt
     """
     output: list[TransitionRow] = []
     with duckdb.connect(str(core_db), read_only=True) as con:
-        for row in con.execute(query).fetchall():
+        for row in con.execute(query, [run_id]).fetchall():
             transition_id = str(row[0])
             candidate_dates = [
                 cast(date, item[0])
@@ -291,10 +304,10 @@ def _load_transitions(core_db: Path) -> list[TransitionRow]:
                     """
                     select candidate_dt
                     from malf_candidate_ledger
-                    where transition_id = ?
+                    where transition_id = ? and run_id = ?
                     order by candidate_dt
                     """,
-                    [transition_id],
+                    [transition_id, run_id],
                 ).fetchall()
             ]
             output.append(

@@ -54,15 +54,15 @@ GATE_LEDGER = Path("docs/03-refactor/00-module-gate-ledger-v1.md")
 ROADMAP = Path("docs/03-refactor/04-asteria-full-system-roadmap-v1.md")
 VALIDATED_ASSET_INVENTORY = Path("docs/01-architecture/02-validated-asset-inventory-v1.md")
 MALF_AUTHORITY_BRIDGE = Path("docs/02-modules/02-malf-authoritative-design-bridge-v1.md")
-LATEST_DOCS_CODE_SNAPSHOT = "Asteria-docs-code-20260429-130309.zip"
-MALF_AUTHORITY_ROOT = Path(r"H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2")
-MALF_AUTHORITY_ZIP = Path(r"H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip")
+LATEST_DOCS_CODE_SNAPSHOT = "Asteria-docs-code-20260502-001327.zip"
+MALF_AUTHORITY_ROOT = Path(r"H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3")
+MALF_AUTHORITY_ZIP = Path(r"H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip")
 LATEST_DOCS_CODE_ZIP = Path(rf"H:\Asteria-Validated\{LATEST_DOCS_CODE_SNAPSHOT}")
 MALF_AUTHORITY_FILES = [
-    "MALF_00_Three_Documents_Bridge_v1_2.md",
+    "MALF_00_Three_Documents_Bridge_v1_3.md",
     "MALF_01_Core_Definitions_Theorems_v1_3.md",
-    "MALF_02_Lifespan_Stats_Definitions_Theorems_v1_2.md",
-    "MALF_03_System_Service_Interface_v1_2.md",
+    "MALF_02_Lifespan_Stats_Definitions_Theorems_v1_3.md",
+    "MALF_03_System_Service_Interface_v1_3.md",
 ]
 SAFE_ROADMAP_NEXT_CARD_ITEM = (
     "- [ ] 修正 `governance/module_gate_registry.toml`：把 MALF `next_card` "

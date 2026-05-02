@@ -79,7 +79,7 @@ def bootstrap_raw_market_database(path: Path) -> None:
         )
 
 
-def bootstrap_market_base_day_database(path: Path) -> None:
+def bootstrap_market_base_database(path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with duckdb.connect(str(path)) as con:
         con.execute(
@@ -125,6 +125,7 @@ def bootstrap_market_base_day_database(path: Path) -> None:
             )
             """
         )
+
         con.execute(
             """
             create table if not exists market_base_latest (
@@ -140,6 +141,7 @@ def bootstrap_market_base_day_database(path: Path) -> None:
             )
             """
         )
+
         con.execute(
             """
             create table if not exists market_base_dirty_scope (
@@ -159,6 +161,7 @@ def bootstrap_market_base_day_database(path: Path) -> None:
             )
             """
         )
+
         con.execute(
             """
             create table if not exists market_base_schema_version (
@@ -167,3 +170,7 @@ def bootstrap_market_base_day_database(path: Path) -> None:
             )
             """
         )
+
+
+def bootstrap_market_base_day_database(path: Path) -> None:
+    bootstrap_market_base_database(path)

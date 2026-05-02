@@ -3,15 +3,13 @@ display_name = "MALF"
 contract_version = "v1.3-code-revision"
 status = "frozen"
 authority_assets = [
-    "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2",
-    "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2.zip",
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_3",
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_3.zip",
-    "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+    "H:/Asteria-Validated/Asteria-docs-code-20260502-001327.zip",
 ]
-release_conclusion = "docs/04-execution/records/malf/malf-complete-alignment-closeout-20260430-01.conclusion.md"
-evidence_index = "docs/04-execution/records/malf/malf-complete-alignment-closeout-20260430-01.evidence-index.md"
-gate_state = "day_bounded_proof_passed"
+release_conclusion = "docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.conclusion.md"
+evidence_index = "docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.evidence-index.md"
+gate_state = "v1_3_day_formal_data_bounded_closeout_passed"
 formal_db_permission = "released_day_core_lifespan_service_only"
 run_modes = ["bounded", "segmented", "full", "resume"]
 audit_run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]

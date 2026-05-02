@@ -36,13 +36,17 @@ Asteria 采用 DuckDB 多库拓扑，以空间换时间。
 
 这些是目标拓扑，不要求第一天全部物理建出。只有模块进入施工并通过 schema gate 后，才创建对应正式库。
 
-当前已由 release evidence 证明存在的正式库只有：
+当前已由 release evidence 证明存在的正式库：
 
 | DB | 状态 | 证据 |
 |---|---|---|
-| `malf_core_day.duckdb` | MALF complete alignment closeout passed | `docs/04-execution/records/malf/malf-complete-alignment-closeout-20260430-01.evidence-index.md` |
-| `malf_lifespan_day.duckdb` | MALF complete alignment closeout passed | `docs/04-execution/records/malf/malf-complete-alignment-closeout-20260430-01.evidence-index.md` |
-| `malf_service_day.duckdb` | MALF complete alignment closeout passed | `docs/04-execution/records/malf/malf-complete-alignment-closeout-20260430-01.evidence-index.md` |
+| `raw_market.duckdb` | Data legacy formal promotion passed | `docs/04-execution/records/data/data-formal-promotion-evidence-20260502-01.evidence-index.md` |
+| `market_base_day.duckdb` | Data legacy formal promotion passed | `docs/04-execution/records/data/data-formal-promotion-evidence-20260502-01.evidence-index.md` |
+| `market_base_week.duckdb` | Data legacy formal promotion passed | `docs/04-execution/records/data/data-formal-promotion-evidence-20260502-01.evidence-index.md` |
+| `market_base_month.duckdb` | Data legacy formal promotion passed | `docs/04-execution/records/data/data-formal-promotion-evidence-20260502-01.evidence-index.md` |
+| `malf_core_day.duckdb` | MALF v1.3 formal-data bounded closeout passed | `docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.evidence-index.md` |
+| `malf_lifespan_day.duckdb` | MALF v1.3 formal-data bounded closeout passed | `docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.evidence-index.md` |
+| `malf_service_day.duckdb` | MALF v1.3 formal-data bounded closeout passed | `docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.evidence-index.md` |
 | `alpha_bof.duckdb` | Alpha bounded proof passed | `docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md` |
 | `alpha_tst.duckdb` | Alpha bounded proof passed | `docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md` |
 | `alpha_pb.duckdb` | Alpha bounded proof passed | `docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md` |

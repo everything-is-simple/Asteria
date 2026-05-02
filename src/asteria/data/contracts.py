@@ -7,6 +7,7 @@ from typing import Any
 
 DATA_SCHEMA_VERSION = "data-bootstrap-v1"
 SOURCE_VENDOR = "tdx_offline_txt"
+LEGACY_SOURCE_VENDOR = "legacy_lifespan"
 
 VALID_ADJ_MODES = {"backward", "forward", "none", "all"}
 VALID_ASSET_TYPES = {"stock", "index", "block"}
@@ -132,6 +133,72 @@ class LegacyCoverageSummary:
     base_row_count: int
     raw_only_symbols: tuple[str, ...]
     base_only_symbols: tuple[str, ...]
+
+    def as_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class LegacyTimeframeAudit:
+    timeframe: str
+    raw_path: str
+    base_path: str
+    stock: LegacyCoverageSummary
+    sidecar_assets: dict[str, LegacyCoverageSummary]
+
+    def as_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class LegacySourceAuditReport:
+    run_id: str
+    mainline_asset_type: str
+    adj_mode: str
+    timeframes: dict[str, LegacyTimeframeAudit]
+
+    def as_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class LegacyImportRequest:
+    raw_root: Path
+    base_root: Path
+    target_root: Path
+    run_id: str
+    asset_type: str = "stock"
+    adj_mode: str = "backward"
+    timeframes: tuple[str, ...] = ("day", "week", "month")
+
+    def __post_init__(self) -> None:
+        if self.asset_type != "stock":
+            raise ValueError("Legacy import first pass only supports stock")
+        if self.adj_mode != "backward":
+            raise ValueError("Legacy import first pass only supports backward adjustment")
+        unsupported = set(self.timeframes).difference({"day", "week", "month"})
+        if unsupported:
+            raise ValueError(f"Unsupported legacy import timeframes: {sorted(unsupported)}")
+
+    @property
+    def raw_db_path(self) -> Path:
+        return self.target_root / "raw_market.duckdb"
+
+    def base_db_path(self, timeframe: str) -> Path:
+        return self.target_root / f"market_base_{timeframe}.duckdb"
+
+
+@dataclass(frozen=True)
+class LegacyImportSummary:
+    run_id: str
+    status: str
+    target_root: str
+    raw_db_path: str
+    base_db_paths: dict[str, str]
+    source_file_count: int
+    raw_rows_written: int
+    base_rows_written: int
+    base_rows_by_timeframe: dict[str, int]
 
     def as_dict(self) -> dict[str, Any]:
         return asdict(self)

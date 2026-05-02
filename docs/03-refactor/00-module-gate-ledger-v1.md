@@ -29,6 +29,7 @@ Alpha bounded proof passed
 Signal freeze review passed
 Signal bounded proof passed
 MALF complete alignment closeout passed
+MALF v1.3 formal-data bounded rebuild closeout passed
 ```
 
 当前已交付主线模块文档索引：
@@ -48,7 +49,7 @@ Signal
 当前最新通过门禁：
 
 ```text
-MALF complete alignment closeout
+MALF v1.3 formal-data bounded rebuild closeout
 ```
 
 当前最新语义升级资产：
@@ -63,13 +64,13 @@ passed evidence，也不打开下游施工。
 当前已打开执行卡：
 
 ```text
-Position freeze review reentry card
+Data legacy source intake five-card chain
 ```
 
 当前只允许施工对象：
 
 ```text
-Position freeze review reentry / review-only
+Data Foundation legacy source intake / foundation-only
 ```
 
 当前已通过 bounded proof 的主线模块：
@@ -82,17 +83,16 @@ MALF dense bar-level WavePosition complete alignment
 ```
 
 Signal freeze review 与 Signal bounded proof 已通过。Position freeze review 已登记为
-blocked。MALF complete alignment closeout 已通过，并取代旧 dense/hard-audit evidence
-作为当前 MALF day dense 正式证据。当前只允许 Position freeze review reentry 的
-review-only 审查；不得扩展为 Position bounded proof、Position 施工、Signal full build、
-下游施工或全链路 pipeline。
+blocked。MALF v1.3 formal-data bounded rebuild closeout 已通过，并取代 code-only
+v1.3 状态成为当前 MALF v1.3 day bounded formal-data evidence；不得扩展为 Position
+bounded proof、Position 施工、Signal full build、下游施工或全链路 pipeline。
 
 ## 2. 模块状态表
 
 | 顺序 | 模块 | 文档状态 | 冻结状态 | 是否允许施工 | 文档位置 | 说明 |
 |---:|---|---|---|---:|---|---|
-| 0 | Data Foundation | foundation six-doc draft | not frozen | 否 | `docs/02-modules/data/` | 地基输入契约，非策略主线，不占主线施工位 |
-| 1 | MALF | delivered six-doc set / complete alignment closeout passed | frozen | 否 | `docs/02-modules/malf/` | day bounded proof 与 dense bar-level WavePosition complete alignment 已通过 |
+| 0 | Data Foundation | legacy formal promotion passed | legacy stock backward released / not full release | 是，foundation runner surface | `docs/02-modules/data/` | 首轮 Data DB 已 promote；非策略主线，不占主线施工位 |
+| 1 | MALF | delivered six-doc set / v1.3 formal-data bounded closeout passed | frozen | 否 | `docs/02-modules/malf/` | day bounded formal-data proof 已通过；week/month 未执行 |
 | 2 | Alpha | frozen six-doc set / bounded proof passed | released | 否 | `docs/02-modules/alpha/` | bounded proof 已通过；full build 需另开卡 |
 | 3 | Signal | frozen six-doc set / bounded proof passed | released | 否 | `docs/02-modules/signal/` | bounded proof 已通过；full build 需另开卡 |
 | 4 | Position | pre-gate six-doc draft | not frozen | 是，review-only | `docs/02-modules/position/` | freeze review reentry 已打开；不允许 bounded proof 或施工 |
@@ -107,16 +107,31 @@ Data Foundation 本轮六件套草案：
 
 | 文档 | 状态 |
 |---|---|
-| `docs/02-modules/data/00-authority-design-v1.md` | draft / foundation-contract / not frozen |
-| `docs/02-modules/data/01-semantic-contract-v1.md` | draft / foundation-contract / not frozen |
-| `docs/02-modules/data/02-database-schema-spec-v1.md` | draft / foundation-contract / not frozen |
-| `docs/02-modules/data/03-runner-contract-v1.md` | draft / foundation-contract / not frozen |
-| `docs/02-modules/data/04-audit-spec-v1.md` | draft / foundation-contract / not frozen |
-| `docs/02-modules/data/05-build-card-v1.md` | draft / foundation-contract / bounded-bootstrap-support |
+| `docs/02-modules/data/00-authority-design-v1.md` | legacy-import-contract frozen / foundation-contract / not full Data release |
+| `docs/02-modules/data/01-semantic-contract-v1.md` | legacy-import-contract frozen / foundation-contract / not full Data release |
+| `docs/02-modules/data/02-database-schema-spec-v1.md` | legacy-import-contract frozen / foundation-contract / not full Data release |
+| `docs/02-modules/data/03-runner-contract-v1.md` | legacy-import-contract frozen / foundation-contract / runner working build next |
+| `docs/02-modules/data/04-audit-spec-v1.md` | legacy-import-contract frozen / foundation-contract / formal promotion audit next |
+| `docs/02-modules/data/05-build-card-v1.md` | legacy-import-contract frozen / five-card data foundation intake active |
 
-Data Foundation 模块整体仍为 `not frozen`。`bounded-bootstrap-support` 只记录当前已有
-TDX txt 到 raw/base day 的最小输入准备能力，不授权正式 Data Foundation builder、正式
-Data DuckDB 建库或下游主线施工。
+Data Foundation 模块整体仍未 full release。当前只冻结旧版 Lifespan raw/base
+`stock / backward / day-week-month` 导入合同，并授权五卡链路中的 Data foundation-only
+工作；不授权完整 Data builder、market_meta 主线接入、index/block 主线接入或下游施工。
+
+Data Foundation legacy source intake 当前执行结论：
+
+| run_id | 状态 | allowed next action |
+|---|---|---|
+| `data-legacy-source-audit-20260502-01` | `passed` | `data legacy import contract freeze` |
+| `data-legacy-import-contract-freeze-20260502-01` | `passed` | `data legacy import runner working build` |
+| `data-legacy-import-runner-working-build-20260502-01` | `passed` | `data formal promotion evidence` |
+| `data-formal-promotion-evidence-20260502-01` | `passed` | `MALF v1.3 formal rebuild closeout` |
+
+MALF v1.3 formal rebuild 当前执行结论：
+
+| run_id | 状态 | allowed next action |
+|---|---|---|
+| `malf-v1-3-formal-rebuild-closeout-20260502-01` | `passed` | `Position freeze review reentry / review-only` |
 
 MALF 冻结文档与当前 proof 状态：
 

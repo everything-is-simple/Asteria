@@ -1,11 +1,12 @@
 # Data Foundation Database Schema Spec v1
 
-日期：2026-04-29
+日期：2026-05-02
 
-状态：draft / foundation-contract / not frozen
+状态：legacy-import-contract frozen / foundation-contract / not full Data release
 
-当前裁决：MALF day proof 曾使用最小 `raw_market` / `market_base_day`
-bootstrap 支撑；五个正式 Data Foundation 目标库仍未因该 proof 自动放行。
+当前裁决：旧版 Lifespan 本地 raw/base DuckDB 的 `stock / backward / day-week-month`
+导入合同已冻结；允许后续工作卡先生成 working DB，再经审计 promote 首轮正式
+`raw_market.duckdb` 与 `market_base_day/week/month.duckdb`。这不放行完整 Data full build。
 
 ## 1. 目标拓扑
 
@@ -246,3 +247,20 @@ adj_mode = backward
 ```
 
 `Non-Adjusted` 保留给未来 Trade execution price line，`Forward-Adjusted` 暂作为审计备用价格线。
+
+## 10. Legacy import 首轮固定值
+
+旧库导入首轮只允许以下 schema 口径：
+
+| 字段 | 固定或映射值 |
+|---|---|
+| `asset_type` | `stock` |
+| `timeframe` | `day / week / month` |
+| `adj_mode` | `backward` |
+| `price_line` | `analysis_price_line` |
+| `source_vendor` | `legacy_lifespan` |
+| `source_batch_id` | 本次导入 run_id |
+
+`raw_market.duckdb` 保存旧 raw stock 行与 source trace；`market_base_{tf}.duckdb`
+保存旧 base stock backward adjusted 行。`index` 与 `block` 只在审计报告中登记，不写入
+首轮 MALF 输入库。

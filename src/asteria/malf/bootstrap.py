@@ -174,10 +174,11 @@ def run_malf_day_lifespan_build(request: MalfDayRequest) -> MalfBuildSummary:
         return checkpoint
 
     bootstrap_malf_lifespan_day_database(request.lifespan_db)
-    input_wave_count = _count_rows(request.core_db, "malf_wave_ledger")
     source_core_run_id = _latest_run_id(request.core_db, "malf_core_run")
+    core_run_id = source_core_run_id or request.run_id
+    input_wave_count = _count_rows_for_run(request.core_db, "malf_wave_ledger", core_run_id)
     now = _utc_now()
-    snapshots, profiles = build_lifespan_rows(request.core_db, request, now)
+    snapshots, profiles = build_lifespan_rows(request.core_db, request, now, core_run_id)
     with duckdb.connect(str(request.lifespan_db)) as con:
         con.execute("begin transaction")
         _delete_run(con, request.run_id, _LIFESPAN_RUN_TABLES)
@@ -430,11 +431,14 @@ def _count_market_base_rows(request: MalfDayRequest) -> int:
         return 0 if row is None else int(row[0])
 
 
-def _count_rows(path: Path, table_name: str) -> int:
+def _count_rows_for_run(path: Path, table_name: str, run_id: str) -> int:
     if not path.exists():
         return 0
     with duckdb.connect(str(path), read_only=True) as con:
-        row = con.execute(f"select count(*) from {table_name}").fetchone()
+        row = con.execute(
+            f"select count(*) from {table_name} where run_id = ?",
+            [run_id],
+        ).fetchone()
         return 0 if row is None else int(row[0])
 
 

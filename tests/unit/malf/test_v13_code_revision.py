@@ -113,6 +113,68 @@ def test_malf_v13_core_lifespan_and_service_publish_trace_fields(
         assert service_row[9] > 0
 
 
+def test_malf_v13_structure_contexts_include_transition_candidate(tmp_path: Path) -> None:
+    _seed_market_base_day(
+        tmp_path / "asteria-data" / "market_base_day.duckdb",
+        symbols=("UPCASE.SH", "SAME.SH"),
+    )
+    request = _request(tmp_path, "malf-v13-structure-context-run-001")
+
+    run_malf_day_core_build(request)
+
+    with duckdb.connect(str(request.core_db), read_only=True) as con:
+        contexts = {
+            row[0]
+            for row in con.execute(
+                """
+                select distinct structure_context
+                from malf_structure_ledger
+                where run_id = ?
+                """,
+                [request.run_id],
+            ).fetchall()
+        }
+
+    assert "initial_candidate" in contexts
+    assert "active_wave" in contexts
+    assert "transition_candidate" in contexts
+
+
+def test_malf_v13_lifespan_reads_only_current_core_run_id(tmp_path: Path) -> None:
+    _seed_market_base_day(
+        tmp_path / "asteria-data" / "market_base_day.duckdb",
+        symbols=("UPCASE.SH", "SAME.SH"),
+    )
+    old_request = _request(tmp_path, "malf-v13-old-core-run-001")
+    current_request = replace(
+        _request(tmp_path, "malf-v13-current-core-run-001"),
+        symbol_limit=1,
+    )
+
+    run_malf_day_core_build(old_request)
+    run_malf_day_core_build(current_request)
+    run_malf_day_lifespan_build(current_request)
+
+    with duckdb.connect(str(current_request.core_db), read_only=True) as con:
+        current_symbols = {
+            row[0]
+            for row in con.execute(
+                "select distinct symbol from malf_wave_ledger where run_id = ?",
+                [current_request.run_id],
+            ).fetchall()
+        }
+    with duckdb.connect(str(current_request.lifespan_db), read_only=True) as con:
+        lifespan_symbols = {
+            row[0]
+            for row in con.execute(
+                "select distinct symbol from malf_lifespan_snapshot where run_id = ?",
+                [current_request.run_id],
+            ).fetchall()
+        }
+
+    assert lifespan_symbols == current_symbols
+
+
 def test_malf_v13_hard_audit_detects_trace_inconsistency(tmp_path: Path) -> None:
     _seed_market_base_day(tmp_path / "asteria-data" / "market_base_day.duckdb")
     request = _request(tmp_path, "malf-v13-hard-audit-run-001")

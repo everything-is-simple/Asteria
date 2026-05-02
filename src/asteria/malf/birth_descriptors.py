@@ -38,8 +38,11 @@ class BirthDescriptor:
         )
 
 
-def load_birth_descriptors(core_db: Path, request: MalfDayRequest) -> dict[str, BirthDescriptor]:
-    descriptors = _initial_birth_descriptors(core_db)
+def load_birth_descriptors(
+    core_db: Path, request: MalfDayRequest, core_run_id: str | None = None
+) -> dict[str, BirthDescriptor]:
+    source_core_run_id = core_run_id or request.run_id
+    descriptors = _initial_birth_descriptors(core_db, source_core_run_id)
     query = """
         select w.wave_id, w.birth_type, w.symbol, w.timeframe,
                c.candidate_guard_pivot_id, c.candidate_dt, c.candidate_direction,
@@ -56,7 +59,7 @@ def load_birth_descriptors(core_db: Path, request: MalfDayRequest) -> dict[str, 
         where w.run_id = ? and w.birth_type <> 'initial'
     """
     with duckdb.connect(str(core_db), read_only=True) as con:
-        for row in con.execute(query, [request.run_id]).fetchall():
+        for row in con.execute(query, [source_core_run_id]).fetchall():
             (
                 wave_id,
                 birth_type,
@@ -79,7 +82,7 @@ def load_birth_descriptors(core_db: Path, request: MalfDayRequest) -> dict[str, 
                 where run_id = ? and transition_id = ?
                   and invalidated_by_candidate_id is not null
                 """,
-                [request.run_id, transition_id],
+                [source_core_run_id, transition_id],
             ).fetchone()
             replacements = 0 if replacements_row is None else int(replacements_row[0])
             wait_span = _candidate_wait_span(
@@ -110,11 +113,12 @@ def load_birth_descriptors(core_db: Path, request: MalfDayRequest) -> dict[str, 
     return descriptors
 
 
-def _initial_birth_descriptors(core_db: Path) -> dict[str, BirthDescriptor]:
+def _initial_birth_descriptors(core_db: Path, core_run_id: str) -> dict[str, BirthDescriptor]:
     output: dict[str, BirthDescriptor] = {}
     with duckdb.connect(str(core_db), read_only=True) as con:
         for wave_id, birth_type in con.execute(
-            "select wave_id, birth_type from malf_wave_ledger"
+            "select wave_id, birth_type from malf_wave_ledger where run_id = ?",
+            [core_run_id],
         ).fetchall():
             output[str(wave_id)] = BirthDescriptor(
                 None, None, None, None, str(wave_id), str(birth_type), 0, 0, 0.0, 0.0

@@ -1,19 +1,20 @@
 # Data Foundation Build Card v1
 
-日期：2026-04-29
+日期：2026-05-02
 
-状态：draft / foundation-contract / bounded-bootstrap-support
+状态：legacy-import-contract frozen / five-card data foundation intake active
 
 ## 1. 本轮目标
 
-本轮在 Data Foundation foundation contract 基础上，补充最小 bounded bootstrap 支撑：
+原 bounded bootstrap 已证明最小 TDX 输入可服务 MALF day proof。当前五卡链路改为先补
+旧版 Lifespan raw/base 地基输入，再回到 MALF v1.3 formal evidence：
 
 ```text
-TDX txt -> raw_market.duckdb -> market_base_day.duckdb
+legacy Lifespan raw/base DuckDB -> Asteria raw/base working DB -> formal Data DB -> MALF v1.3 rebuild
 ```
 
-该实现已服务 MALF day bounded proof 的输入准备，不放行完整 Data Foundation，也不占用
-Alpha / Signal / Position / Portfolio / Trade / System 的主线施工位。
+该链路不放行完整 Data Foundation，也不占用 Alpha / Signal / Position / Portfolio / Trade /
+System 的主线施工位。
 
 ## 2. 本轮允许修改
 
@@ -77,18 +78,22 @@ H:\Asteria\.venv\Scripts\pytest.exe tests\unit\data -q
 git diff --check
 ```
 
-## 6. 下一轮建议
+## 6. Legacy intake 五卡
 
-Data Foundation 文档补齐且 MALF day proof passed 后，当前唯一业务下一步是：
+| 卡 | run_id | 范围 |
+|---|---|---|
+| Card 1 | `data-legacy-source-audit-20260502-01` | 只读审计旧 raw/base day/week/month |
+| Card 2 | `data-legacy-import-contract-freeze-20260502-01` | 冻结 `stock-only + day/week/month + backward adjusted base` 导入合同 |
+| Card 3 | `data-legacy-import-runner-working-build-20260502-01` | 实现旧库到 working DB 的导入 runner |
+| Card 4 | `data-formal-promotion-evidence-20260502-01` | 审计并 promote 正式 Data DB |
+| Card 5 | `malf-v1-3-formal-rebuild-closeout-20260502-01` | 用正式 Data 输入重建 MALF v1.3 evidence |
+
+## 7. 下一轮建议
+
+Data formal promotion 通过后，下一步回到：
 
 ```text
-Alpha freeze review
+MALF v1.3 formal rebuild closeout
 ```
 
-后续 Data Foundation 另需输出总审查清单，明确：
-
-```text
-Data / MALF / Alpha / Signal / Position / Portfolio Plan / Trade / System Readout / Pipeline
-```
-
-分别缺什么文档、缺什么 DB、下一步该补什么。
+Position/downstream 仍按门禁决定，不因 Data 地基卡自动打开。

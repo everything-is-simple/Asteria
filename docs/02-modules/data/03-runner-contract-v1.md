@@ -1,8 +1,8 @@
 # Data Foundation Runner Contract v1
 
-日期：2026-04-29
+日期：2026-05-02
 
-状态：draft / foundation-contract / not frozen
+状态：legacy-import-contract frozen / foundation-contract / runner working build next
 
 ## 1. 目的
 
@@ -27,6 +27,7 @@ MALF day bounded proof 的输入准备，不等于完整 Data Foundation runner 
 | runner | 职责 |
 |---|---|
 | `scripts/data/run_data_bootstrap.py` | 从 TDX 离线 txt 执行 raw + market_base_day bounded bootstrap，并生成 dirty scope 与 checkpoint |
+| `scripts/data/run_legacy_data_import.py` | 从旧版 Lifespan raw/base DuckDB 导入 `stock / backward / day-week-month` 到 working DB；正式 promote 需后续审计卡 |
 
 ## 3. 输入输出合同
 
@@ -98,6 +99,31 @@ market_base_bar
 market_base_latest
 market_base_run
 ```
+
+### legacy Lifespan import
+
+输入：
+
+```text
+raw_root = H:\Lifespan-data\raw
+base_root = H:\Lifespan-data\base
+asset_type = stock
+adj_mode = backward
+timeframes = day, week, month
+working = H:\Asteria-temp\data\<run_id>\
+```
+
+输出：
+
+```text
+H:\Asteria-temp\data\<run_id>\raw_market.duckdb
+H:\Asteria-temp\data\<run_id>\market_base_day.duckdb
+H:\Asteria-temp\data\<run_id>\market_base_week.duckdb
+H:\Asteria-temp\data\<run_id>\market_base_month.duckdb
+```
+
+该 runner 的首轮职责是导入旧库 source facts 并证明 working DB 可审计；不得直接写
+`H:\Asteria-data`，正式 promote 由单独 evidence 卡执行。
 
 ## 4. 运行模式
 

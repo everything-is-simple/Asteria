@@ -6,8 +6,12 @@
 
 当前基线：`MALF day bounded proof`、`Alpha freeze review`、`Alpha bounded proof`、
 `Signal freeze review`、`Signal bounded proof` 与 `MALF complete alignment closeout`
-已通过；MALF v1.3 authority package 已形成但仍需后续代码修订卡同步。下一步只允许
-Position freeze review reentry 的 review-only 审查。
+已通过；MALF v1.3 authority package、code-only revision 与 day formal-data bounded
+rebuild closeout 已形成。当前策略主线下一步仍是 `Position freeze review reentry`
+的 review-only 审查。
+
+地基轨道 `data-formal-promotion-evidence-20260502-01` 的 allowed next action
+`MALF v1.3 formal rebuild closeout` 已由当前 MALF v1.3 closeout 闭环。
 
 本路线图依据以下权威资产刷新：
 
@@ -56,10 +60,12 @@ Pipeline schedules and records only
 
 ## 3. Foundation Track: Data Foundation
 
-- [ ] 保持 Data Foundation 定位：基础设施与 source-fact service，不是策略主线模块。
-- [ ] 重审 Data 六件套，决定何时从 `foundation six-doc draft` 进入正式 freeze review。
+- [x] 保持 Data Foundation 定位：基础设施与 source-fact service，不是策略主线模块。
+- [x] 冻结旧版 Lifespan raw/base 库首轮导入合同：`stock-only + day/week/month + backward adjusted base`。
+- [x] 实现 `data legacy import runner working build`，仅输出 `H:\Asteria-temp\data\<run_id>` working DB。
+- [x] 执行 `data formal promotion evidence`，审计并 promote 首轮正式 Data DB。
 - [ ] 冻结 raw market、market meta、market base day/week/month 的正式 schema 与自然键。
-- [ ] 实现正式 Data builder 前，继续限制当前能力为 bounded bootstrap support。
+- [ ] 实现正式 Data builder 前，继续限制当前能力为 bounded bootstrap support 与 legacy source intake。
 - [ ] 正式 Data builder 必须支持 source manifest、run ledger、checkpoint、replay scope、audit summary。
 - [ ] Data release 只放行“可供 MALF 消费的客观事实”，不产生 MALF/Alpha/Signal 语义。
 
