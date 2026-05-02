@@ -39,6 +39,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
 H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip
 H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-production-release-closeout-20260502-01.zip
+H:\Asteria-Validated\Asteria-data-execution-price-line-materialization-20260502-01.zip
 ```
 
 当前门禁状态：
@@ -50,10 +51,12 @@ MALF day bounded proof 已通过 -> Alpha freeze review 已通过 -> Alpha bound
 
 Data Foundation 已完成首轮 `stock / backward / day-week-month` legacy formal promotion，
 并完成 Data 生产级地基闭环：四个正式库作为本版全量底座，`analysis_price_line=backward`
-用于结构分析，`execution_price_line=none` 用于未来成交/现金语义；
+用于结构分析，`execution_price_line=none` 已在 `market_base_day.duckdb` 中正式物化，
+用于未来成交/现金语义；
 MALF v1.3 已用正式 Data day 输入完成 bounded formal-data closeout。当前只授权
 Position freeze review reentry 的只读评审（review-only），不授权 Alpha full build、Signal
 full build、Position 施工、下游施工或全链路 pipeline。MALF week/month 证明尚未执行。
+`market_meta.duckdb` 仍未落地，仍不能宣称全主线数据已经齐全。
 
 ## 阅读入口
 

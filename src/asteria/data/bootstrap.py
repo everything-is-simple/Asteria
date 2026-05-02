@@ -16,10 +16,17 @@ from asteria.data.contracts import (
     RawMarketBar,
 )
 from asteria.data.schema import bootstrap_market_base_day_database, bootstrap_raw_market_database
+from asteria.data.streaming_bootstrap import (
+    run_streaming_data_bootstrap,
+    should_use_streaming_bootstrap,
+)
 from asteria.data.tdx_text import discover_tdx_text_files, parse_tdx_text_file
 
 
 def run_data_bootstrap(request: DataBootstrapRequest) -> DataBootstrapSummary:
+    if should_use_streaming_bootstrap(request):
+        return run_streaming_data_bootstrap(request)
+
     checkpoint = _load_checkpoint(request.checkpoint_path)
     if request.mode == "resume" and checkpoint and checkpoint.get("status") == "completed":
         summary = DataBootstrapSummary(**checkpoint["summary"])

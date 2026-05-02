@@ -2,14 +2,16 @@
 
 日期：2026-05-02
 
-状态：production-foundation released / daily incremental supported for Data foundation
+状态：production-foundation released / execution day line materialized / daily incremental supported
 
 ## 1. 目的
 
 本合同定义 Data Foundation 后续正式 runner 的命令边界、输入输出、幂等与断点规则。
 
 当前 `scripts/data/run_data_bootstrap.py` 已支持 bounded/full/audit-only/resume/daily_incremental
-的 Data foundation 最小实现；`scripts/data/run_data_production_audit.py` 提供 release audit。
+的 Data foundation 实现；其中 `stock / none / full` 已通过 DuckDB native CSV bulk path
+正式物化到 live day execution line。`scripts/data/run_data_production_audit.py` 提供
+release audit。
 这不授权 Pipeline runtime 或下游施工。
 
 ## 2. 目标 runner
@@ -277,5 +279,5 @@ Data Foundation runner 当前生产级地基放行要求：
 | uniqueness | 自然键无冲突 |
 | evidence | 构建与审计证据已落档 |
 
-当前 release 结论为 `data-production-release-closeout-20260502-01`；后续扩展
+当前 release 结论已推进到 `data-execution-price-line-materialization-20260502-01`；后续扩展
 `market_meta`、index/block 或全链路 Pipeline 必须另开卡。

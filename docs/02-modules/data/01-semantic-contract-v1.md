@@ -2,9 +2,10 @@
 
 日期：2026-05-02
 
-状态：production-foundation released / market_meta future card
+状态：production-foundation released / execution day line live / market_meta future card
 
-当前裁决：Data Foundation 生产级地基已放行四个正式库：
+当前裁决：Data Foundation 生产级地基已放行四个正式库；`market_base_day.duckdb`
+已 live 物化 `execution_price_line = none`。当前正式库为：
 `raw_market.duckdb`、`market_base_day.duckdb`、`market_base_week.duckdb`、
 `market_base_month.duckdb`。`market_meta.duckdb` 和 index/block 主线接入仍需后续卡。
 

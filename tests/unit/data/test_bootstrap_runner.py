@@ -1,12 +1,14 @@
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 import duckdb
 
 from asteria.data.bootstrap import run_data_bootstrap
 from asteria.data.contracts import DataBootstrapRequest
+from asteria.data.native_csv_bootstrap import run_native_csv_bootstrap
+from asteria.data.tdx_text import discover_tdx_text_files
 
 
 def _write_tdx_file(path: Path, symbol: str, rows: tuple[str, ...]) -> None:
@@ -25,6 +27,27 @@ def _request(tmp_path: Path, run_id: str, mode: str = "bounded") -> DataBootstra
         temp_root=tmp_path / "asteria-temp",
         asset_type="stock",
         adj_mode="backward",
+        mode=mode,
+        run_id=run_id,
+        start_dt="2024-01-01",
+        end_dt="2024-12-31",
+        symbol_limit=10,
+    )
+
+
+def _request_with_adj_mode(
+    tmp_path: Path,
+    run_id: str,
+    *,
+    adj_mode: str,
+    mode: str = "bounded",
+) -> DataBootstrapRequest:
+    return DataBootstrapRequest(
+        source_root=tmp_path / "tdx",
+        target_root=tmp_path / "asteria-data",
+        temp_root=tmp_path / "asteria-temp",
+        asset_type="stock",
+        adj_mode=adj_mode,
         mode=mode,
         run_id=run_id,
         start_dt="2024-01-01",
@@ -161,6 +184,189 @@ def test_all_adjustment_modes_keep_separate_latest_rows(tmp_path: Path) -> None:
             ("analysis_price_line", "forward"),
             ("execution_price_line", "none"),
         ]
+
+
+def test_none_adjustment_materializes_execution_line_alongside_analysis_line(
+    tmp_path: Path,
+) -> None:
+    _write_tdx_file(
+        tmp_path / "tdx" / "stock-day" / "Backward-Adjusted" / "SH#600000.txt",
+        "SH#600000",
+        ("2024-01-02\t10\t11\t9\t10.5\t100\t1050",),
+    )
+    _write_tdx_file(
+        tmp_path / "tdx" / "stock-day" / "Non-Adjusted" / "SH#600000.txt",
+        "SH#600000",
+        ("2024-01-02\t9\t10\t8\t9.5\t100\t950",),
+    )
+
+    run_data_bootstrap(_request_with_adj_mode(tmp_path, "analysis-run-001", adj_mode="backward"))
+    run_data_bootstrap(_request_with_adj_mode(tmp_path, "execution-run-001", adj_mode="none"))
+    run_data_bootstrap(_request_with_adj_mode(tmp_path, "execution-run-002", adj_mode="none"))
+
+    base_db = tmp_path / "asteria-data" / "market_base_day.duckdb"
+    raw_db = tmp_path / "asteria-data" / "raw_market.duckdb"
+    with duckdb.connect(str(base_db), read_only=True) as con:
+        rows = con.execute(
+            """
+            select bar_dt, price_line, adj_mode, close_px, run_id
+            from market_base_bar
+            order by price_line, adj_mode
+            """
+        ).fetchall()
+        natural_dups = con.execute(
+            """
+            select count(*)
+            from (
+                select symbol, timeframe, bar_dt, price_line, adj_mode
+                from market_base_bar
+                group by 1, 2, 3, 4, 5
+                having count(*) > 1
+            )
+            """
+        ).fetchone()[0]
+    with duckdb.connect(str(raw_db), read_only=True) as con:
+        raw_modes = con.execute(
+            """
+            select adj_mode, count(*)
+            from raw_market_bar
+            group by 1
+            order by 1
+            """
+        ).fetchall()
+
+    assert rows == [
+        (date(2024, 1, 2), "analysis_price_line", "backward", 10.5, "analysis-run-001"),
+        (date(2024, 1, 2), "execution_price_line", "none", 9.5, "execution-run-002"),
+    ]
+    assert natural_dups == 0
+    assert raw_modes == [("backward", 1), ("none", 1)]
+
+
+def test_full_mode_uses_streaming_path_for_execution_line(tmp_path: Path) -> None:
+    _write_tdx_file(
+        tmp_path / "tdx" / "stock-day" / "Non-Adjusted" / "SH#600000.txt",
+        "SH#600000",
+        ("2024-01-02\t9\t10\t8\t9.5\t100\t950",),
+    )
+    _write_tdx_file(
+        tmp_path / "tdx" / "stock-day" / "Non-Adjusted" / "SZ#000001.txt",
+        "SZ#000001",
+        ("2024-01-02\t19\t20\t18\t19.5\t100\t1950",),
+    )
+    request = DataBootstrapRequest(
+        source_root=tmp_path / "tdx",
+        target_root=tmp_path / "asteria-data",
+        temp_root=tmp_path / "asteria-temp",
+        asset_type="stock",
+        adj_mode="none",
+        mode="full",
+        run_id="streaming-full-none-001",
+    )
+
+    summary = run_data_bootstrap(request)
+
+    assert summary.source_file_count == 2
+    assert summary.raw_rows_written == 2
+    assert summary.base_rows_written == 2
+    with duckdb.connect(str(tmp_path / "asteria-data" / "market_base_day.duckdb")) as con:
+        rows = con.execute(
+            """
+            select symbol, price_line, adj_mode, close_px
+            from market_base_bar
+            order by symbol
+            """
+        ).fetchall()
+        run = con.execute("select run_id, base_rows_written from market_base_run").fetchone()
+    assert rows == [
+        ("000001.SZ", "execution_price_line", "none", 19.5),
+        ("600000.SH", "execution_price_line", "none", 9.5),
+    ]
+    assert run == ("streaming-full-none-001", 2)
+
+
+def test_streaming_full_keeps_source_registry_for_empty_source_file(tmp_path: Path) -> None:
+    empty_source = tmp_path / "tdx" / "stock-day" / "Non-Adjusted" / "BJ#920000.txt"
+    empty_source.parent.mkdir(parents=True, exist_ok=True)
+    empty_source.write_text(
+        "BJ#920000 测试证券 日线 不复权\n      日期\t开盘\t最高\t最低\t收盘\t成交量\t成交额\n",
+        encoding="gbk",
+    )
+    request = DataBootstrapRequest(
+        source_root=tmp_path / "tdx",
+        target_root=tmp_path / "asteria-data",
+        temp_root=tmp_path / "asteria-temp",
+        asset_type="stock",
+        adj_mode="none",
+        mode="full",
+        run_id="streaming-full-empty-001",
+    )
+
+    summary = run_data_bootstrap(request)
+
+    assert summary.source_file_count == 1
+    assert summary.raw_rows_written == 0
+    assert summary.base_rows_written == 0
+    with duckdb.connect(str(tmp_path / "asteria-data" / "raw_market.duckdb")) as con:
+        source_rows = con.execute("select symbol, adj_mode from raw_market_source_file").fetchall()
+        raw_count = con.execute("select count(*) from raw_market_bar").fetchone()[0]
+    assert source_rows == [("920000.BJ", "none")]
+    assert raw_count == 0
+
+
+def test_native_csv_bootstrap_materializes_execution_line_and_empty_registry(
+    tmp_path: Path,
+) -> None:
+    _write_tdx_file(
+        tmp_path / "tdx" / "stock-day" / "Non-Adjusted" / "SH#600000.txt",
+        "SH#600000",
+        ("2024/01/02\t9\t10\t8\t9.5\t100\t950",),
+    )
+    empty_source = tmp_path / "tdx" / "stock-day" / "Non-Adjusted" / "BJ#920000.txt"
+    empty_source.parent.mkdir(parents=True, exist_ok=True)
+    empty_source.write_text(
+        "BJ#920000 测试证券 日线 不复权\n      日期\t开盘\t最高\t最低\t收盘\t成交量\t成交额\n",
+        encoding="gbk",
+    )
+    request = DataBootstrapRequest(
+        source_root=tmp_path / "tdx",
+        target_root=tmp_path / "asteria-data",
+        temp_root=tmp_path / "asteria-temp",
+        asset_type="stock",
+        adj_mode="none",
+        mode="full",
+        run_id="native-csv-none-001",
+    )
+    sources = discover_tdx_text_files(
+        request.source_root,
+        asset_type=request.asset_type,
+        adj_mode=request.adj_mode,
+        symbol_limit=request.symbol_limit,
+    )
+
+    summary = run_native_csv_bootstrap(
+        request,
+        sources=sources,
+        now=datetime.now(timezone.utc),
+    )
+
+    assert summary.source_file_count == 2
+    assert summary.raw_rows_written == 1
+    assert summary.base_rows_written == 1
+    with duckdb.connect(str(tmp_path / "asteria-data" / "raw_market.duckdb")) as con:
+        source_rows = con.execute(
+            "select symbol, adj_mode from raw_market_source_file order by symbol"
+        ).fetchall()
+    with duckdb.connect(str(tmp_path / "asteria-data" / "market_base_day.duckdb")) as con:
+        base_rows = con.execute(
+            """
+            select symbol, price_line, adj_mode, close_px
+            from market_base_bar
+            order by symbol
+            """
+        ).fetchall()
+    assert source_rows == [("600000.SH", "none"), ("920000.BJ", "none")]
+    assert base_rows == [("600000.SH", "execution_price_line", "none", 9.5)]
 
 
 def test_daily_incremental_skips_unchanged_source_files(tmp_path: Path) -> None:

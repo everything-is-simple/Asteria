@@ -30,8 +30,14 @@ def run_data_production_audit(
     for db_name in BASE_DATABASES:
         db_path = data_root / db_name
         if not db_path.exists():
+            if db_name == "market_base_day.duckdb":
+                checks[f"{db_name}:execution_price_line_present"] = "failed"
+                hard_fail_count += 1
             continue
-        for check_name, status in _check_market_base(db_path).items():
+        for check_name, status in _check_market_base(
+            db_path,
+            require_execution_price_line=db_name == "market_base_day.duckdb",
+        ).items():
             checks[f"{db_name}:{check_name}"] = status
             hard_fail_count += status == "failed"
 
@@ -64,7 +70,7 @@ def _check_raw_market(path: Path) -> str:
     return "passed" if duplicate_count == 0 else "failed"
 
 
-def _check_market_base(path: Path) -> dict[str, str]:
+def _check_market_base(path: Path, *, require_execution_price_line: bool) -> dict[str, str]:
     with duckdb.connect(str(path), read_only=True) as con:
         natural_dups = _count_result(
             con.execute(
@@ -102,11 +108,25 @@ def _check_market_base(path: Path) -> dict[str, str]:
                 """
             ).fetchone()
         )
-    return {
+        execution_line_count = _count_result(
+            con.execute(
+                """
+                select count(*)
+                from market_base_bar
+                where timeframe = 'day'
+                  and price_line = 'execution_price_line'
+                  and adj_mode = 'none'
+                """
+            ).fetchone()
+        )
+    checks = {
         "natural_key_uniqueness": "passed" if natural_dups == 0 else "failed",
         "latest_pointer_uniqueness": "passed" if latest_dups == 0 else "failed",
         "price_line_mapping": "passed" if price_line_failures == 0 else "failed",
     }
+    if require_execution_price_line:
+        checks["execution_price_line_present"] = "passed" if execution_line_count > 0 else "failed"
+    return checks
 
 
 def _count_result(row: tuple[Any, ...] | None) -> int:

@@ -14,6 +14,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
 H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip
 H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-production-release-closeout-20260502-01.zip
+H:\Asteria-Validated\Asteria-data-execution-price-line-materialization-20260502-01.zip
 ```
 
 `214427` 快照是 2026-04-28 docs/code 基线；`130309` 快照是三天重构成果的
@@ -33,6 +34,7 @@ Signal bounded proof 已通过
 MALF complete alignment closeout 已通过
 MALF v1.3 formal-data bounded rebuild closeout 已通过
 Data production foundation closeout 已通过
+Data execution price line materialization 已通过
 ```
 
 当前已交付主线模块文档索引：
@@ -94,7 +96,7 @@ bounded proof、Position 施工、Signal full build、下游施工或全链路 p
 
 | 顺序 | 模块 | 文档状态 | 冻结状态 | 是否允许施工 | 文档位置 | 说明 |
 |---:|---|---|---|---:|---|---|
-| 0 | Data Foundation | production foundation closeout 已通过 | raw/base day-week-month 已放行 / market_meta future card | 是，foundation maintenance surface | `docs/02-modules/data/` | 四个 Data DB 是本版全量底座；analysis/execution price line 与 daily incremental 已放行；非策略主线，不占主线施工位 |
+| 0 | Data Foundation | execution price line materialization 已通过 | raw/base day-week-month 已放行 / day execution line live / market_meta future card | 是，foundation maintenance surface | `docs/02-modules/data/` | 四个 Data DB 是本版全量底座；day execution line 已正式物化；market_meta 仍未落地；非策略主线，不占主线施工位 |
 | 1 | MALF | 六件套已交付 / v1.3 formal-data bounded closeout 已通过 | frozen | 否 | `docs/02-modules/malf/` | day bounded formal-data proof 已通过；week/month 未执行 |
 | 2 | Alpha | 六件套已冻结 / bounded proof 已通过 | released | 否 | `docs/02-modules/alpha/` | bounded proof 已通过；full build 需另开卡 |
 | 3 | Signal | 六件套已冻结 / bounded proof 已通过 | released | 否 | `docs/02-modules/signal/` | bounded proof 已通过；full build 需另开卡 |
@@ -110,16 +112,17 @@ Data Foundation 本轮六件套草案：
 
 | 文档 | 状态 |
 |---|---|
-| `docs/02-modules/data/00-authority-design-v1.md` | production-foundation released / market_meta future card |
+| `docs/02-modules/data/00-authority-design-v1.md` | production-foundation released / execution day line live / market_meta future card |
 | `docs/02-modules/data/01-semantic-contract-v1.md` | production-foundation released / price-line contract frozen |
 | `docs/02-modules/data/02-database-schema-spec-v1.md` | production-foundation released / raw + base schema frozen |
-| `docs/02-modules/data/03-runner-contract-v1.md` | production-foundation released / daily incremental supported |
+| `docs/02-modules/data/03-runner-contract-v1.md` | production-foundation released / execution day line materialized / daily incremental supported |
 | `docs/02-modules/data/04-audit-spec-v1.md` | production-foundation released / release audit passed |
 | `docs/02-modules/data/05-build-card-v1.md` | production-foundation release closeout passed |
 
 Data Foundation 已完成生产级地基闭环。当前放行范围为四个正式 Data DB、
 `analysis_price_line = backward`、`execution_price_line = none`、daily incremental、
-checkpoint/resume 与 release audit；`market_meta.duckdb`、index/block 主线接入仍需另开卡。
+checkpoint/resume 与 release audit；其中 day execution line 已 live 物化。
+`market_meta.duckdb`、index/block 主线接入仍需另开卡。
 
 Data Foundation legacy source intake 当前执行结论：
 
@@ -130,6 +133,7 @@ Data Foundation legacy source intake 当前执行结论：
 | `data-legacy-import-runner-working-build-20260502-01` | `passed` | `data formal promotion evidence` |
 | `data-formal-promotion-evidence-20260502-01` | `passed` | `MALF v1.3 formal rebuild closeout` |
 | `data-production-release-closeout-20260502-01` | `passed` | `Position freeze review reentry` |
+| `data-execution-price-line-materialization-20260502-01` | `passed` | `Position freeze review reentry` |
 
 MALF v1.3 formal rebuild 当前执行结论：
 
@@ -210,6 +214,7 @@ H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip
 H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip
 H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-production-release-closeout-20260502-01.zip
+H:\Asteria-Validated\Asteria-data-execution-price-line-materialization-20260502-01.zip
 ```
 
 这些 zip 是文档/治理快照或权威刷新归档，不是 DuckDB 产物。运行证据必须另有

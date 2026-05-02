@@ -4,7 +4,8 @@
 
 状态：production-foundation released / production audit active
 
-当前裁决：Data Foundation 已通过生产级地基 release audit。审计覆盖四个正式库、
+当前裁决：Data Foundation 已通过生产级地基 release audit，并已增加 day execution
+line presence hard check。审计覆盖四个正式库、
 `analysis_price_line=backward`、`execution_price_line=none`、source trace、自然键、
 latest 指针、dirty scope 与 checkpoint/resume。
 
@@ -25,6 +26,7 @@ latest 指针、dirty scope 与 checkpoint/resume。
 | Latest pointer uniqueness | `market_base_latest` 每组键只保留一行 |
 | Reject isolation | 脏记录必须进入 reject audit，不得进入正式事实 |
 | Price line separation | `analysis_price_line` 不得用于真实成交；`execution_price_line` 必须来自 `adj_mode = none` |
+| Execution line presence | `market_base_day.duckdb` 必须存在 `execution_price_line / none` 正式行 |
 | Incremental resume | checkpoint/resume 不得重复写入已完成 source scope |
 
 ## 3. 软观察

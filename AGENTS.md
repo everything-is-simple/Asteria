@@ -20,6 +20,7 @@
 - `H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-data-production-release-closeout-20260502-01.zip`
+- `H:\Asteria-Validated\Asteria-data-execution-price-line-materialization-20260502-01.zip`
 
 当前门禁：
 
@@ -34,6 +35,7 @@
 - `Data legacy formal promotion passed`
 - `MALF v1.3 formal-data bounded closeout passed`
 - `Data production foundation closeout passed`
+- `Data execution price line materialization passed`
 - 下一步允许动作：`Position freeze review reentry`
 - MALF v1.3 closeout 只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；week/month proof 仍需另开卡。
 - Signal bounded proof 只放行 bounded `signal.duckdb` 表面；不授权 Signal full build、Position construction、下游施工或全链路 pipeline。

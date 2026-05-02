@@ -81,5 +81,25 @@ def test_production_audit_fails_when_execution_line_uses_adjusted_price(
     summary = run_data_production_audit(data_root=data_root, run_id="audit-fail-001")
 
     assert summary.status == "failed"
-    assert summary.hard_fail_count == 1
+    assert summary.hard_fail_count == 2
     assert summary.checks["market_base_day.duckdb:price_line_mapping"] == "failed"
+    assert summary.checks["market_base_day.duckdb:execution_price_line_present"] == "failed"
+
+
+def test_production_audit_fails_when_day_execution_line_is_absent(
+    tmp_path: Path,
+) -> None:
+    data_root = tmp_path / "asteria-data"
+    _seed_clean_data(data_root)
+    with duckdb.connect(str(data_root / "market_base_day.duckdb")) as con:
+        con.execute("delete from market_base_bar where price_line = 'execution_price_line'")
+        con.execute("delete from market_base_latest where price_line = 'execution_price_line'")
+
+    summary = run_data_production_audit(
+        data_root=data_root,
+        run_id="audit-missing-execution-001",
+    )
+
+    assert summary.status == "failed"
+    assert summary.hard_fail_count == 1
+    assert summary.checks["market_base_day.duckdb:execution_price_line_present"] == "failed"

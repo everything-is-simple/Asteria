@@ -2,9 +2,10 @@
 
 日期：2026-05-02
 
-状态：production-foundation released / market_meta future card
+状态：production-foundation released / execution day line live / market_meta future card
 
-当前裁决：四个正式 Data DB 已作为本版全量底座放行：
+当前裁决：四个正式 Data DB 已作为本版全量底座放行；
+`market_base_day.duckdb` 已 live 物化 `stock / none / execution_price_line`：
 `raw_market.duckdb` 与 `market_base_day/week/month.duckdb`。本卡补齐
 `execution_price_line = none`、每日增量、断点续传和生产级审计合同。
 
