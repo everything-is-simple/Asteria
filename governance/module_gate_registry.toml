@@ -3,12 +3,14 @@ active_mainline_module = "position"
 active_foundation_card = "none"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
-    "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+    "H:/Asteria-Validated/2.backups/Asteria-docs-code-20260428-214427.zip",
     "H:/Asteria-Validated/Asteria-docs-code-20260502-104932.zip",
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_3",
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_3.zip",
+    "H:/Asteria-Validated/Asteria-data-formal-promotion-evidence-20260502-01.zip",
+    "H:/Asteria-Validated/Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip",
 ]
-latest_governance_run_id = "data-formal-promotion-evidence-20260502-01"
+latest_governance_run_id = "validated-historical-evidence-rehydration-20260502-01"
 latest_mainline_release_run_id = "malf-v1-3-formal-rebuild-closeout-20260502-01"
 current_allowed_next_card = "position_freeze_review_reentry"
 construction_lock = [

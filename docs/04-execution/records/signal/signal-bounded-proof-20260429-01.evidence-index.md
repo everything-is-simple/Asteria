@@ -18,7 +18,7 @@
 | closeout | `H:\Asteria-report\signal\2026-04-29\signal-bounded-proof-20260429-01\closeout.md` |
 | manifest | `H:\Asteria-report\signal\2026-04-29\signal-bounded-proof-20260429-01\manifest.json` |
 | audit_summary | `H:\Asteria-report\signal\2026-04-29\signal-bounded-proof-20260429-01-audit-summary.json` |
-| validated_zip | `H:\Asteria-Validated\Asteria-signal-bounded-proof-20260429-01.zip` |
+| validated_zip | `H:\Asteria-Validated\2.backups\Asteria-signal-bounded-proof-20260429-01.zip` |
 
 ## 3. 关键结果
 

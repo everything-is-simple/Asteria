@@ -31,7 +31,7 @@
 | gate ledger | `docs/03-refactor/00-module-gate-ledger-v1.md` |
 | closeout | `H:\Asteria-report\malf\2026-04-30\malf-alignment-hard-audit-hardening-20260430-01\closeout.md` |
 | manifest | `H:\Asteria-report\malf\2026-04-30\malf-alignment-hard-audit-hardening-20260430-01\manifest.json` |
-| validated_zip | `H:\Asteria-Validated\Asteria-malf-alignment-hard-audit-hardening-20260430-01.zip` |
+| validated_zip | `H:\Asteria-Validated\2.backups\Asteria-malf-alignment-hard-audit-hardening-20260430-01.zip` |
 | formal DB rerun | `not created; no formal DB rerun` |
 
 ## 3. Verification

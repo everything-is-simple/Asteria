@@ -14,7 +14,7 @@
 | manifest | `H:\Asteria-report\malf\2026-04-30\malf-complete-alignment-closeout-20260430-01\manifest.json` |
 | table_counts | `H:\Asteria-report\malf\2026-04-30\malf-complete-alignment-closeout-20260430-01\table-counts.json` |
 | audit_summary | `H:\Asteria-report\malf\2026-04-30\malf-complete-alignment-closeout-20260430-01\audit-summary.json` |
-| validated_zip | `H:\Asteria-Validated\Asteria-malf-complete-alignment-closeout-20260430-01.zip` |
+| validated_zip | `H:\Asteria-Validated\2.backups\Asteria-malf-complete-alignment-closeout-20260430-01.zip` |
 | backup_dir | `H:\Asteria-data\archive\malf-complete-alignment-closeout-20260430-01` |
 
 ## 2. Formal DBs

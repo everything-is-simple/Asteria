@@ -22,10 +22,10 @@
 | source_manifest | `not applicable; source DB and authority assets are declared in this index and card` |
 | table_counts | `H:\Asteria-report\malf\2026-04-28\malf-day-bounded-proof-20260428-01\table-counts.json` |
 | audit_summary | `H:\Asteria-report\malf\2026-04-28\malf-day-bounded-proof-20260428-01\audit-summary.json` |
-| validated_zip | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` |
+| validated_zip | `H:\Asteria-Validated\2.backups\Asteria-malf-day-bounded-proof-20260428-01.zip` |
 | MALF authority directory | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` |
-| MALF authority zip | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` |
-| docs/code snapshot | `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` |
+| MALF authority zip | `H:\Asteria-Validated\2.backups\MALF_Three_Part_Design_Set_v1_2.zip` |
+| docs/code snapshot | `H:\Asteria-Validated\2.backups\Asteria-docs-code-20260428-214427.zip` |
 | formal_core_db | `H:\Asteria-data\malf_core_day.duckdb` |
 | formal_lifespan_db | `H:\Asteria-data\malf_lifespan_day.duckdb` |
 | formal_service_db | `H:\Asteria-data\malf_service_day.duckdb` |

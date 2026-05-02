@@ -21,7 +21,7 @@
 | gate_snapshot | `not applicable; gate effect is recorded in module gate ledger and conclusion` |
 | run_manifest | `not applicable; this review used manifest.json as the evidence manifest` |
 | source_manifest | `not applicable; source DBs and authority assets are declared in this index and card` |
-| validated_zip | `H:\Asteria-Validated\Asteria-signal-freeze-review-20260429-01.zip` |
+| validated_zip | `H:\Asteria-Validated\2.backups\Asteria-signal-freeze-review-20260429-01.zip` |
 | formal_db | `not applicable; no Signal formal DB created` |
 
 ## 3. 关键结果

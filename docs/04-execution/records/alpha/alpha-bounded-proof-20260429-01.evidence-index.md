@@ -22,7 +22,7 @@
 | pb_audit | `H:\Asteria-report\alpha\2026-04-29\alpha-bounded-proof-20260429-01-pb-audit-summary.json` |
 | cpb_audit | `H:\Asteria-report\alpha\2026-04-29\alpha-bounded-proof-20260429-01-cpb-audit-summary.json` |
 | bpb_audit | `H:\Asteria-report\alpha\2026-04-29\alpha-bounded-proof-20260429-01-bpb-audit-summary.json` |
-| validated_zip | `H:\Asteria-Validated\Asteria-alpha-bounded-proof-20260429-01.zip` |
+| validated_zip | `H:\Asteria-Validated\2.backups\Asteria-alpha-bounded-proof-20260429-01.zip` |
 
 ## 3. 关键结果
 

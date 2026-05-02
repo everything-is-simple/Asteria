@@ -20,11 +20,11 @@
 | gate_snapshot | `not applicable; docs authority refresh did not produce a separate snapshot file` |
 | run_manifest | `not applicable; this run used manifest.json as the evidence manifest` |
 | source_manifest | `not applicable; source authority is declared in this index and card` |
-| validated_zip | `H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip` |
-| primary docs/code snapshot | `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` |
+| validated_zip | `H:\Asteria-Validated\2.backups\Asteria-docs-authority-refresh-20260429-01.zip` |
+| primary docs/code snapshot | `H:\Asteria-Validated\2.backups\Asteria-docs-code-20260428-214427.zip` |
 | deep research report | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md` |
 | MALF authority directory | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` |
-| MALF authority zip | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` |
+| MALF authority zip | `H:\Asteria-Validated\2.backups\MALF_Three_Part_Design_Set_v1_2.zip` |
 | formal_db | `not applicable; no formal DB created` |
 
 ## 3. 关键结果

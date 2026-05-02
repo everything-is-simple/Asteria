@@ -14,14 +14,14 @@
 
 | 资产 | 路径 |
 |---|---|
-| current_docs_code_snapshot | `H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip` |
+| current_docs_code_snapshot | `H:\Asteria-Validated\2.backups\Asteria-docs-code-20260429-130309.zip` |
 | malf_authority_directory | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` |
-| malf_authority_zip | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` |
+| malf_authority_zip | `H:\Asteria-Validated\2.backups\MALF_Three_Part_Design_Set_v1_2.zip` |
 | report_dir | `H:\Asteria-report\governance\2026-04-29\malf-authority-compatibility-audit-20260429-01` |
 | closeout | `H:\Asteria-report\governance\2026-04-29\malf-authority-compatibility-audit-20260429-01\closeout.md` |
 | manifest | `H:\Asteria-report\governance\2026-04-29\malf-authority-compatibility-audit-20260429-01\manifest.json` |
 | compatibility_summary | `H:\Asteria-report\governance\2026-04-29\malf-authority-compatibility-audit-20260429-01\compatibility-summary.json` |
-| validated_zip | `H:\Asteria-Validated\Asteria-malf-authority-compatibility-audit-20260429-01.zip` |
+| validated_zip | `H:\Asteria-Validated\2.backups\Asteria-malf-authority-compatibility-audit-20260429-01.zip` |
 | formal_db | `not applicable; no formal DB created` |
 
 ## 3. 关键结果

@@ -311,7 +311,7 @@ def test_project_governance_rejects_missing_release_gate_external_asset(
     evidence_text = evidence_path.read_text(encoding="utf-8")
     evidence_path.write_text(
         evidence_text.replace(
-            r"H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip",
+            r"H:\Asteria-Validated\2.backups\Asteria-malf-day-bounded-proof-20260428-01.zip",
             r"H:\Asteria-Validated\missing-release-gate-evidence.zip",
         ),
         encoding="utf-8",

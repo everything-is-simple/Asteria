@@ -55,6 +55,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Governance | `validated-root-manifest-refresh-20260429-01` | `passed` | [conclusion](records/governance/validated-root-manifest-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/validated-root-manifest-refresh-20260429-01.evidence-index.md) |
 | Governance | `malf-authority-compatibility-audit-20260429-01` | `passed` | [conclusion](records/governance/malf-authority-compatibility-audit-20260429-01.conclusion.md) | [evidence-index](records/governance/malf-authority-compatibility-audit-20260429-01.evidence-index.md) |
 | Governance | `asteria-system-design-set-refresh-20260429-01` | `passed` | [conclusion](records/governance/asteria-system-design-set-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/asteria-system-design-set-refresh-20260429-01.evidence-index.md) |
+| Governance | `validated-historical-evidence-rehydration-20260502-01` | `passed` | [conclusion](records/governance/validated-historical-evidence-rehydration-20260502-01.conclusion.md) | [evidence-index](records/governance/validated-historical-evidence-rehydration-20260502-01.evidence-index.md) |
 
 ## 2. 当前说明
 
@@ -73,6 +74,8 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 - Data legacy source audit、import contract freeze、import runner working build 与 formal
   promotion evidence 已通过；这只放行首轮 `stock / backward / day-week-month`
   source-fact DB，不声明 Data full build released，也不打开下游施工。
+- Validated 历史 evidence zip 已对齐到 `H:\Asteria-Validated\2.backups` 冷归档路径；
+  这是治理资产布局维护，不改变任何模块门禁。
 - Alpha full build、Signal construction without build card、Position / Portfolio Plan / Trade /
   System 施工和全链路 pipeline 仍未放行，直到后续门禁通过并明确授权。
 - 后续 Position freeze review reentry conclusion 与后续 bounded proof 等执行卡，都必须先登记到本索引，再视为正式结论落档。

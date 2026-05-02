@@ -19,6 +19,7 @@
 |---|---|---|
 | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` | MALF 历史权威设计 | 作为 complete alignment closeout 的历史语义锚点保留 |
 | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3` | MALF v1.3 当前语义权威设计 | 作为当前 MALF day formal-data bounded closeout 的语义权威 |
+| `H:\Asteria-Validated\2.backups` | 历史 validated evidence 冷归档区 | 存放旧 execution zip、旧 docs/code 快照和历史设计包压缩包；repo evidence index 可直接指向该目录 |
 | `H:\Asteria-Validated\README.md` | Validated 根目录人读索引 | 声明 Validated 资产区职责、当前权威锚点和禁止用途 |
 | `H:\Asteria-Validated\validated-asset-manifest-20260429-01.json` | Validated 根目录机器清单 | 记录顶层资产角色、大小、时间和 SHA256 |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 架构级剖切面研究报告 | 作为治理、历史总账、增量协议与下一阶段施工路径的分析输入 |
@@ -154,6 +155,9 @@ H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
 这些 zip 是执行证据，不是新的业务语义来源。
 它们可以改变门禁状态，不能改变 MALF 定义或下游模块边界。
 ```
+
+历史 evidence 可迁入 `H:\Asteria-Validated\2.backups` 作为冷归档。迁入后，repo 内
+evidence index 必须指向实际可寻址路径；这种路径维护不改变原结论的状态和语义。
 
 ## 4. 高价值旁证
 

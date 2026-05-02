@@ -399,3 +399,20 @@ full-chain Pipeline。
 |---|---|---|---|---|
 | `malf-lifespan-dense-bar-snapshot-resolution-20260429-01` | `malf` | `passed` | `Position freeze review reentry` | `malf-complete-alignment-closeout-20260430-01` |
 | `malf-alignment-hard-audit-hardening-20260430-01` | `malf` | `passed` | `Position freeze review reentry` | `malf-complete-alignment-closeout-20260430-01` |
+
+## 15. Validated Historical Evidence Cold Archive
+
+Validated 历史 evidence zip 已通过
+`validated-historical-evidence-rehydration-20260502-01` 对齐到
+`H:\Asteria-Validated\2.backups` 冷归档位置。
+
+| 项 | 值 |
+|---|---|
+| run_id | `validated-historical-evidence-rehydration-20260502-01` |
+| module | `governance` |
+| status | `passed` |
+| gate impact | `no module gate state changed` |
+| allowed next action | `Position freeze review reentry` |
+
+本记录只维护历史证据的可寻址路径，不改变 Data / MALF / Alpha / Signal / Position 的
+通过状态，也不授权 Position construction、下游施工或 full-chain pipeline。

@@ -15,12 +15,12 @@
 | 资产 | 路径 |
 |---|---|
 | design_set_dir | `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0` |
-| design_set_zip | `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip` |
+| design_set_zip | `H:\Asteria-Validated\2.backups\Asteria_System_Design_Set_v1_0.zip` |
 | design_set_manifest | `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0\MANIFEST.json` |
 | report_dir | `H:\Asteria-report\governance\2026-04-29\asteria-system-design-set-refresh-20260429-01` |
 | closeout | `H:\Asteria-report\governance\2026-04-29\asteria-system-design-set-refresh-20260429-01\closeout.md` |
 | manifest | `H:\Asteria-report\governance\2026-04-29\asteria-system-design-set-refresh-20260429-01\manifest.json` |
-| validated_zip | `H:\Asteria-Validated\Asteria-system-design-set-refresh-20260429-01.zip` |
+| validated_zip | `H:\Asteria-Validated\2.backups\Asteria-system-design-set-refresh-20260429-01.zip` |
 | formal_db | `not applicable; no formal DB created` |
 
 ## 3. 关键结果

@@ -22,7 +22,7 @@
 | gate_snapshot | `not applicable; this card does not change module gate state` |
 | run_manifest | `not applicable; manifest.json is the evidence manifest` |
 | source_manifest | `not applicable; source root is H:\Asteria-Validated` |
-| validated_zip | `H:\Asteria-Validated\Asteria-validated-root-manifest-refresh-20260429-01.zip` |
+| validated_zip | `H:\Asteria-Validated\2.backups\Asteria-validated-root-manifest-refresh-20260429-01.zip` |
 | formal_db | `not applicable; no formal DB created` |
 
 ## 3. 关键结果

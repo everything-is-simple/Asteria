@@ -29,7 +29,7 @@
 | closeout | `H:\Asteria-report\malf\2026-04-30\malf-lifespan-dense-bar-snapshot-resolution-20260429-01\closeout.md` |
 | manifest | `H:\Asteria-report\malf\2026-04-30\malf-lifespan-dense-bar-snapshot-resolution-20260429-01\manifest.json` |
 | audit_summary | `H:\Asteria-report\malf\2026-04-30\malf-lifespan-dense-bar-snapshot-resolution-20260429-01\audit-summary.json` |
-| validated_zip | `H:\Asteria-Validated\Asteria-malf-lifespan-dense-bar-snapshot-resolution-20260429-01.zip` |
+| validated_zip | `H:\Asteria-Validated\2.backups\Asteria-malf-lifespan-dense-bar-snapshot-resolution-20260429-01.zip` |
 | source_db | `H:\Asteria-temp\data-bootstrap-smoke-all-2\market_base_day.duckdb` |
 | formal_core_db | `H:\Asteria-data\malf_core_day.duckdb` |
 | formal_lifespan_db | `H:\Asteria-data\malf_lifespan_day.duckdb` |
