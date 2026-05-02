@@ -2,11 +2,11 @@
 
 日期：2026-05-02
 
-状态：legacy-import-contract frozen / foundation-contract / not full Data release
+状态：production-foundation released / market_meta future card
 
-当前裁决：旧版 Lifespan 本地 raw/base DuckDB 的 `stock / backward / day-week-month`
-导入合同已冻结；允许后续工作卡先生成 working DB，再经审计 promote 首轮正式
-`raw_market.duckdb` 与 `market_base_day/week/month.duckdb`。这不放行完整 Data full build。
+当前裁决：四个正式 Data DB 已作为本版全量底座放行：
+`raw_market.duckdb` 与 `market_base_day/week/month.duckdb`。本卡补齐
+`execution_price_line = none`、每日增量、断点续传和生产级审计合同。
 
 ## 1. 目标拓扑
 
@@ -34,9 +34,8 @@ Data Foundation 目标正式库共五个：
 | `raw_market_reject_audit` | 被拒绝或脏记录审计 |
 | `raw_schema_version` | schema 版本 |
 
-当前最小 bootstrap 实现已落地 `raw_market_sync_run`、`raw_market_source_file`、`raw_market_bar`
-和 `raw_schema_version`。`raw_market_reject_audit` 保持 schema contract，等待 reject isolation
-卡进入实现。
+当前生产级地基实现已落地 `raw_market_sync_run`、`raw_market_source_file`、
+`raw_market_bar`、`raw_market_reject_audit` 和 `raw_schema_version`。
 
 ### 2.2 自然键
 
@@ -239,28 +238,35 @@ market_base_day.duckdb
 
 它们是 MALF day bounded proof 的直接上游输入契约。
 
-首轮 `market_base_day` 默认把 `stock-day\Backward-Adjusted` 物化为：
+`market_base_day` 默认把 `stock-day\Backward-Adjusted` 物化为：
 
 ```text
 price_line = analysis_price_line
 adj_mode = backward
 ```
 
-`Non-Adjusted` 保留给未来 Trade execution price line，`Forward-Adjusted` 暂作为审计备用价格线。
+`stock-day\Non-Adjusted` 物化为：
+
+```text
+price_line = execution_price_line
+adj_mode = none
+```
+
+`Forward-Adjusted` 暂作为审计备用价格线，不进入当前 release 口径。
 
 ## 10. Legacy import 首轮固定值
 
-旧库导入首轮只允许以下 schema 口径：
+生产级地基 release 允许以下 schema 口径：
 
 | 字段 | 固定或映射值 |
 |---|---|
 | `asset_type` | `stock` |
 | `timeframe` | `day / week / month` |
-| `adj_mode` | `backward` |
-| `price_line` | `analysis_price_line` |
+| `adj_mode` | `backward / none` |
+| `price_line` | `analysis_price_line / execution_price_line` |
 | `source_vendor` | `legacy_lifespan` |
 | `source_batch_id` | 本次导入 run_id |
 
-`raw_market.duckdb` 保存旧 raw stock 行与 source trace；`market_base_{tf}.duckdb`
-保存旧 base stock backward adjusted 行。`index` 与 `block` 只在审计报告中登记，不写入
-首轮 MALF 输入库。
+`raw_market.duckdb` 保存 stock 行与 source trace；`market_base_{tf}.duckdb`
+保存 stock backward analysis line。`market_base_day.duckdb` 还保存 stock none
+execution line。`index` 与 `block` 只在审计报告中登记，不写入当前主线输入库。

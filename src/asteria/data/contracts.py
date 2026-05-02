@@ -11,7 +11,7 @@ LEGACY_SOURCE_VENDOR = "legacy_lifespan"
 
 VALID_ADJ_MODES = {"backward", "forward", "none", "all"}
 VALID_ASSET_TYPES = {"stock", "index", "block"}
-VALID_RUN_MODES = {"bounded", "segmented", "full", "resume", "audit-only"}
+VALID_RUN_MODES = {"bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"}
 
 
 @dataclass(frozen=True)
@@ -116,6 +116,20 @@ class DataBootstrapSummary:
     base_rows_written: int
     dirty_scope_count: int
     resume_reused: bool = False
+    checkpoint_reused: bool = False
+    changed_source_file_count: int = 0
+    skipped_source_file_count: int = 0
+
+    def as_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class DataProductionAuditSummary:
+    run_id: str
+    status: str
+    hard_fail_count: int
+    checks: dict[str, str]
 
     def as_dict(self) -> dict[str, Any]:
         return asdict(self)

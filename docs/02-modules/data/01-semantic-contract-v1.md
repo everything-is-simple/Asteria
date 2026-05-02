@@ -2,11 +2,11 @@
 
 日期：2026-05-02
 
-状态：legacy-import-contract frozen / foundation-contract / not full Data release
+状态：production-foundation released / market_meta future card
 
-当前裁决：旧版 Lifespan 本地 raw/base DuckDB 的最小导入合同已冻结；
-首轮范围为 `stock-only + day/week/month + backward adjusted base`。完整 Data
-Foundation full build、market_meta 和 index/block 主线接入仍未放行。
+当前裁决：Data Foundation 生产级地基已放行四个正式库：
+`raw_market.duckdb`、`market_base_day.duckdb`、`market_base_week.duckdb`、
+`market_base_month.duckdb`。`market_meta.duckdb` 和 index/block 主线接入仍需后续卡。
 
 ## 1. 目的
 
@@ -104,7 +104,7 @@ source_revision
 | `timeframe` | `day / week / month` |
 | `trade_date` | 交易日口径日期 |
 | `bar_dt` | bar 对应日期时间键 |
-| `price_line` | 消费价格线，如 `adj_close_line`、`raw_close_line` |
+| `price_line` | 消费价格线：`analysis_price_line` 或 `execution_price_line` |
 | `adj_mode` | 复权或价格归一模式 |
 | `calendar_code` | 所属交易日历 |
 | `fact_name` | 客观事实名，如 `is_suspended` |
@@ -167,6 +167,16 @@ Data Foundation 不可以做的派生：
 | Trade | 仅读取执行价格线与日历 |
 
 Data Foundation 不向任何下游授予写回权。
+
+## 8.1 价格线合同
+
+| 价格线 | 固定来源 | 允许消费者 | 禁止用途 |
+|---|---|---|---|
+| `analysis_price_line` | `adj_mode = backward` | MALF / Alpha / Signal / Position 参考 | 真实成交、fill、现金结算 |
+| `execution_price_line` | `adj_mode = none` | Position / Portfolio Plan / Trade | MALF 结构定义、Alpha 机会评分 |
+
+后复权价格只服务连续结构分析。不复权价格才允许进入未来 Trade 的 order price、
+fill price、成交金额和现金账本。
 
 ## 9. 版本与溯源合同
 

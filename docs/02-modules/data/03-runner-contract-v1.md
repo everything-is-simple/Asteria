@@ -2,14 +2,15 @@
 
 日期：2026-05-02
 
-状态：legacy-import-contract frozen / foundation-contract / runner working build next
+状态：production-foundation released / daily incremental supported for Data foundation
 
 ## 1. 目的
 
 本合同定义 Data Foundation 后续正式 runner 的命令边界、输入输出、幂等与断点规则。
 
-当前只存在 `scripts/data/run_data_bootstrap.py` 最小 bounded bootstrap support。它已服务
-MALF day bounded proof 的输入准备，不等于完整 Data Foundation runner 放行。
+当前 `scripts/data/run_data_bootstrap.py` 已支持 bounded/full/audit-only/resume/daily_incremental
+的 Data foundation 最小实现；`scripts/data/run_data_production_audit.py` 提供 release audit。
+这不授权 Pipeline runtime 或下游施工。
 
 ## 2. 目标 runner
 
@@ -136,6 +137,7 @@ Data Foundation runner 至少必须支持：
 | `full` | 全量构建 |
 | `resume` | 从 checkpoint 或上次中断点续跑 |
 | `audit-only` | 只做硬审计，不写业务事实 |
+| `daily_incremental` | 按 source manifest diff 跳过未变文件，变化文件进入 dirty scope |
 
 `scripts/data/run_data_bootstrap.py` 的公共参数必须包含：
 
@@ -163,7 +165,8 @@ Data Foundation runner 至少必须支持：
 | `resume` | 已支持复用 completed checkpoint，避免重复 promote 已完成 run | 扩展为 batch / source / date-window 级断点续跑 |
 | `audit-only` | 已返回只审计摘要，不写业务事实 | 扩展为正式 Data hard audit，不写正式事实 |
 | `segmented` | 参数已接受，当前仍走最小 bootstrap 路径 | 后续实现日期窗口和 symbol batch 分片语义 |
-| `full` | 参数已接受，当前仍走最小 bootstrap 路径 | 后续实现完整 universe / timeframe 全量构建语义 |
+| `full` | 可按当前 Data foundation 合同构建全量 source scope | 后续扩展 market_meta / index / block |
+| `daily_incremental` | 已按 source hash/size 执行跳过或重算 | 后续接入 pipeline manifest |
 
 因此，当前实现可证明 Data bounded bootstrap support 已存在，并已支撑
 `malf-day-bounded-proof-20260428-01` 通过；但不得被解释为正式 `segmented` /
@@ -186,7 +189,8 @@ Data Foundation runner 至少必须支持：
 H:\Asteria-temp\data\<run_id>\checkpoint.json
 ```
 
-已完成 run 以 `resume` 重入时不得重复 promote 已完成的 batch。
+已完成 run 以 `resume` 重入时不得重复 promote 已完成的 batch。未完成 checkpoint
+重入时，已记录的 processed source scope 必须跳过，剩余 source scope 继续处理。
 
 ## 6. run ledger
 
@@ -263,7 +267,7 @@ Data Foundation runner 不得：
 
 ## 9. 最小放行条件
 
-未来 Data Foundation runner 放行至少要求：
+Data Foundation runner 当前生产级地基放行要求：
 
 | 门禁 | 要求 |
 |---|---|
@@ -272,3 +276,6 @@ Data Foundation runner 不得：
 | calendar consistency | 日期和交易日历一致 |
 | uniqueness | 自然键无冲突 |
 | evidence | 构建与审计证据已落档 |
+
+当前 release 结论为 `data-production-release-closeout-20260502-01`；后续扩展
+`market_meta`、index/block 或全链路 Pipeline 必须另开卡。

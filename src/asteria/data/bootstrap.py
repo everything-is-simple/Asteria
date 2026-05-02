@@ -28,15 +28,18 @@ def run_data_bootstrap(request: DataBootstrapRequest) -> DataBootstrapSummary:
     if request.mode == "audit-only":
         return _audit_only_summary(request)
 
-    parsed_files = _load_source_files(request)
+    bootstrap_raw_market_database(request.raw_db_path)
+    bootstrap_market_base_day_database(request.base_db_path)
+    all_parsed_files = _load_source_files(request)
+    checkpoint_symbols = _processed_symbols_from_checkpoint(checkpoint)
+    parsed_files = _select_files_for_mode(request, all_parsed_files, checkpoint_symbols)
     raw_rows = [bar for parsed in parsed_files for bar in _filter_bars(parsed.bars, request)]
     dirty_scopes = tuple(sorted({(bar.symbol, bar.adj_mode) for bar in raw_rows}))
 
-    bootstrap_raw_market_database(request.raw_db_path)
-    bootstrap_market_base_day_database(request.base_db_path)
     _write_raw_market(request, parsed_files, raw_rows)
     _write_market_base(request, parsed_files, raw_rows, dirty_scopes)
 
+    skipped_count = len(all_parsed_files) - len(parsed_files)
     summary = DataBootstrapSummary(
         run_id=request.run_id,
         status="completed",
@@ -46,6 +49,9 @@ def run_data_bootstrap(request: DataBootstrapRequest) -> DataBootstrapSummary:
         raw_rows_written=len(raw_rows),
         base_rows_written=len(raw_rows),
         dirty_scope_count=len(dirty_scopes),
+        checkpoint_reused=bool(checkpoint_symbols),
+        changed_source_file_count=len(parsed_files),
+        skipped_source_file_count=skipped_count,
     )
     _save_checkpoint(request.checkpoint_path, summary)
     return summary
@@ -59,6 +65,69 @@ def _load_source_files(request: DataBootstrapRequest) -> tuple[ParsedTdxFile, ..
         symbol_limit=request.symbol_limit,
     )
     return tuple(parse_tdx_text_file(source) for source in sources)
+
+
+def _select_files_for_mode(
+    request: DataBootstrapRequest,
+    parsed_files: tuple[ParsedTdxFile, ...],
+    checkpoint_symbols: set[str],
+) -> tuple[ParsedTdxFile, ...]:
+    if request.mode == "resume" and checkpoint_symbols:
+        return tuple(
+            parsed for parsed in parsed_files if parsed.source.symbol not in checkpoint_symbols
+        )
+    if request.mode != "daily_incremental":
+        return parsed_files
+    unchanged = _unchanged_source_keys(request, parsed_files)
+    return tuple(
+        parsed for parsed in parsed_files if parsed.source.source_file_key not in unchanged
+    )
+
+
+def _unchanged_source_keys(
+    request: DataBootstrapRequest,
+    parsed_files: tuple[ParsedTdxFile, ...],
+) -> set[str]:
+    if not request.raw_db_path.exists():
+        return set()
+    unchanged: set[str] = set()
+    with duckdb.connect(str(request.raw_db_path), read_only=True) as con:
+        for parsed in parsed_files:
+            source = parsed.source
+            existing = con.execute(
+                """
+                select source_size_bytes, source_mtime, source_content_hash
+                from raw_market_source_file
+                where source_path = ?
+                  and asset_type = ?
+                  and symbol = ?
+                  and adj_mode = ?
+                order by created_at desc
+                limit 1
+                """,
+                [
+                    str(source.source_path),
+                    source.asset_type,
+                    source.symbol,
+                    source.adj_mode,
+                ],
+            ).fetchone()
+            if existing is None:
+                continue
+            existing_size, _existing_mtime, existing_hash = existing
+            if (
+                int(existing_size) == source.source_size_bytes
+                and str(existing_hash) == source.source_content_hash
+            ):
+                unchanged.add(source.source_file_key)
+    return unchanged
+
+
+def _processed_symbols_from_checkpoint(checkpoint: dict[str, Any] | None) -> set[str]:
+    if not checkpoint or checkpoint.get("status") == "completed":
+        return set()
+    raw_symbols = checkpoint.get("processed_source_symbols", [])
+    return {str(symbol) for symbol in raw_symbols}
 
 
 def _filter_bars(
@@ -109,12 +178,23 @@ def _write_raw_market(
         for parsed in parsed_files:
             source = parsed.source
             con.execute(
-                "delete from raw_market_source_file where source_file_key = ?",
-                [source.source_file_key],
+                """
+                delete from raw_market_source_file
+                where source_path = ? and asset_type = ? and symbol = ? and adj_mode = ?
+                """,
+                [
+                    str(source.source_path),
+                    source.asset_type,
+                    source.symbol,
+                    source.adj_mode,
+                ],
             )
             con.execute(
-                "delete from raw_market_bar where source_file_key = ?",
-                [source.source_file_key],
+                """
+                delete from raw_market_bar
+                where symbol = ? and asset_type = ? and timeframe = ? and adj_mode = ?
+                """,
+                [source.symbol, source.asset_type, "day", source.adj_mode],
             )
             con.execute(
                 """
@@ -205,6 +285,16 @@ def _write_market_base(
                 now,
             ],
         )
+        for bar in raw_rows:
+            source = source_by_key[(bar.symbol, bar.adj_mode)]
+            price_line = _price_line_for_adj_mode(bar.adj_mode)
+            con.execute(
+                """
+                delete from market_base_bar
+                where symbol = ? and timeframe = ? and price_line = ? and adj_mode = ?
+                """,
+                [bar.symbol, bar.timeframe, price_line, bar.adj_mode],
+            )
         for bar in raw_rows:
             source = source_by_key[(bar.symbol, bar.adj_mode)]
             price_line = _price_line_for_adj_mode(bar.adj_mode)

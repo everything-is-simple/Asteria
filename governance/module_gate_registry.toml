@@ -9,6 +9,7 @@ authority_assets = [
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_3.zip",
     "H:/Asteria-Validated/Asteria-data-formal-promotion-evidence-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip",
+    "H:/Asteria-Validated/Asteria-data-production-release-closeout-20260502-01.zip",
 ]
 latest_governance_run_id = "validated-historical-evidence-rehydration-20260502-01"
 latest_mainline_release_run_id = "malf-v1-3-formal-rebuild-closeout-20260502-01"
@@ -27,16 +28,16 @@ construction_lock = [
 module_id = "data"
 display_name = "Data Foundation"
 mainline = false
-status = "legacy_formal_promotion_passed"
-doc_status = "legacy formal promotion passed / not full Data release"
+status = "production_foundation_released"
+doc_status = "production foundation closeout passed / market_meta future card"
 allow_build = true
-build_scope = "foundation_only_legacy_stock_backward_day_week_month"
+build_scope = "foundation_only_raw_market_market_base_day_week_month_daily_incremental"
 doc_path = "docs/02-modules/data"
-exception = "legacy_source_intake_five_card_chain"
-formal_db_permission = "released_legacy_stock_backward_day_week_month_only; full_data_build_requires_new_card"
-gate_basis = "docs/04-execution/records/data/data-formal-promotion-evidence-20260502-01.conclusion.md"
-next_card = "malf_v1_3_formal_rebuild_closeout"
-latest_completed_card = "data_formal_promotion_evidence"
+exception = "data_foundation_maintenance_track"
+formal_db_permission = "released_raw_market_and_market_base_day_week_month; market_meta_requires_new_card"
+gate_basis = "docs/04-execution/records/data/data-production-release-closeout-20260502-01.conclusion.md"
+next_card = "position_freeze_review_reentry"
+latest_completed_card = "data_production_release_closeout"
 
 [[modules]]
 module_id = "malf"

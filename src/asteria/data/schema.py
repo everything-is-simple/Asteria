@@ -71,6 +71,25 @@ def bootstrap_raw_market_database(path: Path) -> None:
         )
         con.execute(
             """
+            create table if not exists raw_market_reject_audit (
+                reject_id varchar,
+                source_file_key varchar,
+                source_vendor varchar,
+                source_batch_id varchar,
+                asset_type varchar,
+                symbol varchar,
+                timeframe varchar,
+                adj_mode varchar,
+                reject_reason varchar,
+                reject_detail varchar,
+                run_id varchar,
+                schema_version varchar,
+                created_at timestamp
+            )
+            """
+        )
+        con.execute(
+            """
             create table if not exists raw_schema_version (
                 schema_version varchar,
                 created_at timestamp

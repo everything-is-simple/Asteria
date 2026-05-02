@@ -56,6 +56,7 @@ flowchart TD
 | `full` | 只能在治理明确允许时开启 |
 | `resume` | 必须读取 checkpoint |
 | `audit-only` | 不写业务表，只写 audit 或报告 |
+| `daily_incremental` | 未来只记录 Data/module incremental manifest，不定义业务语义 |
 
 ## 6. 公共参数
 
@@ -82,6 +83,9 @@ flowchart TD
 | checkpoint | 存放在 `H:\Asteria-temp\pipeline\<run_id>\` |
 | 失败恢复 | resume 必须从 checkpoint 或 staging 状态恢复 |
 | active module lock | 必须验证当前施工位只允许一个主线模块 |
+
+当前 Data Foundation 已支持自身 daily incremental 与 resume；Pipeline 仍只登记未来
+编排合同，不得因此创建 `pipeline.duckdb` 或全链路 runtime。
 
 ## 8. 输出证据
 

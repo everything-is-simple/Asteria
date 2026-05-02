@@ -17,7 +17,7 @@ def main() -> int:
     parser.add_argument("--adj-mode", choices=["backward", "forward", "none", "all"], required=True)
     parser.add_argument(
         "--mode",
-        choices=["bounded", "segmented", "full", "resume", "audit-only"],
+        choices=["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"],
         required=True,
     )
     parser.add_argument("--run-id", required=True)

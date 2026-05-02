@@ -2,19 +2,20 @@
 
 日期：2026-05-02
 
-状态：legacy-import-contract frozen / five-card data foundation intake active
+状态：production-foundation release closeout passed
 
 ## 1. 本轮目标
 
-原 bounded bootstrap 已证明最小 TDX 输入可服务 MALF day proof。当前五卡链路改为先补
-旧版 Lifespan raw/base 地基输入，再回到 MALF v1.3 formal evidence：
+原 bounded bootstrap 已证明最小 TDX 输入可服务 MALF day proof。legacy formal
+promotion 已把四个正式 Data DB 建成首轮全量底座。本轮六卡把这些库推进为生产级
+Data Foundation：
 
 ```text
-legacy Lifespan raw/base DuckDB -> Asteria raw/base working DB -> formal Data DB -> MALF v1.3 rebuild
+input contract -> raw full build -> market base full build -> execution price line -> daily incremental -> release audit
 ```
 
-该链路不放行完整 Data Foundation，也不占用 Alpha / Signal / Position / Portfolio / Trade /
-System 的主线施工位。
+该链路只放行 Data Foundation，不占用 Alpha / Signal / Position / Portfolio / Trade /
+System 的主线施工位，也不创建 Pipeline runtime。
 
 ## 2. 本轮允许修改
 
@@ -32,8 +33,8 @@ tests/unit/data/
 
 | 禁止项 | 原因 |
 |---|---|
-| 创建正式 Data DuckDB | 尚未进入实现与 schema gate |
-| 迁移旧 data runner 代码 | 旧代码只能做参考，新实现必须遵守 Asteria contract |
+| 创建 `market_meta.duckdb` | 后续另开卡 |
+| 迁移旧下游 runner 代码 | 旧代码只能做参考，新实现必须遵守 Asteria contract |
 | 修改 MALF 及下游语义 | Data 不能重定义主线业务语义 |
 | 建立全链路 pipeline | 当前主线仍锁定 MALF day bounded proof |
 | 复制旧下游 DuckDB 为正式库 | 旧下游只读旁证，不是新主线语义权威 |
@@ -97,3 +98,17 @@ MALF v1.3 formal rebuild closeout
 ```
 
 Position/downstream 仍按门禁决定，不因 Data 地基卡自动打开。
+
+## 8. 生产级闭环六卡
+
+| 卡 | run_id / 名称 | 状态 |
+|---|---|---|
+| 1 | `data-system-input-contract-freeze` | passed |
+| 2 | `data-raw-market-full-build-formalization` | passed |
+| 3 | `data-market-base-full-build-formalization` | passed |
+| 4 | `data-execution-price-line-build` | passed |
+| 5 | `data-daily-incremental-and-resume` | passed |
+| 6 | `data-production-release-closeout-20260502-01` | passed |
+
+六卡完成后，当前四个正式库仍是本版 Data 全量底座；新增的日更、断点续传与
+执行价线能力只服务 Data Foundation，不自动打开下游施工。

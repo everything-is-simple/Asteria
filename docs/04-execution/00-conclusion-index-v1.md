@@ -22,6 +22,7 @@
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip`
 - `H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip`
+- `H:\Asteria-Validated\Asteria-data-production-release-closeout-20260502-01.zip`
 
 `214427` 是重要 docs/code 快照锚点；`130309` 是三天重构成果的历史系统
 docs/code 快照；`101006` 是 Data formal promotion（Data 正式提升）与 MALF v1.3
@@ -36,6 +37,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Data | `data-legacy-import-contract-freeze-20260502-01` | `passed` | [conclusion](records/data/data-legacy-import-contract-freeze-20260502-01.conclusion.md) | [evidence-index](records/data/data-legacy-import-contract-freeze-20260502-01.evidence-index.md) |
 | Data | `data-legacy-import-runner-working-build-20260502-01` | `passed` | [conclusion](records/data/data-legacy-import-runner-working-build-20260502-01.conclusion.md) | [evidence-index](records/data/data-legacy-import-runner-working-build-20260502-01.evidence-index.md) |
 | Data | `data-formal-promotion-evidence-20260502-01` | `passed` | [conclusion](records/data/data-formal-promotion-evidence-20260502-01.conclusion.md) | [evidence-index](records/data/data-formal-promotion-evidence-20260502-01.evidence-index.md) |
+| Data | `data-production-release-closeout-20260502-01` | `passed` | [conclusion](records/data/data-production-release-closeout-20260502-01.conclusion.md) | [evidence-index](records/data/data-production-release-closeout-20260502-01.evidence-index.md) |
 | MALF | `malf-day-bounded-proof-20260428-01` | `passed` | [conclusion](records/malf/malf-day-bounded-proof-20260428-01.conclusion.md) | [evidence-index](records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md) |
 | MALF | `malf-lifespan-dense-bar-snapshot-gap-20260429-01` | `blocked` | [conclusion](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.conclusion.md) | [evidence-index](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.evidence-index.md) |
 | MALF | `malf-lifespan-dense-bar-snapshot-resolution-20260429-01` | `passed` | [conclusion](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.conclusion.md) | [evidence-index](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.evidence-index.md) |
@@ -74,6 +76,9 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 - Data legacy source audit、import contract freeze、import runner working build 与 formal
   promotion evidence 已通过；这只放行首轮 `stock / backward / day-week-month`
   source-fact DB，不声明 Data full build released，也不打开下游施工。
+- Data production foundation closeout 已通过；这放行四个 Data 正式库、`analysis_price_line`
+  与 `execution_price_line`、daily incremental、checkpoint/resume 和 release audit。
+  `market_meta.duckdb`、index/block 与下游施工仍未放行。
 - Validated 历史 evidence zip 已对齐到 `H:\Asteria-Validated\2.backups` 冷归档路径；
   这是治理资产布局维护，不改变任何模块门禁。
 - Alpha full build、Signal construction without build card、Position / Portfolio Plan / Trade /

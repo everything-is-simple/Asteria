@@ -2,10 +2,11 @@
 
 日期：2026-05-02
 
-状态：legacy-import-contract frozen / foundation-contract / formal promotion audit next
+状态：production-foundation released / production audit active
 
-当前裁决：旧版 Lifespan raw/base 库已通过首轮只读 source audit，且导入合同已冻结。
-正式 Data DB promote 前仍必须执行 hard audit；该结论不放行完整 Data full build。
+当前裁决：Data Foundation 已通过生产级地基 release audit。审计覆盖四个正式库、
+`analysis_price_line=backward`、`execution_price_line=none`、source trace、自然键、
+latest 指针、dirty scope 与 checkpoint/resume。
 
 ## 1. 目的
 
@@ -23,6 +24,8 @@
 | No strategy leakage | 不得出现 Wave、Alpha、Signal、Position、Trade、System 字段 |
 | Latest pointer uniqueness | `market_base_latest` 每组键只保留一行 |
 | Reject isolation | 脏记录必须进入 reject audit，不得进入正式事实 |
+| Price line separation | `analysis_price_line` 不得用于真实成交；`execution_price_line` 必须来自 `adj_mode = none` |
+| Incremental resume | checkpoint/resume 不得重复写入已完成 source scope |
 
 ## 3. 软观察
 
@@ -66,6 +69,9 @@ Data Foundation 对主线的接口审计至少确认：
 | Alpha | `market_meta` 中客观宇宙和行业事实稳定 |
 | Portfolio Plan | tradability 与 universe 事实可只读消费 |
 | Trade | 执行价格线不混入策略标签 |
+
+Trade 未来 release audit 必须额外确认 fill price、order price、fill amount 和现金账本
+只来自 `execution_price_line`，不得使用 `analysis_price_line`。
 
 ## 7. 审计证据
 

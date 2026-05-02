@@ -50,6 +50,8 @@ Trade 审计用于证明 Trade 只读消费 Portfolio Plan 输出，输出仅限
 | trade rule version 必须能追溯到 `trade_rule_version` 表 | hard fail |
 | fill quantity 不得为负 | hard fail |
 | fill amount 必须与 fill price / quantity 可审计 | hard fail |
+| fill price / order price 必须来自 Data `execution_price_line` | hard fail |
+| Trade 不得使用 Data `analysis_price_line` 作为真实成交价 | hard fail |
 | rejected order 必须记录 rejection reason | hard fail |
 
 ## 6. 软观察
