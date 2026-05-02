@@ -7,6 +7,9 @@ from typing import Any
 
 DATA_SCHEMA_VERSION = "data-bootstrap-v1"
 DATA_MARKET_META_SCHEMA_VERSION = "data-market-meta-v1"
+DATA_SW_INDUSTRY_SCHEMA_VERSION = "data-market-meta-sw-industry-v1"
+SW_INDUSTRY_SOURCE_VENDOR = "sw_industry_reference_xlsx"
+SW_INDUSTRY_EFFECTIVE_DATE = date(2021, 7, 31)
 SOURCE_VENDOR = "tdx_offline_txt"
 LEGACY_SOURCE_VENDOR = "legacy_lifespan"
 
@@ -14,6 +17,7 @@ VALID_ADJ_MODES = {"backward", "forward", "none", "all"}
 VALID_ASSET_TYPES = {"stock", "index", "block"}
 VALID_RUN_MODES = {"bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"}
 VALID_MARKET_META_RUN_MODES = {"bounded", "full", "audit-only"}
+VALID_SW_INDUSTRY_RUN_MODES = {"full", "audit-only"}
 
 
 @dataclass(frozen=True)
@@ -166,6 +170,57 @@ class MarketMetaBuildSummary:
     formal_db_path: str
     staging_db_path: str
     row_counts: dict[str, int]
+    checks: dict[str, str]
+    source_gaps: dict[str, str]
+    promoted: bool
+
+    def as_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class SwIndustrySnapshotImportRequest:
+    data_root: Path
+    temp_root: Path
+    source_path: Path
+    mode: str
+    run_id: str
+    expected_source_sha256: str | None
+
+    def __post_init__(self) -> None:
+        if self.mode not in VALID_SW_INDUSTRY_RUN_MODES:
+            raise ValueError(f"Unsupported SW industry import mode: {self.mode}")
+
+    @property
+    def formal_db_path(self) -> Path:
+        return self.data_root / "market_meta.duckdb"
+
+    @property
+    def staging_db_path(self) -> Path:
+        return self.temp_root / "data" / self.run_id / "market_meta.duckdb"
+
+    @property
+    def report_dir(self) -> Path:
+        return self.data_root.parent / "Asteria-report" / "data" / "2026-05-02" / self.run_id
+
+
+@dataclass(frozen=True)
+class SwIndustrySnapshotImportSummary:
+    run_id: str
+    mode: str
+    status: str
+    hard_fail_count: int
+    formal_db_path: str
+    staging_db_path: str
+    source_path: str
+    source_sha256: str
+    source_row_count: int
+    source_a_share_row_count: int
+    matched_instrument_count: int
+    inserted_industry_rows: int
+    unmatched_a_share_count: int
+    non_a_share_excluded_count: int
+    master_unmatched_count: int
     checks: dict[str, str]
     source_gaps: dict[str, str]
     promoted: bool

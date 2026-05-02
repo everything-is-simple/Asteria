@@ -2,12 +2,13 @@
 
 日期：2026-05-02
 
-状态：production-foundation released / execution day line live / market_meta minimal formalized / reference gaps retained
+状态：production-foundation released / execution day line live / market_meta SW industry snapshot partially released / reference gaps retained
 
 当前裁决：四个正式 Data DB 已作为本版全量底座放行；
 `market_base_day.duckdb` 已 live 物化 `stock / none / execution_price_line`：
 `raw_market.duckdb` 与 `market_base_day/week/month.duckdb`。`market_meta.duckdb`
-已按最小可证事实口径落地；行业、ST、停牌和真实上市/退市状态仍保留为 source gap。
+已按最小可证事实口径落地，并已部分释放申万 2021 当前行业快照；ST、停牌、
+真实上市/退市状态和历史行业沿革仍保留为 source gap。
 
 ## 1. 目标拓扑
 
@@ -93,7 +94,11 @@ schema_version
 当前正式 schema 额外落地 `meta_source_manifest`，自然键为
 `source_db_name + source_table + run_id`，用于登记本次 meta build 消费的正式输入快照。
 
-`industry_classification` 当前允许 0 行；这表示 source gap，而不是 released coverage。
+`industry_classification` 当前允许两种状态：0 行表示 source gap；或仅包含本卡释放的
+`sw2021_level3_snapshot` 行。该 snapshot 使用
+`instrument_id + industry_schema + effective_date` 自然键，`industry_code` 保存源表
+`行业代码`，`industry_name` 保存 `新版一级行业|新版二级行业|新版三级行业` 拼接值。
+`effective_date = 2021-07-31` 仅为按文件名“截至7月末”推断的 snapshot 日期。
 
 ## 4. market_base_{day,week,month}.duckdb
 

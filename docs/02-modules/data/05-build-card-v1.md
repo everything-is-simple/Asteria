@@ -2,16 +2,18 @@
 
 日期：2026-05-02
 
-状态：data-market-meta-formalization passed / reference gaps retained
+状态：data-market-meta-sw-industry-snapshot passed / reference gaps retained
 
 ## 1. 本轮目标
 
 原 bounded bootstrap 已证明最小 TDX 输入可服务 MALF day proof。legacy formal
 promotion 已把四个正式 Data DB 建成首轮全量底座，生产级六卡已补齐 execution
-price line。本卡把 `market_meta.duckdb` 推进为最小正式 Data metadata fact：
+price line。`data-market-meta-formalization-20260502-01` 已把 `market_meta.duckdb`
+推进为最小正式 Data metadata fact；本卡继续追加申万 2021 当前行业快照：
 
 ```text
 raw/base formal DB -> market_meta staging build -> hard audit -> formal promote -> release evidence
+SW industry xlsx -> market_meta staging update -> hard audit -> formal promote -> release evidence
 ```
 
 该链路只放行 Data Foundation，不占用 Alpha / Signal / Position / Portfolio / Trade /
@@ -33,7 +35,7 @@ tests/unit/data/
 
 | 禁止项 | 原因 |
 |---|---|
-| 伪造行业、ST、停牌或真实上市/退市事实 | 当前没有可靠 reference source |
+| 伪造 ST、停牌、真实上市/退市或历史行业沿革事实 | 当前没有可靠 reference source |
 | 迁移旧下游 runner 代码 | 旧代码只能做参考，新实现必须遵守 Asteria contract |
 | 修改 MALF 及下游语义 | Data 不能重定义主线业务语义 |
 | 建立全链路 pipeline | 当前主线仍锁定 MALF day bounded proof |
@@ -66,9 +68,12 @@ src/asteria/data/tdx_text.py
 src/asteria/data/schema.py
 src/asteria/data/bootstrap.py
 src/asteria/data/market_meta.py
+src/asteria/data/sw_industry.py
+src/asteria/data/xlsx_reader.py
 src/asteria/data/legacy_audit.py
 scripts/data/run_data_bootstrap.py
 scripts/data/run_market_meta_build.py
+scripts/data/run_sw_industry_snapshot_import.py
 ```
 
 ## 5. 验收命令
@@ -79,7 +84,8 @@ scripts/data/run_market_meta_build.py
 H:\Asteria\.venv\Scripts\python.exe scripts\governance\check_project_governance.py
 H:\Asteria\.venv\Scripts\pytest.exe tests\unit\data -q
 H:\Asteria\.venv\Scripts\python.exe scripts\data\run_market_meta_build.py --data-root H:\Asteria-data --temp-root H:\Asteria-temp --mode full --run-id data-market-meta-formalization-20260502-01
-H:\Asteria\.venv\Scripts\python.exe scripts\data\run_data_production_audit.py --data-root H:\Asteria-data --run-id data-market-meta-formalization-20260502-01
+H:\Asteria\.venv\Scripts\python.exe scripts\data\run_sw_industry_snapshot_import.py --data-root H:\Asteria-data --temp-root H:\Asteria-temp --mode full --run-id data-market-meta-sw-industry-snapshot-20260502-01
+H:\Asteria\.venv\Scripts\python.exe scripts\data\run_data_production_audit.py --data-root H:\Asteria-data --run-id data-market-meta-sw-industry-snapshot-20260502-01
 git diff --check
 ```
 
@@ -125,4 +131,17 @@ Position/downstream 仍按门禁决定，不因 Data 地基卡自动打开。
 | 状态 | passed |
 | 放行表面 | `trade_calendar`、`instrument_master`、`instrument_alias`、`universe_membership`、`tradability_fact` |
 | 保留缺口 | `industry_classification` 为空；行业、ST、停牌、真实上市/退市状态后续另开参考源卡 |
+| allowed next action | `Position freeze review reentry` |
+
+## 10. Market meta 申万行业快照卡
+
+| 项 | 裁决 |
+|---|---|
+| run_id | `data-market-meta-sw-industry-snapshot-20260502-01` |
+| 状态 | passed |
+| 放行表面 | `industry_classification` 的 `sw2021_level3_snapshot` |
+| 正式行数 | 4,237 |
+| 源表行数 | 5,284，其中 A 股 4,430 |
+| 排除项 | 193 个 A 股未匹配项、854 个非 A 股项只进 audit/report |
+| 保留缺口 | ST、停牌、真实上市/退市状态与历史行业沿革 |
 | allowed next action | `Position freeze review reentry` |

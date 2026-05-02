@@ -2,12 +2,13 @@
 
 日期：2026-05-02
 
-状态：production-foundation released / execution day line live / market_meta minimal formalized / reference gaps retained
+状态：production-foundation released / execution day line live / market_meta SW industry snapshot partially released / reference gaps retained
 
 当前裁决：Data Foundation 生产级地基已放行四个正式库；`market_base_day.duckdb`
 已 live 物化 `execution_price_line = none`。当前正式库为：
 `raw_market.duckdb`、`market_base_day.duckdb`、`market_base_week.duckdb`、
-`market_base_month.duckdb` 和最小正式 `market_meta.duckdb`。index/block 主线接入仍需后续卡。
+`market_base_month.duckdb` 和正式 `market_meta.duckdb`。其中 `market_meta` 已部分释放
+可匹配正式 Data 标的的申万 2021 当前行业快照；index/block 主线接入仍需后续卡。
 
 ## 1. 目的
 
@@ -86,9 +87,11 @@ source_revision
 | 宇宙成员 | 某宇宙在某日包含哪些标的 |
 | 可交易事实 | 停牌、ST、涨跌停、上市未满期等客观约束 |
 
-当前已正式落地的 `market_meta` 仅覆盖交易日历、标的、源代码别名、`stock_observed`
-观测宇宙与 `has_execution_bar`。行业、ST、停牌和真实上市/退市状态没有可靠参考源，
-必须保持为空或缺口说明，不得伪造为 released coverage。
+当前已正式落地的 `market_meta` 覆盖交易日历、标的、源代码别名、`stock_observed`
+观测宇宙、`has_execution_bar`，以及 `sw2021_level3_snapshot` 申万当前行业快照。
+该行业快照只覆盖源表中可匹配正式 Data A 股标的的 4,237 行；ST、停牌、真实上市/
+退市状态和历史行业沿革仍没有可靠参考源，必须保持为空或缺口说明，不得伪造为
+released coverage。
 
 ### market_base
 

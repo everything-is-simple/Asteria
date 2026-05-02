@@ -107,6 +107,7 @@ def test_bounded_market_meta_build_derives_minimal_observable_facts(tmp_path: Pa
     assert summary.row_counts["universe_membership"] == 1
     assert summary.row_counts["tradability_fact"] == 1
     assert summary.source_gaps["industry_classification"] == "source_gap_empty_allowed"
+    assert summary.checks["market_meta.duckdb:industry_classification_source_policy"] == "passed"
     with duckdb.connect(str(data_root / "market_meta.duckdb"), read_only=True) as con:
         assert con.execute("select source_symbol from instrument_alias").fetchone() == (
             "SH#600000",

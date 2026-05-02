@@ -41,6 +41,7 @@ H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-production-release-closeout-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-execution-price-line-materialization-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip
+H:\Asteria-Validated\Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip
 ```
 
 当前门禁状态：
@@ -54,8 +55,9 @@ Data Foundation 已完成首轮 `stock / backward / day-week-month` legacy forma
 并完成 Data 生产级地基闭环：四个正式库作为本版全量底座，`analysis_price_line=backward`
 用于结构分析，`execution_price_line=none` 已在 `market_base_day.duckdb` 中正式物化，
 用于未来成交/现金语义；`market_meta.duckdb` 已完成最小可审计正式化，覆盖交易日历、
-标的主数据、源代码别名、观测宇宙和执行价线可交易事实，但行业、ST、停牌与真实
-上市/退市状态仍是参考源缺口；
+标的主数据、源代码别名、观测宇宙、执行价线可交易事实，并已部分释放可匹配正式
+Data 标的的申万 2021 当前行业快照；ST、停牌、真实上市/退市状态与历史行业沿革
+仍是参考源缺口；
 MALF v1.3 已用正式 Data day 输入完成 bounded formal-data closeout。当前只授权
 Position freeze review reentry 的只读评审（review-only），不授权 Alpha full build、Signal
 full build、Position 施工、下游施工或全链路 pipeline。MALF week/month 证明尚未执行。

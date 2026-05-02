@@ -22,6 +22,7 @@
 - `H:\Asteria-Validated\Asteria-data-production-release-closeout-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-data-execution-price-line-materialization-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip`
+- `H:\Asteria-Validated\Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip`
 
 当前门禁：
 
@@ -38,8 +39,9 @@
 - `Data production foundation closeout passed`
 - `Data execution price line materialization passed`
 - `Data market meta formalization passed`
+- `Data market meta SW industry snapshot passed`
 - 下一步允许动作：`Position freeze review reentry`
-- `market_meta.duckdb` 只放行可从正式 raw/base DB 推导的最小客观事实；行业、ST、停牌、真实上市/退市状态仍需后续参考源卡。
+- `market_meta.duckdb` 已放行最小客观事实与可匹配正式 Data 标的的申万 2021 当前行业快照；ST、停牌、真实上市/退市状态和历史行业沿革仍需后续参考源卡。
 - MALF v1.3 closeout 只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；week/month proof 仍需另开卡。
 - Signal bounded proof 只放行 bounded `signal.duckdb` 表面；不授权 Signal full build、Position construction、下游施工或全链路 pipeline。
 

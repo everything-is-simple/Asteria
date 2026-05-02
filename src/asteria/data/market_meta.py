@@ -32,6 +32,7 @@ NATURAL_KEY_CHECKS = {
     "instrument_alias": ("source_vendor", "source_symbol", "effective_date"),
     "universe_membership": ("universe_name", "instrument_id", "effective_date"),
     "tradability_fact": ("instrument_id", "trade_date", "fact_name"),
+    "industry_classification": ("instrument_id", "industry_schema", "effective_date"),
 }
 
 
@@ -107,11 +108,21 @@ def audit_market_meta_database(path: Path) -> tuple[dict[str, str], int, dict[st
         checks["market_meta.duckdb:tradability_fact_source_policy"] = source_policy_status
         hard_fail_count += source_policy_status == "failed"
 
-        industry_rows = row_counts.get("industry_classification", 0)
-        checks["market_meta.duckdb:industry_classification_source_gap"] = (
-            "passed" if industry_rows == 0 else "failed"
+        industry_policy_failures = _count_result(
+            con.execute(
+                """
+                select count(*)
+                from industry_classification
+                where industry_schema <> 'sw2021_level3_snapshot'
+                   or source_vendor <> 'sw_industry_reference_xlsx'
+                   or effective_date <> date '2021-07-31'
+                   or schema_version <> 'data-market-meta-sw-industry-v1'
+                """
+            ).fetchone()
         )
-        hard_fail_count += industry_rows != 0
+        industry_status = "passed" if industry_policy_failures == 0 else "failed"
+        checks["market_meta.duckdb:industry_classification_source_policy"] = industry_status
+        hard_fail_count += industry_status == "failed"
 
     return checks, int(hard_fail_count), row_counts
 

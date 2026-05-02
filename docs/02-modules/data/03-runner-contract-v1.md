@@ -2,7 +2,7 @@
 
 日期：2026-05-02
 
-状态：production-foundation released / execution day line materialized / market_meta minimal formalized
+状态：production-foundation released / execution day line materialized / market_meta SW industry snapshot partially released
 
 ## 1. 目的
 
@@ -20,6 +20,7 @@ release audit，并已将 `market_meta.duckdb` 纳入 hard check。
 |---|---|
 | `scripts/data/run_raw_market_sync.py` | 原始行情同步与落地 |
 | `scripts/data/run_market_meta_build.py` | 日历、标的、行业、宇宙、tradability 物化 |
+| `scripts/data/run_sw_industry_snapshot_import.py` | 申万 2021 当前行业快照小卡导入 |
 | `scripts/data/run_market_base_day_build.py` | 日线基础价格线物化 |
 | `scripts/data/run_market_base_week_build.py` | 周线基础价格线物化 |
 | `scripts/data/run_market_base_month_build.py` | 月线基础价格线物化 |
@@ -32,6 +33,7 @@ release audit，并已将 `market_meta.duckdb` 纳入 hard check。
 | `scripts/data/run_data_bootstrap.py` | 从 TDX 离线 txt 执行 raw + market_base_day bounded bootstrap，并生成 dirty scope 与 checkpoint |
 | `scripts/data/run_legacy_data_import.py` | 从旧版 Lifespan raw/base DuckDB 导入 `stock / backward / day-week-month` 到 working DB；正式 promote 需后续审计卡 |
 | `scripts/data/run_market_meta_build.py` | 从正式 raw/base DB 推导最小 `market_meta.duckdb`，先 staging 后 audit/promote |
+| `scripts/data/run_sw_industry_snapshot_import.py` | 从 validated 申万 xlsx 中导入可匹配正式 Data 标的的当前行业快照 |
 
 ## 3. 输入输出合同
 
@@ -94,6 +96,30 @@ meta_source_manifest
 均先写 staging DB，审计通过后 promote 到正式路径；`audit-only` 只审计 existing
 `market_meta.duckdb`，不写业务事实。行业、ST、停牌和真实上市/退市状态仍是
 reference source gap，不得由 runner 推断或伪造。
+
+### SW industry snapshot import
+
+输入：
+
+```text
+H:\Asteria-data\market_meta.duckdb
+H:\Asteria-Validated\Market-Average-Lifespan-reference\申万行业分类\最新个股申万行业分类(完整版-截至7月末).xlsx
+working = H:\Asteria-temp\data\<run_id>\
+target = H:\Asteria-data\market_meta.duckdb
+```
+
+输出：
+
+```text
+industry_classification
+H:\Asteria-report\data\2026-05-02\<run_id>\
+```
+
+`scripts/data/run_sw_industry_snapshot_import.py` 支持 `full / audit-only`。`full` 复制
+existing `market_meta.duckdb` 到 staging，只替换 `sw2021_level3_snapshot` / 申万 xlsx
+来源行，审计通过后 promote。正式写入只允许 `交易所 = A股` 且能匹配
+`instrument_master` 的标的。`audit-only` 只审计 existing DB 与源文件，不写 staging DB
+或正式事实。
 
 ### base build
 

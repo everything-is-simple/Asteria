@@ -113,7 +113,81 @@ def test_production_audit_passes_clean_analysis_and_execution_lines(tmp_path: Pa
     assert summary.status == "passed"
     assert summary.hard_fail_count == 0
     assert summary.checks["market_base_day.duckdb:price_line_mapping"] == "passed"
-    assert summary.checks["market_meta.duckdb:industry_classification_source_gap"] == "passed"
+    assert summary.checks["market_meta.duckdb:industry_classification_source_policy"] == "passed"
+
+
+def test_production_audit_accepts_sw_industry_snapshot_rows(tmp_path: Path) -> None:
+    data_root = tmp_path / "asteria-data"
+    _seed_clean_data(data_root)
+    with duckdb.connect(str(data_root / "market_meta.duckdb")) as con:
+        con.execute(
+            """
+            insert into industry_classification
+            values
+            ('600000.SH', 'sw2021_level3_snapshot', '010101',
+             '银行|股份制银行|股份制银行III', date '2021-07-31',
+             'sw_industry_reference_xlsx', 'run-1',
+             'data-market-meta-sw-industry-v1', current_timestamp)
+            """
+        )
+
+    summary = run_data_production_audit(data_root=data_root, run_id="audit-sw-clean-001")
+
+    assert summary.status == "passed"
+    assert summary.checks["market_meta.duckdb:industry_classification_source_policy"] == "passed"
+
+
+def test_production_audit_fails_when_sw_industry_source_policy_is_wrong(
+    tmp_path: Path,
+) -> None:
+    data_root = tmp_path / "asteria-data"
+    _seed_clean_data(data_root)
+    with duckdb.connect(str(data_root / "market_meta.duckdb")) as con:
+        con.execute(
+            """
+            insert into industry_classification
+            values
+            ('600000.SH', 'sw2021_level3_snapshot', '010101',
+             '银行|股份制银行|股份制银行III', date '2021-07-31',
+             'unapproved_source', 'run-1',
+             'data-market-meta-sw-industry-v1', current_timestamp)
+            """
+        )
+
+    summary = run_data_production_audit(data_root=data_root, run_id="audit-sw-source-001")
+
+    assert summary.status == "failed"
+    assert summary.checks["market_meta.duckdb:industry_classification_source_policy"] == "failed"
+
+
+def test_production_audit_fails_when_sw_industry_natural_key_duplicates(
+    tmp_path: Path,
+) -> None:
+    data_root = tmp_path / "asteria-data"
+    _seed_clean_data(data_root)
+    with duckdb.connect(str(data_root / "market_meta.duckdb")) as con:
+        con.execute(
+            """
+            insert into industry_classification
+            values
+            ('600000.SH', 'sw2021_level3_snapshot', '010101',
+             '银行|股份制银行|股份制银行III', date '2021-07-31',
+             'sw_industry_reference_xlsx', 'run-1',
+             'data-market-meta-sw-industry-v1', current_timestamp),
+            ('600000.SH', 'sw2021_level3_snapshot', '010101',
+             '银行|股份制银行|股份制银行III', date '2021-07-31',
+             'sw_industry_reference_xlsx', 'run-2',
+             'data-market-meta-sw-industry-v1', current_timestamp)
+            """
+        )
+
+    summary = run_data_production_audit(data_root=data_root, run_id="audit-sw-dups-001")
+
+    assert summary.status == "failed"
+    assert (
+        summary.checks["market_meta.duckdb:industry_classification_natural_key_uniqueness"]
+        == "failed"
+    )
 
 
 def test_production_audit_fails_when_market_meta_is_absent(tmp_path: Path) -> None:
