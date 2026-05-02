@@ -17,13 +17,14 @@
 
 | 路径 | 资产性质 | 当前用途裁决 |
 |---|---|---|
-| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` | 已通过实现证据的 MALF 历史权威设计 | 作为当前 complete alignment closeout 的历史语义锚点 |
-| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3` | MALF v1.3 语义升级权威设计 | 作为后续 repo 文档同步与代码修订卡依据，不声明当前实现已覆盖 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` | MALF 历史权威设计 | 作为 complete alignment closeout 的历史语义锚点保留 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3` | MALF v1.3 当前语义权威设计 | 作为当前 MALF day formal-data bounded closeout 的语义权威 |
 | `H:\Asteria-Validated\README.md` | Validated 根目录人读索引 | 声明 Validated 资产区职责、当前权威锚点和禁止用途 |
 | `H:\Asteria-Validated\validated-asset-manifest-20260429-01.json` | Validated 根目录机器清单 | 记录顶层资产角色、大小、时间和 SHA256 |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 架构级剖切面研究报告 | 作为治理、历史总账、增量协议与下一阶段施工路径的分析输入 |
 | `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` | 当前仓库文档与代码归档 | 作为 2026-04-28 release gate closure 前的正式代码/文档快照 |
-| `H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip` | 当前系统文档与代码归档 | 作为三天重构成果的最新 docs/code 快照；其语义必须通过 repo 执行记录和 MALF 兼容审计解释 |
+| `H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip` | 历史系统文档与代码归档 | 作为三天重构成果的历史 docs/code 快照；其语义必须通过 repo 执行记录和 MALF 兼容审计解释 |
+| `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip` | 当前系统文档与代码归档 | 作为 Data formal promotion 与 MALF v1.3 formal-data closeout 后的最新 docs/code 快照 |
 | `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0` | 全系统权威设计整理包 | 覆盖 Data / MALF / Alpha / Signal / Position / Portfolio Plan / Trade / System Readout / Pipeline 的当前设计状态 |
 | `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip` | 全系统权威设计整理包归档 | 与同名目录一致；作为系统级设计包 validated archive |
 | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` | MALF day 放行证据 | 证明 MALF day Core/Lifespan/Service 三库 bounded proof 已通过 |
@@ -41,7 +42,6 @@
 路径：
 
 ```text
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
 ```
 
@@ -54,7 +54,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
 裁决：
 
 ```text
-v1.2 是当前已通过实现证据的历史锚点；v1.3 是后续语义升级与代码修订的权威依据。
+v1.2 是历史锚点；v1.3 是当前 MALF day formal-data bounded closeout 已承接的语义权威。
 ```
 
 ### 3.2 A 股市场参考资料
@@ -88,7 +88,7 @@ H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研
 H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.docx
 H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
 H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip
-H:\Asteria-Validated\Asteria-docs-code-20260502-001327.zip
+H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip
 H:\Asteria-Validated\Asteria_System_Design_Set_v1_0
 H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip
 ```
@@ -100,14 +100,17 @@ H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip
 3. 作为 hard governance 落地与 release gate closure 前后的对照快照。
 4. `20260429-130309` 作为三天重构后的当前系统文档与代码快照，必须结合
    `malf-authority-compatibility-audit-20260429-01` 解释其没有偏移 MALF 权威。
-5. `Asteria_System_Design_Set_v1_0` 是当前系统全模块设计整理包，明确记录 MALF
+5. `20260502-101006` 作为当前最新系统文档与代码快照，必须结合 Data formal
+   promotion（正式提升证据）与 MALF v1.3 formal-data closeout（正式数据闭环）解释其门禁状态。
+6. `Asteria_System_Design_Set_v1_0` 是当前系统全模块设计整理包，明确记录 MALF
    frozen、Data foundation contract、下游 pre-gate 的当前事实。
 
 裁决：
 
 ```text
 报告是分析输入，zip 是代码/文档快照；二者都进入 Validated。`214427` 是 2026-04-28
-锚点，`130309` 是 2026-04-29 当前系统快照。快照之间和快照之后的 repo HEAD 变更必须由
+锚点，`130309` 是 2026-04-29 系统快照，`101006` 是 2026-05-02 当前系统快照。
+快照之间和快照之后的 repo HEAD 变更必须由
 repo 内执行记录、closeout、manifest 和新的 Validated 归档补齐，不得用任何旧 zip 覆盖
 当前仓库真相。
 ```
@@ -290,15 +293,15 @@ H:\Asteria-Validated\Market-Average-Lifespan-system\marketlifespan-quant\system-
 
 ### 6.1 现在就该用
 
-1. 把 `MALF_Three_Part_Design_Set_v1_2` 继续作为 MALF 唯一权威输入。
+1. 把 `MALF_Three_Part_Design_Set_v1_3` 作为当前 MALF 语义权威输入。
 2. 把 `battle-tested-lessons-core-data-malf-20260403.md` 作为 `data / malf` 设计评审旁证。
 3. 把 `battle-tested-lessons-all-modules-and-mainline-bridging-20260408.md` 作为未来下游模块边界参考。
 4. 把 `A股市场` 与 `申万行业分类` 作为 `market_meta` 的 reference 资料池。
 5. 把五份当前 release / governance evidence zip 作为门禁状态证明。
 6. 使用 `README.md` 和 `validated-asset-manifest-20260429-01.json` 快速判断 Validated 顶层资产职责。
 7. 把剖切面研究报告作为逻辑历史总账、每日增量、pipeline ledger 的架构依据。
-8. 把 `Asteria-docs-code-20260429-130309.zip` 作为当前系统 docs/code 快照，但只通过
-   repo 执行结论和 MALF 兼容审计解释其状态。
+8. 把 `Asteria-docs-code-20260502-104932.zip` 作为当前系统 docs/code 快照，但只通过
+   repo 执行结论、Data formal promotion（正式提升证据）和 MALF v1.3 closeout（闭环证据）解释其状态。
 9. 把 `Asteria_System_Design_Set_v1_0` 作为全系统当前设计状态入口，不把它解释为
    Alpha 或下游施工许可。
 

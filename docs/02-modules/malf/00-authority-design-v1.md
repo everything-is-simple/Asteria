@@ -2,7 +2,7 @@
 
 日期：2026-04-30
 
-状态：frozen / day bounded proof passed / complete alignment closeout passed
+状态：frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过
 
 ## 1. 模块定义
 
@@ -16,28 +16,27 @@ Market Lifespan Framework
 
 ## 2. 权威来源
 
-MALF 当前已通过实现证据的语义锚点为：
-
-```text
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
-```
-
-MALF v1.3 已形成新的权威定义包：
+MALF 当前语义权威为：
 
 ```text
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
 ```
 
-v1.3 是语义升级依据，不是当前实现已覆盖声明。当前 repo 仍以
-`malf-complete-alignment-closeout-20260430-01` 作为已通过的 MALF day dense
-formal evidence；v1.3 新增字段、runner mode 修订和 hard audit 扩展必须另走
-`malf-v1-3-authority-sync-code-revision-20260501-01` 修订卡。
+MALF v1.2 作为历史 closeout 锚点保留：
 
-本文件按 `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip`
-之后的执行结论刷新：MALF day bounded proof 与 MALF complete alignment closeout 均已
-通过。当前下一步只允许 `Position freeze review reentry` 的 review-only 审查；不授权
+```text
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
+```
+
+当前 repo 以 `malf-v1-3-formal-rebuild-closeout-20260502-01` 作为已通过的 MALF
+day formal-data bounded evidence。该证据已承接 v1.3 新增字段、runner mode 修订和
+hard audit 扩展；week/month 证明与 full build 仍需另开卡。
+
+本文件按 `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip`
+之后的执行结论刷新：Data formal promotion 与 MALF v1.3 formal-data closeout 均已
+通过。当前下一步只允许 `Position freeze review reentry` 的只读评审（review-only）；不授权
 Position bounded proof、Position construction、Signal pinning、下游施工或 full-chain
 Pipeline。
 
@@ -47,6 +46,9 @@ Pipeline。
 | `MALF_01_Core_Definitions_Theorems_v1_3.md` | pivot、structure primitive、wave、current effective guard、break、transition boundary、candidate、new wave |
 | `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_3.md` | new-count、no-new-span、rank、life-state、position quadrant、birth descriptors |
 | `MALF_03_System_Service_Interface_v1_3.md` | WavePosition、transition trace、birth descriptors 与 Alpha-facing readonly interface |
+| `MALF_04_Core_Chart_View_v1_3.md` | Core 图表辅助理解 |
+| `MALF_05_Lifespan_Chart_View_v1_3.md` | Lifespan 图表辅助理解 |
+| `MALF_06_Service_Chart_View_v1_3.md` | Service 图表辅助理解 |
 | `MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_3.md` | v1.3 定义/定理评审结论与实现差异 |
 
 ## 3. 模块只回答什么
@@ -169,17 +171,16 @@ MALF day 首轮放行必须满足：
 | Evidence | 构建证据落入 `H:\Asteria-report` 或 `H:\Asteria-Validated` |
 
 当前 `malf-day-bounded-proof-20260428-01` 与
-`malf-complete-alignment-closeout-20260430-01` 均已形成 `passed` 结论。
-该结论只覆盖 day bounded proof 与 dense bar-level WavePosition complete alignment；
+`malf-v1-3-formal-rebuild-closeout-20260502-01` 均已形成 `passed` 结论。
+该结论只覆盖 day bounded proof 与 v1.3 formal-data WavePosition closeout；
 week/month、full build 和下游施工仍需后续卡。
 
-## 11. v1.3 待同步裁决
+## 11. v1.3 当前承接裁决
 
-MALF v1.3 的定义与定理评审结论为：定义清晰、定理自洽，可以作为后续工程修订依据。
+MALF v1.3 的定义与定理评审结论为：定义清晰、定理自洽。当前 day formal-data
+closeout 已承接以下内容：
 
-但在修订卡通过前，以下内容只作为待实现要求：
-
-| 项 | 待同步要求 |
+| 项 | 已承接要求 |
 |---|---|
 | Core | 显式追踪 `current_effective_HL` / `current_effective_LH` 与 broken guard |
 | Core | 记录 `transition_boundary_high` / `transition_boundary_low` |

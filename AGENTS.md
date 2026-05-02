@@ -1,8 +1,8 @@
-# Asteria Agent Rules
+# Asteria Agent 规则
 
-This repository is the new Asteria refactor workspace.
+本仓库是 Asteria 新重构主线工作区。
 
-Before changing code, every agent must read:
+修改代码前，每个 agent 必须先读：
 
 1. `README.md`
 2. `docs/00-governance/00-asteria-refactor-charter-v1.md`
@@ -11,14 +11,16 @@ Before changing code, every agent must read:
 5. `docs/03-refactor/00-module-gate-ledger-v1.md`
 6. `docs/04-execution/00-conclusion-index-v1.md`
 
-Current authority assets:
+当前权威资产：
 
 - `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md`
-- `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip`
-- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`
-- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip`
+- `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip`
+- `H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip`
+- `H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip`
 
-Current gate:
+当前门禁：
 
 - `MALF day bounded proof passed`
 - `Alpha freeze review passed`
@@ -28,32 +30,35 @@ Current gate:
 - `Position freeze review blocked`
 - `MALF Lifespan dense bar snapshot resolution passed`
 - `MALF complete alignment closeout passed`
-- Next allowed action: `Position freeze review reentry`
-- Signal bounded proof only releases the bounded `signal.duckdb` surface; it does not authorize Signal full build, Position construction, downstream construction, or a full-chain pipeline.
+- `Data legacy formal promotion passed`
+- `MALF v1.3 formal-data bounded closeout passed`
+- 下一步允许动作：`Position freeze review reentry`
+- MALF v1.3 closeout 只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；week/month proof 仍需另开卡。
+- Signal bounded proof 只放行 bounded `signal.duckdb` 表面；不授权 Signal full build、Position construction、下游施工或全链路 pipeline。
 
-Hard rules:
+硬规则：
 
-- Do not migrate legacy code into the mainline before the target module has a frozen design document.
-- Do not edit more than one mainline module in one construction turn.
-- Do not let a downstream module redefine an upstream module's semantics.
-- Do not treat `data` as a strategy module. It is foundation infrastructure and source-fact service.
-- Do not merge `wave_core_state` and `system_state`.
-- Do not let Alpha, Signal, Portfolio, Trade, or System write back to MALF.
-- Put formal databases under `H:\Asteria-data`.
-- Put temporary build artifacts under `H:\Asteria-temp`.
-- Keep `H:\Asteria-Validated` as validated input/output assets, not as a casual scratch directory.
+- 目标模块设计文档冻结前，不得把 legacy code 迁入主线。
+- 一次 construction turn 不得编辑多个主线模块。
+- 下游模块不得重定义上游模块语义。
+- 不得把 `data` 当成策略模块；它是 foundation infrastructure 和 source-fact service。
+- 不得合并 `wave_core_state` 与 `system_state`。
+- Alpha、Signal、Portfolio、Trade、System 不得写回 MALF。
+- 正式数据库放在 `H:\Asteria-data`。
+- 临时构建产物放在 `H:\Asteria-temp`。
+- `H:\Asteria-Validated` 只作为 validated input/output assets，不作临时 scratch 目录。
 
-Python environment:
+Python 环境：
 
-- Use `D:\miniconda\py310` as the base Python provider.
-- Prefer repo-local virtualenv `H:\Asteria\.venv`.
-- Install the project with `H:\Asteria\.venv\Scripts\python.exe -m pip install -e ".[dev]"`.
-- Do not put pytest cache, temporary DBs, or report artifacts under the repo root.
+- 使用 `D:\miniconda\py310` 作为基础 Python provider。
+- 优先使用 repo-local virtualenv `H:\Asteria\.venv`。
+- 用 `H:\Asteria\.venv\Scripts\python.exe -m pip install -e ".[dev]"` 安装项目。
+- 不得把 pytest cache、临时 DB 或 report artifacts 放在 repo root。
 
-Governance checks:
+治理检查：
 
-- Run `python scripts\governance\check_project_governance.py` before committing structural changes.
-- Run `ruff check . --cache-dir H:\Asteria-temp\ruff-cache`, `ruff format --check . --cache-dir H:\Asteria-temp\ruff-cache`, `mypy src --cache-dir H:\Asteria-temp\mypy-cache`, and pytest with run-scoped `H:\Asteria-temp` cache/temp paths before release gates.
-- Python files should stay under 500 lines. Script wrappers should stay under 240 lines.
-- Markdown design/spec files should stay under 1200 lines; split by module when they grow past that.
-- Comments should explain intent, boundaries, and non-obvious invariants. Avoid comments that restate code.
+- 提交结构性变更前运行 `python scripts\governance\check_project_governance.py`。
+- release gate 前运行 `ruff check . --cache-dir H:\Asteria-temp\ruff-cache`、`ruff format --check . --cache-dir H:\Asteria-temp\ruff-cache`、`mypy src --cache-dir H:\Asteria-temp\mypy-cache`，以及使用 run-scoped `H:\Asteria-temp` cache/temp 路径的 pytest。
+- Python 文件应保持在 500 行以内；脚本 wrapper 应保持在 240 行以内。
+- Markdown design/spec 文件应保持在 1200 行以内；超过时按模块拆分。
+- 注释应解释意图、边界和不明显的不变量，避免复述代码。

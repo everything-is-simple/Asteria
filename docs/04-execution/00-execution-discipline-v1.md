@@ -19,16 +19,18 @@
 
 - `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md`
 - `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip`
-- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`
-- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip`
+- `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip`
+- `H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip`
+- `H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip`
 
-深度研究报告要求 release evidence、manifest、checkpoint、audit、closeout 进入可恢复、
+深度研究报告要求 release evidence（放行证据）、manifest（清单）、checkpoint（检查点）、audit（审计）、
+closeout（闭环报告）进入可恢复、
 可审计链条；因此执行记录不是旁路说明，而是门禁状态的一部分。
 
-MALF v1.3 authority package 是后续 MALF 自身代码修订的设计依据；在形成新的
-record、evidence-index 与 conclusion 前，不得把它解释为当前实现已通过 v1.3。
+MALF v1.3 authority package 已由 `malf-v1-3-formal-rebuild-closeout-20260502-01`
+承接为当前 day formal-data evidence；week/month 证明、full build 或下游施工仍必须另开卡。
 
 ## 2. 闭环顺序
 
@@ -56,7 +58,7 @@ card -> evidence-index -> record -> conclusion
 3. `evidence-index` 能指向真实存在的 `H:\Asteria-report` 或 `H:\Asteria-Validated` 资产。
 4. `conclusion` 给出明确状态：`passed`、`blocked`、`superseded`、`failed` 四选一。
 5. `00-conclusion-index-v1.md` 已登记该卡的结论入口。
-6. 若本卡生成或引用 closeout、manifest、gate snapshot、run manifest、source manifest、
+6. 若本卡生成或引用 closeout（闭环报告）、manifest（清单）、gate snapshot（门禁快照）、run manifest（运行清单）、source manifest（源清单）、
    Validated zip、正式 DB，`evidence-index` 必须登记路径；若不适用，必须写明 `not applicable`。
 7. 若本卡改变门禁状态，`docs/03-refactor/00-module-gate-ledger-v1.md` 与相关 registry
    必须能反向指到本卡的 `conclusion` 和 `evidence-index`。
@@ -89,7 +91,7 @@ card -> evidence-index -> record -> conclusion
 
 - report 目录
 - closeout 与 manifest
-- gate snapshot / run manifest / source manifest 等 release evidence；当前卡未产出时写 `not applicable`
+- gate snapshot（门禁快照）/ run manifest（运行清单）/ source manifest（源清单）等 release evidence；当前卡未产出时写 `not applicable`
 - validated 资产或明确未产出
 - 正式 DB 路径或明确未创建
 - 关键表计数
@@ -120,9 +122,9 @@ card -> evidence-index -> record -> conclusion
 - 是否已经登记到 conclusion index
 - 是否仍保持上游语义只读边界
 
-## 5.5 Release Evidence 最小清单
+## 5.5 放行证据（Release Evidence）最小清单
 
-正式 release / proof / governance closure 卡优先形成以下证据链：
+正式 release（放行）/ proof（证明）/ governance closure（治理闭环）卡优先形成以下证据链：
 
 | 证据 | 要求 |
 |---|---|

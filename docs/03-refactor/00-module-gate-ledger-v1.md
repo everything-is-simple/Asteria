@@ -8,15 +8,16 @@
 H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md
 H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
 H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
+H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
-H:\Asteria-Validated\Asteria-malf-complete-alignment-closeout-20260430-01.zip
+H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip
+H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
 ```
 
 `214427` 快照是 2026-04-28 docs/code 基线；`130309` 快照是三天重构成果的
-当前系统 docs/code 归档。快照之后的 repo HEAD 事实以执行记录、
+历史系统 docs/code 归档；`101006` 快照是 2026-05-02 当前系统 docs/code 归档。
+快照之后的 repo HEAD 事实以执行记录、
 conclusion index、governance registry 和 Validated release evidence 为准。
 
 ## 1. 当前状态
@@ -25,11 +26,11 @@ conclusion index、governance registry 和 Validated release evidence 为准。
 
 ```text
 refactor-governance
-Alpha bounded proof passed
-Signal freeze review passed
-Signal bounded proof passed
-MALF complete alignment closeout passed
-MALF v1.3 formal-data bounded rebuild closeout passed
+Alpha bounded proof 已通过
+Signal freeze review 已通过
+Signal bounded proof 已通过
+MALF complete alignment closeout 已通过
+MALF v1.3 formal-data bounded rebuild closeout 已通过
 ```
 
 当前已交付主线模块文档索引：
@@ -58,19 +59,19 @@ MALF v1.3 formal-data bounded rebuild closeout
 MALF_Three_Part_Design_Set_v1_3
 ```
 
-v1.3 定义清晰、定理自洽，可以作为后续 MALF 代码修订依据；但它尚未改变当前
-passed evidence，也不打开下游施工。
+v1.3 定义清晰、定理自洽，已由当前 MALF day formal-data bounded closeout 承接为
+passed evidence；它不打开下游施工。
 
 当前已打开执行卡：
 
 ```text
-Data legacy source intake five-card chain
+Position freeze review reentry card
 ```
 
 当前只允许施工对象：
 
 ```text
-Data Foundation legacy source intake / foundation-only
+Position freeze review reentry / 只读评审（review-only）
 ```
 
 当前已通过 bounded proof 的主线模块：
@@ -79,7 +80,7 @@ Data Foundation legacy source intake / foundation-only
 MALF day
 Alpha day
 Signal day
-MALF dense bar-level WavePosition complete alignment
+MALF v1.3 day formal-data bounded closeout
 ```
 
 Signal freeze review 与 Signal bounded proof 已通过。Position freeze review 已登记为
@@ -91,15 +92,15 @@ bounded proof、Position 施工、Signal full build、下游施工或全链路 p
 
 | 顺序 | 模块 | 文档状态 | 冻结状态 | 是否允许施工 | 文档位置 | 说明 |
 |---:|---|---|---|---:|---|---|
-| 0 | Data Foundation | legacy formal promotion passed | legacy stock backward released / not full release | 是，foundation runner surface | `docs/02-modules/data/` | 首轮 Data DB 已 promote；非策略主线，不占主线施工位 |
-| 1 | MALF | delivered six-doc set / v1.3 formal-data bounded closeout passed | frozen | 否 | `docs/02-modules/malf/` | day bounded formal-data proof 已通过；week/month 未执行 |
-| 2 | Alpha | frozen six-doc set / bounded proof passed | released | 否 | `docs/02-modules/alpha/` | bounded proof 已通过；full build 需另开卡 |
-| 3 | Signal | frozen six-doc set / bounded proof passed | released | 否 | `docs/02-modules/signal/` | bounded proof 已通过；full build 需另开卡 |
-| 4 | Position | pre-gate six-doc draft | not frozen | 是，review-only | `docs/02-modules/position/` | freeze review reentry 已打开；不允许 bounded proof 或施工 |
-| 5 | Portfolio Plan | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/portfolio_plan/` | 等 Position 放行后重新审阅并冻结 |
-| 6 | Trade | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/trade/` | 等 Portfolio Plan 放行后重新审阅并冻结 |
-| 7 | System Readout | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/system_readout/` | 等 Trade 放行后重新审阅并冻结 |
-| 8 | Pipeline | pre-gate six-doc draft | not frozen | 否 | `docs/02-modules/pipeline/` | 只编排和记录，不抢业务施工位 |
+| 0 | Data Foundation | legacy formal promotion 已通过 | legacy stock backward 已放行 / 非完整 release | 是，foundation runner surface | `docs/02-modules/data/` | 首轮 Data DB 已 promote；非策略主线，不占主线施工位 |
+| 1 | MALF | 六件套已交付 / v1.3 formal-data bounded closeout 已通过 | frozen | 否 | `docs/02-modules/malf/` | day bounded formal-data proof 已通过；week/month 未执行 |
+| 2 | Alpha | 六件套已冻结 / bounded proof 已通过 | released | 否 | `docs/02-modules/alpha/` | bounded proof 已通过；full build 需另开卡 |
+| 3 | Signal | 六件套已冻结 / bounded proof 已通过 | released | 否 | `docs/02-modules/signal/` | bounded proof 已通过；full build 需另开卡 |
+| 4 | Position | pre-gate 六件套草案 | not frozen | 是，只读评审 | `docs/02-modules/position/` | freeze review reentry 已打开；不允许 bounded proof 或施工 |
+| 5 | Portfolio Plan | pre-gate 六件套草案 | not frozen | 否 | `docs/02-modules/portfolio_plan/` | 等 Position 放行后重新审阅并冻结 |
+| 6 | Trade | pre-gate 六件套草案 | not frozen | 否 | `docs/02-modules/trade/` | 等 Portfolio Plan 放行后重新审阅并冻结 |
+| 7 | System Readout | pre-gate 六件套草案 | not frozen | 否 | `docs/02-modules/system_readout/` | 等 Trade 放行后重新审阅并冻结 |
+| 8 | Pipeline | pre-gate 六件套草案 | not frozen | 否 | `docs/02-modules/pipeline/` | 只编排和记录，不抢业务施工位 |
 
 ## 3. 文档交付清单
 
@@ -107,12 +108,12 @@ Data Foundation 本轮六件套草案：
 
 | 文档 | 状态 |
 |---|---|
-| `docs/02-modules/data/00-authority-design-v1.md` | legacy-import-contract frozen / foundation-contract / not full Data release |
-| `docs/02-modules/data/01-semantic-contract-v1.md` | legacy-import-contract frozen / foundation-contract / not full Data release |
-| `docs/02-modules/data/02-database-schema-spec-v1.md` | legacy-import-contract frozen / foundation-contract / not full Data release |
-| `docs/02-modules/data/03-runner-contract-v1.md` | legacy-import-contract frozen / foundation-contract / runner working build next |
-| `docs/02-modules/data/04-audit-spec-v1.md` | legacy-import-contract frozen / foundation-contract / formal promotion audit next |
-| `docs/02-modules/data/05-build-card-v1.md` | legacy-import-contract frozen / five-card data foundation intake active |
+| `docs/02-modules/data/00-authority-design-v1.md` | legacy-import-contract 已冻结 / foundation-contract / 非完整 Data release |
+| `docs/02-modules/data/01-semantic-contract-v1.md` | legacy-import-contract 已冻结 / foundation-contract / 非完整 Data release |
+| `docs/02-modules/data/02-database-schema-spec-v1.md` | legacy-import-contract 已冻结 / foundation-contract / 非完整 Data release |
+| `docs/02-modules/data/03-runner-contract-v1.md` | legacy-import-contract 已冻结 / foundation-contract / runner working build 已完成 |
+| `docs/02-modules/data/04-audit-spec-v1.md` | legacy-import-contract 已冻结 / foundation-contract / formal promotion audit 已完成 |
+| `docs/02-modules/data/05-build-card-v1.md` | legacy-import-contract 已冻结 / five-card data foundation intake 已完成 |
 
 Data Foundation 模块整体仍未 full release。当前只冻结旧版 Lifespan raw/base
 `stock / backward / day-week-month` 导入合同，并授权五卡链路中的 Data foundation-only
@@ -131,20 +132,20 @@ MALF v1.3 formal rebuild 当前执行结论：
 
 | run_id | 状态 | allowed next action |
 |---|---|---|
-| `malf-v1-3-formal-rebuild-closeout-20260502-01` | `passed` | `Position freeze review reentry / review-only` |
+| `malf-v1-3-formal-rebuild-closeout-20260502-01` | `passed` | `Position freeze review reentry / 只读评审（review-only）` |
 
 MALF 冻结文档与当前 proof 状态：
 
 | 文档 | 状态 |
 |---|---|
-| `docs/02-modules/malf/00-authority-design-v1.md` | frozen / day bounded proof passed / complete alignment closeout passed |
-| `docs/02-modules/malf/01-semantic-contract-v1.md` | frozen / day bounded proof passed / complete alignment closeout passed |
-| `docs/02-modules/malf/02-database-schema-spec-v1.md` | frozen / day bounded proof passed / complete alignment closeout passed |
-| `docs/02-modules/malf/03-runner-contract-v1.md` | frozen / day bounded proof passed / complete alignment closeout passed |
-| `docs/02-modules/malf/04-audit-spec-v1.md` | frozen / day bounded proof passed / complete alignment closeout passed / hard audit source-bound |
-| `docs/02-modules/malf/05-build-card-v1.md` | frozen / superseded by passed day proof |
-| `docs/02-modules/malf/06-implementation-traceability-annex-v1.md` | annex / traceability only / no semantic amendment |
-| `docs/02-modules/malf/07-v1-3-authority-sync-and-code-revision-plan.md` | draft / v1.3 semantic sync plan / code revision prepared |
+| `docs/02-modules/malf/00-authority-design-v1.md` | frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过 |
+| `docs/02-modules/malf/01-semantic-contract-v1.md` | frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过 |
+| `docs/02-modules/malf/02-database-schema-spec-v1.md` | frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过 |
+| `docs/02-modules/malf/03-runner-contract-v1.md` | frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过 |
+| `docs/02-modules/malf/04-audit-spec-v1.md` | frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过 / hard audit source-bound |
+| `docs/02-modules/malf/05-build-card-v1.md` | frozen / 已被 passed day proof 取代 |
+| `docs/02-modules/malf/06-implementation-traceability-annex-v1.md` | annex / 仅追溯 / 不修改语义 |
+| `docs/02-modules/malf/07-v1-3-authority-sync-and-code-revision-plan.md` | 已被取代的历史计划 / v1.3 code revision 与 formal-data closeout 已通过 |
 
 下游本轮 pre-gate / 占位文档：
 
@@ -201,7 +202,10 @@ MALF 冻结文档与当前 proof 状态：
 H:\Asteria-Validated\Asteria-mainline-module-docs-v1.zip
 H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
 H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip
+H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip
 H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip
+H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip
+H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
 ```
 
 这些 zip 是文档/治理快照或权威刷新归档，不是 DuckDB 产物。运行证据必须另有

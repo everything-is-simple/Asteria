@@ -14,16 +14,17 @@
 - `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md`
 - `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip`
 - `H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip`
+- `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip`
 - `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0`
 - `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip`
-- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`
-- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3`
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip`
+- `H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip`
+- `H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip`
 
-当前已通过 `Signal bounded proof` 与 `MALF complete alignment closeout`；MALF v1.3
-authority package 已形成但仍需后续代码修订卡执行。唯一允许推进的业务动作是 Position
-freeze review reentry 的 review-only 审查。Alpha full build、Signal full build、Position
+当前已通过 `Signal bounded proof`、Data legacy formal promotion 与 `MALF v1.3
+formal-data bounded closeout`。唯一允许推进的业务动作是 Position freeze review
+reentry 的只读评审（review-only）。Alpha full build、Signal full build、Position
 施工和下游模块施工仍未放行。
 
 ## 1. 与其他目录的分工
@@ -82,7 +83,7 @@ docs/04-execution/
 
 ## 5. 当前正式记录
 
-已闭环的 MALF proof：
+已闭环的 MALF 证明（proof）：
 
 - [MALF day bounded proof card](records/malf/malf-day-bounded-proof-20260428-01.card.md)
 - [MALF day bounded proof evidence index](records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md)
@@ -135,14 +136,14 @@ docs/04-execution/
 - [Position freeze review record](records/position/position-freeze-review-20260429-01.record.md)
 - [Position freeze review conclusion](records/position/position-freeze-review-20260429-01.conclusion.md)
 
-已闭环的 governance gate：
+已闭环的治理门禁：
 
 - [governance release gate closure card](records/governance/governance-release-gate-closure-20260428-01.card.md)
 - [governance release gate closure evidence index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md)
 - [governance release gate closure record](records/governance/governance-release-gate-closure-20260428-01.record.md)
 - [governance release gate closure conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md)
 
-已闭环的 docs authority refresh：
+已闭环的文档权威刷新：
 
 - [docs authority refresh card](records/governance/docs-authority-refresh-20260429-01.card.md)
 - [docs authority refresh evidence index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md)

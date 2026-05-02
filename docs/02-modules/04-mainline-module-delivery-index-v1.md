@@ -30,10 +30,11 @@ H:\Asteria-Validated\Asteria-mainline-module-docs-v1.zip
 ```text
 H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
 H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip
+H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip
 ```
 
-`214427` 是 2026-04-28 锚点；`130309` 是三天重构成果的当前系统 docs/code
-快照。快照之后的 repo HEAD 事实由治理执行记录、commit history 和新的 Validated
+`214427` 是 2026-04-28 锚点；`130309` 是三天重构成果的历史系统 docs/code
+快照；`101006` 是当前系统 docs/code 快照。快照之后的 repo HEAD 事实由治理执行记录、commit history 和新的 Validated
 归档补充，不得用任何旧 zip 覆盖当前仓库。
 
 ## 2. 权威来源
@@ -41,8 +42,6 @@ H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip
 MALF 的语义权威来自：
 
 ```text
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2\
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3\
 ```
@@ -56,8 +55,12 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3\
 | `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_2.md` | Lifespan 统计真值 |
 | `MALF_03_System_Service_Interface_v1_2.md` | WavePosition 服务接口真值 |
 | `MALF_00_Three_Documents_Bridge_v1_3.md` | v1.3 三文档关系与边界 |
+| `MALF_01_Core_Definitions_Theorems_v1_3.md` | v1.3 Core 结构真值 |
 | `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_3.md` | v1.3 Lifespan 统计与 birth descriptors |
 | `MALF_03_System_Service_Interface_v1_3.md` | v1.3 WavePosition 服务接口与 trace 字段 |
+| `MALF_04_Core_Chart_View_v1_3.md` | v1.3 Core 图表辅助理解 |
+| `MALF_05_Lifespan_Chart_View_v1_3.md` | v1.3 Lifespan 图表辅助理解 |
+| `MALF_06_Service_Chart_View_v1_3.md` | v1.3 Service 图表辅助理解 |
 | `MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_3.md` | v1.3 定义/定理评审与实现差异 |
 
 当前执行权威补充：
@@ -74,7 +77,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3\
 | `H:\Asteria-Validated\Asteria-signal-bounded-proof-20260429-01.zip` | Signal bounded proof evidence |
 | `H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip` | 文档权威链刷新归档 |
 | `docs/04-execution/records/governance/malf-authority-compatibility-audit-20260429-01.conclusion.md` | 当前系统快照未偏移 MALF 权威 |
-| `docs/04-execution/records/malf/malf-v1-3-authority-sync-code-revision-20260501-01.card.md` | v1.3 代码修订卡已准备但未执行 |
+| `docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.conclusion.md` | MALF v1.3 day formal-data bounded proof 已通过 |
 
 ## 3. 交付状态表
 

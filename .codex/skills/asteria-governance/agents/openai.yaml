@@ -1,4 +1,4 @@
 interface:
   display_name: "Asteria Governance"
-  short_description: "Asteria authority chain, module gates, and execution evidence"
-  default_prompt: "Use Asteria governance to keep changes doc-first, one-module-at-a-time, anchored to the Validated authority assets, and blocked from Alpha construction until Alpha freeze review passes."
+  short_description: "Asteria 权威链、模块门禁与执行证据"
+  default_prompt: "使用 Asteria 治理规则：变更必须文档先行、一次只处理一个模块、锚定最新 Validated 权威资产；Position freeze review reentry 通过前，不得进入 Position construction。"

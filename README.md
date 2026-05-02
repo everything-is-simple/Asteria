@@ -33,22 +33,24 @@ MALF = Market Lifespan Framework
 
 ```text
 H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md
-H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
+H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
+H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip
+H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
 ```
 
 当前门禁状态：
 
 ```text
-MALF day bounded proof passed -> Alpha freeze review passed -> Alpha bounded proof passed -> Signal freeze review passed -> Signal bounded proof passed -> Position freeze review blocked
--> MALF complete alignment closeout passed -> Position freeze review reentry card
+MALF day bounded proof 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞
+-> Data legacy formal promotion 已通过 -> MALF v1.3 formal-data bounded closeout 已通过 -> Position freeze review reentry card
 ```
 
-Signal bounded proof 已完成；Position freeze review 已登记为 blocked；MALF complete
-alignment closeout 已通过并取代旧 dense/hard-audit evidence 作为当前 MALF day dense
-正式证据。当前只授权 Position freeze review reentry 的 review-only 审查，不授权 Signal
-full build、Position 施工、Alpha full build、下游施工或全链路 pipeline。
+Data Foundation 已完成首轮 `stock / backward / day-week-month` legacy formal promotion；
+MALF v1.3 已用正式 Data day 输入完成 bounded formal-data closeout。当前只授权
+Position freeze review reentry 的只读评审（review-only），不授权 Alpha full build、Signal
+full build、Position 施工、下游施工或全链路 pipeline。MALF week/month 证明尚未执行。
 
 ## 阅读入口
 

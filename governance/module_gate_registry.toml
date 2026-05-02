@@ -1,10 +1,10 @@
 registry_version = "2026-05-02.v1"
 active_mainline_module = "position"
-active_foundation_card = "data_formal_promotion_evidence"
+active_foundation_card = "none"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
-    "H:/Asteria-Validated/Asteria-docs-code-20260502-001327.zip",
+    "H:/Asteria-Validated/Asteria-docs-code-20260502-104932.zip",
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_3",
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_3.zip",
 ]
@@ -34,6 +34,7 @@ exception = "legacy_source_intake_five_card_chain"
 formal_db_permission = "released_legacy_stock_backward_day_week_month_only; full_data_build_requires_new_card"
 gate_basis = "docs/04-execution/records/data/data-formal-promotion-evidence-20260502-01.conclusion.md"
 next_card = "malf_v1_3_formal_rebuild_closeout"
+latest_completed_card = "data_formal_promotion_evidence"
 
 [[modules]]
 module_id = "malf"

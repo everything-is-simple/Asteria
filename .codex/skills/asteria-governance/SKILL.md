@@ -1,33 +1,35 @@
 ---
 name: asteria-governance
-description: Project-specific governance for Asteria refactor work. Use when Codex changes Asteria docs, Python code, module boundaries, DuckDB schema specs, runner contracts, execution cards, or release gates.
+description: Asteria 重构工作的项目治理规则。Codex 修改 Asteria 文档、Python 代码、模块边界、DuckDB schema、runner 合同、执行卡或 release gate 时使用。
 ---
 
-# Asteria Governance
+# Asteria 治理
 
-## Overview
+## 概览
 
-Use this skill to keep Asteria changes doc-first, module-scoped, and aligned with the MALF-led mainline.
+使用本技能时，Asteria 变更必须保持文档先行、模块内收敛，并与 MALF 主导的主线顺序对齐。
 
-Current authority chain:
+当前权威链：
 
 - `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md`
-- `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip`
-- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2`
-- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip`
+- `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip`
+- `H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip`
+- `H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip`
 
-Current gate state:
+当前门禁状态：
 
 ```text
-MALF day bounded proof passed -> Alpha freeze review
+Data legacy formal promotion passed -> MALF v1.3 formal-data bounded closeout passed -> Position freeze review reentry
 ```
 
-`Alpha freeze review` is review-only. It does not authorize Alpha implementation,
-formal Alpha DB creation, downstream construction, or a full-chain pipeline.
+`Position freeze review reentry` 只允许 review-only 审查。它不授权 Position
+实现、Position DB 创建、下游施工或全链路 pipeline。
 
-## Required Reading
+## 必读文件
 
-Read these files before changing formal code, schemas, runner contracts, or module gates:
+修改正式代码、schema、runner 合同或模块门禁前，必须先读：
 
 1. `README.md`
 2. `AGENTS.md`
@@ -37,31 +39,31 @@ Read these files before changing formal code, schemas, runner contracts, or modu
 6. `docs/03-refactor/00-module-gate-ledger-v1.md`
 7. `docs/04-execution/00-conclusion-index-v1.md`
 
-## Workflow
+## 工作流
 
-1. Identify the active module from `docs/03-refactor/00-module-gate-ledger-v1.md`.
-2. Confirm the target change stays inside that module, or update governance docs before implementation.
-3. Ensure a design/spec/card exists before formal source or schema work.
-4. Keep generated DBs, reports, and temporary artifacts outside the repo.
-5. For release or proof work, create or update the execution four-pack:
+1. 从 `docs/03-refactor/00-module-gate-ledger-v1.md` 确认当前 active module。
+2. 确认目标变更仍在该模块边界内；若需要越界，先更新治理文档再实现。
+3. 正式源码或 schema 施工前，必须已有 design、spec 或 card。
+4. 生成的 DB、报告和临时产物必须放在 repo 外。
+5. release 或 proof 类工作必须创建或更新执行四件套：
    `card`, `evidence-index`, `record`, and `conclusion`.
-6. Run the project checks before commit.
+6. commit 前运行项目检查。
 
-## Mainline Rules
+## 主线规则
 
-- Treat `data` as foundation infrastructure, not as the strategy mainline.
-- Keep the mainline order: `MALF -> Alpha -> Signal -> Position -> Portfolio Plan -> Trade -> System`.
-- Let `Pipeline` orchestrate only; it must not define business semantics.
-- Do not let downstream modules write back to MALF or redefine MALF fields.
-- Do not merge `wave_core_state` and `system_state`.
-- Only one mainline module may be under construction at a time.
-- Keep `H:\Asteria-Validated` for validated assets only, not scratch work.
+- `data` 是地基基础设施，不是策略主线模块。
+- 主线顺序固定为：`MALF -> Alpha -> Signal -> Position -> Portfolio Plan -> Trade -> System`。
+- `Pipeline` 只能编排和记录，不得定义业务语义。
+- 下游模块不得写回 MALF，也不得重定义 MALF 字段。
+- 不得合并 `wave_core_state` 与 `system_state`。
+- 同一时间只能有一个主线模块处于施工或 review 放行状态。
+- `H:\Asteria-Validated` 只存 validated 资产，不作临时目录。
 
-## Environment
+## 环境
 
-Use `D:\miniconda\py310` as the Python provider and prefer `H:\Asteria\.venv`.
+Python provider 使用 `D:\miniconda\py310`，优先使用 repo-local virtualenv `H:\Asteria\.venv`。
 
-Run checks with the repo-local environment:
+使用 repo-local 环境运行检查：
 
 ```powershell
 H:\Asteria\.venv\Scripts\python.exe scripts\governance\check_project_governance.py
@@ -71,14 +73,14 @@ H:\Asteria\.venv\Scripts\mypy.exe src --cache-dir H:\Asteria-temp\mypy-cache
 H:\Asteria\.venv\Scripts\pytest.exe --basetemp=H:/Asteria-temp/pytest-tmp-<run_id> -o cache_dir=H:/Asteria-temp/pytest-cache-<run_id>
 ```
 
-Do not leave tool caches in the repo root. Treat `H:\Asteria\.ruff_cache` and
-`H:\Asteria\.mypy_cache` as accidental temporary artifacts: delete them if they
-appear, never stage them, and rerun checks with the cache directories above.
+不要把工具缓存留在 repo root。`H:\Asteria\.ruff_cache` 和
+`H:\Asteria\.mypy_cache` 都视为意外临时产物：若出现就删除，不得 stage，
+并按上方 cache 目录重新运行检查。
 
-## Style
+## 风格
 
-- Keep Python files under 500 lines and script wrappers under 240 lines.
-- Keep Markdown design/spec files under 1200 lines.
-- Use comments for intent, boundaries, and non-obvious invariants.
-- Avoid comments that merely restate assignments or function names.
-- Prefer small module contracts over broad helper abstractions.
+- Python 文件保持在 500 行以内，脚本 wrapper 保持在 240 行以内。
+- Markdown design/spec 文件保持在 1200 行以内。
+- 注释只解释意图、边界和不明显的不变量。
+- 避免只复述赋值或函数名的注释。
+- 优先使用小而清晰的模块合同，不随意扩大 helper 抽象。

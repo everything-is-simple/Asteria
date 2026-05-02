@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from pathlib import Path
+from time import sleep
 
 import duckdb
 
@@ -34,6 +35,8 @@ _BASE_TABLE_BY_TIMEFRAME = {
     "month": "stock_monthly_adjusted",
 }
 _PRICE_LINE = "analysis_price_line"
+_CONNECT_RETRY_COUNT = 5
+_CONNECT_RETRY_DELAY_SECONDS = 0.2
 
 
 def run_legacy_data_import(request: LegacyImportRequest) -> LegacyImportSummary:
@@ -47,7 +50,7 @@ def run_legacy_data_import(request: LegacyImportRequest) -> LegacyImportSummary:
     base_rows_by_timeframe: dict[str, int] = {}
     now = _utc_now()
 
-    with duckdb.connect(str(request.raw_db_path)) as con:
+    with _connect_writable(request.raw_db_path) as con:
         con.execute("begin transaction")
         con.execute("delete from raw_market_sync_run where run_id = ?", [request.run_id])
         con.execute("delete from raw_market_source_file where run_id = ?", [request.run_id])
@@ -199,7 +202,7 @@ def _write_base_timeframe(
     db_path = request.base_db_path(timeframe)
     source_path = request.base_root / _BASE_DB_BY_TIMEFRAME[timeframe]
     table = _BASE_TABLE_BY_TIMEFRAME[timeframe]
-    with duckdb.connect(str(db_path)) as con:
+    with _connect_writable(db_path) as con:
         con.execute("begin transaction")
         alias = "src_base"
         _attach_readonly(con, source_path, alias)
@@ -366,6 +369,17 @@ def _fetch_count(
 def _attach_readonly(con: duckdb.DuckDBPyConnection, path: Path, alias: str) -> None:
     escaped = str(path).replace("'", "''")
     con.execute(f"attach database '{escaped}' as {alias} (read_only)")
+
+
+def _connect_writable(path: Path) -> duckdb.DuckDBPyConnection:
+    for attempt in range(_CONNECT_RETRY_COUNT):
+        try:
+            return duckdb.connect(str(path))
+        except duckdb.IOException:
+            if attempt == _CONNECT_RETRY_COUNT - 1:
+                raise
+            sleep(_CONNECT_RETRY_DELAY_SECONDS)
+    raise RuntimeError("unreachable DuckDB connection retry state")
 
 
 def _utc_now() -> datetime:

@@ -25,11 +25,13 @@
 | 资产 | 当前用途 |
 |---|---|
 | `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` | release gate closure 前的 docs/code 快照锚点 |
+| `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip` | 当前系统 docs/code 快照锚点 |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 治理、主线、数据、编排四切面研究输入 |
-| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` | 当前已通过实现证据的 MALF 历史语义锚点 |
-| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip` | MALF v1.3 语义升级权威，待代码修订卡同步 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` | MALF 历史语义锚点 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip` | 当前 MALF v1.3 语义权威 |
 | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` | MALF day bounded proof 证据 |
-| `H:\Asteria-Validated\Asteria-malf-complete-alignment-closeout-20260430-01.zip` | 当前 MALF day dense formal evidence |
+| `H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip` | Data legacy formal promotion 证据 |
+| `H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip` | 当前 MALF day v1.3 formal-data evidence |
 | `H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip` | 本轮文档权威链刷新证据 |
 
 快照不是当前仓库的替代品。快照之后的变更必须通过 `docs/04-execution/`
@@ -52,8 +54,8 @@
 | 路径 | 当前职责 |
 |---|---|
 | `H:\Asteria` | 代码、文档、测试、治理入口 |
-| `H:\Asteria-data` | 未来正式 DuckDB 数据资产 |
-| `H:\Asteria-report` | 未来人读报告、图表、运行证据 |
+| `H:\Asteria-data` | 正式 DuckDB 数据资产与长期中间库 |
+| `H:\Asteria-report` | 人读报告、图表、运行证据 |
 | `H:\Asteria-Validated` | 已验证设计和历史资产 |
 | `H:\Asteria-temp` | pytest cache、working DB、临时重建产物 |
 

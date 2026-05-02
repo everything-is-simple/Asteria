@@ -2,7 +2,7 @@
 
 日期：2026-05-01
 
-状态：draft / documentation sync / code revision card prepared
+状态：已被 passed formal-data closeout 取代 / 作为历史计划保留
 
 ## 1. 结论
 
@@ -13,8 +13,9 @@
 v1.3 定义清晰，定理自洽，可以作为后续 repo 文档同步与代码修订依据。
 ```
 
-该结论不等于当前实现已经达到 v1.3。当前已通过实现证据仍是
-`malf-complete-alignment-closeout-20260430-01`。
+该结论已由 `malf-v1-3-authority-sync-code-revision-20260501-01` 的 code-only 修订和
+`malf-v1-3-formal-rebuild-closeout-20260502-01` 的 formal-data bounded closeout 承接。
+当前 MALF day v1.3 evidence 以后者为准；week/month 证明尚未执行。
 
 ## 2. v1.3 权威输入
 
@@ -43,25 +44,25 @@ v1.3 定义清晰，定理自洽，可以作为后续 repo 文档同步与代码
 
 ## 4. 文档同步范围
 
-本轮已把 v1.3 作为待同步语义写入 MALF 本地文档，但不修改当前 passed gate：
+本轮原计划已被后续执行卡完成并 supersede。当前本地文档状态为：
 
 | 本地文档 | 同步内容 |
 |---|---|
-| `00-authority-design-v1.md` | 增加 v1.3 权威包、评审结论与待同步裁决 |
-| `01-semantic-contract-v1.md` | 增加 current effective guard、transition boundary、birth descriptor 等语义 |
-| `02-database-schema-spec-v1.md` | 增加 v1.3 待同步字段 |
-| `03-runner-contract-v1.md` | 记录 runner mode enforcement gap |
-| `04-audit-spec-v1.md` | 增加 v1.3 待新增 hard audit |
+| `00-authority-design-v1.md` | 记录 v1.3 已由 day formal-data closeout 承接 |
+| `01-semantic-contract-v1.md` | 承接 current effective guard、transition boundary、birth descriptor 等语义 |
+| `02-database-schema-spec-v1.md` | 承接 v1.3 字段 |
+| `03-runner-contract-v1.md` | 承接 runner mode enforcement 修订 |
+| `04-audit-spec-v1.md` | 承接 v1.3 hard audit |
 
 ## 5. 代码修订卡目标
 
-建议后续执行卡：
+已执行代码修订卡：
 
 ```text
 malf-v1-3-authority-sync-code-revision-20260501-01
 ```
 
-目标：
+目标已完成，并已由 formal-data closeout 复验：
 
 1. 修订 Core schema / builder，显式追踪 current effective guard、broken guard、transition boundary。
 2. 修订 Candidate / New Wave 逻辑，区分 candidate guard 与 progress confirmation。
@@ -73,12 +74,12 @@ malf-v1-3-authority-sync-code-revision-20260501-01
 
 ## 6. 明确禁止
 
-该修订卡未正式执行前，不允许：
+当前仍不允许：
 
 | 禁止项 |
 |---|
-| 声称当前代码已经实现 v1.3 全语义 |
-| 改写已通过 closeout 为 v1.3 passed |
+| 声称 week/month MALF 证明已完成 |
+| 声称 MALF full build 已完成 |
 | 打开 Alpha full build |
 | 打开 Signal full build |
 | 打开 Position construction |

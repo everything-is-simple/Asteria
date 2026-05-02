@@ -24,19 +24,19 @@ flowchart LR
 
 ## 1.1 当前门禁状态
 
-截至 `malf-complete-alignment-closeout-20260430-01`：
+截至 `malf-v1-3-formal-rebuild-closeout-20260502-01`：
 
 | 项 | 当前状态 |
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal` |
-| 当前已通过 bounded proof | `MALF day`; `Alpha day`; `Signal day`; `MALF dense bar-level complete alignment` |
+| 当前已通过 bounded proof | `MALF day`; `Alpha day`; `Signal day`; `MALF v1.3 day formal-data bounded closeout` |
 | 当前已打开执行卡 | `Position freeze review reentry card` |
-| 当前只允许施工 | `Position freeze review reentry / review-only` |
+| 当前只允许施工 | `Position freeze review reentry / 只读评审（review-only）` |
 | 当前仍禁止 | Alpha full build、Signal full build、Position bounded proof、Position construction、Portfolio Plan/Trade/System/Pipeline 施工 |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Position freeze
-review 已登记 blocked；MALF complete alignment closeout 已通过并取代旧 dense/hard-audit
-evidence。后续只允许 Position freeze review reentry 的 review-only 审查，但仍不授权
+review 已登记 blocked；MALF v1.3 formal-data bounded closeout 已通过并取代旧 dense /
+hard-audit evidence。后续只允许 Position freeze review reentry 的只读评审（review-only），但仍不授权
 Alpha full build、Signal full build、Position bounded proof、Position construction、下游施工或全链路 pipeline。
 
 ## 2. 主线模块
@@ -197,19 +197,19 @@ design freeze
 
 | 权威输入 | 回答的问题 | 当前用途 |
 |---|---|---|
-| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` | 已通过实现证据所承接的 MALF 语义 | MALF complete alignment closeout 当前 formal evidence 的历史锚点 |
-| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip` | MALF v1.3 语义升级：current effective guard、transition boundary、birth descriptors、Service trace | 后续 repo 文档同步与代码修订卡依据；未执行前不声明代码已覆盖 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip` | MALF v1.3 语义：current effective guard、transition boundary、birth descriptors、Service trace | 当前 MALF day formal-data bounded closeout 的语义权威 |
+| `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip` | 最新仓库 docs/code 快照 | Data formal promotion 与 MALF v1.3 closeout 后的系统备份 |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 多 DuckDB、日更、pipeline ledger、release evidence 如何治理 | 支撑逻辑历史总账和增量构建协议 |
 | `docs/04-execution/00-conclusion-index-v1.md` | 哪些执行卡已经正式落档 | 当前放行状态入口 |
 
 当前主线图不是“全系统已上线图”。它是模块依赖和施工顺序的法律图：
 
 ```text
-MALF day passed -> Alpha freeze review passed -> Alpha bounded proof passed -> Signal freeze review passed -> Signal bounded proof passed -> Position freeze review blocked -> MALF complete alignment closeout passed -> Position freeze review reentry card
+MALF day 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞 -> Data formal promotion 已通过 -> MALF v1.3 formal-data bounded closeout 已通过 -> Position freeze review reentry card
 ```
 
 任何下游实现都必须等前置模块完成 freeze / proof / release evidence。
 
-MALF v1.3 authority package 已可作为下一轮 MALF 自身代码修订依据；该动作仍属于
-MALF 上游语义同步，不授权 Alpha full build、Signal full build、Position construction 或
-Pipeline 扩权。
+MALF v1.3 authority package 已由当前 day formal-data closeout 承接为 MALF 当前
+day 证据；week/month proof 与 full build 仍需另开执行卡，不授权 Alpha full build、
+Signal full build、Position construction 或 Pipeline 扩权。
