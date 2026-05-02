@@ -193,3 +193,142 @@ def bootstrap_market_base_database(path: Path) -> None:
 
 def bootstrap_market_base_day_database(path: Path) -> None:
     bootstrap_market_base_database(path)
+
+
+def bootstrap_market_meta_database(path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with duckdb.connect(str(path)) as con:
+        con.execute(
+            """
+            create table if not exists trade_calendar (
+                calendar_code varchar,
+                trade_date date,
+                is_open boolean,
+                source_timeframe varchar,
+                source_db_name varchar,
+                run_id varchar,
+                schema_version varchar,
+                created_at timestamp
+            )
+            """
+        )
+        con.execute(
+            """
+            create table if not exists instrument_master (
+                instrument_id varchar,
+                symbol varchar,
+                exchange_code varchar,
+                asset_type varchar,
+                first_seen_date date,
+                latest_seen_date date,
+                list_status varchar,
+                source_scope varchar,
+                run_id varchar,
+                schema_version varchar,
+                created_at timestamp
+            )
+            """
+        )
+        con.execute(
+            """
+            create table if not exists instrument_alias (
+                source_vendor varchar,
+                source_symbol varchar,
+                instrument_id varchar,
+                alias_kind varchar,
+                source_path varchar,
+                effective_date date,
+                run_id varchar,
+                schema_version varchar,
+                created_at timestamp
+            )
+            """
+        )
+        con.execute(
+            """
+            create table if not exists universe_membership (
+                universe_name varchar,
+                instrument_id varchar,
+                effective_date date,
+                membership_status varchar,
+                source_scope varchar,
+                run_id varchar,
+                schema_version varchar,
+                created_at timestamp
+            )
+            """
+        )
+        con.execute(
+            """
+            create table if not exists tradability_fact (
+                instrument_id varchar,
+                trade_date date,
+                fact_name varchar,
+                fact_value boolean,
+                source_price_line varchar,
+                source_adj_mode varchar,
+                source_db_name varchar,
+                run_id varchar,
+                schema_version varchar,
+                created_at timestamp
+            )
+            """
+        )
+        con.execute(
+            """
+            create table if not exists industry_classification (
+                instrument_id varchar,
+                industry_schema varchar,
+                industry_code varchar,
+                industry_name varchar,
+                effective_date date,
+                source_vendor varchar,
+                run_id varchar,
+                schema_version varchar,
+                created_at timestamp
+            )
+            """
+        )
+        con.execute(
+            """
+            create table if not exists meta_run (
+                run_id varchar,
+                runner_name varchar,
+                mode varchar,
+                status varchar,
+                data_root varchar,
+                temp_root varchar,
+                calendar_rows bigint,
+                instrument_rows bigint,
+                alias_rows bigint,
+                universe_rows bigint,
+                tradability_rows bigint,
+                source_gap_count bigint,
+                schema_version varchar,
+                created_at timestamp
+            )
+            """
+        )
+        con.execute(
+            """
+            create table if not exists meta_schema_version (
+                schema_version varchar,
+                created_at timestamp
+            )
+            """
+        )
+        con.execute(
+            """
+            create table if not exists meta_source_manifest (
+                source_db_name varchar,
+                source_table varchar,
+                source_row_count bigint,
+                min_trade_date date,
+                max_trade_date date,
+                source_path varchar,
+                run_id varchar,
+                schema_version varchar,
+                created_at timestamp
+            )
+            """
+        )

@@ -2,12 +2,12 @@
 
 日期：2026-05-02
 
-状态：production-foundation released / production audit active
+状态：production-foundation released / production audit active / market_meta hard checks active
 
 当前裁决：Data Foundation 已通过生产级地基 release audit，并已增加 day execution
 line presence hard check。审计覆盖四个正式库、
 `analysis_price_line=backward`、`execution_price_line=none`、source trace、自然键、
-latest 指针、dirty scope 与 checkpoint/resume。
+latest 指针、dirty scope、checkpoint/resume，以及最小正式 `market_meta.duckdb`。
 
 ## 1. 目的
 
@@ -27,6 +27,9 @@ latest 指针、dirty scope 与 checkpoint/resume。
 | Reject isolation | 脏记录必须进入 reject audit，不得进入正式事实 |
 | Price line separation | `analysis_price_line` 不得用于真实成交；`execution_price_line` 必须来自 `adj_mode = none` |
 | Execution line presence | `market_base_day.duckdb` 必须存在 `execution_price_line / none` 正式行 |
+| Market meta presence | `market_meta.duckdb` 必须存在并包含最小正式表族 |
+| Market meta uniqueness | calendar、instrument、alias、universe、tradability 自然键唯一 |
+| Tradability source policy | `has_execution_bar` 只能来自 `execution_price_line / none` |
 | Incremental resume | checkpoint/resume 不得重复写入已完成 source scope |
 
 ## 3. 软观察
@@ -39,6 +42,7 @@ latest 指针、dirty scope 与 checkpoint/resume。
 | 某日源数据量突降 | 需要核对来源是否完整 |
 | week / month 聚合量与预期差异 | 需要核对聚合边界 |
 | tradability facts 剧烈变化 | 需要核对上游元数据来源 |
+| industry source gap | 当前允许 `industry_classification` 为空，但必须记录为参考源缺口 |
 
 ## 4. 抽样查询方向
 
@@ -71,6 +75,9 @@ Data Foundation 对主线的接口审计至少确认：
 | Alpha | `market_meta` 中客观宇宙和行业事实稳定 |
 | Portfolio Plan | tradability 与 universe 事实可只读消费 |
 | Trade | 执行价格线不混入策略标签 |
+
+当前 `market_meta` 不声明行业、ST、停牌或真实上市/退市覆盖；这些字段不得作为
+Alpha、Portfolio 或 Trade 的 released reference fact 使用。
 
 Trade 未来 release audit 必须额外确认 fill price、order price、fill amount 和现金账本
 只来自 `execution_price_line`，不得使用 `analysis_price_line`。

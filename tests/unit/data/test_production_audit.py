@@ -5,14 +5,20 @@ from pathlib import Path
 import duckdb
 
 from asteria.data.production_audit import run_data_production_audit
-from asteria.data.schema import bootstrap_market_base_day_database, bootstrap_raw_market_database
+from asteria.data.schema import (
+    bootstrap_market_base_day_database,
+    bootstrap_market_meta_database,
+    bootstrap_raw_market_database,
+)
 
 
 def _seed_clean_data(root: Path) -> None:
     raw_db = root / "raw_market.duckdb"
     base_db = root / "market_base_day.duckdb"
+    meta_db = root / "market_meta.duckdb"
     bootstrap_raw_market_database(raw_db)
     bootstrap_market_base_day_database(base_db)
+    bootstrap_market_meta_database(meta_db)
     with duckdb.connect(str(raw_db)) as con:
         con.execute(
             """
@@ -51,6 +57,51 @@ def _seed_clean_data(root: Path) -> None:
              date '2024-01-02', 'run-1', 'data-bootstrap-v1', current_timestamp)
             """
         )
+    with duckdb.connect(str(meta_db)) as con:
+        con.execute(
+            """
+            insert into trade_calendar
+            values
+            ('CN_A_SHARE', date '2024-01-02', true, 'day', 'market_base_day.duckdb',
+             'run-1', 'data-market-meta-v1', current_timestamp)
+            """
+        )
+        con.execute(
+            """
+            insert into instrument_master
+            values
+            ('600000.SH', '600000.SH', 'SH', 'stock', date '2024-01-02',
+             date '2024-01-02', 'observed', 'raw_market_and_market_base',
+             'run-1', 'data-market-meta-v1', current_timestamp)
+            """
+        )
+        con.execute(
+            """
+            insert into instrument_alias
+            values
+            ('tdx_offline_txt', 'SH#600000', '600000.SH', 'source_path_stem',
+             'H:\\tdx_offline_Data\\stock-day\\Non-Adjusted\\SH#600000.txt',
+             date '1900-01-01', 'run-1', 'data-market-meta-v1', current_timestamp)
+            """
+        )
+        con.execute(
+            """
+            insert into universe_membership
+            values
+            ('stock_observed', '600000.SH', date '2024-01-02', 'observed',
+             'raw_market_and_market_base', 'run-1', 'data-market-meta-v1',
+             current_timestamp)
+            """
+        )
+        con.execute(
+            """
+            insert into tradability_fact
+            values
+            ('600000.SH', date '2024-01-02', 'has_execution_bar', true,
+             'execution_price_line', 'none', 'market_base_day.duckdb',
+             'run-1', 'data-market-meta-v1', current_timestamp)
+            """
+        )
 
 
 def test_production_audit_passes_clean_analysis_and_execution_lines(tmp_path: Path) -> None:
@@ -62,6 +113,54 @@ def test_production_audit_passes_clean_analysis_and_execution_lines(tmp_path: Pa
     assert summary.status == "passed"
     assert summary.hard_fail_count == 0
     assert summary.checks["market_base_day.duckdb:price_line_mapping"] == "passed"
+    assert summary.checks["market_meta.duckdb:industry_classification_source_gap"] == "passed"
+
+
+def test_production_audit_fails_when_market_meta_is_absent(tmp_path: Path) -> None:
+    data_root = tmp_path / "asteria-data"
+    _seed_clean_data(data_root)
+    (data_root / "market_meta.duckdb").unlink()
+
+    summary = run_data_production_audit(data_root=data_root, run_id="audit-missing-meta-001")
+
+    assert summary.status == "failed"
+    assert summary.checks["market_meta.duckdb:exists"] == "failed"
+
+
+def test_production_audit_fails_when_market_meta_natural_key_duplicates(
+    tmp_path: Path,
+) -> None:
+    data_root = tmp_path / "asteria-data"
+    _seed_clean_data(data_root)
+    with duckdb.connect(str(data_root / "market_meta.duckdb")) as con:
+        con.execute(
+            """
+            insert into tradability_fact
+            values
+            ('600000.SH', date '2024-01-02', 'has_execution_bar', true,
+             'execution_price_line', 'none', 'market_base_day.duckdb',
+             'run-2', 'data-market-meta-v1', current_timestamp)
+            """
+        )
+
+    summary = run_data_production_audit(data_root=data_root, run_id="audit-meta-dups-001")
+
+    assert summary.status == "failed"
+    assert summary.checks["market_meta.duckdb:tradability_fact_natural_key_uniqueness"] == "failed"
+
+
+def test_production_audit_fails_when_tradability_source_is_not_execution_none(
+    tmp_path: Path,
+) -> None:
+    data_root = tmp_path / "asteria-data"
+    _seed_clean_data(data_root)
+    with duckdb.connect(str(data_root / "market_meta.duckdb")) as con:
+        con.execute("update tradability_fact set source_adj_mode = 'backward'")
+
+    summary = run_data_production_audit(data_root=data_root, run_id="audit-meta-source-001")
+
+    assert summary.status == "failed"
+    assert summary.checks["market_meta.duckdb:tradability_fact_source_policy"] == "failed"
 
 
 def test_production_audit_fails_when_execution_line_uses_adjusted_price(

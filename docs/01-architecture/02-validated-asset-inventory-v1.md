@@ -26,6 +26,7 @@
 | `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip` | 当前仓库文档与代码归档 | 作为 2026-04-28 release gate closure 前的正式代码/文档快照 |
 | `H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip` | 历史系统文档与代码归档 | 作为三天重构成果的历史 docs/code 快照；其语义必须通过 repo 执行记录和 MALF 兼容审计解释 |
 | `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip` | 当前系统文档与代码归档 | 作为 Data formal promotion 与 MALF v1.3 formal-data closeout 后的最新 docs/code 快照 |
+| `H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip` | Data market_meta 最小正式证据 | 证明 `market_meta.duckdb` 已按可证事实优先口径落地，reference gaps retained |
 | `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0` | 全系统权威设计整理包 | 覆盖 Data / MALF / Alpha / Signal / Position / Portfolio Plan / Trade / System Readout / Pipeline 的当前设计状态 |
 | `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip` | 全系统权威设计整理包归档 | 与同名目录一致；作为系统级设计包 validated archive |
 | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` | MALF day 放行证据 | 证明 MALF day Core/Lifespan/Service 三库 bounded proof 已通过 |
@@ -90,6 +91,7 @@ H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研
 H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip
 H:\Asteria-Validated\Asteria-docs-code-20260429-130309.zip
 H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip
+H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip
 H:\Asteria-Validated\Asteria_System_Design_Set_v1_0
 H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip
 ```

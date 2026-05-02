@@ -2,16 +2,16 @@
 
 日期：2026-05-02
 
-状态：execution price line materialization passed / market_meta gap retained
+状态：data-market-meta-formalization passed / reference gaps retained
 
 ## 1. 本轮目标
 
 原 bounded bootstrap 已证明最小 TDX 输入可服务 MALF day proof。legacy formal
-promotion 已把四个正式 Data DB 建成首轮全量底座。本轮六卡把这些库推进为生产级
-Data Foundation：
+promotion 已把四个正式 Data DB 建成首轮全量底座，生产级六卡已补齐 execution
+price line。本卡把 `market_meta.duckdb` 推进为最小正式 Data metadata fact：
 
 ```text
-input contract -> raw full build -> market base full build -> execution price line -> daily incremental -> release audit
+raw/base formal DB -> market_meta staging build -> hard audit -> formal promote -> release evidence
 ```
 
 该链路只放行 Data Foundation，不占用 Alpha / Signal / Position / Portfolio / Trade /
@@ -33,7 +33,7 @@ tests/unit/data/
 
 | 禁止项 | 原因 |
 |---|---|
-| 创建 `market_meta.duckdb` | 后续另开卡 |
+| 伪造行业、ST、停牌或真实上市/退市事实 | 当前没有可靠 reference source |
 | 迁移旧下游 runner 代码 | 旧代码只能做参考，新实现必须遵守 Asteria contract |
 | 修改 MALF 及下游语义 | Data 不能重定义主线业务语义 |
 | 建立全链路 pipeline | 当前主线仍锁定 MALF day bounded proof |
@@ -65,8 +65,10 @@ src/asteria/data/contracts.py
 src/asteria/data/tdx_text.py
 src/asteria/data/schema.py
 src/asteria/data/bootstrap.py
+src/asteria/data/market_meta.py
 src/asteria/data/legacy_audit.py
 scripts/data/run_data_bootstrap.py
+scripts/data/run_market_meta_build.py
 ```
 
 ## 5. 验收命令
@@ -76,6 +78,8 @@ scripts/data/run_data_bootstrap.py
 ```powershell
 H:\Asteria\.venv\Scripts\python.exe scripts\governance\check_project_governance.py
 H:\Asteria\.venv\Scripts\pytest.exe tests\unit\data -q
+H:\Asteria\.venv\Scripts\python.exe scripts\data\run_market_meta_build.py --data-root H:\Asteria-data --temp-root H:\Asteria-temp --mode full --run-id data-market-meta-formalization-20260502-01
+H:\Asteria\.venv\Scripts\python.exe scripts\data\run_data_production_audit.py --data-root H:\Asteria-data --run-id data-market-meta-formalization-20260502-01
 git diff --check
 ```
 
@@ -112,3 +116,13 @@ Position/downstream 仍按门禁决定，不因 Data 地基卡自动打开。
 
 六卡完成后，当前四个正式库仍是本版 Data 全量底座；新增的日更、断点续传与
 执行价线能力只服务 Data Foundation，不自动打开下游施工。
+
+## 9. Market meta 最小正式化卡
+
+| 项 | 裁决 |
+|---|---|
+| run_id | `data-market-meta-formalization-20260502-01` |
+| 状态 | passed |
+| 放行表面 | `trade_calendar`、`instrument_master`、`instrument_alias`、`universe_membership`、`tradability_fact` |
+| 保留缺口 | `industry_classification` 为空；行业、ST、停牌、真实上市/退市状态后续另开参考源卡 |
+| allowed next action | `Position freeze review reentry` |

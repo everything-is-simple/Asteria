@@ -6,12 +6,14 @@ from pathlib import Path
 from typing import Any
 
 DATA_SCHEMA_VERSION = "data-bootstrap-v1"
+DATA_MARKET_META_SCHEMA_VERSION = "data-market-meta-v1"
 SOURCE_VENDOR = "tdx_offline_txt"
 LEGACY_SOURCE_VENDOR = "legacy_lifespan"
 
 VALID_ADJ_MODES = {"backward", "forward", "none", "all"}
 VALID_ASSET_TYPES = {"stock", "index", "block"}
 VALID_RUN_MODES = {"bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"}
+VALID_MARKET_META_RUN_MODES = {"bounded", "full", "audit-only"}
 
 
 @dataclass(frozen=True)
@@ -130,6 +132,43 @@ class DataProductionAuditSummary:
     status: str
     hard_fail_count: int
     checks: dict[str, str]
+
+    def as_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class MarketMetaBuildRequest:
+    data_root: Path
+    temp_root: Path
+    mode: str
+    run_id: str
+
+    def __post_init__(self) -> None:
+        if self.mode not in VALID_MARKET_META_RUN_MODES:
+            raise ValueError(f"Unsupported market meta run mode: {self.mode}")
+
+    @property
+    def formal_db_path(self) -> Path:
+        return self.data_root / "market_meta.duckdb"
+
+    @property
+    def staging_db_path(self) -> Path:
+        return self.temp_root / "data" / self.run_id / "market_meta.duckdb"
+
+
+@dataclass(frozen=True)
+class MarketMetaBuildSummary:
+    run_id: str
+    mode: str
+    status: str
+    hard_fail_count: int
+    formal_db_path: str
+    staging_db_path: str
+    row_counts: dict[str, int]
+    checks: dict[str, str]
+    source_gaps: dict[str, str]
+    promoted: bool
 
     def as_dict(self) -> dict[str, Any]:
         return asdict(self)

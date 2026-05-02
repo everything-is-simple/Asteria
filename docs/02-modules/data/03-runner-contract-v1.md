@@ -2,7 +2,7 @@
 
 日期：2026-05-02
 
-状态：production-foundation released / execution day line materialized / daily incremental supported
+状态：production-foundation released / execution day line materialized / market_meta minimal formalized
 
 ## 1. 目的
 
@@ -11,7 +11,7 @@
 当前 `scripts/data/run_data_bootstrap.py` 已支持 bounded/full/audit-only/resume/daily_incremental
 的 Data foundation 实现；其中 `stock / none / full` 已通过 DuckDB native CSV bulk path
 正式物化到 live day execution line。`scripts/data/run_data_production_audit.py` 提供
-release audit。
+release audit，并已将 `market_meta.duckdb` 纳入 hard check。
 这不授权 Pipeline runtime 或下游施工。
 
 ## 2. 目标 runner
@@ -31,6 +31,7 @@ release audit。
 |---|---|
 | `scripts/data/run_data_bootstrap.py` | 从 TDX 离线 txt 执行 raw + market_base_day bounded bootstrap，并生成 dirty scope 与 checkpoint |
 | `scripts/data/run_legacy_data_import.py` | 从旧版 Lifespan raw/base DuckDB 导入 `stock / backward / day-week-month` 到 working DB；正式 promote 需后续审计卡 |
+| `scripts/data/run_market_meta_build.py` | 从正式 raw/base DB 推导最小 `market_meta.duckdb`，先 staging 后 audit/promote |
 
 ## 3. 输入输出合同
 
@@ -67,8 +68,11 @@ raw_market_reject_audit
 输入：
 
 ```text
-reference source files
-validated mapping inputs
+H:\Asteria-data\raw_market.duckdb
+H:\Asteria-data\market_base_day.duckdb
+H:\Asteria-data\market_base_week.duckdb
+H:\Asteria-data\market_base_month.duckdb
+working = H:\Asteria-temp\data\<run_id>\
 target = H:\Asteria-data\market_meta.duckdb
 ```
 
@@ -82,7 +86,14 @@ industry_classification
 universe_membership
 tradability_fact
 meta_run
+meta_schema_version
+meta_source_manifest
 ```
+
+当前 `run_market_meta_build.py` 支持 `full / bounded / audit-only`。`full` 与 `bounded`
+均先写 staging DB，审计通过后 promote 到正式路径；`audit-only` 只审计 existing
+`market_meta.duckdb`，不写业务事实。行业、ST、停牌和真实上市/退市状态仍是
+reference source gap，不得由 runner 推断或伪造。
 
 ### base build
 
@@ -167,7 +178,7 @@ Data Foundation runner 至少必须支持：
 | `resume` | 已支持复用 completed checkpoint，避免重复 promote 已完成 run | 扩展为 batch / source / date-window 级断点续跑 |
 | `audit-only` | 已返回只审计摘要，不写业务事实 | 扩展为正式 Data hard audit，不写正式事实 |
 | `segmented` | 参数已接受，当前仍走最小 bootstrap 路径 | 后续实现日期窗口和 symbol batch 分片语义 |
-| `full` | 可按当前 Data foundation 合同构建全量 source scope | 后续扩展 market_meta / index / block |
+| `full` | 可按当前 Data foundation 合同构建全量 source scope；`market_meta` 已支持正式 full build | 后续扩展 index / block |
 | `daily_incremental` | 已按 source hash/size 执行跳过或重算 | 后续接入 pipeline manifest |
 
 因此，当前实现可证明 Data bounded bootstrap support 已存在，并已支撑
@@ -279,5 +290,5 @@ Data Foundation runner 当前生产级地基放行要求：
 | uniqueness | 自然键无冲突 |
 | evidence | 构建与审计证据已落档 |
 
-当前 release 结论已推进到 `data-execution-price-line-materialization-20260502-01`；后续扩展
-`market_meta`、index/block 或全链路 Pipeline 必须另开卡。
+当前 release 结论已推进到 `data-market-meta-formalization-20260502-01`；后续扩展
+index/block、参考源行业/ST/停牌/上市退市或全链路 Pipeline 必须另开卡。

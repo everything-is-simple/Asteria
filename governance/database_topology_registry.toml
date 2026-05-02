@@ -10,10 +10,12 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-data-production-release-closeout-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-data-execution-price-line-materialization-20260502-01.zip",
+    "H:/Asteria-Validated/Asteria-data-market-meta-formalization-20260502-01.zip",
 ]
 release_evidence_index = "docs/04-execution/00-conclusion-index-v1.md"
 released_formal_dbs = [
     "raw_market.duckdb",
+    "market_meta.duckdb",
     "market_base_day.duckdb",
     "market_base_week.duckdb",
     "market_base_month.duckdb",
@@ -54,11 +56,12 @@ module_id = "data"
 grain = "reference"
 ledger_role = "metadata_fact"
 writer = "run_market_meta_build"
-allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+allowed_modes = ["bounded", "full", "audit-only"]
 checkpoint_policy = "reference_manifest_hash"
 checkpoint_key = ["reference_batch_id"]
 replay_scope = ["effective_date", "symbol"]
 promote_rule = "staging_audit_passed"
+coverage_policy = "minimal observable facts only; industry/ST/suspension/listing reference gaps retained"
 
 [[databases]]
 db_name = "market_base_day.duckdb"

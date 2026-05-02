@@ -41,6 +41,7 @@
 | `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip` | 最新 docs/code 快照 | 记录 Data formal promotion 与 MALF v1.3 formal-data closeout 后的仓库文档与代码基线 |
 | `H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip` | Data Foundation 首轮正式证据 | 证明 legacy stock backward day/week/month Data DB 已 promote |
 | `H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip` | MALF v1.3 formal-data 证据 | 证明 MALF day v1.3 已用正式 Data 输入通过 bounded proof |
+| `H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip` | Data market_meta 最小正式证据 | 证明 `market_meta.duckdb` 已按可证事实优先口径落地 |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 架构剖切面研究 | 支撑治理、主线、数据、编排四个切面的后续裁决 |
 
 裁决：
@@ -163,6 +164,7 @@ Alpha day bounded proof 已通过
 Signal day bounded proof 已通过
 MALF dense bar-level complete alignment closeout 已通过
 Data legacy formal promotion 已通过
+Data market meta formalization 已通过
 MALF v1.3 formal-data bounded closeout 已通过
 ```
 
@@ -175,6 +177,8 @@ Position freeze review reentry card
 MALF 当前 formal evidence 以
 `malf-v1-3-formal-rebuild-closeout-20260502-01` 为准；该证据已经承接 MALF v1.3
 day formal-data bounded proof，但 week/month 证明尚未执行。
+`market_meta.duckdb` 当前只放行从正式 raw/base 行情库推导的最小客观事实，不放行
+行业、ST、停牌或真实上市/退市参考事实。
 Signal bounded proof 已通过；Position freeze review 已登记 blocked；MALF complete
 alignment closeout 已被 v1.3 formal-data closeout supersede 为当前 MALF day 正式证据。
 下一卡只允许 Position freeze review reentry 的只读评审（review-only），不直接授权

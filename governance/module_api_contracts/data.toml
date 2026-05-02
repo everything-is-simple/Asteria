@@ -1,21 +1,23 @@
 module_id = "data"
 display_name = "Data Foundation"
-contract_version = "v1.production-foundation"
-status = "production_foundation_released"
+contract_version = "v1.market-meta-minimal"
+status = "production_foundation_released_market_meta_minimal"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
     "H:/Asteria-Validated/Asteria-docs-code-20260502-104932.zip",
     "H:/Asteria-Validated/Asteria-data-formal-promotion-evidence-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-data-execution-price-line-materialization-20260502-01.zip",
+    "H:/Asteria-Validated/Asteria-data-market-meta-formalization-20260502-01.zip",
 ]
-gate_state = "production foundation closeout plus execution day line materialization passed; market_meta remains future card"
-formal_db_permission = "released_raw_market_and_market_base_day_week_month_plus_day_execution_line; market_meta_requires_new_card"
+gate_state = "production foundation closeout plus execution day line materialization passed; market_meta minimal formalization passed"
+formal_db_permission = "released_raw_market_market_meta_and_market_base_day_week_month_plus_day_execution_line; market_meta_reference_gaps_retained"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
 resume_behavior = "resume from source manifest, checkpoint, or dirty scope"
 source_manifest_fields = ["source_path", "source_size_bytes", "source_mtime", "source_content_hash"]
 price_lines = ["analysis_price_line=backward", "execution_price_line=none"]
 production_closeout_run_id = "data-production-release-closeout-20260502-01"
 execution_line_materialization_run_id = "data-execution-price-line-materialization-20260502-01"
+market_meta_formalization_run_id = "data-market-meta-formalization-20260502-01"
 forbidden_inputs = ["legacy_downstream", "mock_formal_data"]
 forbidden_outputs = ["malf_semantics", "strategy_signal", "position_size", "portfolio_allocation", "order_intent"]
 
@@ -31,6 +33,46 @@ table = "raw_market_bar"
 natural_key = ["source_vendor", "source_symbol", "timeframe", "bar_dt", "price_line", "source_revision"]
 public_fields = ["symbol", "timeframe", "bar_dt", "open_px", "high_px", "low_px", "close_px", "volume", "amount"]
 version_fields = ["run_id", "schema_version"]
+
+[[official_outputs]]
+db_name = "market_meta.duckdb"
+table = "trade_calendar"
+natural_key = ["calendar_code", "trade_date"]
+public_fields = ["calendar_code", "trade_date", "is_open", "source_timeframe"]
+version_fields = ["run_id", "schema_version"]
+coverage_policy = "minimal_observable_calendar_from_market_base_day"
+
+[[official_outputs]]
+db_name = "market_meta.duckdb"
+table = "instrument_master"
+natural_key = ["instrument_id"]
+public_fields = ["instrument_id", "symbol", "exchange_code", "asset_type", "first_seen_date", "latest_seen_date"]
+version_fields = ["run_id", "schema_version"]
+coverage_policy = "observed_symbols_only; no full listing or delisting claim"
+
+[[official_outputs]]
+db_name = "market_meta.duckdb"
+table = "instrument_alias"
+natural_key = ["source_vendor", "source_symbol", "effective_date"]
+public_fields = ["source_vendor", "source_symbol", "instrument_id", "alias_kind", "source_path"]
+version_fields = ["run_id", "schema_version"]
+coverage_policy = "source_path_stem_alias_only"
+
+[[official_outputs]]
+db_name = "market_meta.duckdb"
+table = "universe_membership"
+natural_key = ["universe_name", "instrument_id", "effective_date"]
+public_fields = ["universe_name", "instrument_id", "effective_date", "membership_status"]
+version_fields = ["run_id", "schema_version"]
+coverage_policy = "stock_observed only"
+
+[[official_outputs]]
+db_name = "market_meta.duckdb"
+table = "tradability_fact"
+natural_key = ["instrument_id", "trade_date", "fact_name"]
+public_fields = ["instrument_id", "trade_date", "fact_name", "fact_value", "source_price_line", "source_adj_mode"]
+version_fields = ["run_id", "schema_version"]
+coverage_policy = "has_execution_bar only from execution_price_line=none"
 
 [[official_outputs]]
 db_name = "market_base_day.duckdb"

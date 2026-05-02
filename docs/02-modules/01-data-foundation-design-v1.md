@@ -58,8 +58,9 @@ flowchart LR
 ## 5. 当前裁决
 
 Data Foundation 已补齐 foundation six-doc draft，并已有最小 bounded bootstrap
-support 服务过 MALF day bounded proof 的输入准备；这不等于完整 Data Foundation
-runner、schema 或五库正式构建已经放行。
+support 服务过 MALF day bounded proof 的输入准备；后续 Data production release 已放行
+raw/base day-week-month 与 day execution line，`data-market-meta-formalization-20260502-01`
+已放行最小正式 `market_meta.duckdb`。
 
 当前已完成的第一主线放行事实是：
 
@@ -67,18 +68,20 @@ runner、schema 或五库正式构建已经放行。
 MALF day bounded proof passed
 ```
 
-MALF day bounded proof 的最小输入契约仍依赖：
+当前 Data Foundation 可提供：
 
 ```text
 market_meta.duckdb
 market_base_day.duckdb
+market_base_week.duckdb
+market_base_month.duckdb
 ```
 
 下一步只允许进入：
 
 ```text
-Alpha freeze review
+Position freeze review reentry
 ```
 
-Data Foundation 仍不得被当作策略模块，也不得借 Alpha freeze review 扩大为正式
-Data 全量施工卡。
+Data Foundation 仍不得被当作策略模块；market_meta 最小正式化不授权 Position
+construction、下游施工或全链路 Pipeline。

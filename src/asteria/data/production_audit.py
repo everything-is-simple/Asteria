@@ -6,6 +6,7 @@ from typing import Any
 import duckdb
 
 from asteria.data.contracts import DataProductionAuditSummary
+from asteria.data.market_meta import audit_market_meta_database
 
 BASE_DATABASES = (
     "market_base_day.duckdb",
@@ -40,6 +41,12 @@ def run_data_production_audit(
         ).items():
             checks[f"{db_name}:{check_name}"] = status
             hard_fail_count += status == "failed"
+
+    meta_checks, meta_failures, _meta_row_counts = audit_market_meta_database(
+        data_root / "market_meta.duckdb"
+    )
+    checks.update(meta_checks)
+    hard_fail_count += meta_failures
 
     status = "passed" if hard_fail_count == 0 else "failed"
     return DataProductionAuditSummary(

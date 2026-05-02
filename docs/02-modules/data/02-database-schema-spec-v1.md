@@ -2,12 +2,12 @@
 
 日期：2026-05-02
 
-状态：production-foundation released / execution day line live / market_meta future card
+状态：production-foundation released / execution day line live / market_meta minimal formalized / reference gaps retained
 
 当前裁决：四个正式 Data DB 已作为本版全量底座放行；
 `market_base_day.duckdb` 已 live 物化 `stock / none / execution_price_line`：
-`raw_market.duckdb` 与 `market_base_day/week/month.duckdb`。本卡补齐
-`execution_price_line = none`、每日增量、断点续传和生产级审计合同。
+`raw_market.duckdb` 与 `market_base_day/week/month.duckdb`。`market_meta.duckdb`
+已按最小可证事实口径落地；行业、ST、停牌和真实上市/退市状态仍保留为 source gap。
 
 ## 1. 目标拓扑
 
@@ -89,6 +89,11 @@ schema_version
 | `tradability_fact` | `instrument_id + trade_date + fact_name` |
 | `meta_run` | `meta_run_id` |
 | `meta_schema_version` | `schema_version` |
+
+当前正式 schema 额外落地 `meta_source_manifest`，自然键为
+`source_db_name + source_table + run_id`，用于登记本次 meta build 消费的正式输入快照。
+
+`industry_classification` 当前允许 0 行；这表示 source gap，而不是 released coverage。
 
 ## 4. market_base_{day,week,month}.duckdb
 
