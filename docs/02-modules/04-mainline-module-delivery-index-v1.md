@@ -42,8 +42,8 @@ H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip
 MALF 的语义权威来自：
 
 ```text
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3\
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4\
 ```
 
 该资产包含：
@@ -51,17 +51,18 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3\
 | 文件 | Asteria 地位 |
 |---|---|
 | `MALF_00_Three_Documents_Bridge_v1_2.md` | 三文档关系桥接 |
-| `MALF_01_Core_Definitions_Theorems_v1_3.md` | Core 结构真值 |
+| `MALF_01_Core_Definitions_Theorems_v1_4.md` | Core 结构真值 |
 | `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_2.md` | Lifespan 统计真值 |
 | `MALF_03_System_Service_Interface_v1_2.md` | WavePosition 服务接口真值 |
-| `MALF_00_Three_Documents_Bridge_v1_3.md` | v1.3 三文档关系与边界 |
-| `MALF_01_Core_Definitions_Theorems_v1_3.md` | v1.3 Core 结构真值 |
-| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_3.md` | v1.3 Lifespan 统计与 birth descriptors |
-| `MALF_03_System_Service_Interface_v1_3.md` | v1.3 WavePosition 服务接口与 trace 字段 |
-| `MALF_04_Core_Chart_View_v1_3.md` | v1.3 Core 图表辅助理解 |
-| `MALF_05_Lifespan_Chart_View_v1_3.md` | v1.3 Lifespan 图表辅助理解 |
-| `MALF_06_Service_Chart_View_v1_3.md` | v1.3 Service 图表辅助理解 |
-| `MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_3.md` | v1.3 定义/定理评审与实现差异 |
+| `MALF_00_Three_Documents_Bridge_v1_4.md` | v1.4 包入口、版本关系与治理边界 |
+| `MALF_01_Core_Definitions_Theorems_v1_4.md` | 继承 v1.3 的 Core 结构真值 |
+| `MALF_01B_Core_Operational_Boundary_Rules_v1_4.md` | v1.4 Core 操作边界规则 |
+| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_4.md` | 继承 v1.3 的 Lifespan 统计与 birth descriptors |
+| `MALF_03_System_Service_Interface_v1_4.md` | 继承 v1.3 的 WavePosition 服务接口与 trace 字段 |
+| `MALF_04_Core_Chart_View_v1_4.md` | v1.4 Core 图表辅助理解 |
+| `MALF_05_Lifespan_Chart_View_v1_4.md` | v1.4 Lifespan 图表辅助理解 |
+| `MALF_06_Service_Chart_View_v1_4.md` | v1.4 Service 图表辅助理解 |
+| `MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_4.md` | 继承 v1.3 定义/定理评审，并由 01B 补足工程边界 |
 
 当前执行权威补充：
 
@@ -85,7 +86,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3\
 | 顺序 | 模块 | 文档位置 | 文档状态 | 是否允许施工 | 等待条件 |
 |---:|---|---|---|---:|---|
 | 0 | Data Foundation | `docs/02-modules/data/` | production foundation released / market_meta minimal formalized | 是，foundation maintenance only | 不占主线施工位；reference gaps retained |
-| 1 | MALF | `docs/02-modules/malf/` | frozen / complete alignment closeout passed / v1.3 sync plan prepared | 否 | day dense evidence 已通过；v1.3 代码修订、week/month 或 full build 另需新卡 |
+| 1 | MALF | `docs/02-modules/malf/` | frozen / v1.3 day formal-data closeout passed / v1.4 operational boundary authority synced | 否 | day runtime evidence 已通过；v1.4 实现同步、week/month 或 full build 另需新卡 |
 | 2 | Alpha | `docs/02-modules/alpha/` | frozen six-doc set / bounded proof passed | 否 | full build 另需新卡 |
 | 3 | Signal | `docs/02-modules/signal/` | frozen six-doc set / bounded proof passed | 否 | full build 另需新卡 |
 | 4 | Position | `docs/02-modules/position/` | pre-gate six-doc draft | 是，review-only | 当前只允许 Position freeze review |

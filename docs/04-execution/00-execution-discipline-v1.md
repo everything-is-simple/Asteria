@@ -20,8 +20,8 @@
 - `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md`
 - `H:\Asteria-Validated\Asteria-docs-code-20260428-214427.zip`
 - `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip`
-- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3`
-- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip`
 - `H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip`
 
@@ -29,8 +29,9 @@
 closeout（闭环报告）进入可恢复、
 可审计链条；因此执行记录不是旁路说明，而是门禁状态的一部分。
 
-MALF v1.3 authority package 已由 `malf-v1-3-formal-rebuild-closeout-20260502-01`
-承接为当前 day formal-data evidence；week/month 证明、full build 或下游施工仍必须另开卡。
+MALF v1.4 authority package 已形成 Core operational boundary 权威输入；当前 runtime
+day formal-data evidence 仍由 `malf-v1-3-formal-rebuild-closeout-20260502-01` 承接。
+week/month 证明、v1.4 implementation sync、full build 或下游施工仍必须另开卡。
 
 ## 2. 闭环顺序
 

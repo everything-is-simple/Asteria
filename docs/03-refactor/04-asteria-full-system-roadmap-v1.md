@@ -6,20 +6,21 @@
 
 当前基线：`MALF day bounded proof`、`Alpha freeze review`、`Alpha bounded proof`、
 `Signal freeze review`、`Signal bounded proof` 与 `MALF complete alignment closeout`
-已通过；MALF v1.3 权威包、code-only revision 与 day formal-data bounded
-rebuild closeout 已形成。当前策略主线下一步仍是 `Position freeze review reentry`
-的只读评审（review-only）。
+已通过；MALF v1.3 code-only revision 与 day formal-data bounded rebuild closeout 已形成。
+MALF v1.4 权威包已补入 Core operational boundary rules，但不声明 v1.4 runtime proof
+passed。当前策略主线下一步仍是 `Position freeze review reentry` 的只读评审（review-only）。
 
 地基轨道 `data-formal-promotion-evidence-20260502-01` 的 allowed next action
 `MALF v1.3 formal rebuild closeout` 已由当前 MALF v1.3 closeout 闭环。
+MALF v1.4 authority sync 只改变后续实现同步的权威输入，不改变 allowed next action。
 
 本路线图依据以下权威资产刷新：
 
 ```text
 H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md
 H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip
 H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip
 H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
 ```
@@ -98,6 +99,7 @@ Pipeline 只调度和记录
 - [x] Release gate（放行门禁）通过后，只授权 `Position freeze review`。
 - [x] Position freeze review 已登记 blocked，当前回退到 `MALF Lifespan dense bar snapshot resolution`。
 - [x] MALF Lifespan dense bar snapshot resolution 已通过，当前只授权 `Position freeze review reentry`。
+- [x] MALF v1.4 Core operational boundary authority sync 已通过；只作为后续 MALF 实现同步输入，不打开下游施工。
 
 ## 7. 阶段 4：Position 冻结 + 边界证明
 
@@ -183,8 +185,9 @@ Pipeline 只调度和记录
 
 ## 16. 前提假设
 
-- 当前事实基线以 `Data legacy formal promotion 已通过`、`MALF v1.3 day formal-data bounded closeout 已通过`、
+- 当前事实基线以 `Data foundation production baseline sealed`、`MALF v1.3 day formal-data bounded closeout 已通过`、
   `Alpha bounded proof 已通过` 和 `Signal bounded proof 已通过` 为准。
+- MALF v1.4 是当前语义与操作边界权威包；runtime proof、week/month proof 和 full build 仍需另开卡。
 - 当前下一卡固定为 `Position freeze review reentry`，不是 Position construction。
 - Data Foundation 是地基轨道，不进入策略主线排序。
 - Pipeline 是编排与记录轨道，不进入业务主线排序。

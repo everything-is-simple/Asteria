@@ -15,8 +15,8 @@
 
 - `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md`
 - `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip`
-- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3`
-- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip`
 - `H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-data-production-release-closeout-20260502-01.zip`
@@ -37,6 +37,7 @@
 - `MALF complete alignment closeout passed`
 - `Data legacy formal promotion passed`
 - `MALF v1.3 formal-data bounded closeout passed`
+- `MALF v1.4 Core operational boundary authority sync passed`
 - `Data production foundation closeout passed`
 - `Data execution price line materialization passed`
 - `Data market meta formalization passed`
@@ -45,7 +46,8 @@
 - 下一步允许动作：`Position freeze review reentry`
 - Data 已封为主线输入底座；后续 Data 只能通过明确 maintenance card 扩展。
 - `market_meta.duckdb` 已放行最小客观事实与可匹配正式 Data 标的的申万 2021 当前行业快照；ST、停牌、真实上市/退市状态和历史行业沿革仍需后续参考源卡。
-- MALF v1.3 closeout 只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；week/month proof 仍需另开卡。
+- MALF v1.4 是 Core operational boundary 权威定义升级；不等于 runtime proof passed。
+- MALF v1.3 closeout 仍只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；week/month proof 仍需另开卡。
 - Signal bounded proof 只放行 bounded `signal.duckdb` 表面；不授权 Signal full build、Position construction、下游施工或全链路 pipeline。
 
 硬规则：

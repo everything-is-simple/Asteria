@@ -36,8 +36,8 @@
 
 | 资产 | 地位 | 用途 |
 |---|---|---|
-| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip` | MALF v1.3 语义权威 | 定义 current effective guard、transition boundary、birth descriptors 与 Service 追溯字段 |
-| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3\` | MALF v1.3 语义权威目录 | 供文档桥接、审计和实现逐条引用 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip` | MALF v1.4 语义与操作边界权威 | 继承 v1.3 current effective guard、transition boundary、birth descriptors，并新增 Core operational boundary rules |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4\` | MALF v1.4 语义与操作边界权威目录 | 供文档桥接、审计和后续实现同步逐条引用 |
 | `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip` | 最新 docs/code 快照 | 记录 Data formal promotion 与 MALF v1.3 formal-data closeout 后的仓库文档与代码基线 |
 | `H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip` | Data Foundation 首轮正式证据 | 证明 legacy stock backward day/week/month Data DB 已 promote |
 | `H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip` | MALF v1.3 formal-data 证据 | 证明 MALF day v1.3 已用正式 Data 输入通过 bounded proof |
@@ -178,9 +178,10 @@ MALF v1.3 formal-data bounded closeout 已通过
 Position freeze review reentry card
 ```
 
-MALF 当前 formal evidence 以
+MALF 当前 runtime formal evidence 以
 `malf-v1-3-formal-rebuild-closeout-20260502-01` 为准；该证据已经承接 MALF v1.3
-day formal-data bounded proof，但 week/month 证明尚未执行。
+day formal-data bounded proof，但 week/month 证明尚未执行。MALF v1.4 当前只是
+Core operational boundary authority sync，不声明 v1.4 runtime proof passed。
 Data Foundation 当前已封为主线输入底座；`market_meta.duckdb` 已放行从正式 raw/base
 行情库推导的最小客观事实，并部分释放可匹配正式 Data 标的的申万 2021 当前行业快照；
 ST、停牌、真实上市/退市和历史行业沿革仍不放行，后续只能通过明确 maintenance card 扩展。

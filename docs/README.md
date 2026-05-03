@@ -28,22 +28,23 @@ MALF 权威定义包位于：
 
 ```text
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4
 ```
 
 其中：
 
 | 文件 | 职责 |
 |---|---|
-| `MALF_00_Three_Documents_Bridge_v1_3.md` | v1.3 三份文件关联总纲 |
-| `MALF_01_Core_Definitions_Theorems_v1_3.md` | Core 结构定义与定理 |
-| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_3.md` | 波段统计学定义与 birth descriptors |
-| `MALF_03_System_Service_Interface_v1_3.md` | MALF 对系统其它模块的只读服务接口 |
-| `MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_3.md` | v1.3 定义/定理评审与实现差异 |
+| `MALF_00_Three_Documents_Bridge_v1_4.md` | v1.4 包入口、版本关系与治理边界 |
+| `MALF_01_Core_Definitions_Theorems_v1_4.md` | 继承 v1.3 的 Core 结构定义与定理 |
+| `MALF_01B_Core_Operational_Boundary_Rules_v1_4.md` | v1.4 新增 Core 操作边界规则 |
+| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_4.md` | 继承 v1.3 的波段统计学定义与 birth descriptors |
+| `MALF_03_System_Service_Interface_v1_4.md` | 继承 v1.3 的 MALF 只读服务接口 |
+| `MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_4.md` | 继承 v1.3 评审结论，并由 01B 补足工程边界 |
 
-v1.3 是新的语义升级权威包；当前代码实现仍以已通过的
-`malf-complete-alignment-closeout-20260430-01` 为 formal evidence，待后续 MALF v1.3
-代码修订卡同步。
+v1.4 是当前 MALF 语义与 Core 操作边界权威包；当前 runtime formal evidence 仍以
+`malf-v1-3-formal-rebuild-closeout-20260502-01` 为 day bounded proof。v1.4 不声明
+runtime proof passed，后续实现同步与 formal proof 必须另开卡。
 
 Validated 资产清单：
 
@@ -70,7 +71,8 @@ H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研
 
 - [Asteria 执行结论索引](H:/Asteria/docs/04-execution/00-conclusion-index-v1.md)
 
-当前已通过 `Signal bounded proof` 与 `MALF complete alignment closeout`；下一步只允许
+当前已通过 `Signal bounded proof`、`MALF v1.3 formal-data bounded closeout`，并完成
+`MALF v1.4 Core operational boundary authority sync`；下一步只允许
 `Position freeze review reentry / review-only`。Signal full build、Position 施工、下游模块
 施工和全链路 pipeline 必须等待后续 release gate。
 

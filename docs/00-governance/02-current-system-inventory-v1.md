@@ -28,7 +28,7 @@
 | `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip` | 当前系统 docs/code 快照锚点 |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 治理、主线、数据、编排四切面研究输入 |
 | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip` | MALF 历史语义锚点 |
-| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip` | 当前 MALF v1.3 语义权威 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip` | 当前 MALF v1.4 语义与 Core 操作边界权威 |
 | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` | MALF day bounded proof 证据 |
 | `H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip` | Data legacy formal promotion 证据 |
 | `H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip` | 当前 MALF day v1.3 formal-data evidence |
@@ -316,9 +316,9 @@ environment proof + hard governance proof + docs authority checks + Data bounded
 | 逻辑总账 | 多个 DuckDB 视为统一历史总账的分账本体系 |
 | source authority | TDX / 正式生产源进入新 raw；旧 raw/base 只读对账；旧下游库只做旁证 |
 | 第一施工模块 | MALF |
-| 当前主线放行 | MALF day bounded proof passed |
-| 当前治理放行 | governance release gate closure 与 docs authority refresh passed |
-| 当前允许下一卡 | Alpha freeze review |
+| 当前主线放行 | MALF v1.3 day formal-data bounded closeout passed |
+| 当前治理放行 | governance release gate closure、docs authority refresh 与 MALF v1.4 authority sync passed |
+| 当前允许下一卡 | Position freeze review reentry |
 
 ## 13. 当前数据库状态
 
@@ -343,15 +343,16 @@ environment proof + hard governance proof + docs authority checks + Data bounded
 | 5 | `malf_service_day.duckdb` |
 | 6 | `pipeline.duckdb` |
 
-其中 MALF day 三库已由 bounded proof 创建并通过 release evidence 追溯；其余库仍需等待对应 gate。
+其中 MALF day 三库已由 v1.3 formal-data bounded closeout 证明并通过 release evidence 追溯；
+v1.4 当前只升级权威定义和操作边界，不新建或重放 runtime DB。
 
 ## 14. 当前明确没有的东西
 
 | 尚未拥有 | 原因 |
 |---|---|
 | MALF week/month 正式构建 | 需在 day 放行后另开复制/扩展卡 |
-| 正式 Data Foundation builder | Data 仍未冻结；当前只有 bounded bootstrap support，不抢第一施工位 |
-| Alpha/Signal 实现 | 等 MALF WavePosition 放行 |
+| v1.4 runtime proof | 本卡只同步权威定义与治理锚点；实现同步、formal proof 需另开卡 |
+| Alpha/Signal full build | 等各自 full build gate，不能由 MALF v1.4 authority sync 直接授权 |
 | Position/Portfolio/Trade/System 实现 | 等上游模块依次放行 |
 | Pipeline 全链路运行 | Pipeline 不能先于业务模块定义语义 |
 | 除 MALF day 三库外的正式 DuckDB 文件 | 需等待对应模块 gate |
@@ -362,30 +363,30 @@ environment proof + hard governance proof + docs authority checks + Data bounded
 当前唯一自然下一步：
 
 ```text
-Alpha freeze review
+Position freeze review reentry
 ```
 
 该评审目标：
 
 | 目标 | 状态 |
 |---|---|
-| MALF Contract Review | 确认 Alpha 只读消费 WavePosition，不回写 MALF |
-| Alpha Six-doc Review | 基于已放行 WavePosition 重审 Alpha 六件套 |
-| Freeze Decision | 只在 review 通过后更新 Alpha 冻结状态 |
-| Build Card | 若 Alpha 冻结，再写下一张 Alpha 施工卡 |
+| Position Contract Review | 确认 Position 只读消费 formal signal，不回写 Signal/Alpha/MALF |
+| Position Six-doc Review | 基于已放行 Signal bounded proof 重审 Position 六件套 |
+| Freeze Decision | 只在 review 通过后更新 Position 冻结状态 |
+| Build Card | 若 Position 冻结，再写下一张 Position bounded proof 卡 |
 
 ## 16. 一句话总结
 
 当前 Asteria 已经拥有：
 
 ```text
-名字、根目录、环境、治理规则、主线图、数据库拓扑、历史总账协议、MALF 冻结文档、机器可读治理 registry、Data bounded bootstrap support、MALF day bounded proof、release evidence、文档权威链检查、治理检查和基础测试。
+名字、根目录、环境、治理规则、主线图、数据库拓扑、历史总账协议、MALF v1.4 权威定义包、机器可读治理 registry、Data production baseline、MALF v1.3 day formal-data bounded closeout、release evidence、文档权威链检查、治理检查和基础测试。
 ```
 
 当前 Asteria 还没有：
 
 ```text
-正式 Data Foundation builder、MALF week/month 放行、Alpha freeze decision、下游主线实现、pipeline runtime 或任何未经放行证据支撑的正式主线运行。
+MALF v1.4 runtime proof、MALF week/month 放行、Position freeze decision、Position 及下游主线实现、pipeline runtime 或任何未经放行证据支撑的正式主线运行。
 ```
 
 这正是本轮重构想要的状态：先把地基、边界和证据摆正，再让第一个主线模块进入施工。

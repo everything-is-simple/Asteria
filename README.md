@@ -34,8 +34,8 @@ MALF = Market Lifespan Framework
 ```text
 H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md
 H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip
 H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip
 H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-production-release-closeout-20260502-01.zip
@@ -60,7 +60,8 @@ Data Foundation 已完成首轮 `stock / backward / day-week-month` legacy forma
 Data 标的的申万 2021 当前行业快照；`data-foundation-production-baseline-seal-20260502-01`
 已将 Data 标为主线输入底座封版，后续 Data 只能通过 maintenance card 扩展；ST、停牌、
 真实上市/退市状态与历史行业沿革仍是参考源缺口；
-MALF v1.3 已用正式 Data day 输入完成 bounded formal-data closeout。当前只授权
+MALF v1.4 authority package 已形成，补足 Core operational boundary rules；
+当前 runtime evidence 仍为 MALF v1.3 day formal-data bounded closeout。当前只授权
 Position freeze review reentry 的只读评审（review-only），不授权 Alpha full build、Signal
 full build、Position 施工、下游施工或全链路 pipeline。MALF week/month 证明尚未执行。
 仍不能宣称全主线数据已经齐全或完整证券主数据已齐。

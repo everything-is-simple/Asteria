@@ -7,8 +7,8 @@
 Asteria 当前 MALF 设计锚点为：
 
 ```text
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip
 ```
 
 v1.2 作为历史 closeout 锚点保留：
@@ -18,23 +18,33 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
 ```
 
-v1.3 定义清晰、定理自洽，已由
-`malf-v1-3-formal-rebuild-closeout-20260502-01` 承接为当前 MALF day formal-data
-bounded evidence；week/month 证明尚未执行。
+v1.4 继承 v1.3 定义清晰、定理自洽的语义主线，并新增 Core operational boundary
+rules。当前 runtime evidence 仍由 `malf-v1-3-formal-rebuild-closeout-20260502-01`
+承接为 MALF day formal-data bounded evidence；v1.4 不声明 runtime proof passed，
+week/month 证明尚未执行。
 
 | 文件 | Asteria 内部地位 |
 |---|---|
 | `MALF_00_Three_Documents_Bridge_v1_2.md` | v1.2 三文件关系定义；当前已通过 closeout 的历史 baseline |
-| `MALF_01_Core_Definitions_Theorems_v1_3.md` | Core 真值定义；v1.2 baseline 已引用同名 Core 语义 |
+| `MALF_01_Core_Definitions_Theorems_v1_4.md` | Core 真值定义；v1.2 baseline 已引用同名 Core 语义 |
 | `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_2.md` | v1.2 Lifespan 统计定义；当前已通过 closeout 的历史 baseline |
 | `MALF_03_System_Service_Interface_v1_2.md` | v1.2 Service 接口定义；当前已通过 closeout 的历史 baseline |
-| `MALF_00_Three_Documents_Bridge_v1_3.md` | v1.3 三文件关系与边界 |
-| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_3.md` | Lifespan 统计定义与 birth descriptors |
-| `MALF_03_System_Service_Interface_v1_3.md` | Service 接口定义与 transition trace |
-| `MALF_04_Core_Chart_View_v1_3.md` | Core 图表辅助理解 |
-| `MALF_05_Lifespan_Chart_View_v1_3.md` | Lifespan 图表辅助理解 |
-| `MALF_06_Service_Chart_View_v1_3.md` | Service 图表辅助理解 |
-| `MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_3.md` | v1.3 评审结论与实现差异 |
+| `MALF_00_Three_Documents_Bridge_v1_3.md` | v1.3 历史语义锚点；由 v1.4 baseline 继承 |
+| `MALF_01_Core_Definitions_Theorems_v1_3.md` | v1.3 历史 Core 语义锚点；由 v1.4 baseline 继承 |
+| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_3.md` | v1.3 历史 Lifespan 语义锚点；由 v1.4 baseline 继承 |
+| `MALF_03_System_Service_Interface_v1_3.md` | v1.3 历史 Service 语义锚点；由 v1.4 baseline 继承 |
+| `MALF_04_Core_Chart_View_v1_3.md` | v1.3 历史 Core 图表锚点；由 v1.4 baseline 继承 |
+| `MALF_05_Lifespan_Chart_View_v1_3.md` | v1.3 历史 Lifespan 图表锚点；由 v1.4 baseline 继承 |
+| `MALF_06_Service_Chart_View_v1_3.md` | v1.3 历史 Service 图表锚点；由 v1.4 baseline 继承 |
+| `MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_3.md` | v1.3 历史评审锚点；由 v1.4 baseline 继承 |
+| `MALF_00_Three_Documents_Bridge_v1_4.md` | v1.4 包入口、版本关系与治理边界 |
+| `MALF_01B_Core_Operational_Boundary_Rules_v1_4.md` | v1.4 Core 操作边界规则 |
+| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_4.md` | 继承 v1.3 的 Lifespan 统计定义与 birth descriptors |
+| `MALF_03_System_Service_Interface_v1_4.md` | 继承 v1.3 的 Service 接口定义与 transition trace |
+| `MALF_04_Core_Chart_View_v1_4.md` | Core 图表辅助理解 |
+| `MALF_05_Lifespan_Chart_View_v1_4.md` | Lifespan 图表辅助理解 |
+| `MALF_06_Service_Chart_View_v1_4.md` | Service 图表辅助理解 |
+| `MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_4.md` | 继承 v1.3 评审结论，并由 01B 补足工程边界 |
 
 `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip` 是本桥接页的当前
 repo 快照基线；快照之后的新事实必须继续由 `docs/04-execution/` 执行闭环和
@@ -76,6 +86,7 @@ MALF 在 Asteria 中按 timeframe 拆为三库：
 | Current Effective Guard | v1.3 已在 Core builder 与 break 语义中承接 |
 | Transition Boundary | v1.3 已写入 `malf_transition_ledger` 与 Service trace |
 | Progress Confirmation | v1.3 已在 candidate / new wave creation 逻辑中承接 |
+| Operational Boundary Rules | v1.4 已补入权威定义；runtime 实现同步需另开卡 |
 
 ## 5. Lifespan 必须实现的对象
 
@@ -131,6 +142,9 @@ Pipeline 全链路和 Alpha 代码施工仍需要后续卡。
 截至 2026-05-02，`malf-v1-3-formal-rebuild-closeout-20260502-01` 已用正式
 `market_base_day.duckdb` 输入完成 MALF v1.3 day formal-data bounded proof，并取代旧
 dense / hard-audit evidence 作为当前 MALF day formal evidence。week/month 证明尚未执行。
+
+截至 2026-05-03，`MALF_Three_Part_Design_Set_v1_4` 已形成 Core operational boundary
+authority sync；该同步只升级权威定义与治理锚点，不创建 v1.4 runtime proof。
 
 ## 9. 必须验收的不变量
 

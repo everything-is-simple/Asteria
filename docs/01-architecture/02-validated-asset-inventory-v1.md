@@ -18,7 +18,7 @@
 | 路径 | 资产性质 | 当前用途裁决 |
 |---|---|---|
 | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` | MALF 历史权威设计 | 作为 complete alignment closeout 的历史语义锚点保留 |
-| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3` | MALF v1.3 当前语义权威设计 | 作为当前 MALF day formal-data bounded closeout 的语义权威 |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4` | MALF v1.4 当前语义与操作边界权威设计 | 作为后续 MALF Core 实现同步的权威输入；当前 runtime evidence 仍为 v1.3 closeout |
 | `H:\Asteria-Validated\2.backups` | 历史 validated evidence 冷归档区 | 存放旧 execution zip、旧 docs/code 快照和历史设计包压缩包；repo evidence index 可直接指向该目录 |
 | `H:\Asteria-Validated\README.md` | Validated 根目录人读索引 | 声明 Validated 资产区职责、当前权威锚点和禁止用途 |
 | `H:\Asteria-Validated\validated-asset-manifest-20260429-01.json` | Validated 根目录机器清单 | 记录顶层资产角色、大小、时间和 SHA256 |
@@ -46,19 +46,21 @@
 路径：
 
 ```text
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4
 ```
 
 用途：
 
 1. `MALF-Core` 的定义与定理权威。
-2. `MALF-Lifespan-Stats` 的统计学权威。
-3. `MALF-System-Service` 的下游接口权威。
+2. `MALF-Core` 的操作边界权威：event ordering、pivot rule version、strict compare、candidate refresh、initial reset、snapshot、replay determinism。
+3. `MALF-Lifespan-Stats` 的统计学权威。
+4. `MALF-System-Service` 的下游接口权威。
 
 裁决：
 
 ```text
-v1.2 是历史锚点；v1.3 是当前 MALF day formal-data bounded closeout 已承接的语义权威。
+v1.2 是历史锚点；v1.3 是当前 MALF day formal-data bounded closeout 已承接的 runtime evidence；
+v1.4 是当前 MALF Core 操作边界权威，不声明 runtime proof passed。
 ```
 
 ### 3.2 A 股市场参考资料
@@ -106,7 +108,8 @@ H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip
 4. `20260429-130309` 作为三天重构后的当前系统文档与代码快照，必须结合
    `malf-authority-compatibility-audit-20260429-01` 解释其没有偏移 MALF 权威。
 5. `20260502-101006` 作为当前最新系统文档与代码快照，必须结合 Data formal
-   promotion（正式提升证据）与 MALF v1.3 formal-data closeout（正式数据闭环）解释其门禁状态。
+   promotion（正式提升证据）、MALF v1.3 formal-data closeout（正式数据闭环）与
+   MALF v1.4 authority sync（权威边界升级）解释其门禁状态。
 6. `Asteria_System_Design_Set_v1_0` 是当前系统全模块设计整理包，明确记录 MALF
    frozen、Data foundation contract、下游 pre-gate 的当前事实。
 
@@ -152,6 +155,8 @@ H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
    Data DB promotion；该 Data 证据不声明 full Data release，也不打开下游施工。
 9. 证明 MALF v1.3 已用正式 Data day 输入完成 bounded formal-data proof；该证据不声明
    week/month proof 已完成，也不打开 Position construction。
+10. 证明 MALF v1.4 authority package 已补足 Core operational boundary rules；该资产不声明
+   v1.4 runtime proof 已完成，也不打开 Position construction。
 
 裁决：
 
@@ -301,7 +306,7 @@ H:\Asteria-Validated\Market-Average-Lifespan-system\marketlifespan-quant\system-
 
 ### 6.1 现在就该用
 
-1. 把 `MALF_Three_Part_Design_Set_v1_3` 作为当前 MALF 语义权威输入。
+1. 把 `MALF_Three_Part_Design_Set_v1_4` 作为当前 MALF 语义权威输入。
 2. 把 `battle-tested-lessons-core-data-malf-20260403.md` 作为 `data / malf` 设计评审旁证。
 3. 把 `battle-tested-lessons-all-modules-and-mainline-bridging-20260408.md` 作为未来下游模块边界参考。
 4. 把 `A股市场` 与 `申万行业分类` 作为 `market_meta` 的 reference 资料池。

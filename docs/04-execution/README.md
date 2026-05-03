@@ -17,13 +17,14 @@
 - `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip`
 - `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0`
 - `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip`
-- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3`
-- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4`
+- `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip`
 - `H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip`
 
 当前已通过 `Signal bounded proof`、Data legacy formal promotion 与 `MALF v1.3
-formal-data bounded closeout`。唯一允许推进的业务动作是 Position freeze review
+formal-data bounded closeout`，并完成 `MALF v1.4 Core operational boundary authority sync`。
+唯一允许推进的业务动作仍是 Position freeze review
 reentry 的只读评审（review-only）。Alpha full build、Signal full build、Position
 施工和下游模块施工仍未放行。
 
