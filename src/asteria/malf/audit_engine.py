@@ -361,9 +361,16 @@ def build_audit_rows(
         "source_lifespan_run_id": source_lifespan_run_id,
         "timeframe": request.timeframe,
         "schema_version": request.schema_version,
+        "pivot_detection_rule_version": request.pivot_detection_rule_version,
+        "core_event_ordering_version": request.core_event_ordering_version,
+        "price_compare_policy": request.price_compare_policy,
+        "epsilon_policy": request.epsilon_policy,
         "hard_fail_count": hard_fail_count,
         "published_row_count": _count_for_run(service_db, "malf_wave_position", request.run_id),
         "core_wave_count": _count_for_run(core_db, "malf_wave_ledger", source_core_run_id),
+        "core_snapshot_count": _count_for_run(
+            core_db, "malf_core_state_snapshot", source_core_run_id
+        ),
         "lifespan_snapshot_count": _count_for_run(
             lifespan_db, "malf_lifespan_snapshot", source_lifespan_run_id
         ),

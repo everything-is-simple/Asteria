@@ -2,16 +2,17 @@
 
 日期：2026-04-30
 
-状态：frozen / day bounded proof passed / complete alignment closeout passed
+状态：frozen / v1.3 formal-data bounded closeout passed / v1.4 day runtime sync code passed / formal rebuild pending
 
 ## 1. Runner 目标
 
 MALF runner 必须支持 bounded proof 先行，再进入 segmented / full / resume。第一阶段只执行 day。
 `audit-only` 仅用于 audit runner，不用于 Core / Lifespan / Service build runner。
 
-当前待修 gap：build path 必须显式拒绝 `audit-only` 写业务表；`segmented` 必须校验
-symbol range、batch id 或等价 segmented scope。该修订纳入
-`malf-v1-3-authority-sync-code-revision-20260501-01`，不改变当前 closeout 结论。
+当前 runtime sync 结果：build path 已显式拒绝 `audit-only` 写业务表；`segmented`
+已校验 scope；Core build 同时承载 `pivot_detection_rule_version`、
+`core_event_ordering_version`、`price_compare_policy`、`epsilon_policy`，并按
+bar-level break + pivot-confirmation 组合事件流运行。
 
 ## 2. Runner 列表
 
@@ -80,6 +81,10 @@ segmented scope，也必须 fail fast。
 | `--end-dt` | bounded 可选条件 |
 | `--symbol-limit` | bounded 可选条件 |
 | `--schema-version` | 必填 |
+| `--pivot-detection-rule-version` | 必填，记录 pivot detection 规则版本 |
+| `--core-event-ordering-version` | 必填，记录 bar 内事件顺序 manifest 版本 |
+| `--price-compare-policy` | 必填，当前为 `strict` |
+| `--epsilon-policy` | 必填，当前为 `none_after_price_normalization` |
 | `--rule-version` | Core 或 Lifespan 必填 |
 | `--service-version` | Service 必填 |
 

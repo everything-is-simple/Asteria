@@ -23,6 +23,10 @@ def main() -> int:
     parser.add_argument("--schema-version", default=MALF_SCHEMA_VERSION)
     parser.add_argument("--rule-version", required=True)
     parser.add_argument("--sample-version", required=True)
+    parser.add_argument("--pivot-detection-rule-version", default="pivot-rule-fractal-1bar-v1")
+    parser.add_argument("--core-event-ordering-version", default="core-event-order-v1")
+    parser.add_argument("--price-compare-policy", default="strict")
+    parser.add_argument("--epsilon-policy", default="none_after_price_normalization")
     parser.add_argument("--start-dt")
     parser.add_argument("--end-dt")
     parser.add_argument("--symbol-limit", type=int)
@@ -39,6 +43,10 @@ def main() -> int:
             temp_root=Path(args.temp_root),
             run_id=args.run_id,
             mode=args.mode,
+            pivot_detection_rule_version=args.pivot_detection_rule_version,
+            core_event_ordering_version=args.core_event_ordering_version,
+            price_compare_policy=args.price_compare_policy,
+            epsilon_policy=args.epsilon_policy,
             schema_version=args.schema_version,
             lifespan_rule_version=args.rule_version,
             sample_version=args.sample_version,

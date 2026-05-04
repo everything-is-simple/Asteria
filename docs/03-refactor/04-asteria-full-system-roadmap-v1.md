@@ -8,7 +8,7 @@
 `Signal freeze review`、`Signal bounded proof` 与 `MALF complete alignment closeout`
 已通过；MALF v1.3 code-only revision 与 day formal-data bounded rebuild closeout 已形成。
 MALF v1.4 权威包已补入 Core operational boundary rules，但不声明 v1.4 runtime proof
-passed。当前策略主线下一步仍是 `Position freeze review reentry` 的只读评审（review-only）。
+passed。当前策略主线下一步已切回 `malf_v1_4_core_formal_rebuild_closeout`。
 
 地基轨道 `data-formal-promotion-evidence-20260502-01` 的 allowed next action
 `MALF v1.3 formal rebuild closeout` 已由当前 MALF v1.3 closeout 闭环。
@@ -58,10 +58,12 @@ Pipeline 只调度和记录
 - [x] 增加 evidence（证据）完备性检查：当前 MALF day release 与 docs authority refresh 必须有 `card`、`record`、`evidence-index`、`conclusion`、report manifest、validated zip。
 - [ ] 建立统一 release gate checklist（放行检查清单）：governance、ruff、format、mypy、pytest、DB audit、evidence audit 全部记录。
 - [x] 通过后只授权 `Alpha freeze review`，不打开 Alpha 代码施工，也不打开任何下游施工。
+- [x] 历史 governance manifest refresh 结论的 allowed next action 为 `Alpha freeze review`。
 
 ## 3. 地基轨道：Data Foundation
 
 - [x] 保持 Data Foundation 定位：基础设施与 source-fact service，不是策略主线模块。
+- [x] 历史 Data legacy source audit 结论的 allowed next action 为 `data legacy import contract freeze`。
 - [x] 冻结旧版 Lifespan raw/base 库首轮导入合同：`stock-only + day/week/month + backward adjusted base`。
 - [x] 实现 `data legacy import runner working build`，仅输出 `H:\Asteria-temp\data\<run_id>` working DB。
 - [x] 执行 `data formal promotion evidence`，审计并 promote 首轮正式 Data DB。
@@ -79,6 +81,7 @@ Pipeline 只调度和记录
 - [ ] 冻结 `alpha_bof/tst/pb/cpb/bpb.duckdb` schema 与自然键。
 - [x] 写 Alpha build card，只允许 Alpha bounded proof。
 - [x] Alpha freeze review 通过后，更新 gate ledger 与 registry。
+- [x] 历史 Alpha bounded proof 结论的 machine-readable allowed next action 记录为 `alpha_bounded_proof_build_card`。
 
 ## 5. 阶段 2：Alpha 边界证明
 
@@ -97,13 +100,15 @@ Pipeline 只调度和记录
 - [x] 审计 Signal 不做资金分配、不生成订单、不回写 Alpha/MALF。
 - [x] 产出 Signal evidence 与 release conclusion。
 - [x] Release gate（放行门禁）通过后，只授权 `Position freeze review`。
+- [x] 历史 MALF authority sync 结论的 allowed next action 记录为 `Position freeze review reentry`。
+- [x] 历史 Signal bounded proof 结论的 machine-readable allowed next action 记录为 `signal_bounded_proof_build_card`。
 - [x] Position freeze review 已登记 blocked，当前回退到 `MALF Lifespan dense bar snapshot resolution`。
-- [x] MALF Lifespan dense bar snapshot resolution 已通过，当前只授权 `Position freeze review reentry`。
+- [x] MALF Lifespan dense bar snapshot resolution 已通过，历史上曾放行 `position_freeze_review_reentry`。
 - [x] MALF v1.4 Core operational boundary authority sync 已通过；只作为后续 MALF 实现同步输入，不打开下游施工。
 
 ## 7. 阶段 4：Position 冻结 + 边界证明
 
-- [ ] 先执行 `Position freeze review reentry`，只做只读评审（review-only），不创建 Position runner 或 DB。
+- [ ] 执行 `MALF v1.4 Core formal rebuild / runtime proof closeout`，完成 day runtime evidence 替换。
 - [ ] 重审 Position 六件套，确认 Position 把 formal signal 转为 position candidate / entry plan / exit plan。
 - [ ] 冻结 `position.duckdb` schema、自然键、状态机、幂等写入规则。
 - [ ] 实现 Position bounded runner 与 replay/checkpoint。
@@ -188,7 +193,7 @@ Pipeline 只调度和记录
 - 当前事实基线以 `Data foundation production baseline sealed`、`MALF v1.3 day formal-data bounded closeout 已通过`、
   `Alpha bounded proof 已通过` 和 `Signal bounded proof 已通过` 为准。
 - MALF v1.4 是当前语义与操作边界权威包；runtime proof、week/month proof 和 full build 仍需另开卡。
-- 当前下一卡固定为 `Position freeze review reentry`，不是 Position construction。
+- 当前下一卡固定为 `malf_v1_4_core_formal_rebuild_closeout`，不是 Position construction。
 - Data Foundation 是地基轨道，不进入策略主线排序。
 - Pipeline 是编排与记录轨道，不进入业务主线排序。
 - 不同时施工两个策略主线模块。

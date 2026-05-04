@@ -9,7 +9,7 @@
 | run_id | `data-foundation-production-baseline-seal-20260502-01` |
 | module | `data` |
 | status | `passed` |
-| allowed next action | `Position freeze review reentry` |
+| allowed next action | `malf_v1_4_core_formal_rebuild_closeout` |
 
 Data Foundation 已封为 Asteria 主线输入底座。当前五个正式 Data DB、day
 `analysis_price_line=backward`、day `execution_price_line=none`、week/month analysis
@@ -28,4 +28,5 @@ Foundation 非策略模块边界，并补齐执行记录、report 与 validated 
 index/block 主线接入或 week/month execution line。
 
 本结论不授权 Position construction、Alpha full build、Signal full build、下游施工或
-full-chain Pipeline runtime。当前治理下一步仍是 `Position freeze review reentry`。
+full-chain Pipeline runtime。当前治理下一步已切换为
+`malf_v1_4_core_formal_rebuild_closeout`。

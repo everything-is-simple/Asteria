@@ -30,8 +30,8 @@ flowchart LR
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal` |
 | 当前已通过 bounded proof | `MALF day`; `Alpha day`; `Signal day`; `MALF v1.3 day formal-data bounded closeout` |
-| 当前已打开执行卡 | `Position freeze review reentry card` |
-| 当前只允许施工 | `Position freeze review reentry / 只读评审（review-only）` |
+| 当前已打开执行卡 | `MALF v1.4 Core runtime sync code card（已通过）` |
+| 当前只允许施工 | `MALF v1.4 Core formal rebuild / runtime proof closeout` |
 | 当前仍禁止 | Alpha full build、Signal full build、Position bounded proof、Position construction、Portfolio Plan/Trade/System/Pipeline 施工 |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Data Foundation
@@ -39,8 +39,9 @@ flowchart LR
 2021 当前行业快照。Data Foundation 已封为主线输入底座，后续只能通过明确
 maintenance card 扩展；ST、停牌、真实上市/退市状态与历史行业沿革仍不覆盖。Position freeze
 review 已登记 blocked；MALF v1.3 formal-data bounded closeout 已通过并取代旧 dense /
-hard-audit evidence。后续只允许 Position freeze review reentry 的只读评审（review-only），但仍不授权
-Alpha full build、Signal full build、Position bounded proof、Position construction、下游施工或全链路 pipeline。
+hard-audit evidence；MALF v1.4 day runtime sync code 已通过。后续只允许 MALF v1.4
+Core formal rebuild / runtime proof closeout，但仍不授权 Alpha full build、Signal full build、
+Position bounded proof、Position construction、下游施工或全链路 pipeline。
 
 ## 2. 主线模块
 

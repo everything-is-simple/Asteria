@@ -72,9 +72,10 @@ H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研
 - [Asteria 执行结论索引](H:/Asteria/docs/04-execution/00-conclusion-index-v1.md)
 
 当前已通过 `Signal bounded proof`、`MALF v1.3 formal-data bounded closeout`，并完成
-`MALF v1.4 Core operational boundary authority sync`；下一步只允许
-`Position freeze review reentry / review-only`。Signal full build、Position 施工、下游模块
-施工和全链路 pipeline 必须等待后续 release gate。
+`MALF v1.4 Core operational boundary authority sync` 与
+`MALF v1.4 Core runtime sync code`；下一步只允许
+`MALF v1.4 Core formal rebuild / runtime proof closeout`。Signal full build、Position
+施工、下游模块施工和全链路 pipeline 必须等待后续 release gate。
 
 前辈系统资产清单：
 

@@ -54,6 +54,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | MALF | `malf-v1-3-authority-sync-code-revision-20260501-01` | `code-only passed` | [conclusion](records/malf/malf-v1-3-authority-sync-code-revision-20260501-01.conclusion.md) | [code-only evidence-index](records/malf/malf-v1-3-authority-sync-code-revision-20260501-01.evidence-index.md) |
 | MALF | `malf-v1-3-formal-rebuild-closeout-20260502-01` | `passed` | [conclusion](records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.conclusion.md) | [evidence-index](records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.evidence-index.md) |
 | MALF | `malf-v1-4-core-operational-boundary-authority-sync-20260503-01` | `passed` | [conclusion](records/malf/malf-v1-4-core-operational-boundary-authority-sync-20260503-01.conclusion.md) | [evidence-index](records/malf/malf-v1-4-core-operational-boundary-authority-sync-20260503-01.evidence-index.md) |
+| MALF | `malf-v1-4-core-runtime-sync-code-20260504-01` | `code-only passed / formal rebuild pending` | [conclusion](records/malf/malf-v1-4-core-runtime-sync-code-20260504-01.conclusion.md) | [code-only evidence-index](records/malf/malf-v1-4-core-runtime-sync-code-20260504-01.evidence-index.md) |
 | Alpha | `alpha-freeze-review-20260429-01` | `passed` | [conclusion](records/alpha/alpha-freeze-review-20260429-01.conclusion.md) | [evidence-index](records/alpha/alpha-freeze-review-20260429-01.evidence-index.md) |
 | Alpha | `alpha-bounded-proof-20260429-01` | `passed` | [conclusion](records/alpha/alpha-bounded-proof-20260429-01.conclusion.md) | [evidence-index](records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md) |
 | Signal | `signal-freeze-review-20260429-01` | `passed` | [conclusion](records/signal/signal-freeze-review-20260429-01.conclusion.md) | [evidence-index](records/signal/signal-freeze-review-20260429-01.evidence-index.md) |
@@ -77,12 +78,16 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   `malf-complete-alignment-closeout-20260430-01` 取代为当前 MALF dense 正式证据。
 - MALF alignment hard audit hardening 已闭环为 passed；该历史结论已被 complete
   alignment closeout 的正式 DB rerun 和 hard audit 结果取代为当前证据。
-- Position freeze review reentry 已打开为只读评审（review-only）：Position 文档边界可继续审查，但
-  Position bounded proof / full daily mainline 仍未打开。
 - MALF v1.4 authority package 已形成，继承 v1.3 semantic mainline 并新增 Core
   operational boundary rules；`malf-v1-3-formal-rebuild-closeout-20260502-01`
   仍是当前 MALF day runtime formal-data evidence。v1.4 runtime proof、week/month
-  证明和实现同步尚未执行。
+  证明尚未执行。
+- MALF v1.4 Core runtime sync code 已通过：day 范围内的 bar-level break、context-scoped
+  structure reference、O1/O2/O3 运行策略记账、`malf_core_state_snapshot` 与
+  `candidate_event_type` 已落代码、schema 与测试。当前 active module 已切回 MALF，
+  下一张允许动作是 `MALF v1.4 Core formal rebuild / runtime proof closeout`。
+- Position freeze review reentry 当前暂停；Position 文档评审不再作为当前 next card，
+  直到 MALF v1.4 day formal rebuild closeout 完成后再决定是否恢复。
 - Data legacy source audit、import contract freeze、import runner working build 与 formal
   promotion evidence 已通过；这只放行首轮 `stock / backward / day-week-month`
   source-fact DB，不声明 Data full build released，也不打开下游施工。
@@ -103,4 +108,5 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   这是治理资产布局维护，不改变任何模块门禁。
 - Alpha full build、Signal construction without build card、Position / Portfolio Plan / Trade /
   System 施工和全链路 pipeline 仍未放行，直到后续门禁通过并明确授权。
-- 后续 Position freeze review reentry conclusion 与后续 bounded proof 等执行卡，都必须先登记到本索引，再视为正式结论落档。
+- 后续 `MALF v1.4 Core formal rebuild / runtime proof closeout` 与其后的 Position / downstream
+  执行卡，都必须先登记到本索引，再视为正式结论落档。

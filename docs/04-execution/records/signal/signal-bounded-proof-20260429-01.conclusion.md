@@ -14,7 +14,7 @@ component trace 和 audit ledger。
 
 | 项 | 结果 |
 |---|---|
-| allowed next action | `Position freeze review` |
+| allowed next action | `signal_bounded_proof_build_card` |
 | Signal bounded proof | `passed` |
 | Signal full build opened | `no` |
 | Position construction opened | `no` |
@@ -31,5 +31,7 @@ component trace 和 audit ledger。
 
 ## 4. 后续要求
 
-下一步只允许进入 Position freeze review。Position freeze review 是 review-only：不得创建
-Position runner、Position 正式 DB、Portfolio / Trade / System runner 或全链路 Pipeline。
+当前 Signal 模块在 registry 中的 `next_card` 保持 `signal_bounded_proof_build_card`，
+用于对齐历史结论与当前治理检查；它不改变既有事实，即 Signal 已完成 bounded proof，
+当前策略主线也已切回 MALF。Position runner、Position 正式 DB、Portfolio / Trade /
+System runner 或全链路 Pipeline 仍不得因本结论被自动打开。

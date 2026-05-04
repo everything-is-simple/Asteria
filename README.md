@@ -49,7 +49,7 @@ H:\Asteria-Validated\Asteria-data-foundation-production-baseline-seal-20260502-0
 
 ```text
 MALF day bounded proof 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞
--> Data legacy formal promotion 已通过 -> MALF v1.3 formal-data bounded closeout 已通过 -> Position freeze review reentry card
+-> Data legacy formal promotion 已通过 -> MALF v1.3 formal-data bounded closeout 已通过 -> MALF v1.4 runtime sync code 已通过 -> MALF v1.4 formal rebuild closeout card
 ```
 
 Data Foundation 已完成首轮 `stock / backward / day-week-month` legacy formal promotion，
@@ -61,9 +61,11 @@ Data 标的的申万 2021 当前行业快照；`data-foundation-production-basel
 已将 Data 标为主线输入底座封版，后续 Data 只能通过 maintenance card 扩展；ST、停牌、
 真实上市/退市状态与历史行业沿革仍是参考源缺口；
 MALF v1.4 authority package 已形成，补足 Core operational boundary rules；
-当前 runtime evidence 仍为 MALF v1.3 day formal-data bounded closeout。当前只授权
-Position freeze review reentry 的只读评审（review-only），不授权 Alpha full build、Signal
-full build、Position 施工、下游施工或全链路 pipeline。MALF week/month 证明尚未执行。
+当前 runtime evidence 仍为 MALF v1.3 day formal-data bounded closeout。MALF v1.4
+day runtime sync code 已通过，当前下一步授权切回
+`MALF v1.4 Core formal rebuild / runtime proof closeout`；Position freeze review
+reentry 暂停，不授权 Alpha full build、Signal full build、Position 施工、下游施工或
+全链路 pipeline。MALF week/month 证明尚未执行。
 仍不能宣称全主线数据已经齐全或完整证券主数据已齐。
 
 ## 阅读入口

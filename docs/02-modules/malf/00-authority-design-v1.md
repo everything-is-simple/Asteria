@@ -36,7 +36,7 @@ hard audit 扩展；week/month 证明与 full build 仍需另开卡。
 
 本文件按 `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip`
 之后的执行结论刷新：Data formal promotion 与 MALF v1.3 formal-data closeout 均已
-通过。当前下一步只允许 `Position freeze review reentry` 的只读评审（review-only）；不授权
+通过。当前下一步只允许 `MALF v1.4 Core formal rebuild / runtime proof closeout`；不授权
 Position bounded proof、Position construction、Signal pinning、下游施工或 full-chain
 Pipeline。
 

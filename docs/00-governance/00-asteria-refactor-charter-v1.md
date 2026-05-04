@@ -172,20 +172,21 @@ Data foundation production baseline seal 已通过
 MALF v1.3 formal-data bounded closeout 已通过
 ```
 
-下一张允许进入的卡：
+当前下一张允许进入的卡：
 
 ```text
-Position freeze review reentry card
+MALF v1.4 Core formal rebuild / runtime proof closeout card
 ```
 
 MALF 当前 runtime formal evidence 以
 `malf-v1-3-formal-rebuild-closeout-20260502-01` 为准；该证据已经承接 MALF v1.3
-day formal-data bounded proof，但 week/month 证明尚未执行。MALF v1.4 当前只是
-Core operational boundary authority sync，不声明 v1.4 runtime proof passed。
+day formal-data bounded proof，但 week/month 证明尚未执行。MALF v1.4 当前已完成
+Core operational boundary authority sync 与 day runtime sync code，不声明
+v1.4 runtime proof passed。
 Data Foundation 当前已封为主线输入底座；`market_meta.duckdb` 已放行从正式 raw/base
 行情库推导的最小客观事实，并部分释放可匹配正式 Data 标的的申万 2021 当前行业快照；
 ST、停牌、真实上市/退市和历史行业沿革仍不放行，后续只能通过明确 maintenance card 扩展。
 Signal bounded proof 已通过；Position freeze review 已登记 blocked；MALF complete
 alignment closeout 已被 v1.3 formal-data closeout supersede 为当前 MALF day 正式证据。
-下一卡只允许 Position freeze review reentry 的只读评审（review-only），不直接授权
+下一卡只允许 MALF v1.4 Core formal rebuild / runtime proof closeout，不直接授权
 Signal full build、Position bounded proof、Position 施工、下游施工或全链路 pipeline。

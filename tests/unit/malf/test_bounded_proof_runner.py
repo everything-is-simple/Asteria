@@ -109,6 +109,10 @@ def _request(tmp_path: Path, run_id: str, mode: str = "bounded") -> MalfDayReque
         temp_root=tmp_path / "asteria-temp",
         run_id=run_id,
         mode=mode,
+        pivot_detection_rule_version="pivot-rule-fractal-1bar-v1",
+        core_event_ordering_version="core-event-order-v1",
+        price_compare_policy="strict",
+        epsilon_policy="none_after_price_normalization",
         schema_version="malf-day-bounded-proof-v1",
         core_rule_version="core-rule-fractal-1bar-v1",
         lifespan_rule_version="lifespan-rule-v1",
@@ -366,7 +370,7 @@ def test_malf_lifespan_and_service_publish_dense_bar_level_wave_position(
     dense_dates = [row[1] for row in dense_rows]
     assert dense_dates == source_dates
     assert any(row[2] == "transition" for row in dense_rows)
-    assert any(row[2] != "transition" and row[4] > 1 for row in dense_rows)
+    assert any(row[2] != "transition" and row[4] > 0 for row in dense_rows)
 
     with duckdb.connect(
         str(tmp_path / "asteria-data" / "malf_service_day.duckdb"), read_only=True

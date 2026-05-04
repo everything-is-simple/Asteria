@@ -43,10 +43,10 @@
 - `Data market meta formalization passed`
 - `Data market meta SW industry snapshot passed`
 - `Data foundation production baseline sealed`
-- 下一步允许动作：`Position freeze review reentry`
+- 下一步允许动作：`MALF v1.4 Core formal rebuild / runtime proof closeout`
 - Data 已封为主线输入底座；后续 Data 只能通过明确 maintenance card 扩展。
 - `market_meta.duckdb` 已放行最小客观事实与可匹配正式 Data 标的的申万 2021 当前行业快照；ST、停牌、真实上市/退市状态和历史行业沿革仍需后续参考源卡。
-- MALF v1.4 是 Core operational boundary 权威定义升级；不等于 runtime proof passed。
+- MALF v1.4 是 Core operational boundary 权威定义升级；当前 day runtime sync code 已通过，但不等于 runtime proof passed。
 - MALF v1.3 closeout 仍只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；week/month proof 仍需另开卡。
 - Signal bounded proof 只放行 bounded `signal.duckdb` 表面；不授权 Signal full build、Position construction、下游施工或全链路 pipeline。
 

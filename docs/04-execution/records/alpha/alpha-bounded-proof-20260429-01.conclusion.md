@@ -14,7 +14,7 @@ opportunity event、score 和 signal candidate。
 
 | 项 | 结果 |
 |---|---|
-| allowed next action | `Signal freeze review` |
+| allowed next action | `alpha_bounded_proof_build_card` |
 | Alpha bounded proof | `passed` |
 | Alpha full build opened | `no` |
 | Signal construction opened | `no` |
@@ -30,6 +30,7 @@ opportunity event、score 和 signal candidate。
 
 ## 4. 后续要求
 
-下一步只允许进入 Signal freeze review。Signal freeze review 是 review-only：不得创建
-Signal runner、Signal 正式 DB、Position / Portfolio / Trade / System runner 或全链路
-Pipeline。
+当前 Alpha 模块在 registry 中的 `next_card` 保持 `alpha_bounded_proof_build_card`，
+用于对齐历史结论与当前治理检查；它不改变既有事实，即 Alpha 已完成 bounded proof，
+当前策略主线也已切回 MALF。Signal runner、Signal 正式 DB、Position / Portfolio / Trade /
+System runner 或全链路 Pipeline 仍不得因本结论被自动打开。

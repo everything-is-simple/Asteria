@@ -2,7 +2,7 @@
 
 日期：2026-04-30
 
-状态：frozen / day bounded proof passed / complete alignment closeout passed
+状态：frozen / v1.3 formal-data bounded closeout passed / v1.4 day runtime sync code passed / formal rebuild pending
 
 ## 1. 审计目标
 
@@ -26,7 +26,7 @@ MALF 审计用于证明 Core、Lifespan、Service 三层没有破坏权威语义
 | candidate down confirmation 必须低于 old final LL | hard fail |
 | candidate reference 必须等于 transition old progress extreme | hard fail |
 
-v1.3 待新增 Core hard audit：
+v1.4 Core hard audit：
 
 | 检查 | 失败裁决 |
 |---|---|
@@ -36,6 +36,9 @@ v1.3 待新增 Core hard audit：
 | same-direction / opposite-direction new wave confirmation 必须使用 transition boundary | hard fail |
 | active candidate 必须等于最新有效 candidate guard | hard fail |
 | 被相反方向 candidate guard 替代的旧 candidate 不得继续确认 new wave | hard fail |
+| Core run / pivot / snapshot 必须记账 `pivot_detection_rule_version` | hard fail |
+| Core run 必须记账 `core_event_ordering_version`、`price_compare_policy`、`epsilon_policy` | hard fail |
+| `malf_core_state_snapshot` 必须存在且与 Lifespan / Service 发布口径一致 | hard fail |
 
 ## 3. Lifespan 硬审计
 
@@ -48,7 +51,7 @@ v1.3 待新增 Core hard audit：
 | lifespan 规则必须能追溯到 `lifespan_rule_version` | hard fail |
 | audit 必须能解析 `source_lifespan_run_id` 且查到 source rows | hard fail |
 
-v1.3 待新增 Lifespan hard audit：
+v1.4 Lifespan hard audit：
 
 | 检查 | 失败裁决 |
 |---|---|
@@ -69,7 +72,7 @@ v1.3 待新增 Lifespan hard audit：
 | `malf_wave_position_latest` 每个 `symbol + timeframe + service_version` 只有一行 | hard fail |
 | audit 必须能解析 `source_core_run_id` 且查到 source rows | hard fail |
 
-v1.3 待新增 Service hard audit：
+v1.4 Service hard audit：
 
 | 检查 | 失败裁决 |
 |---|---|

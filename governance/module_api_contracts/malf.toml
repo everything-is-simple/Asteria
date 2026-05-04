@@ -1,6 +1,6 @@
 module_id = "malf"
 display_name = "MALF"
-contract_version = "v1.4-authority-sync"
+contract_version = "v1.4-runtime-sync-code"
 status = "frozen"
 authority_assets = [
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_4",
@@ -12,11 +12,20 @@ evidence_index = "docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeo
 authority_conclusion = "docs/04-execution/records/malf/malf-v1-4-core-operational-boundary-authority-sync-20260503-01.conclusion.md"
 authority_evidence_index = "docs/04-execution/records/malf/malf-v1-4-core-operational-boundary-authority-sync-20260503-01.evidence-index.md"
 gate_state = "v1_3_day_formal_data_bounded_closeout_passed; v1_4_core_operational_boundary_authority_synced"
+runtime_sync_conclusion = "docs/04-execution/records/malf/malf-v1-4-core-runtime-sync-code-20260504-01.conclusion.md"
 formal_db_permission = "released_day_core_lifespan_service_only"
 run_modes = ["bounded", "segmented", "full", "resume"]
 audit_run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from MALF replay scope and checkpoint"
-source_manifest_fields = ["source_market_base_run_id", "source_core_run_id", "source_lifespan_run_id"]
+source_manifest_fields = [
+    "source_market_base_run_id",
+    "source_core_run_id",
+    "source_lifespan_run_id",
+    "pivot_detection_rule_version",
+    "core_event_ordering_version",
+    "price_compare_policy",
+    "epsilon_policy",
+]
 forbidden_inputs = ["raw_market.duckdb.raw_market_bar", "legacy_malf_day.duckdb", "mock_formal_data"]
 forbidden_outputs = ["buy_signal", "alpha_signal_candidate", "position_size", "portfolio_allocation", "order_intent"]
 

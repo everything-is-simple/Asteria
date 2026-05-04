@@ -37,6 +37,7 @@ Signal bounded proof 已通过
 MALF complete alignment closeout 已通过
 MALF v1.3 formal-data bounded rebuild closeout 已通过
 MALF v1.4 Core operational boundary authority sync 已通过
+MALF v1.4 Core runtime sync code 已通过
 Data production foundation closeout 已通过
 Data execution price line materialization 已通过
 Data market meta formalization 已通过
@@ -61,7 +62,7 @@ Signal
 当前最新通过门禁：
 
 ```text
-MALF v1.3 formal-data bounded rebuild closeout
+MALF v1.4 Core runtime sync code
 ```
 
 当前最新语义升级资产：
@@ -72,18 +73,19 @@ MALF_Three_Part_Design_Set_v1_4
 
 v1.4 继承 v1.3 定义清晰、定理自洽的语义主线，并补入 Core operational boundary
 rules；当前 runtime passed evidence 仍是 MALF v1.3 day formal-data bounded closeout。
-v1.4 authority sync 不打开下游施工，也不等于 v1.4 runtime proof passed。
+v1.4 authority sync 不打开下游施工，也不等于 v1.4 runtime proof passed；当前已完成
+v1.4 day runtime sync 代码卡，下一张允许动作切换为 `malf_v1_4_core_formal_rebuild_closeout`。
 
 当前已打开执行卡：
 
 ```text
-Position freeze review reentry card
+malf_v1_4_core_formal_rebuild_closeout
 ```
 
 当前只允许施工对象：
 
 ```text
-Position freeze review reentry / 只读评审（review-only）
+malf_v1_4_core_formal_rebuild_closeout
 ```
 
 当前已通过 bounded proof 的主线模块：
@@ -95,20 +97,20 @@ Signal day
 MALF v1.3 day formal-data bounded closeout
 ```
 
-Signal freeze review 与 Signal bounded proof 已通过。Position freeze review 已登记为
-blocked。MALF v1.3 formal-data bounded rebuild closeout 已通过，并取代 code-only
-v1.3 状态成为当前 MALF v1.3 day bounded formal-data evidence；不得扩展为 Position
-bounded proof、Position 施工、Signal full build、下游施工或全链路 pipeline。
+Signal freeze review 与 Signal bounded proof 已通过。Position freeze review reentry 当前
+暂停；MALF v1.3 formal-data bounded rebuild closeout 仍是当前 day formal-data evidence。
+v1.4 day runtime sync code 已通过，但 formal rebuild、week/month proof、Position 施工、
+Signal full build、下游施工与全链路 pipeline 仍未放行。
 
 ## 2. 模块状态表
 
 | 顺序 | 模块 | 文档状态 | 冻结状态 | 是否允许施工 | 文档位置 | 说明 |
 |---:|---|---|---|---:|---|---|
 | 0 | Data Foundation | production baseline seal 已通过 | 主线输入底座已封版 / maintenance-card-only extensions / reference gaps retained | 是，仅 maintenance card | `docs/02-modules/data/` | 五个 Data DB 是本版主线输入底座；market_meta 已部分释放申万当前行业快照；ST/停牌/真实上市退市仍缺口；非策略主线，不占主线施工位 |
-| 1 | MALF | 六件套已交付 / v1.3 formal-data bounded closeout 已通过 / v1.4 authority sync 已通过 | frozen | 否 | `docs/02-modules/malf/` | day bounded formal-data proof 已通过；v1.4 实现同步、week/month 未执行 |
+| 1 | MALF | 六件套已交付 / v1.3 formal-data bounded closeout 已通过 / v1.4 authority sync 已通过 / v1.4 day runtime sync code 已通过 | frozen | 是，仅 day formal rebuild closeout | `docs/02-modules/malf/` | day formal-data proof 仍以 v1.3 closeout 为准；v1.4 code/runtime-sync 已完成，formal rebuild 待下一卡 |
 | 2 | Alpha | 六件套已冻结 / bounded proof 已通过 | released | 否 | `docs/02-modules/alpha/` | bounded proof 已通过；full build 需另开卡 |
 | 3 | Signal | 六件套已冻结 / bounded proof 已通过 | released | 否 | `docs/02-modules/signal/` | bounded proof 已通过；full build 需另开卡 |
-| 4 | Position | pre-gate 六件套草案 | not frozen | 是，只读评审 | `docs/02-modules/position/` | freeze review reentry 已打开；不允许 bounded proof 或施工 |
+| 4 | Position | pre-gate 六件套草案 | not frozen | 否，等待 MALF v1.4 closeout | `docs/02-modules/position/` | freeze review reentry 暂停；不允许 bounded proof 或施工 |
 | 5 | Portfolio Plan | pre-gate 六件套草案 | not frozen | 否 | `docs/02-modules/portfolio_plan/` | 等 Position 放行后重新审阅并冻结 |
 | 6 | Trade | pre-gate 六件套草案 | not frozen | 否 | `docs/02-modules/trade/` | 等 Portfolio Plan 放行后重新审阅并冻结 |
 | 7 | System Readout | pre-gate 六件套草案 | not frozen | 否 | `docs/02-modules/system_readout/` | 等 Trade 放行后重新审阅并冻结 |
@@ -146,7 +148,7 @@ Data Foundation legacy source intake 当前执行结论：
 | `data-execution-price-line-materialization-20260502-01` | `passed` | `Position freeze review reentry` |
 | `data-market-meta-formalization-20260502-01` | `passed` | `Position freeze review reentry` |
 | `data-market-meta-sw-industry-snapshot-20260502-01` | `passed` | `Position freeze review reentry` |
-| `data-foundation-production-baseline-seal-20260502-01` | `passed` | `Position freeze review reentry` |
+| `data-foundation-production-baseline-seal-20260502-01` | `passed` | `malf_v1_4_core_formal_rebuild_closeout` |
 
 MALF v1.3 formal rebuild 当前执行结论：
 
@@ -159,16 +161,17 @@ MALF v1.4 authority sync 当前执行结论：
 | run_id | 状态 | allowed next action |
 |---|---|---|
 | `malf-v1-4-core-operational-boundary-authority-sync-20260503-01` | `passed` | `Position freeze review reentry / 只读评审（review-only）` |
+| `malf-v1-4-core-runtime-sync-code-20260504-01` | `code-only passed / formal rebuild pending` | `malf_v1_4_core_formal_rebuild_closeout` |
 
 MALF 冻结文档与当前 proof 状态：
 
 | 文档 | 状态 |
 |---|---|
-| `docs/02-modules/malf/00-authority-design-v1.md` | frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过 / v1.4 authority sync 已通过 |
-| `docs/02-modules/malf/01-semantic-contract-v1.md` | frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过 / v1.4 authority sync 已通过 |
-| `docs/02-modules/malf/02-database-schema-spec-v1.md` | frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过 / v1.4 authority sync 已通过 |
-| `docs/02-modules/malf/03-runner-contract-v1.md` | frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过 / v1.4 authority sync 已通过 |
-| `docs/02-modules/malf/04-audit-spec-v1.md` | frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过 / hard audit source-bound / v1.4 authority sync 已通过 |
+| `docs/02-modules/malf/00-authority-design-v1.md` | frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过 / v1.4 authority sync 已通过 / formal rebuild pending |
+| `docs/02-modules/malf/01-semantic-contract-v1.md` | frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过 / v1.4 authority sync 已通过 / formal rebuild pending |
+| `docs/02-modules/malf/02-database-schema-spec-v1.md` | frozen / v1.3 formal-data bounded closeout 已通过 / v1.4 day runtime sync code 已通过 / formal rebuild pending |
+| `docs/02-modules/malf/03-runner-contract-v1.md` | frozen / v1.3 formal-data bounded closeout 已通过 / v1.4 day runtime sync code 已通过 / formal rebuild pending |
+| `docs/02-modules/malf/04-audit-spec-v1.md` | frozen / v1.3 formal-data bounded closeout 已通过 / hard audit source-bound / v1.4 day runtime sync code 已通过 / formal rebuild pending |
 | `docs/02-modules/malf/05-build-card-v1.md` | frozen / 已被 passed day proof 取代 |
 | `docs/02-modules/malf/06-implementation-traceability-annex-v1.md` | annex / 仅追溯 / 不修改语义 |
 | `docs/02-modules/malf/07-v1-3-authority-sync-and-code-revision-plan.md` | 已被取代的历史计划 / v1.3 code revision 与 formal-data closeout 已通过 |
@@ -304,6 +307,7 @@ Alpha bounded proof 已通过。
 | validated evidence | `H:\Asteria-Validated\Asteria-alpha-bounded-proof-20260429-01.zip` |
 | execution conclusion | `docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.conclusion.md` |
 | hard audit | `hard_fail_count = 0` |
+| allowed next action | `alpha_bounded_proof_build_card` |
 
 Alpha bounded proof 只放行 bounded proof 产物和五个 family DB 当前表面，不授权 Alpha
 full build、Signal construction、下游施工或全链路 pipeline。
@@ -345,6 +349,7 @@ Signal bounded proof 已通过。
 | validated evidence | `H:\Asteria-Validated\Asteria-signal-bounded-proof-20260429-01.zip` |
 | execution conclusion | `docs/04-execution/records/signal/signal-bounded-proof-20260429-01.conclusion.md` |
 | hard audit | `hard_fail_count = 0` |
+| allowed next action | `signal_bounded_proof_build_card` |
 
 Signal bounded proof 只放行 bounded proof 产物和 `signal.duckdb` 当前表面，不授权
 Signal full build、Position 施工或全链路 pipeline。后续 Position freeze review 已登记

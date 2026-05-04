@@ -5,9 +5,11 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-MALF_SCHEMA_VERSION = "malf-v1-3-code-revision-v1"
+MALF_SCHEMA_VERSION = "malf-v1-4-runtime-sync-v1"
 VALID_TIMEFRAMES = {"day"}
 VALID_RUN_MODES = {"bounded", "segmented", "full", "resume", "audit-only"}
+VALID_PRICE_COMPARE_POLICIES = {"strict"}
+VALID_EPSILON_POLICIES = {"none_after_price_normalization"}
 
 
 @dataclass(frozen=True)
@@ -21,6 +23,10 @@ class MalfDayRequest:
     temp_root: Path
     run_id: str
     mode: str
+    pivot_detection_rule_version: str
+    core_event_ordering_version: str
+    price_compare_policy: str
+    epsilon_policy: str
     schema_version: str = MALF_SCHEMA_VERSION
     timeframe: str = "day"
     core_rule_version: str | None = None
@@ -36,6 +42,10 @@ class MalfDayRequest:
             raise ValueError(f"Unsupported MALF run mode: {self.mode}")
         if self.timeframe not in VALID_TIMEFRAMES:
             raise ValueError(f"Unsupported MALF timeframe: {self.timeframe}")
+        if self.price_compare_policy not in VALID_PRICE_COMPARE_POLICIES:
+            raise ValueError(f"Unsupported MALF price compare policy: {self.price_compare_policy}")
+        if self.epsilon_policy not in VALID_EPSILON_POLICIES:
+            raise ValueError(f"Unsupported MALF epsilon policy: {self.epsilon_policy}")
         if self.mode == "bounded" and not (
             self.start_dt or self.end_dt or self.symbol_limit is not None
         ):
