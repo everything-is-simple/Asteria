@@ -8,6 +8,12 @@ from typing import Any
 import duckdb
 
 from asteria.malf.contracts import MalfBuildSummary, MalfDayRequest
+from asteria.malf.insert_contracts import (
+    CORE_RUN_COLUMNS,
+    LIFESPAN_RUN_COLUMNS,
+    SERVICE_RUN_COLUMNS,
+    insert_columns_sql,
+)
 
 CORE_RUN_TABLES = (
     "malf_core_run",
@@ -48,7 +54,7 @@ def insert_core_run(
     created_at: datetime,
 ) -> None:
     con.execute(
-        "insert into malf_core_run values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        insert_columns_sql("malf_core_run", CORE_RUN_COLUMNS),
         [
             request.run_id,
             "malf_day_core_build",
@@ -76,7 +82,7 @@ def insert_lifespan_run(
     created_at: datetime,
 ) -> None:
     con.execute(
-        "insert into malf_lifespan_run values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        insert_columns_sql("malf_lifespan_run", LIFESPAN_RUN_COLUMNS),
         [
             request.run_id,
             "malf_day_lifespan_build",
@@ -106,7 +112,7 @@ def insert_service_run(
     created_at: datetime,
 ) -> None:
     con.execute(
-        "insert into malf_service_run values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        insert_columns_sql("malf_service_run", SERVICE_RUN_COLUMNS),
         [
             request.run_id,
             "malf_day_service_build",

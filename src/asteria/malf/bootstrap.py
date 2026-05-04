@@ -15,7 +15,6 @@ from asteria.malf.bootstrap_support import (
     insert_core_run,
     insert_lifespan_run,
     insert_service_run,
-    insert_values_sql,
     latest_run_id,
     load_completed_checkpoint,
     report_path,
@@ -26,6 +25,23 @@ from asteria.malf.bootstrap_support import (
 )
 from asteria.malf.contracts import MalfBuildSummary, MalfDayRequest
 from asteria.malf.core_engine import build_core_rows
+from asteria.malf.insert_contracts import (
+    BREAK_LEDGER_COLUMNS,
+    CANDIDATE_LEDGER_COLUMNS,
+    CORE_STATE_SNAPSHOT_COLUMNS,
+    INTERFACE_AUDIT_COLUMNS,
+    LIFESPAN_PROFILE_COLUMNS,
+    LIFESPAN_SNAPSHOT_COLUMNS,
+    PIVOT_LEDGER_COLUMNS,
+    RULE_VERSION_COLUMNS,
+    SAMPLE_VERSION_COLUMNS,
+    SCHEMA_VERSION_COLUMNS,
+    STRUCTURE_LEDGER_COLUMNS,
+    TRANSITION_LEDGER_COLUMNS,
+    WAVE_LEDGER_COLUMNS,
+    WAVE_POSITION_COLUMNS,
+    insert_columns_sql,
+)
 from asteria.malf.lifespan_engine import build_lifespan_rows
 from asteria.malf.schema import (
     bootstrap_malf_core_day_database,
@@ -53,7 +69,7 @@ def run_malf_day_core_build(request: MalfDayRequest) -> MalfBuildSummary:
             "delete from malf_schema_version where schema_version = ?", [request.schema_version]
         )
         con.executemany(
-            "insert into malf_pivot_ledger values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            insert_columns_sql("malf_pivot_ledger", PIVOT_LEDGER_COLUMNS),
             [
                 (
                     item.pivot_id,
@@ -74,9 +90,12 @@ def run_malf_day_core_build(request: MalfDayRequest) -> MalfBuildSummary:
                 for item in rows.pivots
             ],
         )
-        con.executemany(insert_values_sql("malf_structure_ledger", 14), rows.structures)
         con.executemany(
-            insert_values_sql("malf_wave_ledger", 23),
+            insert_columns_sql("malf_structure_ledger", STRUCTURE_LEDGER_COLUMNS),
+            rows.structures,
+        )
+        con.executemany(
+            insert_columns_sql("malf_wave_ledger", WAVE_LEDGER_COLUMNS),
             [
                 (
                     item.wave_id,
@@ -106,9 +125,12 @@ def run_malf_day_core_build(request: MalfDayRequest) -> MalfBuildSummary:
                 for item in rows.waves
             ],
         )
-        con.executemany(insert_values_sql("malf_break_ledger", 12), rows.breaks)
         con.executemany(
-            insert_values_sql("malf_transition_ledger", 17),
+            insert_columns_sql("malf_break_ledger", BREAK_LEDGER_COLUMNS),
+            rows.breaks,
+        )
+        con.executemany(
+            insert_columns_sql("malf_transition_ledger", TRANSITION_LEDGER_COLUMNS),
             [
                 (
                     item.transition_id,
@@ -133,7 +155,7 @@ def run_malf_day_core_build(request: MalfDayRequest) -> MalfBuildSummary:
             ],
         )
         con.executemany(
-            insert_values_sql("malf_candidate_ledger", 18),
+            insert_columns_sql("malf_candidate_ledger", CANDIDATE_LEDGER_COLUMNS),
             [
                 (
                     item.candidate_id,
@@ -158,9 +180,15 @@ def run_malf_day_core_build(request: MalfDayRequest) -> MalfBuildSummary:
                 for item in rows.candidates
             ],
         )
-        con.executemany(insert_values_sql("malf_core_state_snapshot", 30), rows.snapshots)
+        con.executemany(
+            insert_columns_sql("malf_core_state_snapshot", CORE_STATE_SNAPSHOT_COLUMNS),
+            rows.snapshots,
+        )
         insert_core_run(con, request, input_row_count, now)
-        con.execute("insert into malf_schema_version values (?, ?)", [request.schema_version, now])
+        con.execute(
+            insert_columns_sql("malf_schema_version", SCHEMA_VERSION_COLUMNS),
+            [request.schema_version, now],
+        )
         con.execute("commit")
 
     summary = MalfBuildSummary(
@@ -191,8 +219,14 @@ def run_malf_day_lifespan_build(request: MalfDayRequest) -> MalfBuildSummary:
     with duckdb.connect(str(request.lifespan_db)) as con:
         con.execute("begin transaction")
         delete_run(con, request.run_id, LIFESPAN_RUN_TABLES)
-        con.executemany(insert_values_sql("malf_lifespan_snapshot", 33), snapshots)
-        con.executemany(insert_values_sql("malf_lifespan_profile", 15), profiles)
+        con.executemany(
+            insert_columns_sql("malf_lifespan_snapshot", LIFESPAN_SNAPSHOT_COLUMNS),
+            snapshots,
+        )
+        con.executemany(
+            insert_columns_sql("malf_lifespan_profile", LIFESPAN_PROFILE_COLUMNS),
+            profiles,
+        )
         con.execute(
             "delete from malf_sample_version where sample_version = ?", [request.sample_version]
         )
@@ -201,7 +235,7 @@ def run_malf_day_lifespan_build(request: MalfDayRequest) -> MalfBuildSummary:
             [request.lifespan_rule_version],
         )
         con.execute(
-            "insert into malf_sample_version values (?, ?, ?, ?, ?, ?, ?)",
+            insert_columns_sql("malf_sample_version", SAMPLE_VERSION_COLUMNS),
             [
                 request.sample_version,
                 "all_eligible_symbols",
@@ -213,7 +247,7 @@ def run_malf_day_lifespan_build(request: MalfDayRequest) -> MalfBuildSummary:
             ],
         )
         con.execute(
-            "insert into malf_rule_version values (?, ?, ?, ?, ?)",
+            insert_columns_sql("malf_rule_version", RULE_VERSION_COLUMNS),
             [request.lifespan_rule_version, 0.25, 0.75, 0.75, now],
         )
         insert_lifespan_run(con, request, source_core_run_id, input_wave_count, now)
@@ -246,8 +280,14 @@ def run_malf_day_service_build(request: MalfDayRequest) -> MalfBuildSummary:
     with duckdb.connect(str(request.service_db)) as con:
         con.execute("begin transaction")
         delete_run(con, request.run_id, SERVICE_RUN_TABLES)
-        con.executemany(insert_values_sql("malf_wave_position", 35), rows)
-        con.executemany(insert_values_sql("malf_wave_position_latest", 35), latest_rows)
+        con.executemany(
+            insert_columns_sql("malf_wave_position", WAVE_POSITION_COLUMNS),
+            rows,
+        )
+        con.executemany(
+            insert_columns_sql("malf_wave_position_latest", WAVE_POSITION_COLUMNS),
+            latest_rows,
+        )
         insert_service_run(con, request, source_core_run_id, source_lifespan_run_id, len(rows), now)
         con.execute("commit")
 
@@ -275,7 +315,8 @@ def run_malf_day_audit(request: MalfDayRequest) -> MalfBuildSummary:
         con.execute("begin transaction")
         con.execute("delete from malf_interface_audit where run_id = ?", [request.run_id])
         con.executemany(
-            "insert into malf_interface_audit values (?, ?, ?, ?, ?, ?, ?, ?)", audit_rows
+            insert_columns_sql("malf_interface_audit", INTERFACE_AUDIT_COLUMNS),
+            audit_rows,
         )
         con.execute("commit")
 

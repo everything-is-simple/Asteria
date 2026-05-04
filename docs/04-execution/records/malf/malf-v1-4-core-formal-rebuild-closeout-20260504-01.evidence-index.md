@@ -20,31 +20,33 @@
 
 | DB | status |
 |---|---|
-| `H:\Asteria-data\malf_core_day.duckdb` | `transaction failed before run rows committed` |
-| `H:\Asteria-data\malf_lifespan_day.duckdb` | `not executed` |
-| `H:\Asteria-data\malf_service_day.duckdb` | `not executed` |
+| `H:\Asteria-data\malf_core_day.duckdb` | `core rebuild completed; run rows and snapshots written` |
+| `H:\Asteria-data\malf_lifespan_day.duckdb` | `lifespan rebuild completed; snapshots written` |
+| `H:\Asteria-data\malf_service_day.duckdb` | `service rebuild and audit completed; hard audit blocked release` |
 
 ## 3. Diagnostic Results
 
 | check | result |
 |---|---:|
-| blocked stage | `core` |
+| blocked stage | `hard audit after service publication` |
 | source rows | `2,561,406` |
-| source symbol count | `5,348` |
-| failed run rows in core DB | `0` |
-| failed run rows in lifespan DB | `0` |
-| failed run rows in service DB | `0` |
+| core wave rows | `744` |
+| core snapshot rows | `9,534` |
+| lifespan snapshot rows | `9,534` |
+| service wave position rows | `9,534` |
+| service latest rows | `20` |
+| interface audit rows | `22` |
+| hard_fail_count | `8,738` |
 | current runtime evidence switched | `0` |
 
 ## 4. Root Cause Snapshot
 
 | surface | observation |
 |---|---|
-| `malf_core_run` | historical formal table keeps `created_at` before v1.4 policy columns |
-| `malf_pivot_ledger` | historical formal table keeps `created_at` before `pivot_detection_rule_version` |
-| `malf_lifespan_run` | historical formal table still lacks v1.4 policy columns |
-| `malf_service_run` | historical formal table still lacks v1.4 policy columns |
-| write path | current runners use positional `insert into ... values (...)` rather than explicit column lists |
+| `service_wave_position_natural_key_unique` | `4767` hard failures |
+| `core_new_candidate_replaces_previous` | `3579` hard failures |
+| `service_v13_trace_matches_lifespan` | `392` hard failures |
+| write compatibility repair | explicit-column insert fix is already active and no longer the current blocker |
 
 ## 5. Current Runtime Evidence
 

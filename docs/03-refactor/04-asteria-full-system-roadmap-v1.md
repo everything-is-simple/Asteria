@@ -8,7 +8,7 @@
 `Signal freeze review`、`Signal bounded proof` 与 `MALF complete alignment closeout`
 已通过；MALF v1.3 code-only revision 与 day formal-data bounded rebuild closeout 已形成。
 MALF v1.4 权威包已补入 Core operational boundary rules，但不声明 v1.4 runtime proof
-passed。当前策略主线下一步已切回 `malf_v1_4_core_formal_rebuild_closeout`。
+passed。当前策略主线下一步已切到 `malf_v1_4_core_formal_rebuild_audit_repair`。
 
 地基轨道 `data-formal-promotion-evidence-20260502-01` 的 allowed next action
 `MALF v1.3 formal rebuild closeout` 已由当前 MALF v1.3 closeout 闭环。
@@ -108,7 +108,8 @@ Pipeline 只调度和记录
 
 ## 7. 阶段 4：Position 冻结 + 边界证明
 
-- [ ] 执行 `MALF v1.4 Core formal rebuild / runtime proof closeout`，完成 day runtime evidence 替换。
+- [ ] 执行 `MALF v1.4 Core formal rebuild audit repair`，收掉当前 hard audit 阻塞。
+- [ ] 重跑 `MALF v1.4 Core formal rebuild / runtime proof closeout`，完成 day runtime evidence 替换。
 - [ ] 重审 Position 六件套，确认 Position 把 formal signal 转为 position candidate / entry plan / exit plan。
 - [ ] 冻结 `position.duckdb` schema、自然键、状态机、幂等写入规则。
 - [ ] 实现 Position bounded runner 与 replay/checkpoint。
@@ -193,7 +194,7 @@ Pipeline 只调度和记录
 - 当前事实基线以 `Data foundation production baseline sealed`、`MALF v1.3 day formal-data bounded closeout 已通过`、
   `Alpha bounded proof 已通过` 和 `Signal bounded proof 已通过` 为准。
 - MALF v1.4 是当前语义与操作边界权威包；runtime proof、week/month proof 和 full build 仍需另开卡。
-- 当前下一卡固定为 `malf_v1_4_core_formal_rebuild_closeout`，不是 Position construction。
+- 当前下一卡固定为 `malf_v1_4_core_formal_rebuild_audit_repair`，不是 Position construction。
 - Data Foundation 是地基轨道，不进入策略主线排序。
 - Pipeline 是编排与记录轨道，不进入业务主线排序。
 - 不同时施工两个策略主线模块。

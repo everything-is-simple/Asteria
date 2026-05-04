@@ -16,12 +16,10 @@
 
 ## 2. 当前边界
 
-- 本卡已执行到 Core formal rebuild 起步阶段，但在首个正式写入事务内阻塞。
-- 阻塞根因：历史正式 DuckDB 采用旧列顺序，`created_at` 在前；v1.4 新增策略字段通过
-  `ALTER TABLE` 追加到末尾。当前 build 仍使用 `insert into ... values (...)` 的位置写入，
-  导致 `pivot_detection_rule_version` 被写入 timestamp 列位并触发 `Conversion Error`。
-- 本卡未留下 `run_id = malf-v1-4-core-formal-rebuild-closeout-20260504-01` 的脏写行。
+- 本卡在 `malf-v1-4-core-formal-rebuild-repair-20260504-01` 完成后已重新执行。
+- 历史正式 DuckDB 列位兼容写入问题已被 repair 解开，不再是当前阻塞根因。
+- 当前 rerun 已完成 Core / Lifespan / Service / Audit，但 hard audit 失败。
 - 当前正式 runtime evidence 仍为 `malf-v1-3-formal-rebuild-closeout-20260502-01`。
-- 当前允许下一张卡已切为 `malf_v1_4_core_formal_rebuild_repair`。
+- 当前允许下一张卡已切为 `malf_v1_4_core_formal_rebuild_audit_repair`。
 - week / month 不在本卡范围。
 - Position / downstream 仍未打开。

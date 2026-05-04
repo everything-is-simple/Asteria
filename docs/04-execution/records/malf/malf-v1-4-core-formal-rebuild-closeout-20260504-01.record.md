@@ -4,7 +4,7 @@
 
 run_id：`malf-v1-4-core-formal-rebuild-closeout-20260504-01`
 
-状态：`blocked at core formal rebuild`
+状态：`blocked at hard audit after rerun`
 
 ## 1. Inputs
 
@@ -32,38 +32,37 @@ run_id：`malf-v1-4-core-formal-rebuild-closeout-20260504-01`
 | sample_version | `sample-v1` |
 | service_version | `service-v1` |
 
-## 3. Failure Point
+## 3. Rerun Path
 
-- 阻塞阶段：`core`
-- 触发命令：`scripts/malf/run_malf_day_core_build.py`
-- 错误类型：`ConversionException`
-- 关键报错：`invalid timestamp field format: "pivot-rule-fractal-1bar-v1"`
+1. `malf-v1-4-core-formal-rebuild-repair-20260504-01` 已先修复历史正式库列位兼容写入问题。
+2. 在同一 `run_id` 下重新执行 `scripts/malf/run_malf_day_core_build.py`。
+3. Core 不再在首个正式写入事务内失败，并继续完成 `lifespan`、`service`、`audit`。
+4. 最终阻塞转移到 hard audit，而不是写入兼容层。
 
-## 4. Root Cause
+## 4. Current Failure Point
 
-- `H:\Asteria-data\malf_core_day.duckdb` 中历史正式表是按 v1.3 列顺序建成，`created_at` 位于
-  v1.4 新策略字段之前。
-- v1.4 代码通过 `_ensure_columns` 给历史表追加
-  `pivot_detection_rule_version / core_event_ordering_version / price_compare_policy / epsilon_policy`，
-  这些列被追加到表尾，而不是插入到 `created_at` 之前。
-- `run_malf_day_core_build()` 仍使用 `insert into ... values (...)`，按“新建表理想顺序”写入。
-- 因此对历史正式库执行 rebuild 时，`pivot_detection_rule_version` 落到了 `created_at` 列位，
-  在第一笔 Core 写入时即失败。
+| check | failed_count |
+|---|---:|
+| `service_wave_position_natural_key_unique` | `4767` |
+| `core_new_candidate_replaces_previous` | `3579` |
+| `service_v13_trace_matches_lifespan` | `392` |
+| `hard_fail_count total` | `8738` |
 
 ## 5. Formal Output Impact
 
 | 项 | 结果 |
 |---|---|
-| core run rows written | `0` |
-| pivot rows written | `0` |
-| lifespan rows written | `0` |
-| service rows written | `0` |
-| audit rows written | `0` |
+| core wave rows written | `744` |
+| core state snapshot rows written | `9,534` |
+| lifespan snapshot rows written | `9,534` |
+| service wave position rows written | `9,534` |
+| service latest rows written | `20` |
+| interface audit rows written | `22` |
 | current runtime evidence switched | `no` |
 | current runtime evidence | `malf-v1-3-formal-rebuild-closeout-20260502-01 remains current` |
-| allowed next action | `malf_v1_4_core_formal_rebuild_repair` |
+| allowed next action | `malf_v1_4_core_formal_rebuild_audit_repair` |
 
 ## 6. Boundary
 
-本卡未进入 Lifespan / Service / hard audit，不纳入 week/month proof，不打开 Position
-construction，不打开任何 downstream construction。
+本卡当前已进入 Lifespan / Service / hard audit，但未通过 hard audit，因此仍不纳入 week/month
+proof，不打开 Position construction，不打开任何 downstream construction。
