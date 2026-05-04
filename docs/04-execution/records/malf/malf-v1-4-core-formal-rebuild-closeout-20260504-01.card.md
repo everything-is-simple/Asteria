@@ -2,7 +2,7 @@
 
 日期：2026-05-04
 
-状态：`executed / blocked`
+状态：`executed / passed`
 
 ## 1. 目的
 
@@ -18,8 +18,8 @@
 
 - 本卡在 `malf-v1-4-core-formal-rebuild-repair-20260504-01` 完成后已重新执行。
 - 历史正式 DuckDB 列位兼容写入问题已被 repair 解开，不再是当前阻塞根因。
-- 当前 rerun 已完成 Core / Lifespan / Service / Audit，但 hard audit 失败。
-- 当前正式 runtime evidence 仍为 `malf-v1-3-formal-rebuild-closeout-20260502-01`。
-- 当前允许下一张卡已切为 `malf_v1_4_core_formal_rebuild_audit_repair`。
+- 当前 rerun 已完成 Core / Lifespan / Service / Audit，且 hard audit 已通过。
+- 当前正式 runtime evidence 已切换为 `malf-v1-4-core-formal-rebuild-closeout-20260504-01`。
+- 当前允许下一张卡已恢复为 `Position freeze review reentry / review-only`。
 - week / month 不在本卡范围。
 - Position / downstream 仍未打开。

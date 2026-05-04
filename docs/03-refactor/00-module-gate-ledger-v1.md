@@ -13,6 +13,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip
 H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip
 H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
+H:\Asteria-Validated\Asteria-malf-v1-4-core-formal-rebuild-closeout-20260504-01.zip
 H:\Asteria-Validated\Asteria-data-production-release-closeout-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-execution-price-line-materialization-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip
@@ -39,7 +40,8 @@ MALF v1.3 formal-data bounded rebuild closeout 已通过
 MALF v1.4 Core operational boundary authority sync 已通过
 MALF v1.4 Core runtime sync code 已通过
 MALF v1.4 Core formal rebuild compatibility repair 已通过
-MALF v1.4 Core formal rebuild closeout 已重跑但阻塞
+MALF v1.4 Core formal rebuild audit repair 已通过
+MALF v1.4 Core formal rebuild closeout 已通过
 Data production foundation closeout 已通过
 Data execution price line materialization 已通过
 Data market meta formalization 已通过
@@ -64,7 +66,7 @@ Signal
 当前最新通过门禁：
 
 ```text
-MALF v1.4 Core formal rebuild compatibility repair
+MALF v1.4 Core formal rebuild closeout
 ```
 
 当前最新语义升级资产：
@@ -74,22 +76,27 @@ MALF_Three_Part_Design_Set_v1_4
 ```
 
 v1.4 继承 v1.3 定义清晰、定理自洽的语义主线，并补入 Core operational boundary
-rules；当前 runtime passed evidence 仍是 MALF v1.3 day formal-data bounded closeout。
-v1.4 authority sync 不打开下游施工，也不等于 v1.4 runtime proof passed；当前已完成
-v1.4 day runtime sync 代码卡，并已完成正式库列位兼容 repair，但 formal rebuild closeout
-rerun 仍在 hard audit 处阻塞，下一张允许动作切换为
-`malf_v1_4_core_formal_rebuild_audit_repair`。
+rules；当前 runtime passed evidence 已切换为 MALF v1.4 day formal rebuild closeout。
+v1.4 authority sync 本身不等于 runtime proof passed，但当前已顺次完成
+v1.4 day runtime sync 代码卡、正式库列位兼容 repair、audit repair 与 formal rebuild
+closeout，下一张允许动作恢复为 `Position freeze review reentry / review-only`。
+
+当前 machine-readable allowed next action：
+
+```text
+Position freeze review reentry / review-only
+```
 
 当前已打开执行卡：
 
 ```text
-malf_v1_4_core_formal_rebuild_audit_repair
+Position freeze review reentry / review-only
 ```
 
 当前只允许施工对象：
 
 ```text
-malf_v1_4_core_formal_rebuild_audit_repair
+position_freeze_review_reentry / review-only
 ```
 
 当前已通过 bounded proof 的主线模块：
@@ -99,23 +106,22 @@ MALF day
 Alpha day
 Signal day
 MALF v1.3 day formal-data bounded closeout
+MALF v1.4 day formal-data bounded closeout
 ```
 
 Signal freeze review 与 Signal bounded proof 已通过。Position freeze review reentry 当前
-暂停；MALF v1.3 formal-data bounded rebuild closeout 仍是当前 day formal-data evidence。
-v1.4 day runtime sync code 与正式库列位兼容 repair 已通过，但 formal rebuild closeout rerun
-已在 hard audit 处阻塞，week/month proof、Position 施工、Signal full build、下游施工与
-全链路 pipeline 仍未放行。
+已恢复；当前 day formal-data evidence 已切换为 MALF v1.4 closeout。week/month proof、
+Position 施工、Signal full build、下游施工与全链路 pipeline 仍未放行。
 
 ## 2. 模块状态表
 
 | 顺序 | 模块 | 文档状态 | 冻结状态 | 是否允许施工 | 文档位置 | 说明 |
 |---:|---|---|---|---:|---|---|
 | 0 | Data Foundation | production baseline seal 已通过 | 主线输入底座已封版 / maintenance-card-only extensions / reference gaps retained | 是，仅 maintenance card | `docs/02-modules/data/` | 五个 Data DB 是本版主线输入底座；market_meta 已部分释放申万当前行业快照；ST/停牌/真实上市退市仍缺口；非策略主线，不占主线施工位 |
-| 1 | MALF | 六件套已交付 / v1.3 formal-data bounded closeout 已通过 / v1.4 authority sync 已通过 / v1.4 day runtime sync code 已通过 / compatibility repair passed / formal rebuild rerun blocked by hard audit | frozen | 是，仅 audit repair | `docs/02-modules/malf/` | day formal-data proof 仍以 v1.3 closeout 为准；历史正式库列顺序兼容写入已修复，但 v1.4 closeout rerun 仍需先收掉 hard audit 阻塞 |
+| 1 | MALF | 六件套已交付 / v1.3 formal-data bounded closeout 已通过 / v1.4 authority sync 已通过 / v1.4 day runtime sync code 已通过 / compatibility repair passed / v1.4 day formal rebuild closeout passed | frozen | 否 | `docs/02-modules/malf/` | 当前 MALF day formal-data proof 已切换到 v1.4 closeout；week/month proof 仍需另开卡 |
 | 2 | Alpha | 六件套已冻结 / bounded proof 已通过 | released | 否 | `docs/02-modules/alpha/` | bounded proof 已通过；full build 需另开卡 |
 | 3 | Signal | 六件套已冻结 / bounded proof 已通过 | released | 否 | `docs/02-modules/signal/` | bounded proof 已通过；full build 需另开卡 |
-| 4 | Position | pre-gate 六件套草案 | not frozen | 否，等待 MALF formal rebuild audit repair 与 closeout 再次重跑 | `docs/02-modules/position/` | freeze review reentry 暂停；不允许 bounded proof 或施工 |
+| 4 | Position | pre-gate 六件套草案 | not frozen | 是，仅 review-only reentry | `docs/02-modules/position/` | freeze review reentry 已恢复；仍不允许 bounded proof 或施工 |
 | 5 | Portfolio Plan | pre-gate 六件套草案 | not frozen | 否 | `docs/02-modules/portfolio_plan/` | 等 Position 放行后重新审阅并冻结 |
 | 6 | Trade | pre-gate 六件套草案 | not frozen | 否 | `docs/02-modules/trade/` | 等 Portfolio Plan 放行后重新审阅并冻结 |
 | 7 | System Readout | pre-gate 六件套草案 | not frozen | 否 | `docs/02-modules/system_readout/` | 等 Trade 放行后重新审阅并冻结 |
@@ -167,18 +173,19 @@ MALF v1.4 authority sync 当前执行结论：
 |---|---|---|
 | `malf-v1-4-core-operational-boundary-authority-sync-20260503-01` | `passed` | `Position freeze review reentry / 只读评审（review-only）` |
 | `malf-v1-4-core-runtime-sync-code-20260504-01` | `code-only passed / formal rebuild pending` | `malf_v1_4_core_formal_rebuild_closeout` |
-| `malf-v1-4-core-formal-rebuild-repair-20260504-01` | `passed` | `malf_v1_4_core_formal_rebuild_closeout` |
-| `malf-v1-4-core-formal-rebuild-closeout-20260504-01` | `blocked` | `malf_v1_4_core_formal_rebuild_audit_repair` |
+| `malf-v1-4-core-formal-rebuild-repair-20260504-01` | `passed` | `malf_v1_4_core_formal_rebuild_audit_repair` |
+| `malf-v1-4-core-formal-rebuild-audit-repair-20260504-02` | `passed` | `Position freeze review reentry / 只读评审（review-only）` |
+| `malf-v1-4-core-formal-rebuild-closeout-20260504-01` | `passed` | `Position freeze review reentry / 只读评审（review-only）` |
 
 MALF 冻结文档与当前 proof 状态：
 
 | 文档 | 状态 |
 |---|---|
-| `docs/02-modules/malf/00-authority-design-v1.md` | frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过 / v1.4 authority sync 已通过 / compatibility repair passed / formal rebuild rerun blocked by hard audit |
-| `docs/02-modules/malf/01-semantic-contract-v1.md` | frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过 / v1.4 authority sync 已通过 / compatibility repair passed / formal rebuild rerun blocked by hard audit |
-| `docs/02-modules/malf/02-database-schema-spec-v1.md` | frozen / v1.3 formal-data bounded closeout 已通过 / v1.4 day runtime sync code 已通过 / compatibility repair passed / formal rebuild rerun blocked by hard audit |
-| `docs/02-modules/malf/03-runner-contract-v1.md` | frozen / v1.3 formal-data bounded closeout 已通过 / v1.4 day runtime sync code 已通过 / compatibility repair passed / formal rebuild rerun blocked by hard audit |
-| `docs/02-modules/malf/04-audit-spec-v1.md` | frozen / v1.3 formal-data bounded closeout 已通过 / hard audit source-bound / v1.4 day runtime sync code 已通过 / compatibility repair passed / formal rebuild rerun blocked by hard audit |
+| `docs/02-modules/malf/00-authority-design-v1.md` | frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过 / v1.4 authority sync 已通过 / v1.4 day formal rebuild closeout 已通过 |
+| `docs/02-modules/malf/01-semantic-contract-v1.md` | frozen / day bounded proof 已通过 / complete alignment closeout 已通过 / v1.4 day formal rebuild closeout 已通过 |
+| `docs/02-modules/malf/02-database-schema-spec-v1.md` | frozen / v1.3 formal-data bounded closeout 已通过 / v1.4 day runtime sync code 已通过 / v1.4 day formal rebuild closeout 已通过 |
+| `docs/02-modules/malf/03-runner-contract-v1.md` | frozen / v1.3 formal-data bounded closeout 已通过 / v1.4 day runtime sync code 已通过 / v1.4 day formal rebuild closeout 已通过 |
+| `docs/02-modules/malf/04-audit-spec-v1.md` | frozen / v1.3 formal-data bounded closeout 已通过 / hard audit source-bound / v1.4 day runtime sync code 已通过 / v1.4 day formal rebuild closeout 已通过 |
 | `docs/02-modules/malf/05-build-card-v1.md` | frozen / 已被 passed day proof 取代 |
 | `docs/02-modules/malf/06-implementation-traceability-annex-v1.md` | annex / 仅追溯 / 不修改语义 |
 | `docs/02-modules/malf/07-v1-3-authority-sync-and-code-revision-plan.md` | 已被取代的历史计划 / v1.3 code revision 与 formal-data closeout 已通过 |
@@ -243,6 +250,7 @@ H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip
 H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip
 H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip
 H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
+H:\Asteria-Validated\Asteria-malf-v1-4-core-formal-rebuild-closeout-20260504-01.zip
 H:\Asteria-Validated\Asteria-data-production-release-closeout-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-execution-price-line-materialization-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip

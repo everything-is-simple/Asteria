@@ -7,6 +7,7 @@ from typing import cast
 
 import duckdb
 
+from asteria.malf.bootstrap_support import market_base_source_filters
 from asteria.malf.contracts import MalfDayRequest
 
 
@@ -135,12 +136,22 @@ def _candidate_wait_span(
 ) -> int:
     if not request.source_db.exists():
         return max((confirm_dt - candidate_dt).days, 1)
+    clauses, params = market_base_source_filters(request)
+    clauses.extend(
+        [
+            "symbol = ?",
+            "timeframe = ?",
+            "bar_dt > ?",
+            "bar_dt <= ?",
+        ]
+    )
+    params.extend([symbol, timeframe, candidate_dt, confirm_dt])
     with duckdb.connect(str(request.source_db), read_only=True) as con:
         row = con.execute(
-            """
+            f"""
             select count(*) from market_base_bar
-            where symbol = ? and timeframe = ? and bar_dt > ? and bar_dt <= ?
+            where {" and ".join(clauses)}
             """,
-            [symbol, timeframe, candidate_dt, confirm_dt],
+            params,
         ).fetchone()
     return max(1, 0 if row is None else int(row[0]))

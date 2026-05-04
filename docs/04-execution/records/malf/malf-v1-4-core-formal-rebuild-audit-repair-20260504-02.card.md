@@ -2,7 +2,7 @@
 
 日期：2026-05-04
 
-状态：`prepared / not executed`
+状态：`passed`
 
 ## 1. 目的
 
@@ -21,17 +21,17 @@
 - 不允许切换当前 runtime evidence。
 - 不允许打开 Position / downstream construction。
 
-## 3. 当前阻塞事实
+## 3. 执行结果
 
 | check | failed_count |
 |---|---:|
-| `service_wave_position_natural_key_unique` | `4767` |
-| `core_new_candidate_replaces_previous` | `3579` |
-| `service_v13_trace_matches_lifespan` | `392` |
-| `hard_fail_count total` | `8738` |
+| `service_wave_position_natural_key_unique` | `0` |
+| `core_new_candidate_replaces_previous` | `0` |
+| `service_v13_trace_matches_lifespan` | `0` |
+| `hard_fail_count total` | `0` |
 
-当前正式 runtime evidence 仍然保持：
+修复后已重新放行的正式 runtime evidence：
 
 ```text
-malf-v1-3-formal-rebuild-closeout-20260502-01
+malf-v1-4-core-formal-rebuild-closeout-20260504-01
 ```

@@ -1,5 +1,5 @@
 registry_version = "2026-05-02.v1"
-active_mainline_module = "malf"
+active_mainline_module = "position"
 active_foundation_card = "none"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
@@ -9,6 +9,7 @@ authority_assets = [
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_4.zip",
     "H:/Asteria-Validated/Asteria-data-formal-promotion-evidence-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip",
+    "H:/Asteria-Validated/Asteria-malf-v1-4-core-formal-rebuild-closeout-20260504-01.zip",
     "H:/Asteria-Validated/Asteria-data-production-release-closeout-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-data-execution-price-line-materialization-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-data-market-meta-formalization-20260502-01.zip",
@@ -16,9 +17,9 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-data-foundation-production-baseline-seal-20260502-01.zip",
 ]
 latest_governance_run_id = "validated-historical-evidence-rehydration-20260502-01"
-latest_mainline_release_run_id = "malf-v1-3-formal-rebuild-closeout-20260502-01"
+latest_mainline_release_run_id = "malf-v1-4-core-formal-rebuild-closeout-20260504-01"
 latest_authority_sync_run_id = "malf-v1-4-core-operational-boundary-authority-sync-20260503-01"
-current_allowed_next_card = "malf_v1_4_core_formal_rebuild_audit_repair"
+current_allowed_next_card = "position_freeze_review_reentry"
 construction_lock = [
     "alpha_full_build",
     "alpha_segmented_production_build",
@@ -48,20 +49,18 @@ latest_completed_card = "data_foundation_production_baseline_seal"
 module_id = "malf"
 display_name = "MALF"
 mainline = true
-status = "formal_rebuild_blocked_pending_followup_repair"
-doc_status = "delivered six-doc set / v1.3 formal-data bounded closeout passed / v1.4 authority sync passed / v1.4 day runtime sync code passed / compatibility repair passed / formal rebuild rerun blocked by hard audit"
-allow_build = true
+status = "released"
+doc_status = "delivered six-doc set / v1.3 formal-data bounded closeout passed / v1.4 authority sync passed / v1.4 day runtime sync code passed / compatibility repair passed / v1.4 day formal rebuild closeout passed"
+allow_build = false
 doc_path = "docs/02-modules/malf"
-next_card = "malf_v1_4_core_formal_rebuild_audit_repair"
-active_card = "docs/04-execution/records/malf/malf-v1-4-core-formal-rebuild-audit-repair-20260504-02.card.md"
+next_card = "position_freeze_review_reentry"
+active_card = "docs/04-execution/records/malf/malf-v1-4-core-formal-rebuild-closeout-20260504-01.card.md"
 allow_review = false
-proof_status = "day_bounded_proof_passed; dense_bar_snapshot_resolution_passed; complete_alignment_closeout_passed; v1_3_formal_data_bounded_closeout_passed; v1_4_authority_sync_passed_no_runtime_proof; v1_4_day_runtime_sync_code_passed; v1_4_day_formal_rebuild_compatibility_repair_passed; v1_4_day_formal_rebuild_closeout_blocked_by_hard_audit"
-release_conclusion = "docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.conclusion.md"
-evidence_index = "docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.evidence-index.md"
+proof_status = "day_bounded_proof_passed; dense_bar_snapshot_resolution_passed; complete_alignment_closeout_passed; v1_3_formal_data_bounded_closeout_passed; v1_4_authority_sync_passed_no_runtime_proof; v1_4_day_runtime_sync_code_passed; v1_4_day_formal_rebuild_compatibility_repair_passed; v1_4_day_formal_rebuild_audit_repair_passed; v1_4_day_formal_rebuild_closeout_passed"
+release_conclusion = "docs/04-execution/records/malf/malf-v1-4-core-formal-rebuild-closeout-20260504-01.conclusion.md"
+evidence_index = "docs/04-execution/records/malf/malf-v1-4-core-formal-rebuild-closeout-20260504-01.evidence-index.md"
 authority_conclusion = "docs/04-execution/records/malf/malf-v1-4-core-operational-boundary-authority-sync-20260503-01.conclusion.md"
 authority_evidence_index = "docs/04-execution/records/malf/malf-v1-4-core-operational-boundary-authority-sync-20260503-01.evidence-index.md"
-blocked_conclusion = "docs/04-execution/records/malf/malf-v1-4-core-formal-rebuild-closeout-20260504-01.conclusion.md"
-blocked_evidence_index = "docs/04-execution/records/malf/malf-v1-4-core-formal-rebuild-closeout-20260504-01.evidence-index.md"
 formal_db_permission = "released_day_dbs_only; week_month_full_build_require_new_card"
 allowed_downstream_use = "read_only_wave_position_for_alpha_freeze_review"
 
@@ -110,10 +109,10 @@ input_boundary = "read_only_released_alpha_signal_candidate"
 module_id = "position"
 display_name = "Position"
 mainline = true
-status = "pre_gate_review_reentry_paused_by_malf_formal_rebuild_repair"
+status = "pre_gate_review_reentry"
 doc_status = "pre-gate six-doc draft"
 allow_build = false
-allow_review = false
+allow_review = true
 doc_path = "docs/02-modules/position"
 waits_for = "signal_released"
 next_card = "position_freeze_review_reentry"

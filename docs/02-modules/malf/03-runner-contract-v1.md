@@ -2,7 +2,7 @@
 
 日期：2026-04-30
 
-状态：frozen / v1.3 formal-data bounded closeout passed / v1.4 day runtime sync code passed / formal rebuild pending
+状态：frozen / v1.3 formal-data bounded closeout passed / v1.4 day runtime sync code passed / v1.4 day formal rebuild closeout passed
 
 ## 1. Runner 目标
 

@@ -36,6 +36,8 @@ SERVICE_RUN_TABLES = (
     "malf_wave_position_latest",
     "malf_interface_audit",
 )
+ANALYSIS_PRICE_LINE = "analysis_price_line"
+ANALYSIS_ADJ_MODE = "backward"
 
 
 def delete_run(con: duckdb.DuckDBPyConnection, run_id: str, tables: tuple[str, ...]) -> None:
@@ -136,20 +138,33 @@ def insert_service_run(
 def count_market_base_rows(request: MalfDayRequest) -> int:
     if not request.source_db.exists():
         raise FileNotFoundError(f"Missing market_base source DB: {request.source_db}")
-    clauses = ["timeframe = ?"]
-    params: list[object] = [request.timeframe]
-    if request.start_date:
-        clauses.append("bar_dt >= ?")
-        params.append(request.start_date)
-    if request.end_date:
-        clauses.append("bar_dt <= ?")
-        params.append(request.end_date)
+    clauses, params = market_base_source_filters(request)
     with duckdb.connect(str(request.source_db), read_only=True) as con:
         row = con.execute(
             f"select count(*) from market_base_bar where {' and '.join(clauses)}",
             params,
         ).fetchone()
     return 0 if row is None else int(row[0])
+
+
+def market_base_source_filters(request: MalfDayRequest) -> tuple[list[str], list[object]]:
+    clauses = [
+        "timeframe = ?",
+        "price_line = ?",
+        "adj_mode = ?",
+    ]
+    params: list[object] = [
+        request.timeframe,
+        ANALYSIS_PRICE_LINE,
+        ANALYSIS_ADJ_MODE,
+    ]
+    if request.start_date:
+        clauses.append("bar_dt >= ?")
+        params.append(request.start_date)
+    if request.end_date:
+        clauses.append("bar_dt <= ?")
+        params.append(request.end_date)
+    return clauses, params
 
 
 def count_rows_for_run(path: Path, table_name: str, run_id: str) -> int:

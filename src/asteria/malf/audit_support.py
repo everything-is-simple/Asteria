@@ -5,6 +5,7 @@ from pathlib import Path
 
 import duckdb
 
+from asteria.malf.bootstrap_support import market_base_source_filters
 from asteria.malf.contracts import MalfDayRequest
 
 
@@ -239,14 +240,7 @@ def _expected_lifespan_dense_keys(
 
 
 def _source_bar_dates(request: MalfDayRequest) -> dict[tuple[str, str], list[date]]:
-    clauses = ["timeframe = ?"]
-    params: list[object] = [request.timeframe]
-    if request.start_date:
-        clauses.append("bar_dt >= ?")
-        params.append(request.start_date)
-    if request.end_date:
-        clauses.append("bar_dt <= ?")
-        params.append(request.end_date)
+    clauses, params = market_base_source_filters(request)
     query = f"""
         select symbol, timeframe, bar_dt
         from market_base_bar

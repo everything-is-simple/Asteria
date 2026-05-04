@@ -5,6 +5,7 @@ from pathlib import Path
 
 import duckdb
 
+from asteria.malf.bootstrap_support import market_base_source_filters
 from asteria.malf.contracts import MalfDayRequest
 from asteria.malf.core_models import Bar, Candidate, CoreBuildRows, Pivot, Transition
 from asteria.malf.core_symbol_logic import build_symbol_rows
@@ -50,14 +51,7 @@ def build_core_rows(request: MalfDayRequest, created_at: datetime) -> CoreBuildR
 
 
 def _load_bars(source_db: Path, request: MalfDayRequest) -> dict[str, list[Bar]]:
-    clauses = ["timeframe = ?"]
-    params: list[object] = [request.timeframe]
-    if request.start_date:
-        clauses.append("bar_dt >= ?")
-        params.append(request.start_date)
-    if request.end_date:
-        clauses.append("bar_dt <= ?")
-        params.append(request.end_date)
+    clauses, params = market_base_source_filters(request)
 
     symbol_clause = ""
     if request.symbol_limit is not None:

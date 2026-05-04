@@ -2,25 +2,20 @@
 
 日期：2026-05-04
 
-状态：`blocked`
+状态：`passed`
 
 ## 1. Conclusion
 
-`malf-v1-4-core-formal-rebuild-closeout-20260504-01` 已在 repair 后重新执行。历史正式库的列位
-兼容写入问题已经解除，Core / Lifespan / Service / Audit 都能完成正式执行；但本卡仍未形成新的
-v1.4 day runtime proof，因为 hard audit 失败。
-
-当前阻塞根因已经切换为新的 audit 失败，而不是原先的写入兼容问题：
-
-- `service_wave_position_natural_key_unique = 4767`
-- `core_new_candidate_replaces_previous = 3579`
-- `service_v13_trace_matches_lifespan = 392`
+`malf-v1-4-core-formal-rebuild-closeout-20260504-01` 已在
+`malf-v1-4-core-formal-rebuild-audit-repair-20260504-02` 修复后重新执行并通过。当前正式
+`market_base_day.duckdb` rerun 已完成 Core / Lifespan / Service / Audit 全流程，
+且 hard audit 回到 `0`。
 
 因此：
 
-- 当前正式 runtime evidence 仍是 `malf-v1-3-formal-rebuild-closeout-20260502-01`
-- 本卡不放行 v1.4 day runtime proof
-- 当前允许下一张卡切换为 `malf_v1_4_core_formal_rebuild_audit_repair`
+- 当前正式 runtime evidence 已切换为 `malf-v1-4-core-formal-rebuild-closeout-20260504-01`
+- 本卡放行 `MALF v1.4 day runtime proof passed`
+- 当前允许下一张卡恢复为 `Position freeze review reentry / review-only`
 
 ## 2. Gate Result
 
@@ -28,24 +23,22 @@ v1.4 day runtime proof，因为 hard audit 失败。
 |---|---|
 | source DB | `H:\Asteria-data\market_base_day.duckdb` |
 | scope | `day / 2024-01-01..2024-12-31 / symbol_limit=20` |
-| blocked stage | `hard audit after service publication` |
-| core / lifespan / service write compatibility | `fixed by prior repair` |
-| hard audit | `hard_fail_count = 8738` |
-| current runtime evidence | `malf-v1-3-formal-rebuild-closeout-20260502-01` |
-| allowed next action | `malf_v1_4_core_formal_rebuild_audit_repair` |
+| hard audit | `hard_fail_count = 0` |
+| repaired checks | `service_wave_position_natural_key_unique = 0; core_new_candidate_replaces_previous = 0; service_v13_trace_matches_lifespan = 0` |
+| current runtime evidence | `malf-v1-4-core-formal-rebuild-closeout-20260504-01` |
+| allowed next action | `Position freeze review reentry` |
 | downstream construction | `not opened` |
 
 ## 3. Next
 
-下一步必须先执行：
+下一步恢复为：
 
 ```text
-malf_v1_4_core_formal_rebuild_audit_repair
+Position freeze review reentry
 ```
 
-该 repair card 只允许修复当前 hard audit 暴露出的 MALF day Core / Lifespan / Service / Audit
-语义问题。在新的 repair 完成前，不得宣称 v1.4 day runtime proof passed，不得恢复 Position
-freeze review reentry。
+当前只恢复 Position 的 review-only reentry，不自动打开 Position construction、week/month
+proof 或任何 downstream construction。
 
 ## 4. Evidence Links
 
