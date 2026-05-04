@@ -1,7 +1,7 @@
 module_id = "malf"
 display_name = "MALF"
 contract_version = "v1.4-runtime-sync-code"
-status = "frozen"
+status = "formal_rebuild_blocked_pending_repair"
 authority_assets = [
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_4",
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_4.zip",
@@ -13,6 +13,9 @@ authority_conclusion = "docs/04-execution/records/malf/malf-v1-4-core-operationa
 authority_evidence_index = "docs/04-execution/records/malf/malf-v1-4-core-operational-boundary-authority-sync-20260503-01.evidence-index.md"
 gate_state = "v1_3_day_formal_data_bounded_closeout_passed; v1_4_core_operational_boundary_authority_synced"
 runtime_sync_conclusion = "docs/04-execution/records/malf/malf-v1-4-core-runtime-sync-code-20260504-01.conclusion.md"
+formal_rebuild_blocked_conclusion = "docs/04-execution/records/malf/malf-v1-4-core-formal-rebuild-closeout-20260504-01.conclusion.md"
+formal_rebuild_blocked_evidence_index = "docs/04-execution/records/malf/malf-v1-4-core-formal-rebuild-closeout-20260504-01.evidence-index.md"
+current_allowed_next_card = "malf_v1_4_core_formal_rebuild_repair"
 formal_db_permission = "released_day_core_lifespan_service_only"
 run_modes = ["bounded", "segmented", "full", "resume"]
 audit_run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
