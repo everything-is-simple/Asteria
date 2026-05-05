@@ -20,6 +20,11 @@ def bootstrap_malf_core_day_database(path: Path) -> None:
                 input_row_count bigint,
                 schema_version varchar,
                 core_rule_version varchar,
+                pivot_detection_rule_version varchar,
+                core_event_ordering_version varchar,
+                price_compare_policy varchar,
+                epsilon_policy varchar,
+                source_market_base_run_id varchar,
                 created_at timestamp
             )
             """
@@ -47,6 +52,7 @@ def bootstrap_malf_core_day_database(path: Path) -> None:
                 run_id varchar,
                 schema_version varchar,
                 core_rule_version varchar,
+                pivot_detection_rule_version varchar,
                 created_at timestamp
             )
             """
@@ -160,9 +166,63 @@ def bootstrap_malf_core_day_database(path: Path) -> None:
                 created_at timestamp,
                 candidate_status varchar,
                 confirmation_pivot_id varchar,
-                new_wave_id varchar
+                new_wave_id varchar,
+                candidate_event_type varchar
             )
             """
+        )
+        con.execute(
+            """
+            create table if not exists malf_core_state_snapshot (
+                snapshot_id varchar,
+                symbol varchar,
+                timeframe varchar,
+                bar_dt date,
+                system_state varchar,
+                wave_id varchar,
+                old_wave_id varchar,
+                wave_core_state varchar,
+                direction varchar,
+                progress_updated boolean,
+                transition_span bigint,
+                guard_boundary_price double,
+                current_effective_guard_pivot_id varchar,
+                current_effective_guard_price double,
+                transition_id varchar,
+                break_id varchar,
+                transition_boundary_high double,
+                transition_boundary_low double,
+                active_candidate_id varchar,
+                active_candidate_guard_pivot_id varchar,
+                confirmation_pivot_id varchar,
+                new_wave_id varchar,
+                run_id varchar,
+                schema_version varchar,
+                core_rule_version varchar,
+                pivot_detection_rule_version varchar,
+                core_event_ordering_version varchar,
+                price_compare_policy varchar,
+                epsilon_policy varchar,
+                source_market_base_run_id varchar,
+                created_at timestamp
+            )
+            """
+        )
+        _ensure_columns(
+            con,
+            "malf_core_run",
+            [
+                ("pivot_detection_rule_version", "varchar"),
+                ("core_event_ordering_version", "varchar"),
+                ("price_compare_policy", "varchar"),
+                ("epsilon_policy", "varchar"),
+                ("source_market_base_run_id", "varchar"),
+            ],
+        )
+        _ensure_columns(
+            con,
+            "malf_pivot_ledger",
+            [("pivot_detection_rule_version", "varchar")],
         )
         _ensure_columns(
             con,
@@ -189,7 +249,13 @@ def bootstrap_malf_core_day_database(path: Path) -> None:
                 ("candidate_status", "varchar"),
                 ("confirmation_pivot_id", "varchar"),
                 ("new_wave_id", "varchar"),
+                ("candidate_event_type", "varchar"),
             ],
+        )
+        _ensure_columns(
+            con,
+            "malf_core_state_snapshot",
+            [("source_market_base_run_id", "varchar")],
         )
 
 
@@ -209,7 +275,11 @@ def bootstrap_malf_lifespan_day_database(path: Path) -> None:
                 schema_version varchar,
                 lifespan_rule_version varchar,
                 sample_version varchar,
-                created_at timestamp
+                created_at timestamp,
+                pivot_detection_rule_version varchar,
+                core_event_ordering_version varchar,
+                price_compare_policy varchar,
+                epsilon_policy varchar
             )
             """
         )
@@ -251,6 +321,16 @@ def bootstrap_malf_lifespan_day_database(path: Path) -> None:
                 confirmation_distance_pct double
             )
             """
+        )
+        _ensure_columns(
+            con,
+            "malf_lifespan_run",
+            [
+                ("pivot_detection_rule_version", "varchar"),
+                ("core_event_ordering_version", "varchar"),
+                ("price_compare_policy", "varchar"),
+                ("epsilon_policy", "varchar"),
+            ],
         )
         con.execute(
             """
@@ -357,7 +437,11 @@ def bootstrap_malf_service_day_database(path: Path) -> None:
                 published_row_count bigint,
                 schema_version varchar,
                 service_version varchar,
-                created_at timestamp
+                created_at timestamp,
+                pivot_detection_rule_version varchar,
+                core_event_ordering_version varchar,
+                price_compare_policy varchar,
+                epsilon_policy varchar
             )
             """
         )
@@ -381,6 +465,16 @@ def bootstrap_malf_service_day_database(path: Path) -> None:
         )
         _ensure_columns(con, "malf_wave_position", _V13_TRACE_COLUMNS)
         _ensure_columns(con, "malf_wave_position_latest", _V13_TRACE_COLUMNS)
+        _ensure_columns(
+            con,
+            "malf_service_run",
+            [
+                ("pivot_detection_rule_version", "varchar"),
+                ("core_event_ordering_version", "varchar"),
+                ("price_compare_policy", "varchar"),
+                ("epsilon_policy", "varchar"),
+            ],
+        )
 
 
 _V13_TRACE_COLUMNS = [

@@ -13,6 +13,7 @@ from asteria.malf.audit_support import (
     _missing_run_count,
     _resolve_audit_source_runs,
     _service_dense_missing_count,
+    _service_v13_trace_mismatch_count,
     _transition_semantics_failure_count,
 )
 from asteria.malf.contracts import MalfDayRequest
@@ -118,6 +119,76 @@ def build_audit_rows(
             where run_id = ? and progress_updated and no_new_span <> 0
             """,
             [source_lifespan_run_id],
+        ),
+        _check(
+            core_db,
+            request,
+            created_at,
+            "core_run_v14_policy_fields_required",
+            """
+            select count(*) from malf_core_run
+            where run_id = ?
+              and (
+                  pivot_detection_rule_version is null
+                  or core_event_ordering_version is null
+                  or price_compare_policy is null
+                  or epsilon_policy is null
+                  or source_market_base_run_id is null
+              )
+            """,
+            [source_core_run_id],
+        ),
+        _check(
+            core_db,
+            request,
+            created_at,
+            "core_pivot_v14_policy_fields_required",
+            """
+            select count(*) from malf_pivot_ledger
+            where run_id = ? and pivot_detection_rule_version is null
+            """,
+            [source_core_run_id],
+        ),
+        _check(
+            core_db,
+            request,
+            created_at,
+            "core_state_snapshot_rows_required",
+            """
+            select case when exists (
+                select 1 from malf_core_state_snapshot where run_id = ?
+            ) then 0 else 1 end
+            """,
+            [source_core_run_id],
+        ),
+        _check(
+            core_db,
+            request,
+            created_at,
+            "core_state_snapshot_v14_fields_required",
+            """
+            select count(*) from malf_core_state_snapshot
+            where run_id = ?
+              and (
+                  pivot_detection_rule_version is null
+                  or core_event_ordering_version is null
+                  or price_compare_policy is null
+                  or epsilon_policy is null
+                  or source_market_base_run_id is null
+              )
+            """,
+            [source_core_run_id],
+        ),
+        _check(
+            core_db,
+            request,
+            created_at,
+            "core_state_snapshot_wave_core_state_bound",
+            """
+            select count(*) from malf_core_state_snapshot
+            where run_id = ? and wave_core_state = 'transition'
+            """,
+            [source_core_run_id],
         ),
         _check(
             core_db,
@@ -232,6 +303,17 @@ def build_audit_rows(
                         and c.is_active_at_close
                   )
               )
+            """,
+            [source_core_run_id],
+        ),
+        _check(
+            core_db,
+            request,
+            created_at,
+            "core_candidate_event_type_required",
+            """
+            select count(*) from malf_candidate_ledger
+            where run_id = ? and candidate_event_type is null
             """,
             [source_core_run_id],
         ),
@@ -414,53 +496,3 @@ def _check(
         "{}" if failed_count == 0 else f'{{"failed_count": {failed_count}}}',
         created_at,
     )
-
-
-_TRACE_FIELDS = (
-    "transition_boundary_high",
-    "transition_boundary_low",
-    "active_candidate_guard_pivot_id",
-    "confirmation_pivot_id",
-    "new_wave_id",
-    "birth_type",
-    "candidate_wait_span",
-    "candidate_replacement_count",
-    "confirmation_distance_abs",
-    "confirmation_distance_pct",
-)
-
-
-def _service_v13_trace_mismatch_count(
-    lifespan_db: Path,
-    service_db: Path,
-    service_run_id: str,
-    lifespan_run_id: str | None,
-) -> int:
-    if lifespan_run_id is None or not lifespan_db.exists() or not service_db.exists():
-        return 0
-    lifespan_rows: dict[tuple[object, ...], tuple[object, ...]] = {}
-    with duckdb.connect(str(lifespan_db), read_only=True) as con:
-        for row in con.execute(
-            f"""
-            select symbol, timeframe, bar_dt, system_state, wave_id, {", ".join(_TRACE_FIELDS)}
-            from malf_lifespan_snapshot
-            where run_id = ?
-            """,
-            [lifespan_run_id],
-        ).fetchall():
-            lifespan_rows[(row[0], row[1], row[2], row[3], row[4])] = tuple(row[5:])
-    failed = 0
-    with duckdb.connect(str(service_db), read_only=True) as con:
-        for row in con.execute(
-            f"""
-            select symbol, timeframe, bar_dt, system_state,
-                   coalesce(wave_id, old_wave_id), {", ".join(_TRACE_FIELDS)}
-            from malf_wave_position
-            where run_id = ?
-            """,
-            [service_run_id],
-        ).fetchall():
-            expected = lifespan_rows.get((row[0], row[1], row[2], row[3], row[4]))
-            if expected is None or expected != tuple(row[5:]):
-                failed += 1
-    return failed

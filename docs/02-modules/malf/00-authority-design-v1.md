@@ -2,7 +2,7 @@
 
 日期：2026-04-30
 
-状态：frozen / day bounded proof 已通过 / v1.3 formal-data bounded closeout 已通过
+状态：frozen / v1.4 day runtime sync 已通过 / v1.4 authority sync 已通过
 
 ## 1. 模块定义
 
@@ -19,8 +19,8 @@ Market Lifespan Framework
 MALF 当前语义权威为：
 
 ```text
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3
-H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_3.zip
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4
+H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip
 ```
 
 MALF v1.2 作为历史 closeout 锚点保留：
@@ -30,9 +30,10 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
 ```
 
-当前 repo 以 `malf-v1-3-formal-rebuild-closeout-20260502-01` 作为已通过的 MALF
-day formal-data bounded evidence。该证据已承接 v1.3 新增字段、runner mode 修订和
-hard audit 扩展；week/month 证明与 full build 仍需另开卡。
+当前 repo 以 `malf-v1-4-core-runtime-sync-implementation-20260505-01` 作为已通过的 MALF
+day runtime-aligned evidence。该证据已承接 v1.4 Core operational boundary、raw-bar
+break、state snapshot、policy fields 与 candidate event type；week/month 证明与 full
+build 仍需另开卡。
 
 本文件按 `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip`
 之后的执行结论刷新：Data formal promotion 与 MALF v1.3 formal-data closeout 均已
@@ -42,14 +43,11 @@ Pipeline。
 
 | 权威文档 | 本模块承接范围 |
 |---|---|
-| `MALF_00_Three_Documents_Bridge_v1_3.md` | Core、Lifespan、Service 的关系；v1.3 不改变当前 gate |
-| `MALF_01_Core_Definitions_Theorems_v1_3.md` | pivot、structure primitive、wave、current effective guard、break、transition boundary、candidate、new wave |
-| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_3.md` | new-count、no-new-span、rank、life-state、position quadrant、birth descriptors |
-| `MALF_03_System_Service_Interface_v1_3.md` | WavePosition、transition trace、birth descriptors 与 Alpha-facing readonly interface |
-| `MALF_04_Core_Chart_View_v1_3.md` | Core 图表辅助理解 |
-| `MALF_05_Lifespan_Chart_View_v1_3.md` | Lifespan 图表辅助理解 |
-| `MALF_06_Service_Chart_View_v1_3.md` | Service 图表辅助理解 |
-| `MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_3.md` | v1.3 定义/定理评审结论与实现差异 |
+| `MALF_00_Three_Documents_Bridge_v1_4.md` | Core、Lifespan、Service 的关系；v1.4 不改变当前 day-only gate |
+| `MALF_01_Core_Definitions_Theorems_v1_4.md` | pivot、structure primitive、wave、current effective guard、break、transition boundary、candidate、new wave |
+| `MALF_01B_Core_Operational_Boundary_Rules_v1_4.md` | raw-bar break、event ordering、strict compare、state snapshot、candidate lifecycle |
+| `MALF_02_Lifespan_Stats_Definitions_Theorems_v1_4.md` | new-count、no-new-span、rank、life-state、position quadrant、birth descriptors |
+| `MALF_03_System_Service_Interface_v1_4.md` | WavePosition、transition trace、birth descriptors 与 Alpha-facing readonly interface |
 
 ## 3. 模块只回答什么
 
@@ -78,6 +76,7 @@ MALF 第一施工对象只读取 day 级别基础行情：
 
 ```text
 H:\Asteria-data\market_base_day.duckdb
+official source line = analysis_price_line / backward
 ```
 
 Data Foundation 仍是地基服务，不属于策略主线模块。
@@ -138,7 +137,7 @@ stateDiagram-v2
 
 | DB | 表族 |
 |---|---|
-| `malf_core_day` | `malf_pivot_ledger`, `malf_structure_ledger`, `malf_wave_ledger`, `malf_break_ledger`, `malf_transition_ledger`, `malf_candidate_ledger`, `malf_core_run`, `malf_schema_version` |
+| `malf_core_day` | `malf_pivot_ledger`, `malf_structure_ledger`, `malf_wave_ledger`, `malf_break_ledger`, `malf_transition_ledger`, `malf_candidate_ledger`, `malf_core_state_snapshot`, `malf_core_run`, `malf_schema_version` |
 | `malf_lifespan_day` | `malf_lifespan_snapshot`, `malf_lifespan_profile`, `malf_sample_version`, `malf_rule_version`, `malf_lifespan_run` |
 | `malf_service_day` | `malf_wave_position`, `malf_wave_position_latest`, `malf_service_run`, `malf_interface_audit` |
 
@@ -171,21 +170,22 @@ MALF day 首轮放行必须满足：
 | Evidence | 构建证据落入 `H:\Asteria-report` 或 `H:\Asteria-Validated` |
 
 当前 `malf-day-bounded-proof-20260428-01` 与
-`malf-v1-3-formal-rebuild-closeout-20260502-01` 均已形成 `passed` 结论。
-该结论只覆盖 day bounded proof 与 v1.3 formal-data WavePosition closeout；
+`malf-v1-4-core-runtime-sync-implementation-20260505-01` 均已形成 `passed` 结论。
+该结论只覆盖 day bounded proof 与 v1.4 day runtime WavePosition closeout；
 week/month、full build 和下游施工仍需后续卡。
 
-## 11. v1.3 当前承接裁决
+## 11. v1.4 当前承接裁决
 
-MALF v1.3 的定义与定理评审结论为：定义清晰、定理自洽。当前 day formal-data
+MALF v1.4 的定义与定理评审结论为：定义清晰、定理自洽。当前 day runtime
 closeout 已承接以下内容：
 
 | 项 | 已承接要求 |
 |---|---|
 | Core | 显式追踪 `current_effective_HL` / `current_effective_LH` 与 broken guard |
-| Core | 记录 `transition_boundary_high` / `transition_boundary_low` |
-| Core | 区分 candidate guard 与 progress confirmation，不使用 `candidate confirmed` 混词 |
+| Core | break 使用 first raw-bar guard breach；不等待更晚 opposite pivot |
+| Core | 记录 `transition_boundary_high` / `transition_boundary_low` 与 `malf_core_state_snapshot` |
+| Core | 区分 candidate guard 与 progress confirmation，并记录 `candidate_event_type` |
 | Lifespan | 增加 `birth_type`、`candidate_wait_span`、`candidate_replacement_count`、`confirmation_distance_abs`、`confirmation_distance_pct` |
 | Service | 发布 transition boundary、active candidate guard、confirmation pivot、new wave id 等追溯字段 |
-| Runner | build runner 不得以 `audit-only` 写业务表；`segmented` 必须有 segmented scope |
-| Audit | 新增 v1.3 hard audit 与回归测试 |
+| Runner | build runner 不得以 `audit-only` 写业务表；`segmented` 必须有 segmented scope；Core 只读取 `analysis_price_line / backward` |
+| Audit | 新增 v1.4 hard audit、snapshot required 与 policy field checks |

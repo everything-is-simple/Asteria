@@ -38,6 +38,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4
 H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip
 H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip
 H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
+H:\Asteria-Validated\Asteria-malf-v1-4-core-runtime-sync-implementation-20260505-01.zip
 H:\Asteria-Validated\Asteria-data-production-release-closeout-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-execution-price-line-materialization-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip
@@ -49,7 +50,7 @@ H:\Asteria-Validated\Asteria-data-foundation-production-baseline-seal-20260502-0
 
 ```text
 MALF day bounded proof 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞
--> Data legacy formal promotion 已通过 -> MALF v1.3 formal-data bounded closeout 已通过 -> Position freeze review reentry card
+-> Data legacy formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry card
 ```
 
 Data Foundation 已完成首轮 `stock / backward / day-week-month` legacy formal promotion，
@@ -61,7 +62,9 @@ Data 标的的申万 2021 当前行业快照；`data-foundation-production-basel
 已将 Data 标为主线输入底座封版，后续 Data 只能通过 maintenance card 扩展；ST、停牌、
 真实上市/退市状态与历史行业沿革仍是参考源缺口；
 MALF v1.4 authority package 已形成，补足 Core operational boundary rules；
-当前 runtime evidence 仍为 MALF v1.3 day formal-data bounded closeout。当前只授权
+当前 runtime evidence 已升级为 MALF v1.4 day runtime sync implementation closeout。
+MALF day 只消费 `analysis_price_line=backward` 的正式 Data 输入；`execution_price_line=none`
+仍保留给未来成交/现金语义，不得混入 MALF day Core。当前只授权
 Position freeze review reentry 的只读评审（review-only），不授权 Alpha full build、Signal
 full build、Position 施工、下游施工或全链路 pipeline。MALF week/month 证明尚未执行。
 仍不能宣称全主线数据已经齐全或完整证券主数据已齐。

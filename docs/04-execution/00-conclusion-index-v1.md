@@ -22,6 +22,7 @@
 - `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip`
 - `H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip`
+- `H:\Asteria-Validated\Asteria-malf-v1-4-core-runtime-sync-implementation-20260505-01.zip`
 - `H:\Asteria-Validated\Asteria-data-production-release-closeout-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-data-execution-price-line-materialization-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip`
@@ -55,6 +56,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | MALF | `malf-v1-3-formal-rebuild-closeout-20260502-01` | `passed` | [conclusion](records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.conclusion.md) | [evidence-index](records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.evidence-index.md) |
 | MALF | `malf-v1-4-core-operational-boundary-authority-sync-20260503-01` | `passed` | [conclusion](records/malf/malf-v1-4-core-operational-boundary-authority-sync-20260503-01.conclusion.md) | [evidence-index](records/malf/malf-v1-4-core-operational-boundary-authority-sync-20260503-01.evidence-index.md) |
 | MALF | `malf-v1-4-core-runtime-sync-review-20260503-01` | `只读评审已执行 / 运行同步未打开` | [conclusion](records/malf/malf-v1-4-core-runtime-sync-review-20260503-01.conclusion.md) | [evidence-index](records/malf/malf-v1-4-core-runtime-sync-review-20260503-01.evidence-index.md) |
+| MALF | `malf-v1-4-core-runtime-sync-implementation-20260505-01` | `passed` | [conclusion](records/malf/malf-v1-4-core-runtime-sync-implementation-20260505-01.conclusion.md) | [evidence-index](records/malf/malf-v1-4-core-runtime-sync-implementation-20260505-01.evidence-index.md) |
 | Alpha | `alpha-freeze-review-20260429-01` | `passed` | [conclusion](records/alpha/alpha-freeze-review-20260429-01.conclusion.md) | [evidence-index](records/alpha/alpha-freeze-review-20260429-01.evidence-index.md) |
 | Alpha | `alpha-bounded-proof-20260429-01` | `passed` | [conclusion](records/alpha/alpha-bounded-proof-20260429-01.conclusion.md) | [evidence-index](records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md) |
 | Signal | `signal-freeze-review-20260429-01` | `passed` | [conclusion](records/signal/signal-freeze-review-20260429-01.conclusion.md) | [evidence-index](records/signal/signal-freeze-review-20260429-01.evidence-index.md) |
@@ -81,9 +83,8 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 - Position freeze review reentry 已打开为只读评审（review-only）：Position 文档边界可继续审查，但
   Position bounded proof / full daily mainline 仍未打开。
 - MALF v1.4 authority package 已形成，继承 v1.3 semantic mainline 并新增 Core
-  operational boundary rules；`malf-v1-3-formal-rebuild-closeout-20260502-01`
-  仍是当前 MALF day runtime formal-data evidence。v1.4 runtime proof、week/month
-  证明和实现同步尚未执行。
+  operational boundary rules；`malf-v1-4-core-runtime-sync-implementation-20260505-01`
+  现为当前 MALF day runtime evidence。week/month 证明和 full build 仍未执行。
 - Data legacy source audit、import contract freeze、import runner working build 与 formal
   promotion evidence 已通过；这只放行首轮 `stock / backward / day-week-month`
   source-fact DB，不声明 Data full build released，也不打开下游施工。

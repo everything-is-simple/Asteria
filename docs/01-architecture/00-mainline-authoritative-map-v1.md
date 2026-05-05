@@ -24,12 +24,12 @@ flowchart LR
 
 ## 1.1 当前门禁状态
 
-截至 `malf-v1-3-formal-rebuild-closeout-20260502-01`：
+截至 `malf-v1-4-core-runtime-sync-implementation-20260505-01`：
 
 | 项 | 当前状态 |
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal` |
-| 当前已通过 bounded proof | `MALF day`; `Alpha day`; `Signal day`; `MALF v1.3 day formal-data bounded closeout` |
+| 当前已通过 bounded proof | `MALF day`; `Alpha day`; `Signal day`; `MALF v1.4 day runtime sync implementation` |
 | 当前已打开执行卡 | `Position freeze review reentry card` |
 | 当前只允许施工 | `Position freeze review reentry / 只读评审（review-only）` |
 | 当前仍禁止 | Alpha full build、Signal full build、Position bounded proof、Position construction、Portfolio Plan/Trade/System/Pipeline 施工 |
@@ -38,8 +38,8 @@ flowchart LR
 已补齐正式 `market_meta.duckdb` 的最小事实，并部分释放可匹配正式 Data 标的的申万
 2021 当前行业快照。Data Foundation 已封为主线输入底座，后续只能通过明确
 maintenance card 扩展；ST、停牌、真实上市/退市状态与历史行业沿革仍不覆盖。Position freeze
-review 已登记 blocked；MALF v1.3 formal-data bounded closeout 已通过并取代旧 dense /
-hard-audit evidence。后续只允许 Position freeze review reentry 的只读评审（review-only），但仍不授权
+review 已登记 blocked；MALF v1.4 day runtime sync implementation 已通过并取代旧 v1.3
+runtime evidence。后续只允许 Position freeze review reentry 的只读评审（review-only），但仍不授权
 Alpha full build、Signal full build、Position bounded proof、Position construction、下游施工或全链路 pipeline。
 
 ## 2. 主线模块
@@ -200,7 +200,7 @@ design freeze
 
 | 权威输入 | 回答的问题 | 当前用途 |
 |---|---|---|
-| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip` | MALF v1.4 语义与操作边界：v1.3 semantic baseline + Core operational boundary rules | 当前 MALF 后续实现同步的语义/操作边界权威；runtime evidence 仍为 v1.3 closeout |
+| `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip` | MALF v1.4 语义与操作边界：v1.3 semantic baseline + Core operational boundary rules | 当前 MALF 语义/操作边界权威；day runtime evidence 已升级到 v1.4 day runtime sync closeout |
 | `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip` | 最新仓库 docs/code 快照 | Data formal promotion 与 MALF v1.3 closeout 后的系统备份 |
 | `H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip` | Data market_meta 最小正式证据 | 证明 Data metadata fact 最小表面已落地，reference gaps retained |
 | `H:\Asteria-Validated\Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip` | Data 申万行业快照证据 | 证明 `industry_classification` 已部分释放申万 2021 当前快照 |
@@ -211,12 +211,12 @@ design freeze
 当前主线图不是“全系统已上线图”。它是模块依赖和施工顺序的法律图：
 
 ```text
-MALF day 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞 -> Data formal promotion 已通过 -> MALF v1.3 formal-data bounded closeout 已通过 -> Position freeze review reentry card
+MALF day 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞 -> Data formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry card
 ```
 
 任何下游实现都必须等前置模块完成 freeze / proof / release evidence。
 
-MALF v1.4 authority package 已形成，作为后续 Core operational boundary 实现同步权威；
-当前 day runtime 证据仍由 MALF v1.3 formal-data closeout 承接。week/month proof 与
+MALF v1.4 authority package 已形成，并已落实到 day runtime sync implementation；
+当前 day runtime 证据由 MALF v1.4 runtime sync closeout 承接。week/month proof 与
 full build 仍需另开执行卡，不授权 Alpha full build、Signal full build、Position
 construction 或 Pipeline 扩权。

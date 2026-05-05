@@ -2,18 +2,25 @@
 
 日期：2026-04-30
 
-状态：frozen / day bounded proof passed / complete alignment closeout passed
+状态：frozen / v1.4 day runtime sync passed / v1.4 authority sync passed
 
 ## 1. 合同目的
 
 本合同定义 MALF 对 Asteria 主线提供的语义边界。下游只能消费这些语义，不得重定义、修补或写回 MALF。
 
-MALF day bounded proof 与 complete alignment closeout 已通过；下游可以只读审阅
-WavePosition 合同，但任何下游模块仍不得重定义、修补或写回 MALF。
+MALF v1.4 day runtime sync 已通过；下游可以只读审阅 WavePosition 合同，但任何下游
+模块仍不得重定义、修补或写回 MALF。
 
 ## 2. 输入语义
 
-MALF 第一阶段输入为 day 级别 market base bars。
+MALF 第一阶段输入为 day 级别 market base bars，并且当前正式读取面固定为：
+
+```text
+market_base_day.market_base_bar
+timeframe = day
+price_line = analysis_price_line
+adj_mode = backward
+```
 
 | 输入 | 语义 |
 |---|---|
@@ -42,8 +49,9 @@ MALF 不负责原始行情同步、复权裁决、交易日历修复或 universe
 
 Core 的结构事实不得由 Lifespan、Service 或下游模块反向改写。
 
-v1.3 裁决：Break 后旧 wave 立即 terminated，不得延伸，不得复活；new wave 必须由
-active candidate guard 加后续 progress confirmation 共同确认。
+v1.4 裁决：Break 后旧 wave 立即 terminated，不得延伸，不得复活；break 以 first
+raw-bar guard breach 为准；new wave 必须由 active candidate guard 加后续 progress
+confirmation 共同确认。
 
 ## 4. Lifespan 语义
 
@@ -64,8 +72,8 @@ active candidate guard 加后续 progress confirmation 共同确认。
 
 `transition_span` 不并入 `no_new_span`。
 
-新增 birth descriptor 字段是 v1.3 待实现合同；在代码修订卡通过前，不得声称当前
-Service 已完整发布这些字段。
+birth descriptor 与 candidate trace 字段已进入当前 day runtime proof，但 week/month
+proof 仍未执行。
 
 ## 5. Service 语义
 
@@ -89,11 +97,11 @@ WavePosition
 | `stagnation_rank` | 停滞分位 |
 | `life_state` | lifespan 状态 |
 | `position_quadrant` | 二维位置 |
-| `transition_boundary_high` | v1.3 transition 上边界，待 schema / service 同步 |
-| `transition_boundary_low` | v1.3 transition 下边界，待 schema / service 同步 |
-| `active_candidate_guard_pivot_id` | v1.3 active candidate guard 追溯，待 schema / service 同步 |
-| `confirmation_pivot_id` | v1.3 new wave confirmation pivot 追溯，待 schema / service 同步 |
-| `new_wave_id` | v1.3 transition 后确认的新 wave，待 schema / service 同步 |
+| `transition_boundary_high` | transition 上边界，已同步到当前 day runtime proof |
+| `transition_boundary_low` | transition 下边界，已同步到当前 day runtime proof |
+| `active_candidate_guard_pivot_id` | active candidate guard 追溯，已同步到当前 day runtime proof |
+| `confirmation_pivot_id` | new wave confirmation pivot 追溯，已同步到当前 day runtime proof |
+| `new_wave_id` | transition 后确认的新 wave，已同步到当前 day runtime proof |
 
 `uninitialized` 是 Core/System 内部状态，不发布为 WavePosition 行。首次 wave 尚未确认的 bar 不写入 `malf_wave_position`；截至最新 run 仍未初始化的 symbol 不写入 `malf_wave_position_latest`，下游缺行即视为尚未初始化，而不是数据错误。
 

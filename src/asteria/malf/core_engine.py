@@ -7,80 +7,28 @@ from pathlib import Path
 import duckdb
 
 from asteria.malf.contracts import MalfDayRequest
+from asteria.malf.core_runtime_support import (
+    candidate_event_type,
+)
+from asteria.malf.core_runtime_support import (
+    candidate_from_pivot as _candidate_from_pivot,
+)
+from asteria.malf.core_runtime_support import (
+    confirm_candidate as _confirm_candidate,
+)
+from asteria.malf.core_runtime_support import (
+    seed_active_wave_context as _seed_active_wave_context,
+)
+from asteria.malf.core_runtime_support import (
+    snapshot_row as _snapshot_row,
+)
+from asteria.malf.core_runtime_support import (
+    structure_rows_for_pivot as _structure_rows_for_pivot,
+)
+from asteria.malf.core_types import Bar, Candidate, Pivot, Transition, Wave
+from asteria.malf.source_contract import market_base_day_clauses
 
-
-@dataclass(frozen=True)
-class Bar:
-    symbol: str
-    bar_dt: date
-    high: float
-    low: float
-
-
-@dataclass
-class Pivot:
-    pivot_id: str
-    symbol: str
-    pivot_dt: date
-    confirmed_dt: date
-    pivot_type: str
-    pivot_price: float
-    pivot_seq_in_bar: int
-
-
-@dataclass
-class Wave:
-    wave_id: str
-    symbol: str
-    wave_seq: int
-    direction: str
-    birth_type: str
-    start_pivot_id: str
-    candidate_guard_pivot_id: str
-    confirm_pivot_id: str
-    confirm_dt: date
-    wave_core_state: str
-    final_progress: Pivot
-    final_guard: Pivot
-    terminated_dt: date | None = None
-    terminated_by_break_id: str | None = None
-
-
-@dataclass
-class Transition:
-    transition_id: str
-    old_wave_id: str
-    break_id: str
-    old_direction: str
-    old_progress: Pivot
-    old_guard: Pivot
-    break_dt: date
-    transition_boundary_high: float
-    transition_boundary_low: float
-    state: str = "open"
-    confirmed_dt: date | None = None
-    new_wave_id: str | None = None
-
-
-@dataclass
-class Candidate:
-    candidate_id: str
-    transition_id: str
-    guard: Pivot
-    direction: str
-    reference_price: float
-    is_active_at_close: bool = True
-    invalidated_by_candidate_id: str | None = None
-    confirmed_by_pivot_id: str | None = None
-    confirmed_wave_id: str | None = None
-
-    @property
-    def status(self) -> str:
-        if self.confirmed_wave_id is not None:
-            return "confirmed"
-        if self.invalidated_by_candidate_id is not None:
-            return "invalidated"
-        return "active"
+_candidate_event_type = candidate_event_type
 
 
 @dataclass(frozen=True)
@@ -91,9 +39,24 @@ class CoreBuildRows:
     breaks: list[tuple[object, ...]]
     transitions: list[Transition]
     candidates: list[Candidate]
+    snapshots: list[tuple[object, ...]]
 
 
-def build_core_rows(request: MalfDayRequest, created_at: datetime) -> CoreBuildRows:
+@dataclass(frozen=True)
+class _SymbolResult:
+    structures: list[tuple[object, ...]]
+    waves: list[Wave]
+    breaks: list[tuple[object, ...]]
+    transitions: list[Transition]
+    candidates: list[Candidate]
+    snapshots: list[tuple[object, ...]]
+
+
+def build_core_rows(
+    request: MalfDayRequest,
+    created_at: datetime,
+    source_market_base_run_id: str | None = None,
+) -> CoreBuildRows:
     bars_by_symbol = _load_bars(request.source_db, request)
     all_pivots: list[Pivot] = []
     structures: list[tuple[object, ...]] = []
@@ -101,31 +64,38 @@ def build_core_rows(request: MalfDayRequest, created_at: datetime) -> CoreBuildR
     breaks: list[tuple[object, ...]] = []
     transitions: list[Transition] = []
     candidates: list[Candidate] = []
+    snapshots: list[tuple[object, ...]] = []
 
     for symbol, bars in bars_by_symbol.items():
         pivots = _detect_pivots(symbol, bars, request)
         all_pivots.extend(pivots)
-        result = _build_symbol_core(pivots, request, created_at)
-        structures.extend(
-            _derive_structures(pivots, result.structure_contexts, request, created_at)
+        result = _build_symbol_core(
+            bars,
+            pivots,
+            request,
+            created_at,
+            source_market_base_run_id,
         )
+        structures.extend(result.structures)
         waves.extend(result.waves)
         breaks.extend(result.breaks)
         transitions.extend(result.transitions)
         candidates.extend(result.candidates)
+        snapshots.extend(result.snapshots)
 
-    return CoreBuildRows(all_pivots, structures, waves, breaks, transitions, candidates)
+    return CoreBuildRows(
+        pivots=all_pivots,
+        structures=structures,
+        waves=waves,
+        breaks=breaks,
+        transitions=transitions,
+        candidates=candidates,
+        snapshots=snapshots,
+    )
 
 
 def _load_bars(source_db: Path, request: MalfDayRequest) -> dict[str, list[Bar]]:
-    clauses = ["timeframe = ?"]
-    params: list[object] = [request.timeframe]
-    if request.start_date:
-        clauses.append("bar_dt >= ?")
-        params.append(request.start_date)
-    if request.end_date:
-        clauses.append("bar_dt <= ?")
-        params.append(request.end_date)
+    clauses, params = market_base_day_clauses(request)
 
     symbol_clause = ""
     if request.symbol_limit is not None:
@@ -172,7 +142,14 @@ def _detect_pivots(symbol: str, bars: list[Bar], request: MalfDayRequest) -> lis
             raw.append(_pivot(symbol, bar, next_bar.bar_dt, "H", bar.high, seq_by_bar, request))
         if bar.low < prev_bar.low and bar.low <= next_bar.low:
             raw.append(_pivot(symbol, bar, next_bar.bar_dt, "L", bar.low, seq_by_bar, request))
-    raw.sort(key=lambda item: (item.pivot_dt, 0 if item.pivot_type == "H" else 1))
+    raw.sort(
+        key=lambda item: (
+            item.confirmed_dt,
+            item.pivot_dt,
+            item.pivot_seq_in_bar,
+            0 if item.pivot_type == "H" else 1,
+        )
+    )
 
     collapsed: list[Pivot] = []
     for pivot in raw:
@@ -209,134 +186,176 @@ def _pivot(
     return Pivot(pivot_id, symbol, bar.bar_dt, confirmed_dt, pivot_type, price, seq)
 
 
-def _derive_structures(
+def _build_symbol_core(
+    bars: list[Bar],
     pivots: list[Pivot],
-    structure_contexts: dict[str, str],
     request: MalfDayRequest,
     created_at: datetime,
-) -> list[tuple[object, ...]]:
-    latest_by_type: dict[str, Pivot] = {}
-    rows: list[tuple[object, ...]] = []
+    source_market_base_run_id: str | None,
+) -> _SymbolResult:
+    pivots_by_confirmed_dt: dict[date, list[Pivot]] = {}
     for pivot in pivots:
-        reference = latest_by_type.get(pivot.pivot_type)
-        if reference is None:
-            latest_by_type[pivot.pivot_type] = pivot
-            continue
-        if pivot.pivot_type == "H":
-            primitive = "HH" if pivot.pivot_price > reference.pivot_price else "LH"
-            direction_context = "up" if primitive == "HH" else "down"
-        else:
-            primitive = "HL" if pivot.pivot_price > reference.pivot_price else "LL"
-            direction_context = "up" if primitive == "HL" else "down"
-        rows.append(
-            (
-                f"{pivot.pivot_id}|{primitive}|{reference.pivot_id}",
-                pivot.pivot_id,
-                structure_contexts.get(pivot.pivot_id, "initial_candidate"),
-                reference.pivot_id,
-                reference.pivot_price,
-                primitive,
-                direction_context,
-                pivot.symbol,
-                request.timeframe,
-                pivot.pivot_dt,
-                request.run_id,
-                request.schema_version,
-                request.core_rule_version,
-                created_at,
+        pivots_by_confirmed_dt.setdefault(pivot.confirmed_dt, []).append(pivot)
+    for confirmed_dt in pivots_by_confirmed_dt:
+        pivots_by_confirmed_dt[confirmed_dt].sort(
+            key=lambda item: (
+                item.pivot_dt,
+                item.pivot_seq_in_bar,
+                0 if item.pivot_type == "H" else 1,
             )
         )
-        latest_by_type[pivot.pivot_type] = pivot
-    return rows
 
-
-@dataclass(frozen=True)
-class _SymbolResult:
-    waves: list[Wave]
-    breaks: list[tuple[object, ...]]
-    transitions: list[Transition]
-    candidates: list[Candidate]
-    structure_contexts: dict[str, str]
-
-
-def _build_symbol_core(
-    pivots: list[Pivot], request: MalfDayRequest, created_at: datetime
-) -> _SymbolResult:
+    structures: list[tuple[object, ...]] = []
     waves: list[Wave] = []
     breaks: list[tuple[object, ...]] = []
     transitions: list[Transition] = []
     candidates: list[Candidate] = []
+    snapshots: list[tuple[object, ...]] = []
+
+    context_refs: dict[str, dict[str, Pivot]] = {
+        "initial_candidate": {},
+        "active_wave": {},
+        "transition_candidate": {},
+    }
+    seen_pivots: list[Pivot] = []
     active_wave: Wave | None = None
     active_transition: Transition | None = None
     active_candidate: Candidate | None = None
-    structure_contexts: dict[str, str] = {}
     wave_seq = 0
 
-    for index, pivot in enumerate(pivots):
-        if active_wave is None and active_transition is None:
-            structure_contexts[pivot.pivot_id] = "initial_candidate"
-            initial = _try_initial_wave(pivots, index, request, wave_seq + 1)
-            if initial:
-                active_wave = initial
-                wave_seq += 1
-                waves.append(initial)
-            continue
+    for bar in bars:
+        progress_updated = False
+        confirmation_pivot_id: str | None = None
+        new_wave_id: str | None = None
+        confirmed_pivots = pivots_by_confirmed_dt.get(bar.bar_dt, [])
+        if active_transition is None:
+            for pivot in confirmed_pivots:
+                seen_pivots.append(pivot)
+                if active_wave is None:
+                    structures.extend(
+                        _structure_rows_for_pivot(
+                            pivot,
+                            "initial_candidate",
+                            context_refs["initial_candidate"],
+                            request,
+                            created_at,
+                        )
+                    )
+                    initial = _try_initial_wave(
+                        seen_pivots,
+                        len(seen_pivots) - 1,
+                        request,
+                        wave_seq + 1,
+                    )
+                    if initial is not None:
+                        wave_seq += 1
+                        active_wave = initial
+                        waves.append(initial)
+                        _seed_active_wave_context(context_refs["active_wave"], active_wave)
+                        progress_updated = True
+                    continue
+                structures.extend(
+                    _structure_rows_for_pivot(
+                        pivot,
+                        "active_wave",
+                        context_refs["active_wave"],
+                        request,
+                        created_at,
+                    )
+                )
+                progress_updated = _apply_active_wave_pivot(active_wave, pivot) or progress_updated
 
         if active_wave is not None:
-            structure_contexts[pivot.pivot_id] = "active_wave"
-            opened = _advance_or_break(active_wave, pivot, request, created_at)
-            if opened is None:
-                continue
-            break_row, transition = opened
-            breaks.append(break_row)
-            transitions.append(transition)
-            active_transition = transition
-            active_wave = None
-            active_candidate = None
-            continue
+            opened = _break_transition_from_bar(active_wave, bar, request, created_at)
+            if opened is not None:
+                break_row, active_transition = opened
+                breaks.append(break_row)
+                transitions.append(active_transition)
+                active_wave = None
+                active_candidate = None
 
-        if active_transition is None:
-            continue
-        structure_contexts[pivot.pivot_id] = "transition_candidate"
-        confirmed = _confirm_candidate(active_transition, active_candidate, pivot)
-        if confirmed:
-            if active_candidate is None:
-                raise RuntimeError("candidate confirmation requires an active candidate")
-            wave_seq += 1
-            birth_type = (
-                "same_direction_after_break"
-                if confirmed == active_transition.old_direction
-                else "opposite_direction_after_break"
-            )
-            active_wave = _new_wave(
-                pivot.symbol,
-                wave_seq,
-                confirmed,
-                birth_type,
-                active_candidate.guard,
-                pivot,
+        if active_transition is not None:
+            for pivot in confirmed_pivots:
+                if pivot.pivot_dt < active_transition.break_dt:
+                    continue
+                structures.extend(
+                    _structure_rows_for_pivot(
+                        pivot,
+                        "transition_candidate",
+                        context_refs["transition_candidate"],
+                        request,
+                        created_at,
+                    )
+                )
+                confirmed_direction = _confirm_candidate(active_candidate, pivot)
+                if confirmed_direction is not None and active_candidate is not None:
+                    wave_seq += 1
+                    birth_type = (
+                        "same_direction_after_break"
+                        if confirmed_direction == active_transition.old_direction
+                        else "opposite_direction_after_break"
+                    )
+                    active_wave = _new_wave(
+                        pivot.symbol,
+                        wave_seq,
+                        confirmed_direction,
+                        birth_type,
+                        active_candidate.guard,
+                        pivot,
+                        request,
+                    )
+                    waves.append(active_wave)
+                    _seed_active_wave_context(context_refs["active_wave"], active_wave)
+                    active_transition.state = "confirmed"
+                    active_transition.confirmed_dt = pivot.pivot_dt
+                    active_transition.new_wave_id = active_wave.wave_id
+                    active_candidate.confirmed_by_pivot_id = pivot.pivot_id
+                    active_candidate.confirmed_wave_id = active_wave.wave_id
+                    active_candidate.event_type = "confirmed"
+                    confirmation_pivot_id = pivot.pivot_id
+                    new_wave_id = active_wave.wave_id
+                    progress_updated = True
+                    active_transition = None
+                    active_candidate = None
+                    break
+
+                new_candidate = _candidate_from_pivot(
+                    active_transition, pivot, request, active_candidate
+                )
+                if new_candidate is None:
+                    continue
+                if active_candidate is not None and active_candidate.confirmed_wave_id is None:
+                    active_candidate.is_active_at_close = False
+                    active_candidate.invalidated_by_candidate_id = new_candidate.candidate_id
+                candidates.append(new_candidate)
+                active_candidate = new_candidate
+
+        if active_transition is not None and bar.bar_dt > active_transition.break_dt:
+            active_transition.transition_span += 1
+
+        snapshots.append(
+            _snapshot_row(
+                bar,
+                active_wave,
+                active_transition,
+                active_candidate,
+                progress_updated,
+                confirmation_pivot_id,
+                new_wave_id,
                 request,
+                source_market_base_run_id,
+                created_at,
             )
-            waves.append(active_wave)
-            active_transition.state = "confirmed"
-            active_transition.confirmed_dt = pivot.pivot_dt
-            active_transition.new_wave_id = active_wave.wave_id
-            active_candidate.confirmed_by_pivot_id = pivot.pivot_id
-            active_candidate.confirmed_wave_id = active_wave.wave_id
-            active_candidate.is_active_at_close = True
-            active_transition = None
-            active_candidate = None
-            continue
+        )
 
-        new_candidate = _candidate_from_pivot(active_transition, pivot, request)
-        if new_candidate is None:
-            continue
-        if active_candidate is not None and active_candidate.confirmed_wave_id is None:
-            active_candidate.is_active_at_close = False
-            active_candidate.invalidated_by_candidate_id = new_candidate.candidate_id
-        candidates.append(new_candidate)
-        active_candidate = new_candidate
-    return _SymbolResult(waves, breaks, transitions, candidates, structure_contexts)
+    return _SymbolResult(
+        structures=structures,
+        waves=waves,
+        breaks=breaks,
+        transitions=transitions,
+        candidates=candidates,
+        snapshots=snapshots,
+    )
 
 
 def _try_initial_wave(
@@ -388,43 +407,60 @@ def _new_wave(
     )
 
 
-def _advance_or_break(
-    wave: Wave, pivot: Pivot, request: MalfDayRequest, created_at: datetime
-) -> tuple[tuple[object, ...], Transition] | None:
+def _apply_active_wave_pivot(wave: Wave, pivot: Pivot) -> bool:
     if wave.direction == "up":
         if pivot.pivot_type == "H" and pivot.pivot_price > wave.final_progress.pivot_price:
             wave.final_progress = pivot
-        elif pivot.pivot_type == "L":
-            if pivot.pivot_price < wave.final_guard.pivot_price:
-                return _break_transition(wave, pivot, request, created_at)
-            if pivot.pivot_price > wave.final_guard.pivot_price:
-                wave.final_guard = pivot
+            return True
+        if pivot.pivot_type == "L" and pivot.pivot_price > wave.final_guard.pivot_price:
+            wave.final_guard = pivot
+            return True
+        return False
+    if pivot.pivot_type == "L" and pivot.pivot_price < wave.final_progress.pivot_price:
+        wave.final_progress = pivot
+        return True
+    if pivot.pivot_type == "H" and pivot.pivot_price < wave.final_guard.pivot_price:
+        wave.final_guard = pivot
+        return True
+    return False
+
+
+def _break_transition_from_bar(
+    wave: Wave,
+    bar: Bar,
+    request: MalfDayRequest,
+    created_at: datetime,
+) -> tuple[tuple[object, ...], Transition] | None:
+    if wave.direction == "up":
+        if bar.low >= wave.final_guard.pivot_price:
+            return None
+        break_price = bar.low
     else:
-        if pivot.pivot_type == "L" and pivot.pivot_price < wave.final_progress.pivot_price:
-            wave.final_progress = pivot
-        elif pivot.pivot_type == "H":
-            if pivot.pivot_price > wave.final_guard.pivot_price:
-                return _break_transition(wave, pivot, request, created_at)
-            if pivot.pivot_price < wave.final_guard.pivot_price:
-                wave.final_guard = pivot
-    return None
+        if bar.high <= wave.final_guard.pivot_price:
+            return None
+        break_price = bar.high
+    return _break_transition(wave, bar.bar_dt, break_price, request, created_at)
 
 
 def _break_transition(
-    wave: Wave, pivot: Pivot, request: MalfDayRequest, created_at: datetime
+    wave: Wave,
+    break_dt: date,
+    break_price: float,
+    request: MalfDayRequest,
+    created_at: datetime,
 ) -> tuple[tuple[object, ...], Transition]:
-    break_id = f"{wave.wave_id}|break|{pivot.pivot_dt.isoformat()}"
+    break_id = f"{wave.wave_id}|break|{break_dt.isoformat()}"
     transition_id = f"{break_id}|transition"
     wave.wave_core_state = "terminated"
-    wave.terminated_dt = pivot.pivot_dt
+    wave.terminated_dt = break_dt
     wave.terminated_by_break_id = break_id
     break_row = (
         break_id,
         wave.wave_id,
         wave.direction,
         wave.final_guard.pivot_id,
-        pivot.pivot_dt,
-        pivot.pivot_price,
+        break_dt,
+        break_price,
         "transition",
         request.run_id,
         request.schema_version,
@@ -433,61 +469,15 @@ def _break_transition(
         wave.final_guard.pivot_id,
     )
     boundary_prices = (wave.final_progress.pivot_price, wave.final_guard.pivot_price)
-    boundary_high = max(boundary_prices)
-    boundary_low = min(boundary_prices)
     transition = Transition(
-        transition_id,
-        wave.wave_id,
-        break_id,
-        wave.direction,
-        wave.final_progress,
-        wave.final_guard,
-        pivot.pivot_dt,
-        boundary_high,
-        boundary_low,
+        transition_id=transition_id,
+        old_wave_id=wave.wave_id,
+        break_id=break_id,
+        old_direction=wave.direction,
+        old_progress=wave.final_progress,
+        old_guard=wave.final_guard,
+        break_dt=break_dt,
+        transition_boundary_high=max(boundary_prices),
+        transition_boundary_low=min(boundary_prices),
     )
     return break_row, transition
-
-
-def _confirm_candidate(
-    transition: Transition, candidate: Candidate | None, pivot: Pivot
-) -> str | None:
-    if candidate is None or pivot.pivot_dt <= candidate.guard.pivot_dt:
-        return None
-    if (
-        candidate.direction == "up"
-        and pivot.pivot_type == "H"
-        and pivot.pivot_price > candidate.reference_price
-    ):
-        return "up"
-    if (
-        candidate.direction == "down"
-        and pivot.pivot_type == "L"
-        and pivot.pivot_price < candidate.reference_price
-    ):
-        return "down"
-    return None
-
-
-def _candidate_from_pivot(
-    transition: Transition, pivot: Pivot, request: MalfDayRequest
-) -> Candidate | None:
-    if pivot.pivot_type not in {"H", "L"}:
-        return None
-    direction = "up" if pivot.pivot_type == "L" else "down"
-    reference = (
-        transition.transition_boundary_high
-        if direction == "up"
-        else transition.transition_boundary_low
-    )
-    candidate_id = (
-        f"{transition.transition_id}|candidate|{pivot.pivot_id}|"
-        f"{direction}|{request.core_rule_version}"
-    )
-    return Candidate(
-        candidate_id,
-        transition.transition_id,
-        pivot,
-        direction,
-        reference,
-    )

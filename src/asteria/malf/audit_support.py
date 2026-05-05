@@ -6,6 +6,20 @@ from pathlib import Path
 import duckdb
 
 from asteria.malf.contracts import MalfDayRequest
+from asteria.malf.source_contract import market_base_day_clauses
+
+_TRACE_FIELDS = (
+    "transition_boundary_high",
+    "transition_boundary_low",
+    "active_candidate_guard_pivot_id",
+    "confirmation_pivot_id",
+    "new_wave_id",
+    "birth_type",
+    "candidate_wait_span",
+    "candidate_replacement_count",
+    "confirmation_distance_abs",
+    "confirmation_distance_pct",
+)
 
 
 def _count(db_path: Path, table_name: str) -> int:
@@ -157,6 +171,42 @@ def _transition_semantics_failure_count(
     return failed
 
 
+def _service_v13_trace_mismatch_count(
+    lifespan_db: Path,
+    service_db: Path,
+    service_run_id: str,
+    lifespan_run_id: str | None,
+) -> int:
+    if lifespan_run_id is None or not lifespan_db.exists() or not service_db.exists():
+        return 0
+    lifespan_rows: dict[tuple[object, ...], tuple[object, ...]] = {}
+    with duckdb.connect(str(lifespan_db), read_only=True) as con:
+        for row in con.execute(
+            f"""
+            select symbol, timeframe, bar_dt, system_state, wave_id, {", ".join(_TRACE_FIELDS)}
+            from malf_lifespan_snapshot
+            where run_id = ?
+            """,
+            [lifespan_run_id],
+        ).fetchall():
+            lifespan_rows[(row[0], row[1], row[2], row[3], row[4])] = tuple(row[5:])
+    failed = 0
+    with duckdb.connect(str(service_db), read_only=True) as con:
+        for row in con.execute(
+            f"""
+            select symbol, timeframe, bar_dt, system_state,
+                   coalesce(wave_id, old_wave_id), {", ".join(_TRACE_FIELDS)}
+            from malf_wave_position
+            where run_id = ?
+            """,
+            [service_run_id],
+        ).fetchall():
+            expected = lifespan_rows.get((row[0], row[1], row[2], row[3], row[4]))
+            if expected is None or expected != tuple(row[5:]):
+                failed += 1
+    return failed
+
+
 def _as_int(value: object) -> int:
     if isinstance(value, int):
         return value
@@ -239,14 +289,7 @@ def _expected_lifespan_dense_keys(
 
 
 def _source_bar_dates(request: MalfDayRequest) -> dict[tuple[str, str], list[date]]:
-    clauses = ["timeframe = ?"]
-    params: list[object] = [request.timeframe]
-    if request.start_date:
-        clauses.append("bar_dt >= ?")
-        params.append(request.start_date)
-    if request.end_date:
-        clauses.append("bar_dt <= ?")
-        params.append(request.end_date)
+    clauses, params = market_base_day_clauses(request)
     query = f"""
         select symbol, timeframe, bar_dt
         from market_base_bar

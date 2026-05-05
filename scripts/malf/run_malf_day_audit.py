@@ -24,6 +24,11 @@ def main() -> int:
     parser.add_argument("--source-db", required=True)
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--schema-version", default=MALF_SCHEMA_VERSION)
+    parser.add_argument("--pivot-rule-version", default="pivot-fractal-1bar-v1")
+    parser.add_argument("--event-ordering-version", default="core-event-order-v1")
+    parser.add_argument("--price-compare-policy", default="strict")
+    parser.add_argument("--epsilon-policy", default="none_after_price_normalization")
+    parser.add_argument("--source-market-base-run-id")
     parser.add_argument("--start-dt")
     parser.add_argument("--end-dt")
     parser.add_argument("--symbol-limit", type=int)
@@ -41,6 +46,11 @@ def main() -> int:
             run_id=args.run_id,
             mode=args.mode,
             schema_version=args.schema_version,
+            pivot_detection_rule_version=args.pivot_rule_version,
+            core_event_ordering_version=args.event_ordering_version,
+            price_compare_policy=args.price_compare_policy,
+            epsilon_policy=args.epsilon_policy,
+            source_market_base_run_id=args.source_market_base_run_id,
             start_dt=args.start_dt,
             end_dt=args.end_dt,
             symbol_limit=args.symbol_limit,

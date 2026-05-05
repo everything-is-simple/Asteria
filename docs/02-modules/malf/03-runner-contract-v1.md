@@ -2,7 +2,7 @@
 
 日期：2026-04-30
 
-状态：frozen / day bounded proof passed / complete alignment closeout passed
+状态：frozen / v1.4 day runtime sync passed / v1.4 authority sync passed
 
 ## 1. Runner 目标
 
@@ -22,8 +22,8 @@ symbol range、batch id 或等价 segmented scope。该修订纳入
 | `scripts/malf/run_malf_day_service_build.py` | 基于 Lifespan 发布 WavePosition |
 | `scripts/malf/run_malf_day_audit.py` | 执行 Core / Lifespan / Service 审计 |
 
-这些 runner 已用于 `malf-day-bounded-proof-20260428-01` 执行闭环并形成
-`passed` 结论。后续扩大到 segmented / full / resume 仍需单独门禁。
+这些 runner 已用于 `malf-v1-4-core-runtime-sync-implementation-20260505-01` 执行闭环并形成
+当前 `passed` 结论。后续扩大到 segmented / full / resume 仍需单独门禁。
 
 ## 3. 构建顺序
 
@@ -82,6 +82,15 @@ segmented scope，也必须 fail fast。
 | `--schema-version` | 必填 |
 | `--rule-version` | Core 或 Lifespan 必填 |
 | `--service-version` | Service 必填 |
+
+当前 day Core 正式读取面固定为：
+
+```text
+market_base_day.market_base_bar
+timeframe = day
+price_line = analysis_price_line
+adj_mode = backward
+```
 
 ## 6. 幂等与断点
 

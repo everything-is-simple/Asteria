@@ -5,9 +5,13 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-MALF_SCHEMA_VERSION = "malf-v1-3-code-revision-v1"
+MALF_SCHEMA_VERSION = "malf-v1-4-runtime-sync-v1"
 VALID_TIMEFRAMES = {"day"}
 VALID_RUN_MODES = {"bounded", "segmented", "full", "resume", "audit-only"}
+DEFAULT_PIVOT_DETECTION_RULE_VERSION = "pivot-fractal-1bar-v1"
+DEFAULT_CORE_EVENT_ORDERING_VERSION = "core-event-order-v1"
+DEFAULT_PRICE_COMPARE_POLICY = "strict"
+DEFAULT_EPSILON_POLICY = "none_after_price_normalization"
 
 
 @dataclass(frozen=True)
@@ -27,6 +31,11 @@ class MalfDayRequest:
     lifespan_rule_version: str | None = None
     sample_version: str | None = None
     service_version: str | None = None
+    pivot_detection_rule_version: str = DEFAULT_PIVOT_DETECTION_RULE_VERSION
+    core_event_ordering_version: str = DEFAULT_CORE_EVENT_ORDERING_VERSION
+    price_compare_policy: str = DEFAULT_PRICE_COMPARE_POLICY
+    epsilon_policy: str = DEFAULT_EPSILON_POLICY
+    source_market_base_run_id: str | None = None
     start_dt: str | None = None
     end_dt: str | None = None
     symbol_limit: int | None = None

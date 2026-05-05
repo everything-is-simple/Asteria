@@ -2,14 +2,14 @@
 
 日期：2026-04-30
 
-状态：frozen / day bounded proof passed / complete alignment closeout passed
+状态：frozen / v1.4 day runtime sync passed / hard audit source-bound / v1.4 authority sync passed
 
 ## 1. 审计目标
 
 MALF 审计用于证明 Core、Lifespan、Service 三层没有破坏权威语义，并且 WavePosition 可被 Alpha 只读消费。
 
-`malf-complete-alignment-closeout-20260430-01` 已按本审计规格形成
-`hard_fail_count = 0` 的 passed 结论。该结论是当前 MALF dense formal evidence，
+`malf-v1-4-core-runtime-sync-implementation-20260505-01` 已按本审计规格形成
+`hard_fail_count = 0` 的 passed 结论。该结论是当前 MALF day runtime evidence，
 不是下游施工许可。
 
 ## 2. Core 硬审计
@@ -26,7 +26,7 @@ MALF 审计用于证明 Core、Lifespan、Service 三层没有破坏权威语义
 | candidate down confirmation 必须低于 old final LL | hard fail |
 | candidate reference 必须等于 transition old progress extreme | hard fail |
 
-v1.3 待新增 Core hard audit：
+v1.4 当前 Core hard audit：
 
 | 检查 | 失败裁决 |
 |---|---|
@@ -48,7 +48,7 @@ v1.3 待新增 Core hard audit：
 | lifespan 规则必须能追溯到 `lifespan_rule_version` | hard fail |
 | audit 必须能解析 `source_lifespan_run_id` 且查到 source rows | hard fail |
 
-v1.3 待新增 Lifespan hard audit：
+v1.4 当前 Lifespan hard audit：
 
 | 检查 | 失败裁决 |
 |---|---|
@@ -69,7 +69,7 @@ v1.3 待新增 Lifespan hard audit：
 | `malf_wave_position_latest` 每个 `symbol + timeframe + service_version` 只有一行 | hard fail |
 | audit 必须能解析 `source_core_run_id` 且查到 source rows | hard fail |
 
-v1.3 待新增 Service hard audit：
+v1.4 当前 Service hard audit：
 
 | 检查 | 失败裁决 |
 |---|---|

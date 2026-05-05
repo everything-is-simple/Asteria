@@ -45,9 +45,9 @@ Asteria 采用 DuckDB 多库拓扑，以空间换时间。
 | `market_base_day.duckdb` | Data production baseline sealed | `docs/04-execution/records/data/data-foundation-production-baseline-seal-20260502-01.evidence-index.md` |
 | `market_base_week.duckdb` | Data production baseline sealed | `docs/04-execution/records/data/data-foundation-production-baseline-seal-20260502-01.evidence-index.md` |
 | `market_base_month.duckdb` | Data production baseline sealed | `docs/04-execution/records/data/data-foundation-production-baseline-seal-20260502-01.evidence-index.md` |
-| `malf_core_day.duckdb` | MALF v1.3 formal-data bounded closeout passed | `docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.evidence-index.md` |
-| `malf_lifespan_day.duckdb` | MALF v1.3 formal-data bounded closeout passed | `docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.evidence-index.md` |
-| `malf_service_day.duckdb` | MALF v1.3 formal-data bounded closeout passed | `docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.evidence-index.md` |
+| `malf_core_day.duckdb` | MALF v1.4 day runtime sync implementation passed | `docs/04-execution/records/malf/malf-v1-4-core-runtime-sync-implementation-20260505-01.evidence-index.md` |
+| `malf_lifespan_day.duckdb` | MALF v1.4 day runtime sync implementation passed | `docs/04-execution/records/malf/malf-v1-4-core-runtime-sync-implementation-20260505-01.evidence-index.md` |
+| `malf_service_day.duckdb` | MALF v1.4 day runtime sync implementation passed | `docs/04-execution/records/malf/malf-v1-4-core-runtime-sync-implementation-20260505-01.evidence-index.md` |
 | `alpha_bof.duckdb` | Alpha bounded proof passed | `docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md` |
 | `alpha_tst.duckdb` | Alpha bounded proof passed | `docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md` |
 | `alpha_pb.duckdb` | Alpha bounded proof passed | `docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md` |
