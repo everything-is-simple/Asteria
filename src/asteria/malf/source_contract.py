@@ -23,4 +23,7 @@ def market_base_day_clauses(request: MalfDayRequest) -> tuple[list[str], list[ob
     if request.end_date:
         clauses.append("bar_dt <= ?")
         params.append(request.end_date)
+    if request.symbols:
+        clauses.append(f"symbol in ({', '.join(['?'] * len(request.symbols))})")
+        params.extend(request.symbols)
     return clauses, params

@@ -21,9 +21,12 @@ symbol range、batch id 或等价 segmented scope。该修订纳入
 | `scripts/malf/run_malf_day_lifespan_build.py` | 基于 Core 构建 lifespan 统计 |
 | `scripts/malf/run_malf_day_service_build.py` | 基于 Lifespan 发布 WavePosition |
 | `scripts/malf/run_malf_day_audit.py` | 执行 Core / Lifespan / Service 审计 |
+| `scripts/malf/run_malf_day_supplemental_build.py` | MALF day 分批补数、断点续跑、staging audit promote 样板 |
 
 这些 runner 已用于 `malf-v1-4-core-runtime-sync-implementation-20260505-01` 执行闭环并形成
 当前 `passed` 结论。后续扩大到 segmented / full / resume 仍需单独门禁。
+`run_malf_day_supplemental_build.py` 是项目级数据库分批补数准则的第一套 MALF day
+样板实现，只覆盖 day，不打开 week/month 或 Pipeline runtime。
 
 ## 3. 构建顺序
 
@@ -79,6 +82,7 @@ segmented scope，也必须 fail fast。
 | `--start-dt` | bounded 可选条件 |
 | `--end-dt` | bounded 可选条件 |
 | `--symbol-limit` | bounded 可选条件 |
+| `--symbols-file` / `--symbol-start` / `--symbol-end` / `--batch-size` | supplemental builder 的分批补数范围 |
 | `--schema-version` | 必填 |
 | `--rule-version` | Core 或 Lifespan 必填 |
 | `--service-version` | Service 必填 |
@@ -91,6 +95,11 @@ timeframe = day
 price_line = analysis_price_line
 adj_mode = backward
 ```
+
+Supplemental builder 中，用户指定的 year/month/day/date range 是 `target_scope`；
+MALF Core 实际计算默认从该 symbol 可用最早 day bar 开始到 `target_scope.end_dt`，
+再只 promote 目标范围内的发布结果。没有已审计 `malf_core_state_checkpoint` 前，不得
+从中途日期硬切计算 Core 状态。
 
 ## 6. 幂等与断点
 

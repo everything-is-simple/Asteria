@@ -98,7 +98,7 @@ def _load_bars(source_db: Path, request: MalfDayRequest) -> dict[str, list[Bar]]
     clauses, params = market_base_day_clauses(request)
 
     symbol_clause = ""
-    if request.symbol_limit is not None:
+    if request.symbol_limit is not None and not request.symbols:
         with duckdb.connect(str(source_db), read_only=True) as con:
             symbols = [
                 row[0]

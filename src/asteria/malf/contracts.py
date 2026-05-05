@@ -39,6 +39,7 @@ class MalfDayRequest:
     start_dt: str | None = None
     end_dt: str | None = None
     symbol_limit: int | None = None
+    symbols: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         if self.mode not in VALID_RUN_MODES:
@@ -46,15 +47,17 @@ class MalfDayRequest:
         if self.timeframe not in VALID_TIMEFRAMES:
             raise ValueError(f"Unsupported MALF timeframe: {self.timeframe}")
         if self.mode == "bounded" and not (
-            self.start_dt or self.end_dt or self.symbol_limit is not None
+            self.start_dt or self.end_dt or self.symbol_limit is not None or self.symbols
         ):
-            raise ValueError("bounded MALF runs require start_dt, end_dt, or symbol_limit")
+            raise ValueError("bounded MALF runs require date or symbol scope")
         if self.mode == "segmented" and not (
-            self.start_dt or self.end_dt or self.symbol_limit is not None
+            self.start_dt or self.end_dt or self.symbol_limit is not None or self.symbols
         ):
             raise ValueError("segmented MALF runs require segmented scope")
         if self.start_date and self.end_date and self.start_date > self.end_date:
             raise ValueError("start_dt cannot be later than end_dt")
+        if self.symbol_limit is not None and self.symbols:
+            raise ValueError("Use either symbol_limit or explicit symbols, not both")
 
     @property
     def start_date(self) -> date | None:
