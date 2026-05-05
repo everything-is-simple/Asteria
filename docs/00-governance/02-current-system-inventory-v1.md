@@ -127,6 +127,7 @@ name -> roots -> governance -> architecture -> topology -> MALF bridge -> asset 
 | `docs/00-governance/00-asteria-refactor-charter-v1.md` | active | 系统命名、重构总纲、主线铁律、单模块门禁 |
 | `docs/00-governance/01-asteria-refactor-origin-trace-v1.md` | active | 重构来路与决策链 |
 | `docs/00-governance/02-current-system-inventory-v1.md` | active | 当前仓库资产清单 |
+| `docs/00-governance/03-data-to-malf-rerun-decision-rule-v1.md` | active | 看完 Data 卡后快速判断当前 MALF day 是否需要重跑 |
 
 ### 6.2 Architecture
 

@@ -71,11 +71,12 @@ full build、Position 施工、下游施工或全链路 pipeline。MALF week/mon
 1. [重构总纲](docs/00-governance/00-asteria-refactor-charter-v1.md)
 2. [重构来路与决策链](docs/00-governance/01-asteria-refactor-origin-trace-v1.md)
 3. [当前系统清单](docs/00-governance/02-current-system-inventory-v1.md)
-4. [主线模块权威图](docs/01-architecture/00-mainline-authoritative-map-v1.md)
-5. [数据库拓扑](docs/01-architecture/01-database-topology-v1.md)
-6. [模块设计文档标准](docs/02-modules/00-module-design-document-standard-v1.md)
-7. [模块门禁账本](docs/03-refactor/00-module-gate-ledger-v1.md)
-8. [执行卡记录区](docs/04-execution/README.md)
+4. [Data 卡后 MALF 重跑判定口径](docs/00-governance/03-data-to-malf-rerun-decision-rule-v1.md)
+5. [主线模块权威图](docs/01-architecture/00-mainline-authoritative-map-v1.md)
+6. [数据库拓扑](docs/01-architecture/01-database-topology-v1.md)
+7. [模块设计文档标准](docs/02-modules/00-module-design-document-standard-v1.md)
+8. [模块门禁账本](docs/03-refactor/00-module-gate-ledger-v1.md)
+9. [执行卡记录区](docs/04-execution/README.md)
 
 ## Python 环境
 
