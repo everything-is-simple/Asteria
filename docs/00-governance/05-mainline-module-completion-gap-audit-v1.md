@@ -63,8 +63,8 @@ DuckDB。
 
 | 优先级 | 补齐项 | 原因 |
 |---|---|---|
-| P0 | `data reference target maintenance scope` | 当前 repo next card；先冻结 Data reference 缺口哪些必须补 |
-| P1 | `data reference target maintenance closeout` | 按 P0 冻结范围补 Data reference facts、DB 表面和审计 |
+| P0 | `data reference target maintenance scope` | 已通过；已冻结 Data reference closeout 必补范围 |
+| P1 | `data reference target maintenance closeout` | 当前 repo next card；按 P0 冻结范围补 Data reference facts、DB 表面和审计 |
 | P2 | `malf week bounded proof build` -> `malf month bounded proof build` | MALF day clean 但 week/month formal DBs 不存在 |
 | P3 | `alpha production builder hardening` -> `signal production builder hardening` | bounded proof 已过，但 segmented/full production builder 仍未放行 |
 | P4 | `upstream pre-position release decision` | 只有上游修补结论齐备后，才裁定是否恢复 Position bounded proof |
@@ -96,5 +96,5 @@ MALF week/month proof 已执行
 当前真实下一步已推进为：
 
 ```text
-data reference target maintenance scope / prepared / Position construction suspended
+data reference target maintenance closeout / prepared / Position construction suspended
 ```

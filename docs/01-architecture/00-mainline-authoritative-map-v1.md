@@ -30,8 +30,8 @@ flowchart LR
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal` |
 | 当前已通过 bounded proof | `MALF day`; `Alpha day`; `Signal day`; `MALF v1.4 day runtime sync implementation` |
-| 当前已准备执行卡 | `data reference target maintenance scope` plus seven-card upstream repair queue |
-| 当前只允许施工 | `Data reference scope freeze / Position construction suspended` |
+| 当前已准备执行卡 | `data reference target maintenance closeout` after Data scope freeze passed |
+| 当前只允许施工 | `Data reference maintenance closeout / Position construction suspended` |
 | 当前仍禁止 | Alpha full build、Signal full build、Position full build、Portfolio Plan/Trade/System/Pipeline 施工 |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Data Foundation
@@ -43,7 +43,7 @@ runtime evidence。随后 `upstream-pre-position-completeness-synthesis-20260506
 裁定：若按最终完整目标衡量，Data / MALF / Alpha / Signal 仍不能给出全部完成的肯定答复，
 因此 Position bounded proof 施工暂时搁置。当前仍不授权 Alpha full build、Signal full build、
 Position full build、下游施工或全链路 pipeline。
-后续必须按七张卡顺序推进：Data reference scope、Data reference closeout、MALF week、
+后续必须按七张卡顺序推进：Data reference scope 已通过，当前进入 Data reference closeout；之后是 MALF week、
 MALF month、Alpha production hardening、Signal production hardening、upstream release decision。
 
 ## 2. 主线模块
@@ -215,7 +215,7 @@ design freeze
 当前主线图不是“全系统已上线图”。它是模块依赖和施工顺序的法律图：
 
 ```text
-MALF day 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞 -> Data formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry 已通过 -> upstream pre-position completeness synthesis 已完成 -> data reference target maintenance scope prepared
+MALF day 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞 -> Data formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry 已通过 -> upstream pre-position completeness synthesis 已完成 -> data reference target maintenance scope 已通过 -> data reference target maintenance closeout prepared
 ```
 
 任何下游实现都必须等前置模块完成 freeze / proof / release evidence。

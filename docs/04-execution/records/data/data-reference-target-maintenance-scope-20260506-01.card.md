@@ -2,7 +2,7 @@
 
 日期：2026-05-06
 
-状态：`prepared / not executed`
+状态：`passed / scope frozen`
 
 ## 1. 背景
 
@@ -16,7 +16,7 @@
 |---|---|
 | module | `data` |
 | run_id | `data-reference-target-maintenance-scope-20260506-01` |
-| stage | `maintenance-scope / prepared / not executed` |
+| stage | `maintenance-scope / passed / scope frozen` |
 | owner | `codex` |
 
 ## 3. 输入范围
@@ -34,7 +34,7 @@
 | 项 | 值 |
 |---|---|
 | upstream semantics | `source facts only; no strategy semantics` |
-| formal DB permission | `not created or modified by this prepared card` |
+| formal DB permission | `not created or modified by this scope card` |
 | allowed next action before card | `data_reference_target_maintenance_scope` |
 
 ## 5. 允许动作
@@ -53,7 +53,7 @@
 
 ## 7. 后续门禁
 
-本卡执行并形成结论后，若范围可冻结，下一张卡才允许进入：
+本卡已形成范围冻结结论。下一张卡允许按本卡冻结范围进入：
 
 ```text
 data-reference-target-maintenance-closeout-20260506-01

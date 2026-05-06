@@ -51,7 +51,7 @@ H:\Asteria-Validated\Asteria-data-foundation-production-baseline-seal-20260502-0
 ```text
 MALF day bounded proof 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞
 -> Data legacy formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry 已通过 -> upstream pre-position completeness synthesis 已完成
--> data reference target maintenance scope
+-> data reference target maintenance scope 已通过 -> data reference target maintenance closeout
 ```
 
 Data Foundation 已完成首轮 `stock / backward / day-week-month` legacy formal promotion，
@@ -65,8 +65,11 @@ Data 标的的申万 2021 当前行业快照；`data-foundation-production-basel
 MALF v1.4 authority package 已形成，补足 Core operational boundary rules；
 当前 runtime evidence 已升级为 MALF v1.4 day runtime sync implementation closeout。
 MALF day 只消费 `analysis_price_line=backward` 的正式 Data 输入；`execution_price_line=none`
-仍保留给未来成交/现金语义，不得混入 MALF day Core。当前只授权
-data reference target maintenance scope 这张范围冻结卡；Position bounded proof
+仍保留给未来成交/现金语义，不得混入 MALF day Core。Data reference target maintenance
+scope 已冻结：ST、停牌、真实上市/退市生命周期、历史行业 coverage decision 与
+index/block source inventory 进入下一张 Data closeout 范围；week/month execution price line
+不作为 MALF week/month 前置必补，继续保留给未来执行语义卡。当前只授权
+data reference target maintenance closeout 这张 Data maintenance closeout 卡；Position bounded proof
 施工已暂停，直到 Data / MALF / Alpha / Signal 的修补卡序完成并由总控 release decision 裁定。不授权
 Alpha full build、Signal full build、Position full build、下游施工或全链路 pipeline。
 MALF week/month 证明尚未执行。

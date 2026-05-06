@@ -48,6 +48,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Data | `data-market-meta-sw-industry-snapshot-20260502-01` | `passed` | [conclusion](records/data/data-market-meta-sw-industry-snapshot-20260502-01.conclusion.md) | [evidence-index](records/data/data-market-meta-sw-industry-snapshot-20260502-01.evidence-index.md) |
 | Data | `data-foundation-production-baseline-seal-20260502-01` | `passed` | [conclusion](records/data/data-foundation-production-baseline-seal-20260502-01.conclusion.md) | [evidence-index](records/data/data-foundation-production-baseline-seal-20260502-01.evidence-index.md) |
 | Data | `data-foundation-target-completeness-review-20260506-01` | `review-only / bounded mainline input sufficient / full target incomplete` | [conclusion](records/data/data-foundation-target-completeness-review-20260506-01.conclusion.md) | [evidence-index](records/data/data-foundation-target-completeness-review-20260506-01.evidence-index.md) |
+| Data | `data-reference-target-maintenance-scope-20260506-01` | `passed / scope frozen` | [conclusion](records/data/data-reference-target-maintenance-scope-20260506-01.conclusion.md) | [evidence-index](records/data/data-reference-target-maintenance-scope-20260506-01.evidence-index.md) |
 | MALF | `malf-day-bounded-proof-20260428-01` | `passed` | [conclusion](records/malf/malf-day-bounded-proof-20260428-01.conclusion.md) | [evidence-index](records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md) |
 | MALF | `malf-lifespan-dense-bar-snapshot-gap-20260429-01` | `blocked` | [conclusion](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.conclusion.md) | [evidence-index](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.evidence-index.md) |
 | MALF | `malf-lifespan-dense-bar-snapshot-resolution-20260429-01` | `passed` | [conclusion](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.conclusion.md) | [evidence-index](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.evidence-index.md) |
@@ -87,7 +88,8 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   alignment closeout 的正式 DB rerun 和 hard audit 结果取代为当前证据。
 - Position freeze review reentry 已完成只读评审（review-only）并通过：Position 六件套已冻结为
   文档合同表面；但 `upstream-pre-position-completeness-synthesis-20260506-01` 已裁定上游最终完整目标
-  不能全部肯定，因此下一步改为七张上游修补卡。Position bounded proof 仍未执行，`position.duckdb` 仍未创建。
+  不能全部肯定，因此下一步改为七张上游修补卡。第一张 Data scope 卡已通过，当前进入
+  `data-reference-target-maintenance-closeout-20260506-01`。Position bounded proof 仍未执行，`position.duckdb` 仍未创建。
 - MALF v1.4 authority package 已形成，继承 v1.3 semantic mainline 并新增 Core
   operational boundary rules；`malf-v1-4-core-runtime-sync-implementation-20260505-01`
   现为当前 MALF day runtime evidence。week/month 证明和 full build 仍未执行。
@@ -115,11 +117,10 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 
 ## 3. 已准备但未执行的 Pre-Position 修补卡
 
-以下只登记 prepared card 队列，不作为 passed conclusion：
+以下只登记尚未执行的 prepared card 队列，不作为 passed conclusion：
 
 | 顺序 | 模块 | run_id | card |
 |---:|---|---|---|
-| 1 | Data | `data-reference-target-maintenance-scope-20260506-01` | [card](records/data/data-reference-target-maintenance-scope-20260506-01.card.md) |
 | 2 | Data | `data-reference-target-maintenance-closeout-20260506-01` | [card](records/data/data-reference-target-maintenance-closeout-20260506-01.card.md) |
 | 3 | MALF | `malf-week-bounded-proof-build-20260506-01` | [card](records/malf/malf-week-bounded-proof-build-20260506-01.card.md) |
 | 4 | MALF | `malf-month-bounded-proof-build-20260506-01` | [card](records/malf/malf-month-bounded-proof-build-20260506-01.card.md) |

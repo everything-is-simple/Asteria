@@ -47,7 +47,7 @@ def test_project_governance_passes_current_repo() -> None:
     assert findings == []
 
 
-def test_current_gate_opens_data_reference_scope_while_position_is_paused() -> None:
+def test_current_gate_opens_data_reference_closeout_while_position_is_paused() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     with registry_path.open("rb") as handle:
@@ -67,9 +67,9 @@ def test_current_gate_opens_data_reference_scope_while_position_is_paused() -> N
 
     assert registry["active_mainline_module"] == "position"
     assert registry["active_foundation_card"] == (
-        "data-reference-target-maintenance-scope-20260506-01"
+        "data-reference-target-maintenance-closeout-20260506-01"
     )
-    assert registry["current_allowed_next_card"] == "data_reference_target_maintenance_scope"
+    assert registry["current_allowed_next_card"] == "data_reference_target_maintenance_closeout"
     assert registry["latest_mainline_release_run_id"] == (
         "malf-v1-4-core-runtime-sync-implementation-20260505-01"
     )
@@ -77,6 +77,7 @@ def test_current_gate_opens_data_reference_scope_while_position_is_paused() -> N
     assert modules["position"]["allow_build"] is False
     assert modules["position"]["next_card"] == "upstream_pre_position_completeness_synthesis"
     assert modules["position"]["position_construction_pause"].startswith("paused_until")
+    assert "data-reference-target-maintenance-scope-20260506-01" in conclusion_index
     assert "malf-v1-3-formal-rebuild-closeout-20260502-01" in conclusion_index
     assert "状态：`passed`" in malf_conclusion
 
@@ -145,7 +146,7 @@ def test_project_governance_rejects_missing_current_next_card_file(tmp_path: Pat
         / "04-execution"
         / "records"
         / "data"
-        / "data-reference-target-maintenance-scope-20260506-01.card.md"
+        / "data-reference-target-maintenance-closeout-20260506-01.card.md"
     )
     if card_path.exists():
         card_path.unlink()
@@ -164,7 +165,7 @@ def test_project_governance_rejects_current_next_card_that_is_already_blocked(
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'current_allowed_next_card = "data_reference_target_maintenance_scope"',
+            'current_allowed_next_card = "data_reference_target_maintenance_closeout"',
             'current_allowed_next_card = "position_freeze_review"',
         ).replace(
             'next_card = "upstream_pre_position_completeness_synthesis"',
@@ -249,7 +250,7 @@ def test_project_governance_rejects_docs_sync_next_card_mismatch(tmp_path: Path)
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'active_foundation_card = "data-reference-target-maintenance-scope-20260506-01"',
+            'active_foundation_card = "data-reference-target-maintenance-closeout-20260506-01"',
             'active_foundation_card = "none"',
         ).replace(
             '\nnext_card = "upstream_pre_position_completeness_synthesis"',

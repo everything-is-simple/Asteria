@@ -129,13 +129,13 @@ Signal bounded proof
 当前已打开执行卡：
 
 ```text
-upstream pre-position completeness synthesis
+data reference target maintenance closeout
 ```
 
 当前只允许施工对象：
 
 ```text
-data reference target maintenance scope / scope freeze / Position construction suspended
+data reference target maintenance closeout / Data maintenance / Position construction suspended
 ```
 
 除 MALF day proof、Alpha freeze review、Alpha bounded proof passed、Signal freeze
@@ -157,7 +157,8 @@ Alpha bounded proof build card 只授权 Alpha bounded proof，不授权 Alpha f
 Signal construction、Pipeline 或任何下游施工。Signal freeze review passed 后，下一步
 只允许 Signal bounded proof build card。Signal bounded proof passed 后，Position freeze review
 reentry 已通过；随后上游完整性总控卡裁定在最终完整目标标准下暂停 Position bounded proof
-施工。不允许 Position full build 或下游施工。
+施工。Data reference target maintenance scope 已通过并冻结下一张 Data closeout 范围；
+不允许 Position full build 或下游施工。
 
 ## 6. 硬边界
 
