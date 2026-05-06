@@ -4,11 +4,10 @@
 
 ## 1. 摘要
 
-当前基线：`MALF day bounded proof`、`Alpha freeze review`、`Alpha bounded proof`、
-`Signal freeze review`、`Signal bounded proof` 与 `MALF complete alignment closeout`
-已通过；MALF v1.3 code-only revision 与 day formal-data bounded rebuild closeout 已形成。
-MALF v1.4 权威包已补入 Core operational boundary rules，但不声明 v1.4 runtime proof
-passed。当前策略主线下一步仍是 `Position freeze review reentry` 的只读评审（review-only）。
+当前基线：Data Foundation production baseline 已封版；`MALF day bounded proof`、
+`Alpha freeze review`、`Alpha bounded proof`、`Signal freeze review`、`Signal bounded proof`
+与 `MALF complete alignment closeout` 已通过；MALF v1.4 day runtime sync implementation
+已通过。当前策略主线下一步仍是 `Position freeze review reentry` 的只读评审（review-only）。
 
 地基轨道 `data-formal-promotion-evidence-20260502-01` 的 allowed next action
 `MALF v1.3 formal rebuild closeout` 已由当前 MALF v1.3 closeout 闭环。
@@ -28,6 +27,12 @@ H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
 深度研究报告中的 “机器可读门禁、统一 schema registry、模块 API 合同、pipeline ledger
 运行时” 缺口已部分被 repo 后续治理实现补齐；尚未放行的是 pipeline runtime 与
 全系统日更/断点续传运行时。
+
+主线模块设计、实现与正式 DB 证据的当前完成度判定见：
+
+```text
+docs/00-governance/05-mainline-module-completion-gap-audit-v1.md
+```
 
 系统完成路径固定为：
 
@@ -187,7 +192,7 @@ Pipeline 只调度和记录
 
 - 当前事实基线以 `Data foundation production baseline sealed`、`MALF v1.3 day formal-data bounded closeout 已通过`、
   `Alpha bounded proof 已通过` 和 `Signal bounded proof 已通过` 为准。
-- MALF v1.4 是当前语义与操作边界权威包；runtime proof、week/month proof 和 full build 仍需另开卡。
+- MALF v1.4 是当前语义与操作边界权威包；day runtime sync 已通过，week/month proof 和 full build 仍需另开卡。
 - 当前下一卡固定为 `Position freeze review reentry`，不是 Position construction。
 - Data Foundation 是地基轨道，不进入策略主线排序。
 - Pipeline 是编排与记录轨道，不进入业务主线排序。

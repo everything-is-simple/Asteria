@@ -76,11 +76,12 @@ full build、Position 施工、下游施工或全链路 pipeline。MALF week/mon
 3. [当前系统清单](docs/00-governance/02-current-system-inventory-v1.md)
 4. [Data 卡后 MALF 重跑判定口径](docs/00-governance/03-data-to-malf-rerun-decision-rule-v1.md)
 5. [数据库分批补数与断点构建准则](docs/00-governance/04-database-build-runner-standard-v1.md)
-6. [主线模块权威图](docs/01-architecture/00-mainline-authoritative-map-v1.md)
-7. [数据库拓扑](docs/01-architecture/01-database-topology-v1.md)
-8. [模块设计文档标准](docs/02-modules/00-module-design-document-standard-v1.md)
-9. [模块门禁账本](docs/03-refactor/00-module-gate-ledger-v1.md)
-10. [执行卡记录区](docs/04-execution/README.md)
+6. [主线模块完成度缺口审计](docs/00-governance/05-mainline-module-completion-gap-audit-v1.md)
+7. [主线模块权威图](docs/01-architecture/00-mainline-authoritative-map-v1.md)
+8. [数据库拓扑](docs/01-architecture/01-database-topology-v1.md)
+9. [模块设计文档标准](docs/02-modules/00-module-design-document-standard-v1.md)
+10. [模块门禁账本](docs/03-refactor/00-module-gate-ledger-v1.md)
+11. [执行卡记录区](docs/04-execution/README.md)
 
 ## Python 环境
 

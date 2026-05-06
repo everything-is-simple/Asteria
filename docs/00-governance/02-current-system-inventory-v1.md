@@ -77,7 +77,7 @@ flowchart TD
 当前仓库的主要成果是：
 
 ```text
-doc-first refactor workspace
+Data baseline sealed + MALF day v1.4 runtime evidence + Alpha/Signal bounded proof
 ```
 
 还不是：
@@ -85,6 +85,10 @@ doc-first refactor workspace
 ```text
 full trading runtime
 ```
+
+主线模块真实完成度以
+`docs/00-governance/05-mainline-module-completion-gap-audit-v1.md` 为快速判定入口。
+该审计明确区分“设计存在”、“runtime 已实现”、“物理 DB 存在”和“full release 权限”。
 
 ## 4. Git 历史节点
 
@@ -128,6 +132,8 @@ name -> roots -> governance -> architecture -> topology -> MALF bridge -> asset 
 | `docs/00-governance/01-asteria-refactor-origin-trace-v1.md` | active | 重构来路与决策链 |
 | `docs/00-governance/02-current-system-inventory-v1.md` | active | 当前仓库资产清单 |
 | `docs/00-governance/03-data-to-malf-rerun-decision-rule-v1.md` | active | 看完 Data 卡后快速判断当前 MALF day 是否需要重跑 |
+| `docs/00-governance/04-database-build-runner-standard-v1.md` | active | 所有正式 DuckDB builder 的分批补数、断点续跑、staging promote 准则 |
+| `docs/00-governance/05-mainline-module-completion-gap-audit-v1.md` | active | 主线模块设计、实现与正式 DB 证据完成度缺口审计 |
 
 ### 6.2 Architecture
 

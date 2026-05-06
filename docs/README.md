@@ -42,9 +42,9 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4
 | `MALF_03_System_Service_Interface_v1_4.md` | 继承 v1.3 的 MALF 只读服务接口 |
 | `MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_4.md` | 继承 v1.3 评审结论，并由 01B 补足工程边界 |
 
-v1.4 是当前 MALF 语义与 Core 操作边界权威包；当前 runtime formal evidence 仍以
-`malf-v1-3-formal-rebuild-closeout-20260502-01` 为 day bounded proof。v1.4 不声明
-runtime proof passed，后续实现同步与 formal proof 必须另开卡。
+v1.4 是当前 MALF 语义与 Core 操作边界权威包；当前 runtime formal evidence 已更新到
+`malf-v1-4-core-runtime-sync-implementation-20260505-01`。该证据只覆盖 day runtime，
+不声明 week/month proof、full build 或下游施工已打开。
 
 Validated 资产清单：
 
@@ -91,3 +91,7 @@ H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研
 当前系统清单：
 
 - [Asteria 当前系统清单](H:/Asteria/docs/00-governance/02-current-system-inventory-v1.md)
+
+主线模块完成度缺口审计：
+
+- [Asteria 主线模块完成度缺口审计](H:/Asteria/docs/00-governance/05-mainline-module-completion-gap-audit-v1.md)
