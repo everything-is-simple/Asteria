@@ -2,7 +2,7 @@
 
 日期：2026-05-06
 
-状态：`prepared / not executed`
+状态：`passed / source inventory closed / gaps retained`
 
 ## 1. 背景
 
@@ -16,7 +16,7 @@ facts、DB 表面、审计和证据链。
 |---|---|
 | module | `data` |
 | run_id | `data-reference-target-maintenance-closeout-20260506-01` |
-| stage | `maintenance-closeout / prepared / not executed` |
+| stage | `maintenance-closeout / passed / no DB mutation` |
 | owner | `codex` |
 
 ## 3. 输入范围
@@ -43,6 +43,18 @@ facts、DB 表面、审计和证据链。
 - 使用 staging、audit、promote、checkpoint/resume 和 source manifest 形成正式证据。
 - 生成 card、record、evidence-index、conclusion、report closeout 和 validated evidence。
 - 执行完成后明确是否打开 MALF week bounded proof build。
+
+## 5.1 执行裁决
+
+本卡已执行为 source inventory closeout。当前 repo 与正式库只证明：
+
+- `market_meta.duckdb` 现有 released 表面 audit-only 通过。
+- `meta_source_manifest` 仅覆盖 `raw_market.duckdb` 与 `market_base_day/week/month.duckdb`。
+- 已批准且已导入的外部 reference source 只有申万 2021 当前行业快照。
+- ST、官方停牌、真实上市/退市生命周期、历史行业沿革、index/block membership 仍无 approved source manifest。
+
+因此本卡不修改正式 Data DB，不新增 schema、runner 或 promoted reference facts；以显式 retained gap
+完成 closeout，并放行下一张 `malf-week-bounded-proof-build-20260506-01`。
 
 ## 6. 禁止动作
 

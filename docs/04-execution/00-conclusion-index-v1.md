@@ -28,6 +28,7 @@
 - `H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-data-foundation-production-baseline-seal-20260502-01.zip`
+- `H:\Asteria-Validated\Asteria-data-reference-target-maintenance-closeout-20260506-01.zip`
 
 `214427` 是重要 docs/code 快照锚点；`130309` 是三天重构成果的历史系统
 docs/code 快照；`101006` 是 Data formal promotion（Data 正式提升）与 MALF v1.3
@@ -49,6 +50,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Data | `data-foundation-production-baseline-seal-20260502-01` | `passed` | [conclusion](records/data/data-foundation-production-baseline-seal-20260502-01.conclusion.md) | [evidence-index](records/data/data-foundation-production-baseline-seal-20260502-01.evidence-index.md) |
 | Data | `data-foundation-target-completeness-review-20260506-01` | `review-only / bounded mainline input sufficient / full target incomplete` | [conclusion](records/data/data-foundation-target-completeness-review-20260506-01.conclusion.md) | [evidence-index](records/data/data-foundation-target-completeness-review-20260506-01.evidence-index.md) |
 | Data | `data-reference-target-maintenance-scope-20260506-01` | `passed / scope frozen` | [conclusion](records/data/data-reference-target-maintenance-scope-20260506-01.conclusion.md) | [evidence-index](records/data/data-reference-target-maintenance-scope-20260506-01.evidence-index.md) |
+| Data | `data-reference-target-maintenance-closeout-20260506-01` | `passed / source inventory closed / gaps retained` | [conclusion](records/data/data-reference-target-maintenance-closeout-20260506-01.conclusion.md) | [evidence-index](records/data/data-reference-target-maintenance-closeout-20260506-01.evidence-index.md) |
 | MALF | `malf-day-bounded-proof-20260428-01` | `passed` | [conclusion](records/malf/malf-day-bounded-proof-20260428-01.conclusion.md) | [evidence-index](records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md) |
 | MALF | `malf-lifespan-dense-bar-snapshot-gap-20260429-01` | `blocked` | [conclusion](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.conclusion.md) | [evidence-index](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.evidence-index.md) |
 | MALF | `malf-lifespan-dense-bar-snapshot-resolution-20260429-01` | `passed` | [conclusion](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.conclusion.md) | [evidence-index](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.evidence-index.md) |
@@ -88,8 +90,8 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   alignment closeout 的正式 DB rerun 和 hard audit 结果取代为当前证据。
 - Position freeze review reentry 已完成只读评审（review-only）并通过：Position 六件套已冻结为
   文档合同表面；但 `upstream-pre-position-completeness-synthesis-20260506-01` 已裁定上游最终完整目标
-  不能全部肯定，因此下一步改为七张上游修补卡。第一张 Data scope 卡已通过，当前进入
-  `data-reference-target-maintenance-closeout-20260506-01`。Position bounded proof 仍未执行，`position.duckdb` 仍未创建。
+  不能全部肯定，因此下一步改为七张上游修补卡。Data scope 卡与 Data closeout 卡已通过，当前进入
+  `malf-week-bounded-proof-build-20260506-01`。Position bounded proof 仍未执行，`position.duckdb` 仍未创建。
 - MALF v1.4 authority package 已形成，继承 v1.3 semantic mainline 并新增 Core
   operational boundary rules；`malf-v1-4-core-runtime-sync-implementation-20260505-01`
   现为当前 MALF day runtime evidence。week/month 证明和 full build 仍未执行。
@@ -104,8 +106,9 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 - Data market meta formalization 已通过；`market_meta.duckdb` 已最小正式化，覆盖
   trade calendar、instrument、alias、observed universe 和 `has_execution_bar`。
   Data market meta SW industry snapshot 已通过，`industry_classification` 已部分释放
-  可匹配正式 Data A 股标的的申万 2021 当前行业快照。ST、停牌、真实上市/退市状态
-  与历史行业沿革仍是 reference source gap，不得宣称齐全。
+  可匹配正式 Data A 股标的的申万 2021 当前行业快照。Data reference target maintenance closeout 已完成
+  source inventory 裁决；ST、停牌、真实上市/退市状态、历史行业沿革和 index/block membership 仍是 retained
+  reference source gap，不得宣称齐全。
 - Data foundation production baseline seal 已通过；Data 已封为主线输入底座，后续
   Data 只能通过明确 maintenance card 扩展，不再作为 Position freeze review reentry 前的
   泛化补数入口。
@@ -121,7 +124,6 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 
 | 顺序 | 模块 | run_id | card |
 |---:|---|---|---|
-| 2 | Data | `data-reference-target-maintenance-closeout-20260506-01` | [card](records/data/data-reference-target-maintenance-closeout-20260506-01.card.md) |
 | 3 | MALF | `malf-week-bounded-proof-build-20260506-01` | [card](records/malf/malf-week-bounded-proof-build-20260506-01.card.md) |
 | 4 | MALF | `malf-month-bounded-proof-build-20260506-01` | [card](records/malf/malf-month-bounded-proof-build-20260506-01.card.md) |
 | 5 | Alpha | `alpha-production-builder-hardening-20260506-01` | [card](records/alpha/alpha-production-builder-hardening-20260506-01.card.md) |

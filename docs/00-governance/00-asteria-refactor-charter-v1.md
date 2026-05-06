@@ -45,6 +45,7 @@
 | `H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip` | Data market_meta 最小正式证据 | 证明 `market_meta.duckdb` 已按可证事实优先口径落地 |
 | `H:\Asteria-Validated\Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip` | Data 申万行业快照证据 | 证明可匹配正式 Data 标的的申万 2021 当前行业快照已部分释放 |
 | `H:\Asteria-Validated\Asteria-data-foundation-production-baseline-seal-20260502-01.zip` | Data baseline seal 证据 | 证明 Data 已封为主线输入底座，后续只走 maintenance card |
+| `H:\Asteria-Validated\Asteria-data-reference-target-maintenance-closeout-20260506-01.zip` | Data reference maintenance closeout 证据 | 证明本轮 reference source inventory 已闭环；无 approved manifest 的 ST、停牌、上市退市、历史行业和 index/block facts 保持 retained |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 架构剖切面研究 | 支撑治理、主线、数据、编排四个切面的后续裁决 |
 
 裁决：
@@ -176,7 +177,7 @@ MALF v1.4 Core runtime sync implementation 已通过
 下一张允许进入的卡：
 
 ```text
-data reference target maintenance closeout
+MALF week bounded proof build
 ```
 
 MALF 当前 runtime formal evidence 以
@@ -185,11 +186,13 @@ day 当前 runtime proof，但 week/month 证明尚未执行。MALF v1.4 authori
 语义权威来源，不自动扩展为 week/month 或 full build 通过。
 Data Foundation 当前已封为主线输入底座；`market_meta.duckdb` 已放行从正式 raw/base
 行情库推导的最小客观事实，并部分释放可匹配正式 Data 标的的申万 2021 当前行业快照；
-ST、停牌、真实上市/退市和历史行业沿革仍不放行，后续只能通过明确 maintenance card 扩展。
+Data reference target maintenance closeout 已完成 source inventory 裁决；ST、停牌、真实上市/退市、
+历史行业沿革和 index/block membership 仍因无 approved source manifest 而 retained，后续只能通过
+明确 maintenance card 扩展。
 Signal bounded proof 已通过；Position freeze review reentry 已完成只读评审并通过；
 MALF v1.3 formal-data closeout 已被 v1.4 day runtime sync implementation supersede 为当前
 MALF day 正式证据。Position freeze review reentry 已通过，Data reference target
-maintenance scope 已冻结；当前下一卡改为 data reference target maintenance closeout。
+maintenance scope 已冻结并完成 closeout；当前下一卡改为 MALF week bounded proof build。
 在上游最终完整目标未能给出肯定答复前，
 Position bounded proof 施工暂时搁置。已准备的修补队列为 Data scope、Data closeout、
 MALF week、MALF month、Alpha production hardening、Signal production hardening 和

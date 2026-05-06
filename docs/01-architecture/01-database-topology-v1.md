@@ -240,10 +240,10 @@ MALF week/month、Pipeline runtime 或下游施工。
 | 项 | 裁决 |
 |---|---|
 | MALF day 三库 | 已通过 complete alignment closeout 并重建到 `H:\Asteria-data` |
-| `market_meta.duckdb` | 已按可证事实优先口径最小正式化；申万 2021 当前行业快照部分释放；Data baseline sealed；其他 reference gaps retained |
+| `market_meta.duckdb` | 已按可证事实优先口径最小正式化；申万 2021 当前行业快照部分释放；Data baseline sealed；Data reference maintenance closeout passed；其他 reference gaps retained |
 | `market_base_day.duckdb` 正式化 | 已通过 Data formal promotion、production closeout 与 execution line materialization |
 | `pipeline.duckdb` runtime | 仍未冻结，不得先于业务模块定义语义 |
-| week / month MALF | 待另开复制/扩展卡 |
+| week / month MALF | 当前进入 week bounded proof build；month 待后续卡 |
 
 Alpha bounded proof 已通过，五个 Alpha family DB 已在 bounded proof/audit 路径下创建。
 Signal bounded proof 已通过，并已在 bounded proof/audit 路径下创建 `signal.duckdb`。

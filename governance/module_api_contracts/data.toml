@@ -1,7 +1,7 @@
 module_id = "data"
 display_name = "Data Foundation"
 contract_version = "v1.production-baseline-sealed"
-status = "production_baseline_sealed_mainline_input_ready"
+status = "production_baseline_sealed_mainline_input_ready_reference_closeout_passed"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
     "H:/Asteria-Validated/Asteria-docs-code-20260502-104932.zip",
@@ -10,9 +10,10 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-data-market-meta-formalization-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-data-foundation-production-baseline-seal-20260502-01.zip",
+    "H:/Asteria-Validated/Asteria-data-reference-target-maintenance-closeout-20260506-01.zip",
 ]
-gate_state = "production foundation baseline sealed; future data changes require maintenance card"
-formal_db_permission = "released_raw_market_market_meta_and_market_base_day_week_month_plus_day_execution_line; sw_industry_snapshot_partially_released; production_baseline_sealed; other_reference_gaps_retained"
+gate_state = "production foundation baseline sealed; data reference maintenance closeout passed; future data changes require maintenance card"
+formal_db_permission = "released_raw_market_market_meta_and_market_base_day_week_month_plus_day_execution_line; sw_industry_snapshot_partially_released; production_baseline_sealed; data_reference_target_maintenance_closeout_passed_without_db_mutation; other_reference_gaps_retained"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
 resume_behavior = "resume from source manifest, checkpoint, or dirty scope"
 source_manifest_fields = ["source_path", "source_size_bytes", "source_mtime", "source_content_hash"]
@@ -22,6 +23,7 @@ execution_line_materialization_run_id = "data-execution-price-line-materializati
 market_meta_formalization_run_id = "data-market-meta-formalization-20260502-01"
 market_meta_sw_industry_snapshot_run_id = "data-market-meta-sw-industry-snapshot-20260502-01"
 production_baseline_seal_run_id = "data-foundation-production-baseline-seal-20260502-01"
+reference_target_maintenance_closeout_run_id = "data-reference-target-maintenance-closeout-20260506-01"
 forbidden_inputs = ["legacy_downstream", "mock_formal_data"]
 forbidden_outputs = ["malf_semantics", "strategy_signal", "position_size", "portfolio_allocation", "order_intent"]
 
@@ -84,7 +86,7 @@ table = "industry_classification"
 natural_key = ["instrument_id", "industry_schema", "effective_date"]
 public_fields = ["instrument_id", "industry_schema", "industry_code", "industry_name", "effective_date", "source_vendor"]
 version_fields = ["run_id", "schema_version"]
-coverage_policy = "sw2021_level3_snapshot only; matched A-share instruments only; ST/suspension/listing/delisting/history gaps retained"
+coverage_policy = "sw2021_level3_snapshot only; matched A-share instruments only; ST/suspension/listing/delisting/history/index-block gaps retained after reference closeout"
 
 [[official_outputs]]
 db_name = "market_base_day.duckdb"

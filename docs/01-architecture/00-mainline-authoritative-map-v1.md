@@ -30,21 +30,22 @@ flowchart LR
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal` |
 | 当前已通过 bounded proof | `MALF day`; `Alpha day`; `Signal day`; `MALF v1.4 day runtime sync implementation` |
-| 当前已准备执行卡 | `data reference target maintenance closeout` after Data scope freeze passed |
-| 当前只允许施工 | `Data reference maintenance closeout / Position construction suspended` |
+| 当前已准备执行卡 | `malf-week-bounded-proof-build-20260506-01` after Data reference maintenance closeout passed |
+| 当前只允许施工 | `MALF week bounded proof build / Position construction suspended` |
 | 当前仍禁止 | Alpha full build、Signal full build、Position full build、Portfolio Plan/Trade/System/Pipeline 施工 |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Data Foundation
 已补齐正式 `market_meta.duckdb` 的最小事实，并部分释放可匹配正式 Data 标的的申万
 2021 当前行业快照。Data Foundation 已封为主线输入底座，后续只能通过明确
-maintenance card 扩展；ST、停牌、真实上市/退市状态与历史行业沿革仍不覆盖。Position freeze
+maintenance card 扩展；Data reference target maintenance closeout 已完成 source inventory 裁决，
+ST、停牌、真实上市/退市状态、历史行业沿革和 index/block membership 仍因无 approved source manifest 而 retained。Position freeze
 review reentry 已完成只读评审并通过；MALF v1.4 day runtime sync implementation 已通过并取代旧 v1.3
 runtime evidence。随后 `upstream-pre-position-completeness-synthesis-20260506-01`
 裁定：若按最终完整目标衡量，Data / MALF / Alpha / Signal 仍不能给出全部完成的肯定答复，
 因此 Position bounded proof 施工暂时搁置。当前仍不授权 Alpha full build、Signal full build、
 Position full build、下游施工或全链路 pipeline。
-后续必须按七张卡顺序推进：Data reference scope 已通过，当前进入 Data reference closeout；之后是 MALF week、
-MALF month、Alpha production hardening、Signal production hardening、upstream release decision。
+后续必须按七张卡顺序推进：Data reference scope 与 Data reference closeout 已通过，当前进入 MALF week；
+之后是 MALF month、Alpha production hardening、Signal production hardening、upstream release decision。
 
 ## 2. 主线模块
 
@@ -209,13 +210,14 @@ design freeze
 | `H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip` | Data market_meta 最小正式证据 | 证明 Data metadata fact 最小表面已落地，reference gaps retained |
 | `H:\Asteria-Validated\Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip` | Data 申万行业快照证据 | 证明 `industry_classification` 已部分释放申万 2021 当前快照 |
 | `H:\Asteria-Validated\Asteria-data-foundation-production-baseline-seal-20260502-01.zip` | Data baseline seal 证据 | 证明 Data 已封为主线输入底座，后续只走 maintenance card |
+| `H:\Asteria-Validated\Asteria-data-reference-target-maintenance-closeout-20260506-01.zip` | Data reference maintenance closeout 证据 | 证明本轮 source inventory 已闭环，新增 reference facts 未因无源而释放 |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 多 DuckDB、日更、pipeline ledger、release evidence 如何治理 | 支撑逻辑历史总账和增量构建协议 |
 | `docs/04-execution/00-conclusion-index-v1.md` | 哪些执行卡已经正式落档 | 当前放行状态入口 |
 
 当前主线图不是“全系统已上线图”。它是模块依赖和施工顺序的法律图：
 
 ```text
-MALF day 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞 -> Data formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry 已通过 -> upstream pre-position completeness synthesis 已完成 -> data reference target maintenance scope 已通过 -> data reference target maintenance closeout prepared
+MALF day 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞 -> Data formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry 已通过 -> upstream pre-position completeness synthesis 已完成 -> data reference target maintenance scope 已通过 -> data reference target maintenance closeout 已通过 -> malf week bounded proof build prepared
 ```
 
 任何下游实现都必须等前置模块完成 freeze / proof / release evidence。

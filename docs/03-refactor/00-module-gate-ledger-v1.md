@@ -19,6 +19,7 @@ H:\Asteria-Validated\Asteria-data-execution-price-line-materialization-20260502-
 H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-foundation-production-baseline-seal-20260502-01.zip
+H:\Asteria-Validated\Asteria-data-reference-target-maintenance-closeout-20260506-01.zip
 ```
 
 `214427` 快照是 2026-04-28 docs/code 基线；`130309` 快照是三天重构成果的
@@ -44,6 +45,7 @@ Data execution price line materialization 已通过
 Data market meta formalization 已通过
 Data market meta SW industry snapshot 已通过
 Data foundation production baseline seal 已通过
+Data reference target maintenance closeout 已通过
 ```
 
 当前已交付主线模块文档索引：
@@ -79,13 +81,13 @@ rules；当前 runtime passed evidence 已升级为 MALF v1.4 day runtime sync i
 当前已准备的下一张执行卡：
 
 ```text
-data reference target maintenance closeout
+MALF week bounded proof build
 ```
 
 当前只允许施工对象：
 
 ```text
-data reference target maintenance closeout / Data maintenance / Position construction suspended
+MALF week bounded proof build / Position construction suspended
 ```
 
 当前已通过 bounded proof 的主线模块：
@@ -104,7 +106,8 @@ v1.3 day bounded formal-data evidence；Position freeze review reentry 已通过
 `upstream-pre-position-completeness-synthesis-20260506-01` 裁定在最终完整目标标准下
 暂停 Position bounded proof 施工，并已拆出七张上游修补卡。第一张
 `data-reference-target-maintenance-scope-20260506-01` 已通过并冻结 Data closeout 范围；
-当前只允许执行 `data-reference-target-maintenance-closeout-20260506-01`。仍不得扩展为 Position full build、
+`data-reference-target-maintenance-closeout-20260506-01` 已通过并将无 approved source manifest 的 reference facts
+登记为 retained gaps。当前只允许执行 `malf-week-bounded-proof-build-20260506-01`。仍不得扩展为 Position full build、
 Signal full build、下游施工或全链路 pipeline。
 
 ## 1.1 Pre-Position 上游修补队列
@@ -112,7 +115,7 @@ Signal full build、下游施工或全链路 pipeline。
 | 顺序 | run_id | 模块 | 当前状态 | 后续动作 |
 |---:|---|---|---|---|
 | 1 | `data-reference-target-maintenance-scope-20260506-01` | Data | passed / scope frozen | 冻结 reference gaps 必补范围 |
-| 2 | `data-reference-target-maintenance-closeout-20260506-01` | Data | prepared / not executed | 按范围卡补 Data reference facts 与审计 |
+| 2 | `data-reference-target-maintenance-closeout-20260506-01` | Data | passed / source inventory closed / gaps retained | 无 approved source manifest 的新增 reference facts 不释放 |
 | 3 | `malf-week-bounded-proof-build-20260506-01` | MALF | prepared / not executed | 补 week Core/Lifespan/Service 三库证明 |
 | 4 | `malf-month-bounded-proof-build-20260506-01` | MALF | prepared / not executed | 补 month Core/Lifespan/Service 三库证明 |
 | 5 | `alpha-production-builder-hardening-20260506-01` | Alpha | prepared / not executed | 补 full/segmented production builder 与审计 |
@@ -125,8 +128,8 @@ Signal full build、下游施工或全链路 pipeline。
 
 | 顺序 | 模块 | 文档状态 | 冻结状态 | 是否允许施工 | 文档位置 | 说明 |
 |---:|---|---|---|---:|---|---|
-| 0 | Data Foundation | production baseline seal 已通过 | 主线输入底座已封版 / maintenance-card-only extensions / reference gaps retained | 是，仅 maintenance card | `docs/02-modules/data/` | 五个 Data DB 是本版主线输入底座；market_meta 已部分释放申万当前行业快照；ST/停牌/真实上市退市仍缺口；非策略主线，不占主线施工位 |
-| 1 | MALF | 六件套已交付 / v1.4 day runtime sync 已通过 / v1.4 authority sync 已通过 | frozen | 否 | `docs/02-modules/malf/` | day runtime proof 已升级到 v1.4；week/month 未执行 |
+| 0 | Data Foundation | production baseline seal 与 reference maintenance closeout 已通过 | 主线输入底座已封版 / maintenance-card-only extensions / reference gaps retained | 否，需新 maintenance card | `docs/02-modules/data/` | 五个 Data DB 是本版主线输入底座；market_meta 已部分释放申万当前行业快照；ST/停牌/真实上市退市/index-block 仍 retained；非策略主线，不占主线施工位 |
+| 1 | MALF | 六件套已交付 / v1.4 day runtime sync 已通过 / v1.4 authority sync 已通过 | frozen | 是，MALF week bounded proof | `docs/02-modules/malf/` | day runtime proof 已升级到 v1.4；当前只打开 week bounded proof build，month 未执行 |
 | 2 | Alpha | 六件套已冻结 / bounded proof 已通过 | released | 否 | `docs/02-modules/alpha/` | bounded proof 已通过；full build 需另开卡 |
 | 3 | Signal | 六件套已冻结 / bounded proof 已通过 | released | 否 | `docs/02-modules/signal/` | bounded proof 已通过；full build 需另开卡 |
 | 4 | Position | 六件套 freeze review passed / design contract frozen | frozen / build not executed | 是，review-only synthesis | `docs/02-modules/position/` | 当前暂停 Position bounded proof 施工；本轮仍未创建 runner 或 DB |
@@ -151,8 +154,9 @@ Data Foundation 本轮六件套草案：
 Data Foundation 已完成生产级地基闭环和最小 `market_meta.duckdb` 正式化。当前放行范围为
 五个正式 Data DB、`analysis_price_line = backward`、`execution_price_line = none`、
 daily incremental、checkpoint/resume 与 release audit；其中 `market_meta` 覆盖
-可从正式 raw/base 推导的客观事实，并部分释放申万 2021 当前行业快照。index/block、
-ST、停牌、真实上市/退市与历史行业沿革仍需另开 maintenance card。当前 Data 已封为
+可从正式 raw/base 推导的客观事实，并部分释放申万 2021 当前行业快照。Data reference target maintenance
+closeout 已完成 source inventory 裁决；index/block、ST、停牌、真实上市/退市与历史行业沿革仍因无
+approved source manifest 而 retained。当前 Data 已封为
 主线输入底座，不再作为 Position freeze review reentry 前的泛化补数入口。
 
 Data Foundation legacy source intake 当前执行结论：
@@ -168,6 +172,8 @@ Data Foundation legacy source intake 当前执行结论：
 | `data-market-meta-formalization-20260502-01` | `passed` | `Position freeze review reentry` |
 | `data-market-meta-sw-industry-snapshot-20260502-01` | `passed` | `Position freeze review reentry` |
 | `data-foundation-production-baseline-seal-20260502-01` | `passed` | `Position freeze review reentry` |
+| `data-reference-target-maintenance-scope-20260506-01` | `passed / scope frozen` | `data reference target maintenance closeout` |
+| `data-reference-target-maintenance-closeout-20260506-01` | `passed / source inventory closed / gaps retained` | `malf_week_bounded_proof_build` |
 
 MALF v1.3 formal rebuild 当前执行结论：
 
@@ -290,8 +296,9 @@ MALF day bounded proof 已通过。
 
 MALF day 放行后打开的 Alpha freeze review、Alpha bounded proof、Signal freeze
 review 和 Signal bounded proof 均已通过。Position freeze review reentry 已完成
-review-only 审查并通过。MALF complete alignment closeout 已通过。当前下一步唯一允许动作已改为
-data reference target maintenance closeout；Signal full build、Position full build、
+review-only 审查并通过。MALF complete alignment closeout 已通过。Data reference target maintenance closeout
+已通过。当前下一步唯一允许动作已改为
+MALF week bounded proof build；Signal full build、Position full build、
 Portfolio Plan、Trade、System Readout、Pipeline 仍不允许直接施工。
 
 ## 6. Alpha Freeze Review 放行记录
@@ -376,8 +383,8 @@ Signal bounded proof 已通过。
 
 Signal bounded proof 只放行 bounded proof 产物和 `signal.duckdb` 当前表面，不授权
 Signal full build、Position 施工或全链路 pipeline。后续 Position freeze review reentry
-已完成 review-only 审查并通过，MALF complete alignment closeout 已通过；当前已由
-upstream completeness synthesis 改为先执行 Data reference maintenance closeout。
+已完成 review-only 审查并通过，MALF complete alignment closeout 已通过；Data reference maintenance closeout
+已完成 source inventory 裁决，当前进入 MALF week bounded proof build。
 
 ## 10. MALF Complete Alignment Closeout 放行记录
 
