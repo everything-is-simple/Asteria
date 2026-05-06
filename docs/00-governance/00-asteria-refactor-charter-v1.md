@@ -176,7 +176,7 @@ MALF v1.4 Core runtime sync implementation 已通过
 下一张允许进入的卡：
 
 ```text
-Position freeze review reentry card
+data reference target maintenance scope
 ```
 
 MALF 当前 runtime formal evidence 以
@@ -186,7 +186,11 @@ day 当前 runtime proof，但 week/month 证明尚未执行。MALF v1.4 authori
 Data Foundation 当前已封为主线输入底座；`market_meta.duckdb` 已放行从正式 raw/base
 行情库推导的最小客观事实，并部分释放可匹配正式 Data 标的的申万 2021 当前行业快照；
 ST、停牌、真实上市/退市和历史行业沿革仍不放行，后续只能通过明确 maintenance card 扩展。
-Signal bounded proof 已通过；Position freeze review 已登记 blocked；MALF v1.3 formal-data
-closeout 已被 v1.4 day runtime sync implementation supersede 为当前 MALF day 正式证据。
-下一卡只允许 Position freeze review reentry 的只读评审（review-only），不直接授权
-Signal full build、Position bounded proof、Position 施工、下游施工或全链路 pipeline。
+Signal bounded proof 已通过；Position freeze review reentry 已完成只读评审并通过；
+MALF v1.3 formal-data closeout 已被 v1.4 day runtime sync implementation supersede 为当前
+MALF day 正式证据。Position freeze review reentry 已通过，但当前下一卡改为
+data reference target maintenance scope；在上游最终完整目标未能给出肯定答复前，
+Position bounded proof 施工暂时搁置。已准备的修补队列为 Data scope、Data closeout、
+MALF week、MALF month、Alpha production hardening、Signal production hardening 和
+upstream pre-position release decision；不直接授权 Signal full build、Position full build、
+下游施工或全链路 pipeline。

@@ -2,7 +2,7 @@
 
 日期：2026-04-30
 
-状态：`opened`
+状态：`passed / review-only closed`
 
 ## 1. 基本信息
 
@@ -10,7 +10,7 @@
 |---|---|
 | module | `position` |
 | run_id | `position-freeze-review-reentry-20260430-01` |
-| stage | `freeze-review / re-entry / review-only` |
+| stage | `freeze-review / re-entry / review-only / passed` |
 | owner | `codex` |
 
 ## 2. 授权来源
@@ -25,6 +25,8 @@ System Readout 或 full-chain Pipeline。
 - 对照已放行的 `signal.duckdb` bounded surface 与 dense MALF WavePosition 语义检查
   Position 输入契约。
 - 形成 Position freeze review re-entry 的 record、evidence-index、conclusion。
+- 若 hard review 全通过，只冻结 Position 六件套文档合同，并把下一张可寻址卡推进为
+  `position_bounded_proof_build_card`。
 
 ## 4. 禁止动作
 
@@ -33,3 +35,4 @@ System Readout 或 full-chain Pipeline。
 - 不创建 `H:\Asteria-data\position.duckdb`。
 - 不修改 Signal、Alpha 或 MALF 历史输出。
 - 不进入 Portfolio Plan / Trade / System / Pipeline 施工。
+- 不在本卡执行 Position bounded proof；下一张 build card 仅允许后续独立执行 turn 使用。

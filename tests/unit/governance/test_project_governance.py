@@ -47,7 +47,7 @@ def test_project_governance_passes_current_repo() -> None:
     assert findings == []
 
 
-def test_current_gate_reopens_position_reentry_after_malf_closeout_passed() -> None:
+def test_current_gate_opens_data_reference_scope_while_position_is_paused() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     with registry_path.open("rb") as handle:
@@ -66,13 +66,17 @@ def test_current_gate_reopens_position_reentry_after_malf_closeout_passed() -> N
     ).read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == "position"
-    assert registry["current_allowed_next_card"] == "position_freeze_review_reentry"
+    assert registry["active_foundation_card"] == (
+        "data-reference-target-maintenance-scope-20260506-01"
+    )
+    assert registry["current_allowed_next_card"] == "data_reference_target_maintenance_scope"
     assert registry["latest_mainline_release_run_id"] == (
-        "malf-v1-3-formal-rebuild-closeout-20260502-01"
+        "malf-v1-4-core-runtime-sync-implementation-20260505-01"
     )
     assert modules["position"]["allow_review"] is True
     assert modules["position"]["allow_build"] is False
-    assert modules["position"]["next_card"] == "position_freeze_review_reentry"
+    assert modules["position"]["next_card"] == "upstream_pre_position_completeness_synthesis"
+    assert modules["position"]["position_construction_pause"].startswith("paused_until")
     assert "malf-v1-3-formal-rebuild-closeout-20260502-01" in conclusion_index
     assert "状态：`passed`" in malf_conclusion
 
@@ -84,13 +88,14 @@ def test_malf_module_contract_points_at_complete_alignment_closeout() -> None:
         contract = tomllib.load(handle)
 
     assert contract["release_conclusion"] == (
-        "docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.conclusion.md"
+        "docs/04-execution/records/malf/"
+        "malf-v1-4-core-runtime-sync-implementation-20260505-01.conclusion.md"
     )
     assert contract["evidence_index"] == (
         "docs/04-execution/records/malf/"
-        "malf-v1-3-formal-rebuild-closeout-20260502-01.evidence-index.md"
+        "malf-v1-4-core-runtime-sync-implementation-20260505-01.evidence-index.md"
     )
-    assert "daily_incremental" not in contract["run_modes"]
+    assert contract["formal_db_permission"] == "released_day_core_lifespan_service_only"
 
 
 def test_project_governance_rejects_multiple_build_allowed_mainline_modules(
@@ -139,8 +144,8 @@ def test_project_governance_rejects_missing_current_next_card_file(tmp_path: Pat
         / "docs"
         / "04-execution"
         / "records"
-        / "position"
-        / "position-freeze-review-reentry-20260430-01.card.md"
+        / "data"
+        / "data-reference-target-maintenance-scope-20260506-01.card.md"
     )
     if card_path.exists():
         card_path.unlink()
@@ -159,10 +164,10 @@ def test_project_governance_rejects_current_next_card_that_is_already_blocked(
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'current_allowed_next_card = "position_freeze_review_reentry"',
+            'current_allowed_next_card = "data_reference_target_maintenance_scope"',
             'current_allowed_next_card = "position_freeze_review"',
         ).replace(
-            'next_card = "position_freeze_review_reentry"',
+            'next_card = "upstream_pre_position_completeness_synthesis"',
             'next_card = "position_freeze_review"',
         ),
         encoding="utf-8",
@@ -244,8 +249,12 @@ def test_project_governance_rejects_docs_sync_next_card_mismatch(tmp_path: Path)
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            '\nnext_card = "position_freeze_review_reentry"',
+            'active_foundation_card = "data-reference-target-maintenance-scope-20260506-01"',
+            'active_foundation_card = "none"',
+        ).replace(
+            '\nnext_card = "upstream_pre_position_completeness_synthesis"',
             '\nnext_card = "malf_day_bounded_proof"',
+            1,
         ),
         encoding="utf-8",
     )
@@ -397,9 +406,20 @@ def test_project_governance_rejects_release_gate_next_card_mismatch(
         / "signal"
         / "signal-bounded-proof-20260429-01.conclusion.md"
     )
+    index_path = repo_root / "docs" / "04-execution" / "00-conclusion-index-v1.md"
+    index_path.write_text(
+        "\n".join(
+            line
+            for line in index_path.read_text(encoding="utf-8").splitlines()
+            if "signal-target-completeness-review-20260506-01" not in line
+        ),
+        encoding="utf-8",
+    )
     conclusion_text = conclusion_path.read_text(encoding="utf-8")
     conclusion_path.write_text(
-        conclusion_text.replace("`Position freeze review`", "`MALF dense resolution`", 1),
+        conclusion_text.replace("`Position freeze review`", "`MALF dense resolution`", 1).replace(
+            "Position freeze review。", "MALF dense resolution。", 1
+        ),
         encoding="utf-8",
     )
 

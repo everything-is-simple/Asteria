@@ -2,11 +2,15 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：freeze review passed / design contract frozen / build not executed
 
 ## 1. 审计目标
 
 Position 审计用于证明 Position 只读消费 Signal 输出，输出仅限 position candidate / entry plan / exit plan，并且没有越界写入 Signal、Alpha、MALF、Portfolio Plan、Trade 或 System。
+
+本审计规格已由 `position-freeze-review-reentry-20260430-01` 只读评审冻结为未来
+Position bounded proof 的 hard/soft audit 合同。本次不运行 Position audit、不创建
+`position_audit` 表。
 
 ## 2. 前置审计
 

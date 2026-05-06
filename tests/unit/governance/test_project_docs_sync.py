@@ -21,22 +21,21 @@ def _messages(repo_root: Path) -> list[str]:
     return [finding.message for finding in run_docs_sync_checks(repo_root)]
 
 
-def test_docs_sync_rejects_malf_next_card_that_repeats_completed_proof(
+def test_docs_sync_rejects_missing_latest_malf_review_index_row(
     tmp_path: Path,
 ) -> None:
     repo_root = _copy_docs_sync_repo(tmp_path)
-    registry_path = repo_root / "governance" / "module_gate_registry.toml"
-    registry_text = registry_path.read_text(encoding="utf-8")
-    registry_path.write_text(
-        registry_text.replace(
-            '\nnext_card = "position_freeze_review_reentry"',
-            '\nnext_card = "malf_day_bounded_proof"',
+    index_path = repo_root / "docs" / "04-execution" / "00-conclusion-index-v1.md"
+    index_path.write_text(
+        "\n".join(
+            line
+            for line in index_path.read_text(encoding="utf-8").splitlines()
+            if "malf-authority-runtime-completeness-review-20260506-01" not in line
         ),
         encoding="utf-8",
     )
-
     assert any(
-        "MALF next_card must be position_freeze_review_reentry" in message
+        "execution conclusion is missing from conclusion index" in message
         for message in _messages(repo_root)
     )
 

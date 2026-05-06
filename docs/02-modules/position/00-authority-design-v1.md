@@ -2,7 +2,7 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：freeze review passed / design contract frozen / build not executed
 
 ## 1. 模块定义
 
@@ -12,22 +12,24 @@ Position 只负责把已放行的 formal signal 转化为 position candidate、e
 
 ## 2. 前置门槛
 
-Position 设计冻结和施工必须等待：
+Position 设计冻结已由 `position-freeze-review-reentry-20260430-01` 只读评审通过。
+后续施工仍必须等待：
 
 ```text
-Signal released
+Position bounded proof build card
 ```
 
-该门槛至少要求：
+该施工门槛至少要求：
 
 | 项 | 要求 |
 |---|---|
 | Signal DB | 已存在可审计的 `formal_signal_ledger` |
 | Signal Audit | Signal hard audit 全通过 |
 | Signal Contract | formal signal 可被 Position 只读消费 |
-| Release Evidence | Signal bounded proof / release evidence 已落档 |
+| Freeze Evidence | Position freeze review re-entry passed |
+| Build Card | Position bounded proof build card 已明确打开 |
 
-在上述条件满足前，本文件只作为 pre-gate draft，不允许施工。
+在 build card 明确打开前，本文件只冻结 Position 文档和合同口径，不允许施工。
 
 ## 3. 权威来源
 
@@ -101,7 +103,7 @@ H:\Asteria-data\position.duckdb
 | `position_exit_plan` | 退出计划语义 |
 | `position_audit` | Position 审计 |
 
-该 DB 只能在 Position 设计冻结且 Signal released 后创建。
+该 DB 只能在 Position bounded proof build card 明确打开并执行时创建。
 
 ## 8. 数据流
 
@@ -179,13 +181,13 @@ Position 不得修改 Signal 历史输出。Portfolio Plan、Trade、System Read
 
 ## 13. 上线门禁
 
-Position 未来冻结必须满足：
+Position 后续 bounded proof 必须满足：
 
 | 门禁 | 要求 |
 |---|---|
-| Signal Release | Signal released |
-| Design | Position 六件套从 pre-gate draft 升级并审阅 |
-| Schema | `position.duckdb` 表族、自然键、版本字段冻结 |
-| Runner | bounded / segmented / full / resume 语义冻结 |
-| Audit | 只读 Signal、无组合资金和订单输出、自然键唯一等硬审计冻结 |
+| Signal Release | Signal bounded proof evidence 已落档 |
+| Design | Position 六件套已通过 freeze review re-entry |
+| Schema | `position.duckdb` 表族、自然键、版本字段已冻结为合同表面 |
+| Runner | bounded / segmented / full / resume 语义已冻结为未来 runner 合同 |
+| Audit | 只读 Signal、无组合资金和订单输出、自然键唯一等硬审计已冻结 |
 | Evidence | Position bounded proof 证据落入 `H:\Asteria-report` 或 `H:\Asteria-Validated` |

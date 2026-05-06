@@ -47,6 +47,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Data | `data-market-meta-formalization-20260502-01` | `passed` | [conclusion](records/data/data-market-meta-formalization-20260502-01.conclusion.md) | [evidence-index](records/data/data-market-meta-formalization-20260502-01.evidence-index.md) |
 | Data | `data-market-meta-sw-industry-snapshot-20260502-01` | `passed` | [conclusion](records/data/data-market-meta-sw-industry-snapshot-20260502-01.conclusion.md) | [evidence-index](records/data/data-market-meta-sw-industry-snapshot-20260502-01.evidence-index.md) |
 | Data | `data-foundation-production-baseline-seal-20260502-01` | `passed` | [conclusion](records/data/data-foundation-production-baseline-seal-20260502-01.conclusion.md) | [evidence-index](records/data/data-foundation-production-baseline-seal-20260502-01.evidence-index.md) |
+| Data | `data-foundation-target-completeness-review-20260506-01` | `review-only / bounded mainline input sufficient / full target incomplete` | [conclusion](records/data/data-foundation-target-completeness-review-20260506-01.conclusion.md) | [evidence-index](records/data/data-foundation-target-completeness-review-20260506-01.evidence-index.md) |
 | MALF | `malf-day-bounded-proof-20260428-01` | `passed` | [conclusion](records/malf/malf-day-bounded-proof-20260428-01.conclusion.md) | [evidence-index](records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md) |
 | MALF | `malf-lifespan-dense-bar-snapshot-gap-20260429-01` | `blocked` | [conclusion](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.conclusion.md) | [evidence-index](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.evidence-index.md) |
 | MALF | `malf-lifespan-dense-bar-snapshot-resolution-20260429-01` | `passed` | [conclusion](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.conclusion.md) | [evidence-index](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.evidence-index.md) |
@@ -57,12 +58,16 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | MALF | `malf-v1-4-core-operational-boundary-authority-sync-20260503-01` | `passed` | [conclusion](records/malf/malf-v1-4-core-operational-boundary-authority-sync-20260503-01.conclusion.md) | [evidence-index](records/malf/malf-v1-4-core-operational-boundary-authority-sync-20260503-01.evidence-index.md) |
 | MALF | `malf-v1-4-core-runtime-sync-review-20260503-01` | `只读评审已执行 / 运行同步未打开` | [conclusion](records/malf/malf-v1-4-core-runtime-sync-review-20260503-01.conclusion.md) | [evidence-index](records/malf/malf-v1-4-core-runtime-sync-review-20260503-01.evidence-index.md) |
 | MALF | `malf-v1-4-core-runtime-sync-implementation-20260505-01` | `passed` | [conclusion](records/malf/malf-v1-4-core-runtime-sync-implementation-20260505-01.conclusion.md) | [evidence-index](records/malf/malf-v1-4-core-runtime-sync-implementation-20260505-01.evidence-index.md) |
+| MALF | `malf-authority-runtime-completeness-review-20260506-01` | `review-only / day runtime clean / full target incomplete` | [conclusion](records/malf/malf-authority-runtime-completeness-review-20260506-01.conclusion.md) | [evidence-index](records/malf/malf-authority-runtime-completeness-review-20260506-01.evidence-index.md) |
 | Alpha | `alpha-freeze-review-20260429-01` | `passed` | [conclusion](records/alpha/alpha-freeze-review-20260429-01.conclusion.md) | [evidence-index](records/alpha/alpha-freeze-review-20260429-01.evidence-index.md) |
 | Alpha | `alpha-bounded-proof-20260429-01` | `passed` | [conclusion](records/alpha/alpha-bounded-proof-20260429-01.conclusion.md) | [evidence-index](records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md) |
+| Alpha | `alpha-target-completeness-review-20260506-01` | `review-only / bounded proof clean / full target incomplete` | [conclusion](records/alpha/alpha-target-completeness-review-20260506-01.conclusion.md) | [evidence-index](records/alpha/alpha-target-completeness-review-20260506-01.evidence-index.md) |
 | Signal | `signal-freeze-review-20260429-01` | `passed` | [conclusion](records/signal/signal-freeze-review-20260429-01.conclusion.md) | [evidence-index](records/signal/signal-freeze-review-20260429-01.evidence-index.md) |
 | Signal | `signal-bounded-proof-20260429-01` | `passed` | [conclusion](records/signal/signal-bounded-proof-20260429-01.conclusion.md) | [evidence-index](records/signal/signal-bounded-proof-20260429-01.evidence-index.md) |
+| Signal | `signal-target-completeness-review-20260506-01` | `review-only / bounded proof clean / full target incomplete` | [conclusion](records/signal/signal-target-completeness-review-20260506-01.conclusion.md) | [evidence-index](records/signal/signal-target-completeness-review-20260506-01.evidence-index.md) |
 | Position | `position-freeze-review-20260429-01` | `blocked` | [conclusion](records/position/position-freeze-review-20260429-01.conclusion.md) | [evidence-index](records/position/position-freeze-review-20260429-01.evidence-index.md) |
-| Position | `position-freeze-review-reentry-20260430-01` | `opened` | [conclusion](records/position/position-freeze-review-reentry-20260430-01.conclusion.md) | [evidence-index](records/position/position-freeze-review-reentry-20260430-01.evidence-index.md) |
+| Position | `position-freeze-review-reentry-20260430-01` | `passed / review-only closed` | [conclusion](records/position/position-freeze-review-reentry-20260430-01.conclusion.md) | [evidence-index](records/position/position-freeze-review-reentry-20260430-01.evidence-index.md) |
+| Position | `upstream-pre-position-completeness-synthesis-20260506-01` | `review-only / position construction suspended` | [conclusion](records/position/upstream-pre-position-completeness-synthesis-20260506-01.conclusion.md) | [evidence-index](records/position/upstream-pre-position-completeness-synthesis-20260506-01.evidence-index.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
@@ -80,8 +85,9 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   `malf-complete-alignment-closeout-20260430-01` 取代为当前 MALF dense 正式证据。
 - MALF alignment hard audit hardening 已闭环为 passed；该历史结论已被 complete
   alignment closeout 的正式 DB rerun 和 hard audit 结果取代为当前证据。
-- Position freeze review reentry 已打开为只读评审（review-only）：Position 文档边界可继续审查，但
-  Position bounded proof / full daily mainline 仍未打开。
+- Position freeze review reentry 已完成只读评审（review-only）并通过：Position 六件套已冻结为
+  文档合同表面；但 `upstream-pre-position-completeness-synthesis-20260506-01` 已裁定上游最终完整目标
+  不能全部肯定，因此下一步改为七张上游修补卡。Position bounded proof 仍未执行，`position.duckdb` 仍未创建。
 - MALF v1.4 authority package 已形成，继承 v1.3 semantic mainline 并新增 Core
   operational boundary rules；`malf-v1-4-core-runtime-sync-implementation-20260505-01`
   现为当前 MALF day runtime evidence。week/month 证明和 full build 仍未执行。
@@ -103,6 +109,20 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   泛化补数入口。
 - Validated 历史 evidence zip 已对齐到 `H:\Asteria-Validated\2.backups` 冷归档路径；
   这是治理资产布局维护，不改变任何模块门禁。
-- Alpha full build、Signal construction without build card、Position / Portfolio Plan / Trade /
+- Alpha full build、Signal full build、Position full build、Portfolio Plan / Trade /
   System 施工和全链路 pipeline 仍未放行，直到后续门禁通过并明确授权。
-- 后续 Position freeze review reentry conclusion 与后续 bounded proof 等执行卡，都必须先登记到本索引，再视为正式结论落档。
+- 后续 Position bounded proof 等执行卡，都必须先登记到本索引，再视为正式结论落档。
+
+## 3. 已准备但未执行的 Pre-Position 修补卡
+
+以下只登记 prepared card 队列，不作为 passed conclusion：
+
+| 顺序 | 模块 | run_id | card |
+|---:|---|---|---|
+| 1 | Data | `data-reference-target-maintenance-scope-20260506-01` | [card](records/data/data-reference-target-maintenance-scope-20260506-01.card.md) |
+| 2 | Data | `data-reference-target-maintenance-closeout-20260506-01` | [card](records/data/data-reference-target-maintenance-closeout-20260506-01.card.md) |
+| 3 | MALF | `malf-week-bounded-proof-build-20260506-01` | [card](records/malf/malf-week-bounded-proof-build-20260506-01.card.md) |
+| 4 | MALF | `malf-month-bounded-proof-build-20260506-01` | [card](records/malf/malf-month-bounded-proof-build-20260506-01.card.md) |
+| 5 | Alpha | `alpha-production-builder-hardening-20260506-01` | [card](records/alpha/alpha-production-builder-hardening-20260506-01.card.md) |
+| 6 | Signal | `signal-production-builder-hardening-20260506-01` | [card](records/signal/signal-production-builder-hardening-20260506-01.card.md) |
+| 7 | Position | `upstream-pre-position-release-decision-20260506-01` | [card](records/position/upstream-pre-position-release-decision-20260506-01.card.md) |

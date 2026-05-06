@@ -1,12 +1,12 @@
 module_id = "position"
 display_name = "Position"
 contract_version = "v1"
-status = "pre_gate_draft"
+status = "freeze_review_passed"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
 ]
-gate_state = "pre_gate_draft; wait_for_signal_release"
-formal_db_permission = "not_allowed"
+gate_state = "freeze_review_passed; bounded_proof_build_card_prepared; build_not_executed"
+formal_db_permission = "blocked_until_position_bounded_proof_build_card_execution"
 writeback_boundary = "consume released Signal only; never write back upstream"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from position checkpoint after Signal release"

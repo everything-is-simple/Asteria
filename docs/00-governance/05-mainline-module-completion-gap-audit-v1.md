@@ -2,7 +2,7 @@
 
 日期：2026-05-06
 
-状态：read-only governance audit / no gate transition / no runtime construction
+状态：governance audit / gate transition reflected / no runtime construction
 
 ## 1. Purpose
 
@@ -14,8 +14,9 @@
 正式 DuckDB / evidence 是否已经放行
 ```
 
-它回答“哪些已经完全实现、哪些需要加强、哪些根本没有”。本文件不修改任何
-runner、schema、module gate、正式 DuckDB 或 execution conclusion。
+它回答“哪些已经完全实现、哪些需要加强、哪些根本没有”。本次更新只反映
+Position freeze review re-entry 的文档门禁结论，不修改任何 runner、schema 或正式
+DuckDB。
 
 ## 2. Completion Matrix
 
@@ -25,7 +26,7 @@ runner、schema、module gate、正式 DuckDB 或 execution conclusion。
 | MALF | day v1.4 权威已同步 | day runtime 已实现 | `malf_core_day / malf_lifespan_day / malf_service_day` 已存在 | day 可用；week/month/full-market 仍需补 |
 | Alpha | 六件套冻结 | bounded runner 已实现 | 5 个 Alpha family DB 已存在 | bounded 完成；full/segmented production 需另开卡 |
 | Signal | 六件套冻结 | bounded runner 已实现 | `signal.duckdb` 已存在 | bounded 完成；full build 权限仍未打开 |
-| Position | 六件套草案 / review reentry | 无 runtime | 无 `position.duckdb` | 当前最该补，先做 review-only 冻结 |
+| Position | 六件套 freeze review passed / design contract frozen | 无 runtime | 无 `position.duckdb` | 当前暂停施工；先完成上游完整性总控裁决 |
 | Portfolio Plan | 草案 | 无 runtime | 无 `portfolio_plan.duckdb` | 依赖 Position，不插队 |
 | Trade | 草案 | 无 runtime | 无 `trade.duckdb` | 依赖 Portfolio Plan，不插队 |
 | System Readout | 草案 | 无 runtime | 无 `system.duckdb` | 依赖 Trade，不插队 |
@@ -62,11 +63,13 @@ runner、schema、module gate、正式 DuckDB 或 execution conclusion。
 
 | 优先级 | 补齐项 | 原因 |
 |---|---|---|
-| P0 | `Position freeze review reentry` | 当前 repo next card，只允许 review-only 冻结，不创建 runner 或 DB |
-| P1 | `Position bounded proof build` | P0 通过后，才可实现 `src/asteria/position`、`scripts/position` 与 `position.duckdb` |
-| P1 | MALF day full-market runtime confidence | 使用 supplemental builder 做更大范围或全市场 day rerun，提高 v1.4 day 证据确信度 |
-| P2 | Alpha / Signal production builder hardening | bounded proof 已过，但 segmented/full production builder 仍未放行 |
-| P3 | Portfolio -> Trade -> System -> Pipeline | 严格按主线顺序，Pipeline 最后做编排与记录 |
+| P0 | `data reference target maintenance scope` | 当前 repo next card；先冻结 Data reference 缺口哪些必须补 |
+| P1 | `data reference target maintenance closeout` | 按 P0 冻结范围补 Data reference facts、DB 表面和审计 |
+| P2 | `malf week bounded proof build` -> `malf month bounded proof build` | MALF day clean 但 week/month formal DBs 不存在 |
+| P3 | `alpha production builder hardening` -> `signal production builder hardening` | bounded proof 已过，但 segmented/full production builder 仍未放行 |
+| P4 | `upstream pre-position release decision` | 只有上游修补结论齐备后，才裁定是否恢复 Position bounded proof |
+| P5 | `Position bounded proof build card` | 只有上游 release decision 允许后，才可实现 `src/asteria/position`、`scripts/position` 与 `position.duckdb` |
+| P6 | Portfolio -> Trade -> System -> Pipeline | 严格按主线顺序，Pipeline 最后做编排与记录 |
 
 所有后续 DB builder 必须遵守：
 
@@ -90,8 +93,8 @@ MALF week/month proof 已执行
 全系统 v1 complete
 ```
 
-当前真实下一步仍是：
+当前真实下一步已推进为：
 
 ```text
-Position freeze review reentry / review-only
+data reference target maintenance scope / prepared / Position construction suspended
 ```

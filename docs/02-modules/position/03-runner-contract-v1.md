@@ -2,13 +2,14 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：freeze review passed / design contract frozen / build not executed
 
 ## 1. Runner 目标
 
 Position runner 负责在 Signal released 之后，读取 formal signal，构建 position candidate / entry plan / exit plan，并执行边界与一致性审计。
 
-在 Position 设计冻结前，本文件只冻结草案方向，不要求创建代码文件。
+本文件已由 `position-freeze-review-reentry-20260430-01` 只读评审冻结为未来
+Position bounded proof runner 合同。本次不创建任何代码文件。
 
 ## 2. 前置门槛
 
@@ -28,7 +29,8 @@ Signal released
 | `scripts/position/run_position_audit.py` | 执行 Position 输入、输出、边界审计 |
 | `scripts/position/run_position_bounded_proof.py` | 编排 Position bounded proof |
 
-这些 runner 在 pre-gate draft 阶段不创建代码文件。
+这些 runner 在本次 freeze review re-entry 中不创建代码文件；只有后续 bounded proof
+build card 明确执行时才可创建。
 
 ## 4. 构建顺序
 

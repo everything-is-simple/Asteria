@@ -2,14 +2,15 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：freeze review passed / design contract frozen / build not executed
 
 ## 1. 规格范围
 
-本规格为 Position pre-gate draft。正式 schema 冻结必须等待：
+本规格已由 `position-freeze-review-reentry-20260430-01` 只读评审冻结为
+Position schema 合同。正式建库仍必须等待：
 
 ```text
-Signal released
+Position bounded proof build card
 ```
 
 目标 Position DB：
@@ -18,7 +19,7 @@ Signal released
 H:\Asteria-data\position.duckdb
 ```
 
-该库在 Position 设计冻结前不得创建。
+该库在 Position bounded proof build card 明确打开并执行前不得创建。
 
 ## 2. 上游关系
 
@@ -167,7 +168,7 @@ erDiagram
 | 同库多写 | 禁止 |
 | 旧数据替换 | staging 审计通过后 promote |
 | `run_id` | 审计字段，不作为业务自然键 |
-| formal DB create | Position design freeze 后才允许 |
+| formal DB create | Position bounded proof build card 明确打开并执行后才允许 |
 
 ## 12. 不允许的 schema
 

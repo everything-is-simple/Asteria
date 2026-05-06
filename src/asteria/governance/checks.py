@@ -124,98 +124,6 @@ def _module_map(gate_registry: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return {module["module_id"]: module for module in gate_registry.get("modules", [])}
 
 
-def _check_gate_registry(repo_root: Path, gate_registry: dict[str, Any]) -> list[Finding]:
-    path = repo_root / "governance" / "module_gate_registry.toml"
-    findings: list[Finding] = []
-    modules = _module_map(gate_registry)
-    active = gate_registry.get("active_mainline_module")
-    current_allowed_next_card = gate_registry.get("current_allowed_next_card")
-    action_allowed = [
-        module_id
-        for module_id, module in modules.items()
-        if module_id in MAINLINE_MODULES
-        and (bool(module.get("allow_build")) or bool(module.get("allow_review")))
-    ]
-
-    if len(action_allowed) != 1:
-        findings.append(Finding(path, "only one mainline module may allow build or review"))
-    if active not in action_allowed:
-        findings.append(
-            Finding(path, "active_mainline_module must be the action-allowed mainline module")
-        )
-    if current_allowed_next_card:
-        active_module = modules.get(str(active), {})
-        if active_module.get("next_card") != current_allowed_next_card:
-            findings.append(
-                Finding(path, "current_allowed_next_card must match active module next_card")
-            )
-        if not _current_next_card_file_exists(
-            repo_root, str(active), str(current_allowed_next_card)
-        ):
-            findings.append(
-                Finding(path, "current allowed next card is missing matching execution card")
-            )
-        if _current_next_card_has_blocked_conclusion(
-            repo_root, str(active), str(current_allowed_next_card)
-        ):
-            findings.append(
-                Finding(
-                    path,
-                    "current allowed next card must not point to a blocked execution conclusion",
-                )
-            )
-    if "system" in modules or "system_readout" not in modules:
-        findings.append(
-            Finding(path, "module_id must be system_readout; system is only a DB display shorthand")
-        )
-
-    for module_id, module in modules.items():
-        for field in ["display_name", "status", "doc_path", "allow_build"]:
-            if field not in module:
-                findings.append(
-                    Finding(path, f"module {module_id} missing required gate field: {field}")
-                )
-        doc_path = repo_root / str(module.get("doc_path", ""))
-        if not doc_path.exists():
-            findings.append(Finding(path, f"module {module_id} doc_path does not exist"))
-            continue
-        for doc_name in REQUIRED_MODULE_DOCS:
-            if not (doc_path / doc_name).exists():
-                findings.append(
-                    Finding(path, f"module {module_id} missing required six-doc file: {doc_name}")
-                )
-    return findings
-
-
-def _current_next_card_file_exists(repo_root: Path, module_id: str, next_card: str) -> bool:
-    record_dir = repo_root / "docs" / "04-execution" / "records" / module_id
-    if not record_dir.exists():
-        return False
-    card_prefix = next_card.replace("_", "-")
-    for card_path in record_dir.glob("*.card.md"):
-        run_id = card_path.name.removesuffix(".card.md")
-        if run_id == card_prefix or run_id.startswith(f"{card_prefix}-"):
-            return True
-    return False
-
-
-def _current_next_card_has_blocked_conclusion(
-    repo_root: Path, module_id: str, next_card: str
-) -> bool:
-    record_dir = repo_root / "docs" / "04-execution" / "records" / module_id
-    if not record_dir.exists():
-        return False
-    card_prefix = next_card.replace("_", "-")
-    for conclusion_path in record_dir.glob("*.conclusion.md"):
-        run_id = conclusion_path.name.removesuffix(".conclusion.md")
-        if run_id != card_prefix and not run_id.startswith(f"{card_prefix}-"):
-            continue
-        text = conclusion_path.read_text(encoding="utf-8")
-        if re.search(r"状态：`blocked`", text):
-            return True
-    return False
-
-
 def _check_database_topology(
     repo_root: Path,
     gate_registry: dict[str, Any],
@@ -467,6 +375,8 @@ def _check_forbidden_pre_gate_sources(
 
 
 def run_checks(repo_root: Path) -> list[Finding]:
+    from asteria.governance.gate_registry_checks import check_gate_registry
+
     governance = _load_governance(repo_root)
     findings: list[Finding] = []
     findings.extend(_check_pyproject_static_governance(repo_root, governance))
@@ -484,7 +394,10 @@ def run_checks(repo_root: Path) -> list[Finding]:
     gate_registry = registries["governance/module_gate_registry.toml"]
     topology_registry = registries["governance/database_topology_registry.toml"]
     historical_registry = registries["governance/historical_ledger_registry.toml"]
-    findings.extend(_check_gate_registry(repo_root, gate_registry))
+    findings.extend(
+        Finding(finding.path, finding.message)
+        for finding in check_gate_registry(repo_root, gate_registry)
+    )
     findings.extend(_check_database_topology(repo_root, gate_registry, topology_registry))
     findings.extend(_check_historical_ledger(repo_root, gate_registry, historical_registry))
     findings.extend(_check_module_api_contracts(repo_root, gate_registry, topology_registry))

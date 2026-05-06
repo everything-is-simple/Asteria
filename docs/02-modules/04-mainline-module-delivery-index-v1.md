@@ -89,7 +89,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4\
 | 1 | MALF | `docs/02-modules/malf/` | frozen / v1.3 day formal-data closeout passed / v1.4 operational boundary authority synced | 否 | day runtime evidence 已通过；v1.4 实现同步、week/month 或 full build 另需新卡 |
 | 2 | Alpha | `docs/02-modules/alpha/` | frozen six-doc set / bounded proof passed | 否 | full build 另需新卡 |
 | 3 | Signal | `docs/02-modules/signal/` | frozen six-doc set / bounded proof passed | 否 | full build 另需新卡 |
-| 4 | Position | `docs/02-modules/position/` | pre-gate six-doc draft | 是，review-only | 当前只允许 Position freeze review |
+| 4 | Position | `docs/02-modules/position/` | freeze review passed / design contract frozen / build not executed | 否，construction suspended | 当前暂停 Position 施工，先完成上游七张修补卡与 release decision |
 | 5 | Portfolio Plan | `docs/02-modules/portfolio_plan/` | pre-gate six-doc draft | 否 | 等 Position 放行后重新审阅并冻结 |
 | 6 | Trade | `docs/02-modules/trade/` | pre-gate six-doc draft | 否 | 等 Portfolio Plan 放行后重新审阅并冻结 |
 | 7 | System Readout | `docs/02-modules/system_readout/` | pre-gate six-doc draft | 否 | 等 Trade 放行后重新审阅并冻结 |
@@ -129,13 +129,13 @@ Signal bounded proof
 当前已打开执行卡：
 
 ```text
-Position freeze review card
+upstream pre-position completeness synthesis
 ```
 
 当前只允许施工对象：
 
 ```text
-Position freeze review
+data reference target maintenance scope / scope freeze / Position construction suspended
 ```
 
 除 MALF day proof、Alpha freeze review、Alpha bounded proof passed、Signal freeze
@@ -155,8 +155,9 @@ System Readout / Pipeline pre-gate draft 都不得被解释为下游施工许可
 Signal freeze review passed 只冻结 Signal 六件套，不表示代码施工许可。
 Alpha bounded proof build card 只授权 Alpha bounded proof，不授权 Alpha full build、
 Signal construction、Pipeline 或任何下游施工。Signal freeze review passed 后，下一步
-只允许 Signal bounded proof build card。Signal bounded proof passed 后，下一步只允许
-Position freeze review，不允许 Position 施工。
+只允许 Signal bounded proof build card。Signal bounded proof passed 后，Position freeze review
+reentry 已通过；随后上游完整性总控卡裁定在最终完整目标标准下暂停 Position bounded proof
+施工。不允许 Position full build 或下游施工。
 
 ## 6. 硬边界
 

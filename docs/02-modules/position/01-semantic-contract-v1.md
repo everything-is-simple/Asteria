@@ -2,7 +2,7 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：freeze review passed / design contract frozen / build not executed
 
 ## 1. 合同目的
 
@@ -10,10 +10,11 @@
 
 ## 2. 前置门槛
 
-本合同在以下条件满足前不得冻结：
+本合同已由 `position-freeze-review-reentry-20260430-01` 只读评审冻结。正式
+Position bounded proof 施工仍必须等待：
 
 ```text
-Signal released
+Position bounded proof build card
 ```
 
 Position 的任何正式输入字段必须以 Signal 已放行字段为准。

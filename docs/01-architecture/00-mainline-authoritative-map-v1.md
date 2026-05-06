@@ -30,17 +30,21 @@ flowchart LR
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal` |
 | 当前已通过 bounded proof | `MALF day`; `Alpha day`; `Signal day`; `MALF v1.4 day runtime sync implementation` |
-| 当前已打开执行卡 | `Position freeze review reentry card` |
-| 当前只允许施工 | `Position freeze review reentry / 只读评审（review-only）` |
-| 当前仍禁止 | Alpha full build、Signal full build、Position bounded proof、Position construction、Portfolio Plan/Trade/System/Pipeline 施工 |
+| 当前已准备执行卡 | `data reference target maintenance scope` plus seven-card upstream repair queue |
+| 当前只允许施工 | `Data reference scope freeze / Position construction suspended` |
+| 当前仍禁止 | Alpha full build、Signal full build、Position full build、Portfolio Plan/Trade/System/Pipeline 施工 |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Data Foundation
 已补齐正式 `market_meta.duckdb` 的最小事实，并部分释放可匹配正式 Data 标的的申万
 2021 当前行业快照。Data Foundation 已封为主线输入底座，后续只能通过明确
 maintenance card 扩展；ST、停牌、真实上市/退市状态与历史行业沿革仍不覆盖。Position freeze
-review 已登记 blocked；MALF v1.4 day runtime sync implementation 已通过并取代旧 v1.3
-runtime evidence。后续只允许 Position freeze review reentry 的只读评审（review-only），但仍不授权
-Alpha full build、Signal full build、Position bounded proof、Position construction、下游施工或全链路 pipeline。
+review reentry 已完成只读评审并通过；MALF v1.4 day runtime sync implementation 已通过并取代旧 v1.3
+runtime evidence。随后 `upstream-pre-position-completeness-synthesis-20260506-01`
+裁定：若按最终完整目标衡量，Data / MALF / Alpha / Signal 仍不能给出全部完成的肯定答复，
+因此 Position bounded proof 施工暂时搁置。当前仍不授权 Alpha full build、Signal full build、
+Position full build、下游施工或全链路 pipeline。
+后续必须按七张卡顺序推进：Data reference scope、Data reference closeout、MALF week、
+MALF month、Alpha production hardening、Signal production hardening、upstream release decision。
 
 ## 2. 主线模块
 
@@ -211,7 +215,7 @@ design freeze
 当前主线图不是“全系统已上线图”。它是模块依赖和施工顺序的法律图：
 
 ```text
-MALF day 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞 -> Data formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry card
+MALF day 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞 -> Data formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry 已通过 -> upstream pre-position completeness synthesis 已完成 -> data reference target maintenance scope prepared
 ```
 
 任何下游实现都必须等前置模块完成 freeze / proof / release evidence。

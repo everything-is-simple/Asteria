@@ -31,9 +31,9 @@ released_formal_dbs = [
     "alpha_pb.duckdb",
     "alpha_cpb.duckdb",
     "alpha_bpb.duckdb",
+    "signal.duckdb",
 ]
 blocked_formal_db_modules = [
-    "signal",
     "position",
     "portfolio_plan",
     "trade",
