@@ -30,8 +30,8 @@ flowchart LR
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal` |
 | 当前已通过 bounded proof | `MALF day`; `MALF week`; `MALF month`; `Alpha day`; `Signal day`; `MALF v1.4 day runtime sync implementation` |
-| 当前已准备执行卡 | `upstream-pre-position-release-decision-20260506-01` after Signal production builder hardening passed |
-| 当前只允许施工 | `upstream pre-position release decision / review-only decision surface` |
+| 当前已准备执行卡 | `position-bounded-proof-build-card-20260506-01` after upstream pre-position release decision passed |
+| 当前只允许施工 | `Position bounded proof build card / bounded proof only` |
 | 当前仍禁止 | Position full build、Portfolio Plan/Trade/System/Pipeline 施工 |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Data Foundation
@@ -45,7 +45,8 @@ runtime evidence。随后 `upstream-pre-position-completeness-synthesis-20260506
 因此 Position bounded proof 施工暂时搁置。当前仍不授权 Alpha full build、Signal full build、
 Position full build、下游施工或全链路 pipeline。
 后续七张卡中 Data reference scope、Data reference closeout、MALF week、MALF month、
-Alpha production hardening 与 Signal production hardening 已通过，当前进入 upstream release decision。
+Alpha production hardening、Signal production hardening 与 upstream release decision 已通过，当前进入
+Position bounded proof build card。
 
 ## 2. 主线模块
 
@@ -217,7 +218,7 @@ design freeze
 当前主线图不是“全系统已上线图”。它是模块依赖和施工顺序的法律图：
 
 ```text
-MALF day 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞 -> Data formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry 已通过 -> upstream pre-position completeness synthesis 已完成 -> data reference target maintenance scope 已通过 -> data reference target maintenance closeout 已通过 -> malf week bounded proof build 已通过 -> malf month bounded proof build 已通过 -> alpha production builder hardening 已通过 -> signal production builder hardening 已通过 -> upstream pre-position release decision prepared
+MALF day 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞 -> Data formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry 已通过 -> upstream pre-position completeness synthesis 已完成 -> data reference target maintenance scope 已通过 -> data reference target maintenance closeout 已通过 -> malf week bounded proof build 已通过 -> malf month bounded proof build 已通过 -> alpha production builder hardening 已通过 -> signal production builder hardening 已通过 -> upstream pre-position release decision 已通过 -> position bounded proof build card prepared
 ```
 
 任何下游实现都必须等前置模块完成 freeze / proof / release evidence。

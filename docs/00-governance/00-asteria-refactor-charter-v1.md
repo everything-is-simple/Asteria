@@ -179,12 +179,13 @@ Data market meta SW industry snapshot 已通过
 Data foundation production baseline seal 已通过
 MALF v1.4 Core runtime sync implementation 已通过
 Signal production builder hardening 已通过
+Upstream pre-position release decision 已通过
 ```
 
 下一张允许进入的卡：
 
 ```text
-upstream-pre-position-release-decision-20260506-01
+position-bounded-proof-build-card-20260506-01
 ```
 
 MALF 当前 runtime formal evidence 以
@@ -199,8 +200,8 @@ Data reference target maintenance closeout 已完成 source inventory 裁决；S
 Signal bounded proof 已通过；Position freeze review reentry 已完成只读评审并通过；
 MALF v1.3 formal-data closeout 已被 v1.4 day runtime sync implementation supersede 为当前
 MALF day 正式证据。Position freeze review reentry 已通过，Data reference target
-maintenance scope 已冻结并完成 closeout；MALF week/month bounded proof build、Alpha production builder hardening 与 Signal production builder hardening 已通过，当前下一卡改为 upstream pre-position release decision。
-在上游最终完整目标未能给出肯定答复前，
-Position bounded proof 施工暂时搁置。已准备的修补队列中 Data scope、Data closeout、MALF week、MALF month、Alpha production hardening 与 Signal production hardening 已通过；
-当前进入 upstream pre-position release decision；不直接授权 Position full build、
-下游施工或全链路 pipeline。
+maintenance scope 已冻结并完成 closeout；MALF week/month bounded proof build、Alpha production builder hardening、
+Signal production builder hardening 与 upstream pre-position release decision 已通过，当前下一卡改为
+position bounded proof build card。
+Position bounded proof build card 已恢复为下一张允许卡，但本 release decision 没有执行 Position。
+不直接授权 Position full build、下游施工或全链路 pipeline。

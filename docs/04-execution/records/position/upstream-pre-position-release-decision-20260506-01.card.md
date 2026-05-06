@@ -2,7 +2,7 @@
 
 日期：2026-05-06
 
-状态：`prepared / not executed`
+状态：`passed / review-only release decision closed`
 
 ## 1. 背景
 
@@ -15,7 +15,7 @@ Signal 修补卡全部形成结论后，回答是否恢复 Position bounded proo
 |---|---|
 | module | `position` |
 | run_id | `upstream-pre-position-release-decision-20260506-01` |
-| stage | `release-decision / prepared / not executed` |
+| stage | `release-decision / review-only / closed` |
 | owner | `codex` |
 
 ## 3. 输入范围

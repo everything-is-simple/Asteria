@@ -256,7 +256,7 @@ week/month supplemental/full build。
 | `market_meta.duckdb` | 已按可证事实优先口径最小正式化；申万 2021 当前行业快照部分释放；Data baseline sealed；Data reference maintenance closeout passed；其他 reference gaps retained |
 | `market_base_day.duckdb` 正式化 | 已通过 Data formal promotion、production closeout 与 execution line materialization |
 | `pipeline.duckdb` runtime | 仍未冻结，不得先于业务模块定义语义 |
-| week / month MALF | week 与 month bounded proof build 已通过；Alpha 与 Signal production builder hardening 已通过；当前进入 upstream pre-position release decision |
+| week / month MALF | week 与 month bounded proof build 已通过；Alpha 与 Signal production builder hardening、upstream pre-position release decision 已通过；当前进入 Position bounded proof build card |
 
 Alpha bounded proof 与 production builder hardening 已通过，五个 Alpha family DB 已在
 day/week/month released MALF Service 表面补齐 production-builder rows。

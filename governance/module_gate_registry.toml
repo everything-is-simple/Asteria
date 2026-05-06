@@ -24,7 +24,7 @@ authority_assets = [
 latest_governance_run_id = "validated-historical-evidence-rehydration-20260502-01"
 latest_mainline_release_run_id = "signal-production-builder-hardening-20260506-01"
 latest_authority_sync_run_id = "malf-v1-4-core-operational-boundary-authority-sync-20260503-01"
-current_allowed_next_card = "upstream_pre_position_release_decision"
+current_allowed_next_card = "position_bounded_proof_build_card"
 pre_position_repair_sequence = [
     "data_reference_target_maintenance_scope",
     "data_reference_target_maintenance_closeout",
@@ -124,21 +124,22 @@ module_id = "position"
 display_name = "Position"
 mainline = true
 status = "freeze_review_passed"
-doc_status = "freeze review passed / design contract frozen / build not executed"
-allow_build = false
-allow_review = true
+doc_status = "freeze review passed / release decision passed / bounded proof build card reopened / build not executed"
+allow_build = true
+allow_review = false
 doc_path = "docs/02-modules/position"
 waits_for = "signal_released"
-next_card = "upstream_pre_position_release_decision"
-active_card = "docs/04-execution/records/position/upstream-pre-position-release-decision-20260506-01.card.md"
+next_card = "position_bounded_proof_build_card"
+active_card = "docs/04-execution/records/position/position-bounded-proof-build-card-20260506-01.card.md"
 freeze_review_status = "passed"
 freeze_review_run_id = "position-freeze-review-reentry-20260430-01"
-release_conclusion = "docs/04-execution/records/position/position-freeze-review-reentry-20260430-01.conclusion.md"
-evidence_index = "docs/04-execution/records/position/position-freeze-review-reentry-20260430-01.evidence-index.md"
-formal_db_permission = "blocked_until_position_bounded_proof_build_card_execution"
+release_conclusion = "docs/04-execution/records/position/upstream-pre-position-release-decision-20260506-01.conclusion.md"
+evidence_index = "docs/04-execution/records/position/upstream-pre-position-release-decision-20260506-01.evidence-index.md"
+formal_db_permission = "allowed_only_when_position_bounded_proof_build_card_executes"
 input_boundary = "read_only_released_signal_day_week_month_production_surface"
-position_construction_pause = "paused_until_upstream_full_target_completeness_decision"
-pre_position_repair_queue = "data_reference_target_maintenance_scope -> data_reference_target_maintenance_closeout -> malf_week_bounded_proof_build -> malf_month_bounded_proof_build -> alpha_production_builder_hardening -> signal_production_builder_hardening -> upstream_pre_position_release_decision; current=upstream_pre_position_release_decision"
+position_construction_pause = "released_for_bounded_proof_build_card_only"
+pre_position_repair_queue = "data_reference_target_maintenance_scope -> data_reference_target_maintenance_closeout -> malf_week_bounded_proof_build -> malf_month_bounded_proof_build -> alpha_production_builder_hardening -> signal_production_builder_hardening -> upstream_pre_position_release_decision; closed=upstream_pre_position_release_decision; current=position_bounded_proof_build_card"
+proof_status = "release_decision_passed; bounded_proof_not_executed"
 
 [[modules]]
 module_id = "portfolio_plan"

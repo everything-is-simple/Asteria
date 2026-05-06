@@ -47,7 +47,7 @@ def test_project_governance_passes_current_repo() -> None:
     assert findings == []
 
 
-def test_current_gate_opens_release_decision_after_signal_hardening() -> None:
+def test_current_gate_opens_position_build_after_release_decision() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     with registry_path.open("rb") as handle:
@@ -56,15 +56,15 @@ def test_current_gate_opens_release_decision_after_signal_hardening() -> None:
     conclusion_index = (
         repo_root / "docs" / "04-execution" / "00-conclusion-index-v1.md"
     ).read_text(encoding="utf-8")
-    signal_conclusion_path = repo_root / (
-        "docs/04-execution/records/signal/"
-        "signal-production-builder-hardening-20260506-01.conclusion.md"
+    release_decision_path = repo_root / (
+        "docs/04-execution/records/position/"
+        "upstream-pre-position-release-decision-20260506-01.conclusion.md"
     )
-    signal_conclusion = signal_conclusion_path.read_text(encoding="utf-8")
+    release_decision = release_decision_path.read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == "position"
     assert registry["active_foundation_card"] == "none"
-    assert registry["current_allowed_next_card"] == "upstream_pre_position_release_decision"
+    assert registry["current_allowed_next_card"] == "position_bounded_proof_build_card"
     assert registry["latest_mainline_release_run_id"] == (
         "signal-production-builder-hardening-20260506-01"
     )
@@ -75,17 +75,19 @@ def test_current_gate_opens_release_decision_after_signal_hardening() -> None:
     assert modules["signal"]["allow_build"] is False
     assert modules["signal"]["next_card"] == "upstream_pre_position_release_decision"
     assert modules["data"]["latest_completed_card"] == "data_reference_target_maintenance_closeout"
-    assert modules["position"]["allow_review"] is True
-    assert modules["position"]["allow_build"] is False
+    assert modules["position"]["allow_review"] is False
+    assert modules["position"]["allow_build"] is True
+    assert modules["position"]["next_card"] == "position_bounded_proof_build_card"
     assert "data-reference-target-maintenance-scope-20260506-01" in conclusion_index
     assert "data-reference-target-maintenance-closeout-20260506-01" in conclusion_index
     assert "malf-week-bounded-proof-build-20260506-01" in conclusion_index
     assert "malf-month-bounded-proof-build-20260506-01" in conclusion_index
     assert "alpha-production-builder-hardening-20260506-01" in conclusion_index
     assert "signal-production-builder-hardening-20260506-01" in conclusion_index
+    assert "upstream-pre-position-release-decision-20260506-01" in conclusion_index
     assert "malf-v1-3-formal-rebuild-closeout-20260502-01" in conclusion_index
-    assert "状态：`passed`" in signal_conclusion
-    assert "hard_fail_count = 0" in signal_conclusion
+    assert "状态：`passed / review-only release decision closed`" in release_decision
+    assert "| allowed next action | `position_bounded_proof_build_card` |" in release_decision
 
 
 def test_malf_module_contract_points_at_month_bounded_closeout() -> None:
