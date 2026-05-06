@@ -2,11 +2,12 @@
 
 日期：2026-04-30
 
-状态：frozen / v1.4 day runtime sync passed / v1.4 authority sync passed
+状态：frozen / v1.4 day runtime sync passed / week bounded proof passed / v1.4 authority sync passed
 
 ## 1. Runner 目标
 
-MALF runner 必须支持 bounded proof 先行，再进入 segmented / full / resume。第一阶段只执行 day。
+MALF runner 必须支持 bounded proof 先行，再进入 segmented / full / resume。当前已执行 day 与 week
+bounded proof；month 仍需独立执行卡。
 `audit-only` 仅用于 audit runner，不用于 Core / Lifespan / Service build runner。
 
 当前待修 gap：build path 必须显式拒绝 `audit-only` 写业务表；`segmented` 必须校验
@@ -23,8 +24,9 @@ symbol range、batch id 或等价 segmented scope。该修订纳入
 | `scripts/malf/run_malf_day_audit.py` | 执行 Core / Lifespan / Service 审计 |
 | `scripts/malf/run_malf_day_supplemental_build.py` | MALF day 分批补数、断点续跑、staging audit promote 样板 |
 
-这些 runner 已用于 `malf-v1-4-core-runtime-sync-implementation-20260505-01` 执行闭环并形成
-当前 `passed` 结论。后续扩大到 segmented / full / resume 仍需单独门禁。
+这些 runner 已用于 `malf-v1-4-core-runtime-sync-implementation-20260505-01` 与
+`malf-week-bounded-proof-build-20260506-01` 执行闭环并形成当前 `passed` 结论。
+后续扩大到 month、segmented / full / resume 仍需单独门禁。
 `run_malf_day_supplemental_build.py` 是项目级数据库分批补数准则的第一套 MALF day
 样板实现，只覆盖 day，不打开 week/month 或 Pipeline runtime。
 
@@ -74,7 +76,7 @@ segmented scope，也必须 fail fast。
 
 | 参数 | 要求 |
 |---|---|
-| `--timeframe` | 第一阶段固定为 `day` |
+| `--timeframe` | bounded proof 已放行 `day / week`；`month` 仍需独立卡执行 |
 | `--mode` | build runner: `bounded / segmented / full / resume`; audit runner: `bounded / segmented / full / resume / audit-only` |
 | `--run-id` | 可传入；未传入时由 runner 生成 |
 | `--source-db` | 输入 DB 路径 |
@@ -87,11 +89,11 @@ segmented scope，也必须 fail fast。
 | `--rule-version` | Core 或 Lifespan 必填 |
 | `--service-version` | Service 必填 |
 
-当前 day Core 正式读取面固定为：
+当前 day/week Core 正式读取面固定为：
 
 ```text
-market_base_day.market_base_bar
-timeframe = day
+market_base_<timeframe>.market_base_bar
+timeframe = day 或 week
 price_line = analysis_price_line
 adj_mode = backward
 ```

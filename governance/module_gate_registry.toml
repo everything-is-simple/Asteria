@@ -16,11 +16,12 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-data-foundation-production-baseline-seal-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-data-reference-target-maintenance-closeout-20260506-01.zip",
+    "H:/Asteria-Validated/Asteria-malf-week-bounded-proof-build-20260506-01.zip",
 ]
 latest_governance_run_id = "validated-historical-evidence-rehydration-20260502-01"
-latest_mainline_release_run_id = "malf-v1-4-core-runtime-sync-implementation-20260505-01"
+latest_mainline_release_run_id = "malf-week-bounded-proof-build-20260506-01"
 latest_authority_sync_run_id = "malf-v1-4-core-operational-boundary-authority-sync-20260503-01"
-current_allowed_next_card = "malf_week_bounded_proof_build"
+current_allowed_next_card = "malf_month_bounded_proof_build"
 pre_position_repair_sequence = [
     "data_reference_target_maintenance_scope",
     "data_reference_target_maintenance_closeout",
@@ -60,19 +61,19 @@ latest_maintenance_conclusion = "docs/04-execution/records/data/data-reference-t
 module_id = "malf"
 display_name = "MALF"
 mainline = true
-status = "released_week_repair_active"
-doc_status = "delivered six-doc set / v1.4 day runtime sync passed / week bounded proof prepared"
+status = "released_month_repair_active"
+doc_status = "delivered six-doc set / v1.4 day runtime sync passed / week bounded proof passed"
 allow_build = true
 doc_path = "docs/02-modules/malf"
-next_card = "malf_week_bounded_proof_build"
-active_card = "docs/04-execution/records/malf/malf-week-bounded-proof-build-20260506-01.card.md"
+next_card = "malf_month_bounded_proof_build"
+active_card = "docs/04-execution/records/malf/malf-month-bounded-proof-build-20260506-01.card.md"
 allow_review = false
-proof_status = "day_bounded_proof_passed; dense_bar_snapshot_resolution_passed; complete_alignment_closeout_passed; v1_4_day_runtime_sync_implementation_passed; week_bounded_proof_prepared"
-release_conclusion = "docs/04-execution/records/malf/malf-v1-4-core-runtime-sync-implementation-20260505-01.conclusion.md"
-evidence_index = "docs/04-execution/records/malf/malf-v1-4-core-runtime-sync-implementation-20260505-01.evidence-index.md"
+proof_status = "day_bounded_proof_passed; dense_bar_snapshot_resolution_passed; complete_alignment_closeout_passed; v1_4_day_runtime_sync_implementation_passed; week_bounded_proof_passed"
+release_conclusion = "docs/04-execution/records/malf/malf-week-bounded-proof-build-20260506-01.conclusion.md"
+evidence_index = "docs/04-execution/records/malf/malf-week-bounded-proof-build-20260506-01.evidence-index.md"
 authority_conclusion = "docs/04-execution/records/malf/malf-v1-4-core-operational-boundary-authority-sync-20260503-01.conclusion.md"
 authority_evidence_index = "docs/04-execution/records/malf/malf-v1-4-core-operational-boundary-authority-sync-20260503-01.evidence-index.md"
-formal_db_permission = "released_day_dbs_only; week_month_full_build_require_new_card"
+formal_db_permission = "released_day_and_week_dbs_only; month_full_build_require_new_card"
 allowed_downstream_use = "read_only_wave_position_for_alpha_freeze_review"
 
 [[modules]]

@@ -47,7 +47,7 @@ def test_project_governance_passes_current_repo() -> None:
     assert findings == []
 
 
-def test_current_gate_opens_malf_week_after_data_reference_closeout() -> None:
+def test_current_gate_opens_malf_month_after_malf_week_closeout() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     with registry_path.open("rb") as handle:
@@ -62,17 +62,17 @@ def test_current_gate_opens_malf_week_after_data_reference_closeout() -> None:
         / "04-execution"
         / "records"
         / "malf"
-        / "malf-v1-3-formal-rebuild-closeout-20260502-01.conclusion.md"
+        / "malf-week-bounded-proof-build-20260506-01.conclusion.md"
     ).read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == "malf"
     assert registry["active_foundation_card"] == "none"
-    assert registry["current_allowed_next_card"] == "malf_week_bounded_proof_build"
+    assert registry["current_allowed_next_card"] == "malf_month_bounded_proof_build"
     assert registry["latest_mainline_release_run_id"] == (
-        "malf-v1-4-core-runtime-sync-implementation-20260505-01"
+        "malf-week-bounded-proof-build-20260506-01"
     )
     assert modules["malf"]["allow_build"] is True
-    assert modules["malf"]["next_card"] == "malf_week_bounded_proof_build"
+    assert modules["malf"]["next_card"] == "malf_month_bounded_proof_build"
     assert modules["data"]["latest_completed_card"] == "data_reference_target_maintenance_closeout"
     assert modules["position"]["allow_review"] is False
     assert modules["position"]["allow_build"] is False
@@ -83,23 +83,25 @@ def test_current_gate_opens_malf_week_after_data_reference_closeout() -> None:
     assert "malf-week-bounded-proof-build-20260506-01" in conclusion_index
     assert "malf-v1-3-formal-rebuild-closeout-20260502-01" in conclusion_index
     assert "状态：`passed`" in malf_conclusion
+    assert "hard_fail_count = 0" in malf_conclusion
 
 
-def test_malf_module_contract_points_at_complete_alignment_closeout() -> None:
+def test_malf_module_contract_points_at_week_bounded_closeout() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     contract_path = repo_root / "governance" / "module_api_contracts" / "malf.toml"
     with contract_path.open("rb") as handle:
         contract = tomllib.load(handle)
 
     assert contract["release_conclusion"] == (
-        "docs/04-execution/records/malf/"
-        "malf-v1-4-core-runtime-sync-implementation-20260505-01.conclusion.md"
+        "docs/04-execution/records/malf/malf-week-bounded-proof-build-20260506-01.conclusion.md"
     )
     assert contract["evidence_index"] == (
-        "docs/04-execution/records/malf/"
-        "malf-v1-4-core-runtime-sync-implementation-20260505-01.evidence-index.md"
+        "docs/04-execution/records/malf/malf-week-bounded-proof-build-20260506-01.evidence-index.md"
     )
-    assert contract["formal_db_permission"] == "released_day_core_lifespan_service_only"
+    assert (
+        contract["formal_db_permission"]
+        == "released_day_week_core_lifespan_service_only; month_requires_new_card"
+    )
 
 
 def test_project_governance_rejects_multiple_build_allowed_mainline_modules(
@@ -149,7 +151,7 @@ def test_project_governance_rejects_missing_current_next_card_file(tmp_path: Pat
         / "04-execution"
         / "records"
         / "malf"
-        / "malf-week-bounded-proof-build-20260506-01.card.md"
+        / "malf-month-bounded-proof-build-20260506-01.card.md"
     )
     if card_path.exists():
         card_path.unlink()
@@ -172,7 +174,7 @@ def test_project_governance_rejects_current_next_card_that_is_already_blocked(
             'active_mainline_module = "position"',
         )
         .replace(
-            'current_allowed_next_card = "malf_week_bounded_proof_build"',
+            'current_allowed_next_card = "malf_month_bounded_proof_build"',
             'current_allowed_next_card = "position_freeze_review"',
         )
         .replace(
@@ -268,7 +270,7 @@ def test_project_governance_rejects_docs_sync_next_card_mismatch(tmp_path: Path)
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            '\nnext_card = "malf_week_bounded_proof_build"',
+            '\nnext_card = "malf_month_bounded_proof_build"',
             '\nnext_card = "malf_day_bounded_proof"',
             1,
         ),

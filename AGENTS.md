@@ -25,6 +25,7 @@
 - `H:\Asteria-Validated\Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-data-foundation-production-baseline-seal-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-data-reference-target-maintenance-closeout-20260506-01.zip`
+- `H:\Asteria-Validated\Asteria-malf-week-bounded-proof-build-20260506-01.zip`
 
 当前门禁：
 
@@ -44,11 +45,12 @@
 - `Data market meta formalization passed`
 - `Data market meta SW industry snapshot passed`
 - `Data foundation production baseline sealed`
-- 下一步允许动作：`malf_week_bounded_proof_build`
+- `MALF week bounded proof build passed`
+- 下一步允许动作：`malf_month_bounded_proof_build`
 - Data 已封为主线输入底座；后续 Data 只能通过明确 maintenance card 扩展。
 - `market_meta.duckdb` 已放行最小客观事实与可匹配正式 Data 标的的申万 2021 当前行业快照；Data reference target maintenance closeout 已完成 source inventory 裁决；ST、停牌、真实上市/退市状态、历史行业沿革和 index/block membership 仍因无 approved source manifest 而 retained。
 - MALF v1.4 是 Core operational boundary 权威定义升级；不等于 runtime proof passed。
-- MALF v1.3 closeout 仍只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；当前下一卡是 MALF week bounded proof build，month proof 仍需后续卡。
+- MALF v1.3 closeout 仍只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；MALF week bounded proof 已通过，当前下一卡是 MALF month bounded proof build。
 - Signal bounded proof 只放行 bounded `signal.duckdb` 表面；不授权 Signal full build、Position construction、下游施工或全链路 pipeline。
 
 硬规则：

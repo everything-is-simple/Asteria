@@ -27,18 +27,36 @@ def _seed_market_base_day(path: Path, symbols: tuple[str, ...] = ("UPCASE.SH",))
             _insert_rows(con, rows)
 
 
+def _seed_market_base_week(path: Path, symbols: tuple[str, ...] = ("UPCASE.SH",)) -> None:
+    bootstrap_market_base_day_database(path)
+    with duckdb.connect(str(path)) as con:
+        for symbol in symbols:
+            rows = _opposite_break_rows(symbol, timeframe="week", step_days=7)
+            if symbol == "SAME.SH":
+                rows = _same_direction_rows(symbol, timeframe="week", step_days=7)
+            _insert_rows(con, rows)
+
+
 def _insert_rows(con: duckdb.DuckDBPyConnection, rows: list[tuple[object, ...]]) -> None:
     placeholders = ", ".join(["?"] * 20)
     con.executemany(f"insert into market_base_bar values ({placeholders})", rows)
 
 
-def _bar(symbol: str, offset: int, high: float, low: float) -> tuple[object, ...]:
-    bar_dt = date(2024, 1, 1) + timedelta(days=offset)
+def _bar(
+    symbol: str,
+    offset: int,
+    high: float,
+    low: float,
+    *,
+    timeframe: str = "day",
+    step_days: int = 1,
+) -> tuple[object, ...]:
+    bar_dt = date(2024, 1, 1) + timedelta(days=offset * step_days)
     close = round((high + low) / 2, 2)
     return (
         symbol,
         "stock",
-        "day",
+        timeframe,
         bar_dt.isoformat(),
         bar_dt.isoformat(),
         "analysis_price_line",
@@ -59,7 +77,9 @@ def _bar(symbol: str, offset: int, high: float, low: float) -> tuple[object, ...
     )
 
 
-def _opposite_break_rows(symbol: str) -> list[tuple[object, ...]]:
+def _opposite_break_rows(
+    symbol: str, *, timeframe: str = "day", step_days: int = 1
+) -> list[tuple[object, ...]]:
     price_points = [
         (10.0, 9.0),
         (12.0, 10.0),  # H0
@@ -75,10 +95,15 @@ def _opposite_break_rows(symbol: str) -> list[tuple[object, ...]]:
         (10.0, 7.0),
         (8.5, 5.5),
     ]
-    return [_bar(symbol, i, high, low) for i, (high, low) in enumerate(price_points)]
+    return [
+        _bar(symbol, i, high, low, timeframe=timeframe, step_days=step_days)
+        for i, (high, low) in enumerate(price_points)
+    ]
 
 
-def _same_direction_rows(symbol: str) -> list[tuple[object, ...]]:
+def _same_direction_rows(
+    symbol: str, *, timeframe: str = "day", step_days: int = 1
+) -> list[tuple[object, ...]]:
     price_points = [
         (20.0, 19.0),
         (22.0, 20.0),  # H0
@@ -95,7 +120,10 @@ def _same_direction_rows(symbol: str) -> list[tuple[object, ...]]:
         (27.0, 21.0),  # same-direction up confirmation
         (25.0, 22.0),
     ]
-    return [_bar(symbol, i, high, low) for i, (high, low) in enumerate(price_points)]
+    return [
+        _bar(symbol, i, high, low, timeframe=timeframe, step_days=step_days)
+        for i, (high, low) in enumerate(price_points)
+    ]
 
 
 def _request(tmp_path: Path, run_id: str, mode: str = "bounded") -> MalfDayRequest:
@@ -321,6 +349,63 @@ def test_malf_lifespan_service_and_audit_publish_wave_position(tmp_path: Path) -
     assert report_payload["run_id"] == "malf-full-run-001"
     assert report_payload["hard_fail_count"] == 0
     assert report_payload["published_row_count"] > 0
+
+
+def test_malf_week_bounded_proof_uses_week_timeframe_and_passes_audit(
+    tmp_path: Path,
+) -> None:
+    _seed_market_base_week(
+        tmp_path / "asteria-data" / "market_base_week.duckdb",
+        symbols=("UPCASE.SH", "SAME.SH"),
+    )
+    request = MalfDayRequest(
+        source_db=tmp_path / "asteria-data" / "market_base_week.duckdb",
+        core_db=tmp_path / "asteria-data" / "malf_core_week.duckdb",
+        lifespan_db=tmp_path / "asteria-data" / "malf_lifespan_week.duckdb",
+        service_db=tmp_path / "asteria-data" / "malf_service_week.duckdb",
+        report_root=tmp_path / "asteria-report",
+        validated_root=tmp_path / "asteria-validated",
+        temp_root=tmp_path / "asteria-temp",
+        run_id="malf-week-bounded-run-001",
+        mode="bounded",
+        schema_version="malf-v1-4-runtime-sync-v1",
+        timeframe="week",
+        core_rule_version="core-rule-fractal-1bar-v1",
+        lifespan_rule_version="lifespan-dense-week-v1",
+        sample_version="malf-week-formal-2024-s2-v1",
+        service_version="malf-wave-position-week-v1",
+        start_dt="2024-01-01",
+        end_dt="2024-04-30",
+        symbol_limit=10,
+    )
+
+    core_summary = run_malf_day_core_build(request)
+    run_malf_day_lifespan_build(request)
+    service_summary = run_malf_day_service_build(request)
+    audit_summary = run_malf_day_audit(request)
+
+    assert core_summary.input_row_count == 27
+    assert service_summary.published_row_count > 0
+
+    with duckdb.connect(str(request.core_db), read_only=True) as con:
+        assert (
+            con.execute(
+                "select distinct timeframe from malf_core_run where run_id = ?",
+                [request.run_id],
+            ).fetchone()[0]
+            == "week"
+        )
+    with duckdb.connect(str(request.service_db), read_only=True) as con:
+        assert (
+            con.execute(
+                "select count(*) from malf_wave_position where timeframe <> 'week'"
+            ).fetchone()[0]
+            == 0
+        )
+
+    report_payload = json.loads(Path(audit_summary.report_path).read_text(encoding="utf-8"))
+    assert report_payload["timeframe"] == "week"
+    assert report_payload["hard_fail_count"] == 0
 
 
 def test_malf_lifespan_and_service_publish_dense_bar_level_wave_position(

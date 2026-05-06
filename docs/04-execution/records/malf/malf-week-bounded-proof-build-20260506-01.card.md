@@ -2,7 +2,7 @@
 
 日期：2026-05-06
 
-状态：`prepared / not executed`
+状态：`passed / week bounded proof`
 
 ## 1. 背景
 
@@ -16,7 +16,7 @@ Core/Lifespan/Service 三库仍未构建。本卡是 Data reference maintenance 
 |---|---|
 | module | `malf` |
 | run_id | `malf-week-bounded-proof-build-20260506-01` |
-| stage | `bounded-proof / week / prepared / not executed` |
+| stage | `bounded-proof / week / passed` |
 | owner | `codex` |
 
 ## 3. 输入范围
@@ -36,6 +36,7 @@ Core/Lifespan/Service 三库仍未构建。本卡是 Data reference maintenance 
 | upstream semantics | `read-only Data source facts` |
 | formal DB permission | `allowed only when this card is explicitly executed` |
 | allowed next action before card | `malf_week_bounded_proof_build` |
+| allowed next action after pass | `malf_month_bounded_proof_build` |
 
 ## 5. 允许动作
 

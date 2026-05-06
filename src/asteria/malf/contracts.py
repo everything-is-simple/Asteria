@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 MALF_SCHEMA_VERSION = "malf-v1-4-runtime-sync-v1"
-VALID_TIMEFRAMES = {"day"}
+VALID_TIMEFRAMES = {"day", "week"}
 VALID_RUN_MODES = {"bounded", "segmented", "full", "resume", "audit-only"}
 DEFAULT_PIVOT_DETECTION_RULE_VERSION = "pivot-fractal-1bar-v1"
 DEFAULT_CORE_EVENT_ORDERING_VERSION = "core-event-order-v1"

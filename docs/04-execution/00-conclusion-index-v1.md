@@ -90,11 +90,13 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   alignment closeout 的正式 DB rerun 和 hard audit 结果取代为当前证据。
 - Position freeze review reentry 已完成只读评审（review-only）并通过：Position 六件套已冻结为
   文档合同表面；但 `upstream-pre-position-completeness-synthesis-20260506-01` 已裁定上游最终完整目标
-  不能全部肯定，因此下一步改为七张上游修补卡。Data scope 卡与 Data closeout 卡已通过，当前进入
-  `malf-week-bounded-proof-build-20260506-01`。Position bounded proof 仍未执行，`position.duckdb` 仍未创建。
+  不能全部肯定，因此下一步改为七张上游修补卡。Data scope 卡、Data closeout 卡和 MALF week
+  bounded proof 已通过，当前进入 `malf-month-bounded-proof-build-20260506-01`。Position bounded proof 仍未执行，
+  `position.duckdb` 仍未创建。
 - MALF v1.4 authority package 已形成，继承 v1.3 semantic mainline 并新增 Core
   operational boundary rules；`malf-v1-4-core-runtime-sync-implementation-20260505-01`
-  现为当前 MALF day runtime evidence。week/month 证明和 full build 仍未执行。
+  现为当前 MALF day runtime evidence，`malf-week-bounded-proof-build-20260506-01`
+  已补齐 week bounded runtime proof。month 证明和 full build 仍未执行。
 - Data legacy source audit、import contract freeze、import runner working build 与 formal
   promotion evidence 已通过；这只放行首轮 `stock / backward / day-week-month`
   source-fact DB，不声明 Data full build released，也不打开下游施工。
@@ -120,12 +122,17 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 
 ## 3. 已准备但未执行的 Pre-Position 修补卡
 
-以下只登记尚未执行的 prepared card 队列，不作为 passed conclusion：
+以下只登记尚未执行的 prepared card 队列，不作为 passed conclusion；已通过的 week 卡移入执行结论：
 
 | 顺序 | 模块 | run_id | card |
 |---:|---|---|---|
-| 3 | MALF | `malf-week-bounded-proof-build-20260506-01` | [card](records/malf/malf-week-bounded-proof-build-20260506-01.card.md) |
 | 4 | MALF | `malf-month-bounded-proof-build-20260506-01` | [card](records/malf/malf-month-bounded-proof-build-20260506-01.card.md) |
 | 5 | Alpha | `alpha-production-builder-hardening-20260506-01` | [card](records/alpha/alpha-production-builder-hardening-20260506-01.card.md) |
 | 6 | Signal | `signal-production-builder-hardening-20260506-01` | [card](records/signal/signal-production-builder-hardening-20260506-01.card.md) |
 | 7 | Position | `upstream-pre-position-release-decision-20260506-01` | [card](records/position/upstream-pre-position-release-decision-20260506-01.card.md) |
+
+## 3.1 Newly Passed Pre-Position Repair Card
+
+| 模块 | run_id | status | conclusion |
+|---|---|---|---|
+| MALF | `malf-week-bounded-proof-build-20260506-01` | `passed` | [conclusion](records/malf/malf-week-bounded-proof-build-20260506-01.conclusion.md) |

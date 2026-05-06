@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 from asteria.malf.bootstrap import run_malf_day_audit
-from asteria.malf.contracts import MALF_SCHEMA_VERSION, MalfDayRequest
+from asteria.malf.contracts import MALF_SCHEMA_VERSION, VALID_TIMEFRAMES, MalfDayRequest
 
 
 def main() -> int:
@@ -23,6 +23,7 @@ def main() -> int:
     )
     parser.add_argument("--source-db", required=True)
     parser.add_argument("--run-id", required=True)
+    parser.add_argument("--timeframe", choices=sorted(VALID_TIMEFRAMES), default="day")
     parser.add_argument("--schema-version", default=MALF_SCHEMA_VERSION)
     parser.add_argument("--pivot-rule-version", default="pivot-fractal-1bar-v1")
     parser.add_argument("--event-ordering-version", default="core-event-order-v1")
@@ -45,6 +46,7 @@ def main() -> int:
             temp_root=Path(args.temp_root),
             run_id=args.run_id,
             mode=args.mode,
+            timeframe=args.timeframe,
             schema_version=args.schema_version,
             pivot_detection_rule_version=args.pivot_rule_version,
             core_event_ordering_version=args.event_ordering_version,
