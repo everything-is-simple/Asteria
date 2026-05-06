@@ -2,7 +2,7 @@
 
 日期：2026-04-27
 
-状态：frozen / freeze review passed
+状态：frozen / freeze review passed / production builder hardening passed
 
 ## 1. 规格范围
 
@@ -57,6 +57,7 @@ run_id
 schema_version
 signal_rule_version
 source_alpha_release_version
+source_alpha_run_id
 created_at
 ```
 
@@ -86,6 +87,7 @@ sample_scope
 | `confidence_bucket` | 必填 |
 | `alpha_rule_version` | 必填 |
 | `source_alpha_release_version` | 必填 |
+| `source_alpha_run_id` | production builder 必填 |
 
 ## 6. formal_signal_ledger
 

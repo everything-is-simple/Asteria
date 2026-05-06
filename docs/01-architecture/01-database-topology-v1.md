@@ -64,6 +64,7 @@ Asteria 采用 DuckDB 多库拓扑，以空间换时间。
 | `alpha_pb.duckdb` | Alpha production builder hardening passed | `docs/04-execution/records/alpha/alpha-production-builder-hardening-20260506-01.evidence-index.md` |
 | `alpha_cpb.duckdb` | Alpha production builder hardening passed | `docs/04-execution/records/alpha/alpha-production-builder-hardening-20260506-01.evidence-index.md` |
 | `alpha_bpb.duckdb` | Alpha production builder hardening passed | `docs/04-execution/records/alpha/alpha-production-builder-hardening-20260506-01.evidence-index.md` |
+| `signal.duckdb` | Signal production builder hardening passed | `docs/04-execution/records/signal/signal-production-builder-hardening-20260506-01.evidence-index.md` |
 
 其他目标库仍是 schema / topology 裁决，不得在对应模块 gate 前创建为正式库。
 
@@ -255,9 +256,10 @@ week/month supplemental/full build。
 | `market_meta.duckdb` | 已按可证事实优先口径最小正式化；申万 2021 当前行业快照部分释放；Data baseline sealed；Data reference maintenance closeout passed；其他 reference gaps retained |
 | `market_base_day.duckdb` 正式化 | 已通过 Data formal promotion、production closeout 与 execution line materialization |
 | `pipeline.duckdb` runtime | 仍未冻结，不得先于业务模块定义语义 |
-| week / month MALF | week 与 month bounded proof build 已通过；Alpha production builder hardening 已通过；当前进入 Signal production builder hardening |
+| week / month MALF | week 与 month bounded proof build 已通过；Alpha 与 Signal production builder hardening 已通过；当前进入 upstream pre-position release decision |
 
 Alpha bounded proof 与 production builder hardening 已通过，五个 Alpha family DB 已在
 day/week/month released MALF Service 表面补齐 production-builder rows。
-Signal bounded proof 已通过，并已在 bounded proof/audit 路径下创建 `signal.duckdb`。
-不得因此提前打开 Position construction、下游正式库或 full-chain Pipeline。
+Signal bounded proof 与 production builder hardening 已通过，`signal.duckdb` 已补齐
+day/week/month formal signal ledger production surface。不得因此提前打开 Position
+construction、下游正式库或 full-chain Pipeline。

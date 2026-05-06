@@ -2,7 +2,7 @@
 
 日期：2026-04-27
 
-状态：frozen / freeze review passed
+状态：frozen / freeze review passed / production builder hardening passed
 
 ## 1. 审计目标
 
@@ -18,6 +18,7 @@ Signal 审计用于证明 Signal 只读消费 Alpha 输出，输出仅限 formal
 | alpha family 输出可读取 | hard fail |
 | Alpha hard audit 全通过 | hard fail |
 | source Alpha release version 已记录 | hard fail |
+| source Alpha run id 已锁定 | hard fail |
 | Signal 不直接读取 MALF 形成业务输出 | hard fail |
 
 ## 3. 输入边界硬审计
@@ -30,6 +31,7 @@ Signal 审计用于证明 Signal 只读消费 Alpha 输出，输出仅限 formal
 | Signal 不得伪造 Alpha candidate | hard fail |
 | Signal 不得把 Alpha 缺行解释为 MALF 错误 | hard fail |
 | Signal 输入必须记录 Alpha rule version | hard fail |
+| Signal input snapshot 不得混入非本卡 source Alpha run rows | hard fail |
 
 ## 4. 输出语义硬审计
 

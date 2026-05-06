@@ -38,6 +38,7 @@ refactor-governance
 Alpha bounded proof 已通过
 Signal freeze review 已通过
 Signal bounded proof 已通过
+Signal production builder hardening 已通过
 MALF complete alignment closeout 已通过
 MALF v1.3 formal-data bounded rebuild closeout 已通过
 MALF v1.4 Core operational boundary authority sync 已通过
@@ -69,7 +70,7 @@ Signal
 当前最新通过门禁：
 
 ```text
-Alpha production builder hardening
+Signal production builder hardening
 ```
 
 当前最新语义升级资产：
@@ -86,13 +87,13 @@ rules；当前 runtime passed evidence 已升级为 MALF v1.4 day runtime sync i
 当前已准备的下一张执行卡：
 
 ```text
-Signal production builder hardening
+Upstream pre-position release decision
 ```
 
 当前只允许施工对象：
 
 ```text
-Signal production builder hardening / Position construction suspended
+Upstream pre-position release decision / Position construction suspended
 ```
 
 当前已通过 bounded proof 的主线模块：
@@ -116,8 +117,9 @@ v1.3 day bounded formal-data evidence；Position freeze review reentry 已通过
 `data-reference-target-maintenance-closeout-20260506-01` 已通过并将无 approved source manifest 的 reference facts
 登记为 retained gaps。`malf-week-bounded-proof-build-20260506-01` 与
 `malf-month-bounded-proof-build-20260506-01` 与
-`alpha-production-builder-hardening-20260506-01` 已通过，当前只允许执行
-`signal-production-builder-hardening-20260506-01`。仍不得扩展为 Position full build、
+`alpha-production-builder-hardening-20260506-01` 与
+`signal-production-builder-hardening-20260506-01` 已通过，当前只允许执行
+`upstream-pre-position-release-decision-20260506-01`。仍不得扩展为 Position full build、
 下游施工或全链路 pipeline。
 
 ## 1.1 Pre-Position 上游修补队列
@@ -129,10 +131,11 @@ v1.3 day bounded formal-data evidence；Position freeze review reentry 已通过
 | 3 | `malf-week-bounded-proof-build-20260506-01` | MALF | passed / week bounded proof | 补 week Core/Lifespan/Service 三库证明 |
 | 4 | `malf-month-bounded-proof-build-20260506-01` | MALF | passed / month bounded proof | 补 month Core/Lifespan/Service 三库证明 |
 | 5 | `alpha-production-builder-hardening-20260506-01` | Alpha | passed / production builder hardening | 补 full/segmented production builder 与审计 |
-| 6 | `signal-production-builder-hardening-20260506-01` | Signal | prepared / not executed / current next | 补 full/segmented Signal build 与审计 |
-| 7 | `upstream-pre-position-release-decision-20260506-01` | Position | prepared / not executed | 裁定是否恢复 Position bounded proof |
+| 6 | `signal-production-builder-hardening-20260506-01` | Signal | passed / production builder hardening | 补 full/segmented Signal build 与审计 |
+| 7 | `upstream-pre-position-release-decision-20260506-01` | Position | prepared / not executed / current next | 裁定是否恢复 Position bounded proof |
 
-除已通过的 Data scope、Data closeout、MALF week 与 MALF month cards 外，其余 prepared cards 不等于 passed conclusions；未执行前不登记为完成结论，不创建任何正式 Position/downstream/Pipeline 产物。
+除已通过的 Data scope、Data closeout、MALF week、MALF month、Alpha production hardening 与
+Signal production hardening cards 外，其余 prepared cards 不等于 passed conclusions；未执行前不登记为完成结论，不创建任何正式 Position/downstream/Pipeline 产物。
 
 ## 2. 模块状态表
 
@@ -141,7 +144,7 @@ v1.3 day bounded formal-data evidence；Position freeze review reentry 已通过
 | 0 | Data Foundation | production baseline seal 与 reference maintenance closeout 已通过 | 主线输入底座已封版 / maintenance-card-only extensions / reference gaps retained | 否，需新 maintenance card | `docs/02-modules/data/` | 五个 Data DB 是本版主线输入底座；market_meta 已部分释放申万当前行业快照；ST/停牌/真实上市退市/index-block 仍 retained；非策略主线，不占主线施工位 |
 | 1 | MALF | 六件套已交付 / v1.4 day runtime sync 已通过 / week/month bounded proof 已通过 / v1.4 authority sync 已通过 | frozen | 否 | `docs/02-modules/malf/` | day runtime proof 已升级到 v1.4；week/month bounded proof 已通过；full build 仍需另开卡 |
 | 2 | Alpha | 六件套已冻结 / bounded proof 已通过 / production hardening passed | released | 否 | `docs/02-modules/alpha/` | bounded proof 与 production builder hardening 已通过；不打开 Position |
-| 3 | Signal | 六件套已冻结 / bounded proof 已通过 / production hardening prepared | released | 是，Signal production builder hardening | `docs/02-modules/signal/` | bounded proof 已通过；当前只打开 production builder hardening card |
+| 3 | Signal | 六件套已冻结 / bounded proof 已通过 / production hardening passed | released | 否 | `docs/02-modules/signal/` | bounded proof 与 production builder hardening 已通过；不打开 Position |
 | 4 | Position | 六件套 freeze review passed / design contract frozen | frozen / build not executed | 否 | `docs/02-modules/position/` | 当前暂停 Position bounded proof 施工；本轮仍未创建 runner 或 DB |
 | 5 | Portfolio Plan | pre-gate 六件套草案 | not frozen | 否 | `docs/02-modules/portfolio_plan/` | 等 Position 放行后重新审阅并冻结 |
 | 6 | Trade | pre-gate 六件套草案 | not frozen | 否 | `docs/02-modules/trade/` | 等 Portfolio Plan 放行后重新审阅并冻结 |
@@ -220,6 +223,12 @@ Alpha production builder hardening 当前执行结论：
 | run_id | 状态 | allowed next action |
 |---|---|---|
 | `alpha-production-builder-hardening-20260506-01` | `passed` | `signal_production_builder_hardening` |
+
+Signal production builder hardening 当前执行结论：
+
+| run_id | 状态 | allowed next action |
+|---|---|---|
+| `signal-production-builder-hardening-20260506-01` | `passed` | `upstream_pre_position_release_decision` |
 
 MALF 冻结文档与当前 proof 状态：
 
@@ -327,8 +336,9 @@ MALF day bounded proof 已通过。
 MALF day 放行后打开的 Alpha freeze review、Alpha bounded proof、Signal freeze
 review 和 Signal bounded proof 均已通过。Position freeze review reentry 已完成
 review-only 审查并通过。MALF complete alignment closeout 已通过。Data reference target maintenance closeout
-已通过。MALF week/month bounded proof build 和 Alpha production builder hardening 已通过。
-当前下一步唯一允许动作已改为 Signal production builder hardening；Position full build、
+已通过。MALF week/month bounded proof build、Alpha production builder hardening 和
+Signal production builder hardening 已通过。
+当前下一步唯一允许动作已改为 upstream pre-position release decision；Position full build、
 Portfolio Plan、Trade、System Readout、Pipeline 仍不允许直接施工。
 
 ## 6. Alpha Freeze Review 放行记录
@@ -414,8 +424,8 @@ Signal bounded proof 已通过。
 Signal bounded proof 只放行 bounded proof 产物和 `signal.duckdb` 当前表面，不授权
 Signal full build、Position 施工或全链路 pipeline。后续 Position freeze review reentry
 已完成 review-only 审查并通过，MALF complete alignment closeout 已通过；Data reference maintenance closeout
-已完成 source inventory 裁决，MALF week/month bounded proof build 与 Alpha production builder hardening
-已通过，当前进入 Signal production builder hardening。
+已完成 source inventory 裁决，MALF week/month bounded proof build、Alpha production builder hardening
+与 Signal production builder hardening 已通过，当前进入 upstream pre-position release decision。
 
 ## 10. MALF Complete Alignment Closeout 放行记录
 

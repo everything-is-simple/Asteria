@@ -31,6 +31,8 @@
 - `H:\Asteria-Validated\Asteria-data-reference-target-maintenance-closeout-20260506-01.zip`
 - `H:\Asteria-Validated\Asteria-malf-week-bounded-proof-build-20260506-01.zip`
 - `H:\Asteria-Validated\Asteria-malf-month-bounded-proof-build-20260506-01.zip`
+- `H:\Asteria-Validated\Asteria-alpha-production-builder-hardening-20260506-01.zip`
+- `H:\Asteria-Validated\Asteria-signal-production-builder-hardening-20260506-01.zip`
 
 `214427` 是重要 docs/code 快照锚点；`130309` 是三天重构成果的历史系统
 docs/code 快照；`101006` 是 Data formal promotion（Data 正式提升）与 MALF v1.3
@@ -73,6 +75,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Signal | `signal-freeze-review-20260429-01` | `passed` | [conclusion](records/signal/signal-freeze-review-20260429-01.conclusion.md) | [evidence-index](records/signal/signal-freeze-review-20260429-01.evidence-index.md) |
 | Signal | `signal-bounded-proof-20260429-01` | `passed` | [conclusion](records/signal/signal-bounded-proof-20260429-01.conclusion.md) | [evidence-index](records/signal/signal-bounded-proof-20260429-01.evidence-index.md) |
 | Signal | `signal-target-completeness-review-20260506-01` | `review-only / bounded proof clean / full target incomplete` | [conclusion](records/signal/signal-target-completeness-review-20260506-01.conclusion.md) | [evidence-index](records/signal/signal-target-completeness-review-20260506-01.evidence-index.md) |
+| Signal | `signal-production-builder-hardening-20260506-01` | `passed` | [conclusion](records/signal/signal-production-builder-hardening-20260506-01.conclusion.md) | [evidence-index](records/signal/signal-production-builder-hardening-20260506-01.evidence-index.md) |
 | Position | `position-freeze-review-20260429-01` | `blocked` | [conclusion](records/position/position-freeze-review-20260429-01.conclusion.md) | [evidence-index](records/position/position-freeze-review-20260429-01.evidence-index.md) |
 | Position | `position-freeze-review-reentry-20260430-01` | `passed / review-only closed` | [conclusion](records/position/position-freeze-review-reentry-20260430-01.conclusion.md) | [evidence-index](records/position/position-freeze-review-reentry-20260430-01.evidence-index.md) |
 | Position | `upstream-pre-position-completeness-synthesis-20260506-01` | `review-only / position construction suspended` | [conclusion](records/position/upstream-pre-position-completeness-synthesis-20260506-01.conclusion.md) | [evidence-index](records/position/upstream-pre-position-completeness-synthesis-20260506-01.evidence-index.md) |
@@ -96,8 +99,8 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 - Position freeze review reentry 已完成只读评审（review-only）并通过：Position 六件套已冻结为
   文档合同表面；但 `upstream-pre-position-completeness-synthesis-20260506-01` 已裁定上游最终完整目标
   不能全部肯定，因此下一步改为七张上游修补卡。Data scope 卡、Data closeout 卡和 MALF week/month
-  bounded proof 已通过，Alpha production builder hardening 已通过，当前进入
-  `signal-production-builder-hardening-20260506-01`。Position bounded proof 仍未执行，
+  bounded proof 已通过，Alpha production builder hardening 与 Signal production builder hardening 已通过，当前进入
+  `upstream-pre-position-release-decision-20260506-01`。Position bounded proof 仍未执行，
   `position.duckdb` 仍未创建。
 - MALF v1.4 authority package 已形成，继承 v1.3 semantic mainline 并新增 Core
   operational boundary rules；`malf-v1-4-core-runtime-sync-implementation-20260505-01`
@@ -122,8 +125,8 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   泛化补数入口。
 - Validated 历史 evidence zip 已对齐到 `H:\Asteria-Validated\2.backups` 冷归档路径；
   这是治理资产布局维护，不改变任何模块门禁。
-- Alpha full build、Signal full build、Position full build、Portfolio Plan / Trade /
-  System 施工和全链路 pipeline 仍未放行，直到后续门禁通过并明确授权。
+- Position full build、Portfolio Plan / Trade / System 施工和全链路 pipeline 仍未放行，
+  直到后续门禁通过并明确授权。
 - 后续 Position bounded proof 等执行卡，都必须先登记到本索引，再视为正式结论落档。
 
 ## 3. 已准备但未执行的 Pre-Position 修补卡
@@ -132,7 +135,6 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 
 | 顺序 | 模块 | run_id | card |
 |---:|---|---|---|
-| 6 | Signal | `signal-production-builder-hardening-20260506-01` | [card](records/signal/signal-production-builder-hardening-20260506-01.card.md) |
 | 7 | Position | `upstream-pre-position-release-decision-20260506-01` | [card](records/position/upstream-pre-position-release-decision-20260506-01.card.md) |
 
 ## 3.1 Newly Passed Pre-Position Repair Card
@@ -142,3 +144,4 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | MALF | `malf-week-bounded-proof-build-20260506-01` | `passed` | [conclusion](records/malf/malf-week-bounded-proof-build-20260506-01.conclusion.md) |
 | MALF | `malf-month-bounded-proof-build-20260506-01` | `passed` | [conclusion](records/malf/malf-month-bounded-proof-build-20260506-01.conclusion.md) |
 | Alpha | `alpha-production-builder-hardening-20260506-01` | `passed` | [conclusion](records/alpha/alpha-production-builder-hardening-20260506-01.conclusion.md) |
+| Signal | `signal-production-builder-hardening-20260506-01` | `passed` | [conclusion](records/signal/signal-production-builder-hardening-20260506-01.conclusion.md) |

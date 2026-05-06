@@ -2,7 +2,7 @@
 
 日期：2026-05-06
 
-状态：`prepared / not executed`
+状态：`passed`
 
 ## 1. 背景
 
@@ -15,7 +15,7 @@ production build 未放行。本卡承接 Alpha production builder hardening。
 |---|---|
 | module | `signal` |
 | run_id | `signal-production-builder-hardening-20260506-01` |
-| stage | `production-builder-hardening / prepared / not executed` |
+| stage | `production-builder-hardening / passed` |
 | owner | `codex` |
 
 ## 3. 输入范围

@@ -47,7 +47,7 @@ def test_project_governance_passes_current_repo() -> None:
     assert findings == []
 
 
-def test_current_gate_opens_signal_hardening_after_alpha_hardening() -> None:
+def test_current_gate_opens_release_decision_after_signal_hardening() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     with registry_path.open("rb") as handle:
@@ -56,35 +56,36 @@ def test_current_gate_opens_signal_hardening_after_alpha_hardening() -> None:
     conclusion_index = (
         repo_root / "docs" / "04-execution" / "00-conclusion-index-v1.md"
     ).read_text(encoding="utf-8")
-    alpha_conclusion_path = repo_root / (
-        "docs/04-execution/records/alpha/"
-        "alpha-production-builder-hardening-20260506-01.conclusion.md"
+    signal_conclusion_path = repo_root / (
+        "docs/04-execution/records/signal/"
+        "signal-production-builder-hardening-20260506-01.conclusion.md"
     )
-    alpha_conclusion = alpha_conclusion_path.read_text(encoding="utf-8")
+    signal_conclusion = signal_conclusion_path.read_text(encoding="utf-8")
 
-    assert registry["active_mainline_module"] == "signal"
+    assert registry["active_mainline_module"] == "position"
     assert registry["active_foundation_card"] == "none"
-    assert registry["current_allowed_next_card"] == "signal_production_builder_hardening"
+    assert registry["current_allowed_next_card"] == "upstream_pre_position_release_decision"
     assert registry["latest_mainline_release_run_id"] == (
-        "alpha-production-builder-hardening-20260506-01"
+        "signal-production-builder-hardening-20260506-01"
     )
     assert modules["malf"]["allow_build"] is False
     assert modules["malf"]["next_card"] == "alpha_production_builder_hardening"
     assert modules["alpha"]["allow_build"] is False
     assert modules["alpha"]["next_card"] == "signal_production_builder_hardening"
-    assert modules["signal"]["allow_build"] is True
-    assert modules["signal"]["next_card"] == "signal_production_builder_hardening"
+    assert modules["signal"]["allow_build"] is False
+    assert modules["signal"]["next_card"] == "upstream_pre_position_release_decision"
     assert modules["data"]["latest_completed_card"] == "data_reference_target_maintenance_closeout"
-    assert modules["position"]["allow_review"] is False
+    assert modules["position"]["allow_review"] is True
     assert modules["position"]["allow_build"] is False
     assert "data-reference-target-maintenance-scope-20260506-01" in conclusion_index
     assert "data-reference-target-maintenance-closeout-20260506-01" in conclusion_index
     assert "malf-week-bounded-proof-build-20260506-01" in conclusion_index
     assert "malf-month-bounded-proof-build-20260506-01" in conclusion_index
     assert "alpha-production-builder-hardening-20260506-01" in conclusion_index
+    assert "signal-production-builder-hardening-20260506-01" in conclusion_index
     assert "malf-v1-3-formal-rebuild-closeout-20260502-01" in conclusion_index
-    assert "状态：`passed`" in alpha_conclusion
-    assert "hard_fail_count = 0" in alpha_conclusion
+    assert "状态：`passed`" in signal_conclusion
+    assert "hard_fail_count = 0" in signal_conclusion
 
 
 def test_malf_module_contract_points_at_month_bounded_closeout() -> None:
@@ -152,7 +153,8 @@ def test_project_governance_rejects_pyproject_next_card_state(tmp_path: Path) ->
 def test_project_governance_rejects_missing_current_next_card_file(tmp_path: Path) -> None:
     repo_root = _copy_governance_repo(tmp_path)
     card_path = repo_root / (
-        "docs/04-execution/records/signal/signal-production-builder-hardening-20260506-01.card.md"
+        "docs/04-execution/records/position/"
+        "upstream-pre-position-release-decision-20260506-01.card.md"
     )
     if card_path.exists():
         card_path.unlink()
@@ -303,10 +305,8 @@ def test_project_governance_rejects_docs_sync_next_card_mismatch(tmp_path: Path)
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'waits_for = "alpha_production_builder_hardening_passed"\n'
-            'next_card = "signal_production_builder_hardening"',
-            'waits_for = "alpha_production_builder_hardening_passed"\n'
-            'next_card = "malf_day_bounded_proof"',
+            'waits_for = "signal_released"\nnext_card = "upstream_pre_position_release_decision"',
+            'waits_for = "signal_released"\nnext_card = "malf_day_bounded_proof"',
         ),
         encoding="utf-8",
     )
@@ -456,21 +456,14 @@ def test_project_governance_rejects_release_gate_next_card_mismatch(
         / "04-execution"
         / "records"
         / "signal"
-        / "signal-bounded-proof-20260429-01.conclusion.md"
-    )
-    index_path = repo_root / "docs" / "04-execution" / "00-conclusion-index-v1.md"
-    index_path.write_text(
-        "\n".join(
-            line
-            for line in index_path.read_text(encoding="utf-8").splitlines()
-            if "signal-target-completeness-review-20260506-01" not in line
-        ),
-        encoding="utf-8",
+        / "signal-production-builder-hardening-20260506-01.conclusion.md"
     )
     conclusion_text = conclusion_path.read_text(encoding="utf-8")
     conclusion_path.write_text(
-        conclusion_text.replace("`Position freeze review`", "`MALF dense resolution`", 1).replace(
-            "Position freeze review。", "MALF dense resolution。", 1
+        conclusion_text.replace(
+            "`upstream_pre_position_release_decision`",
+            "`malf_dense_resolution`",
+            1,
         ),
         encoding="utf-8",
     )

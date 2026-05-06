@@ -7,8 +7,8 @@ from typing import Any
 
 SIGNAL_SCHEMA_VERSION = "signal-bounded-proof-v1"
 SIGNAL_RULE_VERSION = "signal-alpha-aggregation-minimal-v1"
-VALID_SIGNAL_RUN_MODES = {"bounded", "resume", "audit-only"}
-VALID_SIGNAL_TIMEFRAMES = {"day"}
+VALID_SIGNAL_RUN_MODES = {"audit-only", "bounded", "full", "resume", "segmented"}
+VALID_SIGNAL_TIMEFRAMES = {"day", "month", "week"}
 
 
 @dataclass(frozen=True)
@@ -21,6 +21,7 @@ class SignalBuildRequest:
     run_id: str
     mode: str
     source_alpha_release_version: str
+    source_alpha_run_id: str | None = None
     schema_version: str = SIGNAL_SCHEMA_VERSION
     signal_rule_version: str = SIGNAL_RULE_VERSION
     timeframe: str = "day"
@@ -33,10 +34,10 @@ class SignalBuildRequest:
             raise ValueError(f"Unsupported Signal run mode: {self.mode}")
         if self.timeframe not in VALID_SIGNAL_TIMEFRAMES:
             raise ValueError(f"Unsupported Signal timeframe: {self.timeframe}")
-        if self.mode == "bounded" and not (
+        if self.mode in {"bounded", "segmented"} and not (
             self.start_dt or self.end_dt or self.symbol_limit is not None
         ):
-            raise ValueError("bounded Signal runs require start_dt, end_dt, or symbol_limit")
+            raise ValueError(f"{self.mode} Signal runs require start_dt, end_dt, or symbol_limit")
         if not self.source_alpha_release_version:
             raise ValueError("source_alpha_release_version is required")
         if self.start_date and self.end_date and self.start_date > self.end_date:
@@ -51,7 +52,7 @@ class SignalBuildRequest:
         return date.fromisoformat(self.end_dt) if self.end_dt else None
 
     def checkpoint_path(self, stage: str) -> Path:
-        return self.temp_root / "signal" / self.run_id / f"{stage}.json"
+        return self.temp_root / "signal" / self.run_id / f"{self.timeframe}-{stage}.json"
 
 
 @dataclass(frozen=True)
@@ -59,6 +60,7 @@ class SignalBuildSummary:
     run_id: str
     stage: str
     status: str
+    timeframe: str = "day"
     input_candidate_count: int = 0
     formal_signal_count: int = 0
     component_count: int = 0

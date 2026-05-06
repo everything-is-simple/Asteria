@@ -104,6 +104,7 @@ def _snapshot_row(
         row.alpha_rule_version,
         row.source_malf_service_version,
         request.source_alpha_release_version,
+        row.run_id,
         request.schema_version,
         request.signal_rule_version,
         created_at,

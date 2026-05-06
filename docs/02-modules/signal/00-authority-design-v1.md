@@ -2,7 +2,7 @@
 
 日期：2026-04-27
 
-状态：frozen / freeze review passed
+状态：frozen / freeze review passed / production builder hardening passed
 
 ## 1. 模块定义
 
@@ -12,8 +12,8 @@ Signal 只负责把已放行的 Alpha family 输出聚合为正式 signal ledger
 
 ## 2. 前置门槛
 
-Signal 设计冻结已在 `signal-freeze-review-20260429-01` 中通过。Signal 施工仍必须等待单独的
-Signal bounded proof build card。
+Signal 设计冻结已在 `signal-freeze-review-20260429-01` 中通过。Signal bounded proof 与
+production builder hardening 均已形成执行结论。
 
 ```text
 Alpha bounded proof passed -> Signal freeze review passed
@@ -184,6 +184,6 @@ Signal bounded proof build card 必须满足：
 | Audit | 只读 Alpha、无资金订单输出、自然键唯一等硬审计冻结 |
 | Evidence | Signal bounded proof 证据落入 `H:\Asteria-report` 或 `H:\Asteria-Validated` |
 
-Signal freeze review 通过后的唯一下一步是 `Signal bounded proof build card`。该下一卡打开前，
-仍不得创建 Signal runner、Signal 正式 DB、Position / Portfolio Plan / Trade / System runner
-或全链路 Pipeline。
+Signal production builder hardening 通过后的唯一下一步是
+`upstream-pre-position-release-decision-20260506-01`。在该总控裁决通过前，仍不得创建
+Position / Portfolio Plan / Trade / System runner 或全链路 Pipeline。

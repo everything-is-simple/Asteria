@@ -19,6 +19,7 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-malf-week-bounded-proof-build-20260506-01.zip",
     "H:/Asteria-Validated/Asteria-malf-month-bounded-proof-build-20260506-01.zip",
     "H:/Asteria-Validated/Asteria-alpha-production-builder-hardening-20260506-01.zip",
+    "H:/Asteria-Validated/Asteria-signal-production-builder-hardening-20260506-01.zip",
 ]
 release_evidence_index = "docs/04-execution/00-conclusion-index-v1.md"
 released_formal_dbs = [
@@ -284,9 +285,9 @@ ledger_role = "signal_ledger"
 writer = "run_signal_build"
 allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 checkpoint_policy = "signal_replay_scope"
-checkpoint_key = ["symbol_bucket", "signal_dt"]
-replay_scope = ["signal_dt", "symbol"]
-promote_rule = "signal_audit_passed"
+checkpoint_key = ["timeframe", "symbol_bucket", "signal_dt"]
+replay_scope = ["timeframe", "signal_dt", "symbol", "source_alpha_run_id"]
+promote_rule = "signal_production_audit_passed"
 
 [[databases]]
 db_name = "position.duckdb"

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import zipfile
+from collections.abc import Mapping
 from datetime import datetime, timezone
 from pathlib import Path
 from shutil import copy2
@@ -17,8 +18,11 @@ from asteria.signal.contracts import (
     SignalBuildRequest,
     SignalBuildSummary,
 )
+from asteria.signal.evidence import write_signal_evidence
 from asteria.signal.rules import AlphaCandidate, build_signal_rows, candidate_from_row
 from asteria.signal.schema import bootstrap_signal_database
+
+SIGNAL_PRODUCTION_SOURCE_ALPHA_RUN_ID = "alpha-production-builder-hardening-20260506-01"
 
 
 def run_signal_build(request: SignalBuildRequest) -> SignalBuildSummary:
@@ -34,7 +38,9 @@ def run_signal_build(request: SignalBuildRequest) -> SignalBuildSummary:
     bootstrap_signal_database(request.target_signal_db)
     with duckdb.connect(str(request.target_signal_db)) as con:
         con.execute("begin transaction")
-        _delete_run(con, request.run_id)
+        _delete_run(con, request)
+        if request.mode == "full":
+            _delete_timeframe_surface(con, request)
         con.execute(
             "delete from signal_schema_version where schema_version = ?",
             [request.schema_version],
@@ -53,8 +59,14 @@ def run_signal_build(request: SignalBuildRequest) -> SignalBuildSummary:
         )
         con.executemany(
             """
-            insert into signal_input_snapshot
-            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            insert into signal_input_snapshot (
+                signal_input_snapshot_id, signal_run_id, alpha_family, alpha_candidate_id,
+                alpha_event_id, symbol, timeframe, bar_dt, candidate_type, candidate_state,
+                opportunity_bias, confidence_bucket, reason_code, candidate_score,
+                alpha_rule_version, source_malf_service_version, source_alpha_release_version,
+                source_alpha_run_id, schema_version, signal_rule_version, created_at
+            )
+            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             signal_rows.snapshots,
         )
@@ -98,6 +110,7 @@ def run_signal_build(request: SignalBuildRequest) -> SignalBuildSummary:
         run_id=request.run_id,
         stage="build",
         status="completed" if audit.hard_fail_count == 0 else "failed",
+        timeframe=request.timeframe,
         input_candidate_count=len(signal_rows.snapshots),
         formal_signal_count=len(signal_rows.signals),
         component_count=len(signal_rows.components),
@@ -114,17 +127,21 @@ def run_signal_audit(request: SignalBuildRequest) -> SignalBuildSummary:
     audit_rows, payload = build_signal_audit_rows(request, created_at)
     with duckdb.connect(str(request.target_signal_db)) as con:
         con.execute("begin transaction")
-        con.execute("delete from signal_audit where run_id = ?", [request.run_id])
+        con.execute(
+            "delete from signal_audit where audit_id like ?",
+            [f"{request.run_id}|{request.timeframe}|%"],
+        )
         con.executemany("insert into signal_audit values (?, ?, ?, ?, ?, ?, ?, ?)", audit_rows)
         con.execute("commit")
 
-    report_path = _report_path(request.report_root, request.run_id)
+    report_path = _report_path(request.report_root, request.run_id, request.timeframe)
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     summary = SignalBuildSummary(
         run_id=request.run_id,
         stage="audit",
         status="completed" if payload["hard_fail_count"] == 0 else "failed",
+        timeframe=request.timeframe,
         input_candidate_count=int(payload["input_candidate_count"]),
         formal_signal_count=int(payload["formal_signal_count"]),
         component_count=int(payload["component_count"]),
@@ -170,6 +187,59 @@ def run_signal_bounded_proof(
     return SignalBuildSummary(**{**summary.as_dict(), **evidence})
 
 
+def run_signal_production_builder(
+    source_alpha_root: Path,
+    target_signal_db: Path,
+    report_root: Path,
+    validated_root: Path,
+    temp_root: Path,
+    run_id: str,
+    mode: str,
+    source_alpha_release_version: str = SIGNAL_PRODUCTION_SOURCE_ALPHA_RUN_ID,
+    source_alpha_run_id: str | None = SIGNAL_PRODUCTION_SOURCE_ALPHA_RUN_ID,
+    start_dt: str | None = None,
+    end_dt: str | None = None,
+    symbol_limit: int | None = None,
+    schema_version: str = SIGNAL_SCHEMA_VERSION,
+    signal_rule_version: str = SIGNAL_RULE_VERSION,
+    timeframes: tuple[str, ...] = ("day", "week", "month"),
+    source_alpha_run_ids: Mapping[str, str] | None = None,
+) -> list[SignalBuildSummary]:
+    summaries: list[SignalBuildSummary] = []
+    for timeframe in timeframes:
+        timeframe_source_run_id = (
+            source_alpha_run_ids[timeframe]
+            if source_alpha_run_ids is not None and timeframe in source_alpha_run_ids
+            else source_alpha_run_id
+        )
+        request = SignalBuildRequest(
+            source_alpha_root=source_alpha_root,
+            target_signal_db=target_signal_db,
+            report_root=report_root,
+            validated_root=validated_root,
+            temp_root=temp_root,
+            run_id=run_id,
+            mode=mode,
+            source_alpha_release_version=source_alpha_release_version,
+            source_alpha_run_id=timeframe_source_run_id,
+            schema_version=schema_version,
+            signal_rule_version=signal_rule_version,
+            timeframe=timeframe,
+            start_dt=start_dt,
+            end_dt=end_dt,
+            symbol_limit=symbol_limit,
+        )
+        summaries.append(run_signal_build(request))
+    write_signal_evidence(
+        report_root,
+        validated_root,
+        run_id,
+        summaries,
+        "production_builder_hardening",
+    )
+    return summaries
+
+
 def _load_alpha_candidates(request: SignalBuildRequest) -> list[AlphaCandidate]:
     candidates: list[AlphaCandidate] = []
     for family in SIGNAL_FAMILIES:
@@ -178,6 +248,9 @@ def _load_alpha_candidates(request: SignalBuildRequest) -> list[AlphaCandidate]:
             raise FileNotFoundError(f"Missing Alpha family DB: {db_path}")
         clauses = ["timeframe = ?", "alpha_family = ?"]
         params: list[object] = [request.timeframe, family]
+        if request.source_alpha_run_id:
+            clauses.append("run_id = ?")
+            params.append(request.source_alpha_run_id)
         if request.start_date:
             clauses.append("bar_dt >= ?")
             params.append(request.start_date)
@@ -186,17 +259,23 @@ def _load_alpha_candidates(request: SignalBuildRequest) -> list[AlphaCandidate]:
             params.append(request.end_date)
         symbol_limit = ""
         if request.symbol_limit is not None:
-            symbol_limit = """
+            source_run_clause = ""
+            source_run_params: list[object] = []
+            if request.source_alpha_run_id:
+                source_run_clause = " and run_id = ?"
+                source_run_params.append(request.source_alpha_run_id)
+            symbol_limit = f"""
             and symbol in (
                 select symbol
                 from alpha_signal_candidate
                 where timeframe = ? and alpha_family = ?
+                {source_run_clause}
                 group by symbol
                 order by symbol
                 limit ?
             )
             """
-            params.extend([request.timeframe, family, request.symbol_limit])
+            params.extend([request.timeframe, family, *source_run_params, request.symbol_limit])
         query = f"""
             select alpha_candidate_id, alpha_event_id, alpha_family, symbol, timeframe,
                    bar_dt, candidate_type, candidate_state, opportunity_bias,
@@ -216,18 +295,61 @@ def _load_alpha_candidates(request: SignalBuildRequest) -> list[AlphaCandidate]:
     )
 
 
-def _delete_run(con: duckdb.DuckDBPyConnection, run_id: str) -> None:
-    for table in [
-        "signal_run",
-        "signal_input_snapshot",
-        "formal_signal_ledger",
-        "signal_component_ledger",
-        "signal_audit",
-    ]:
-        column = "signal_run_id" if table == "signal_input_snapshot" else "run_id"
-        if table == "signal_component_ledger":
-            column = "signal_run_id"
-        con.execute(f"delete from {table} where {column} = ?", [run_id])
+def _delete_run(con: duckdb.DuckDBPyConnection, request: SignalBuildRequest) -> None:
+    con.execute(
+        """
+        delete from signal_component_ledger
+        where signal_run_id = ?
+          and signal_id in (
+              select signal_id
+              from formal_signal_ledger
+              where run_id = ? and timeframe = ?
+          )
+        """,
+        [request.run_id, request.run_id, request.timeframe],
+    )
+    con.execute(
+        "delete from formal_signal_ledger where run_id = ? and timeframe = ?",
+        [request.run_id, request.timeframe],
+    )
+    con.execute(
+        "delete from signal_input_snapshot where signal_run_id = ? and timeframe = ?",
+        [request.run_id, request.timeframe],
+    )
+    con.execute(
+        "delete from signal_run where run_id = ? and timeframe = ?",
+        [request.run_id, request.timeframe],
+    )
+    con.execute(
+        "delete from signal_audit where audit_id like ?",
+        [f"{request.run_id}|{request.timeframe}|%"],
+    )
+
+
+def _delete_timeframe_surface(
+    con: duckdb.DuckDBPyConnection,
+    request: SignalBuildRequest,
+) -> None:
+    con.execute(
+        """
+        delete from signal_component_ledger
+        where signal_rule_version = ?
+          and signal_id in (
+              select signal_id
+              from formal_signal_ledger
+              where timeframe = ? and signal_rule_version = ?
+          )
+        """,
+        [request.signal_rule_version, request.timeframe, request.signal_rule_version],
+    )
+    con.execute(
+        "delete from formal_signal_ledger where timeframe = ? and signal_rule_version = ?",
+        [request.timeframe, request.signal_rule_version],
+    )
+    con.execute(
+        "delete from signal_input_snapshot where timeframe = ? and signal_rule_version = ?",
+        [request.timeframe, request.signal_rule_version],
+    )
 
 
 def _write_bounded_proof_evidence(
@@ -282,8 +404,13 @@ def _closeout_text(manifest: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def _report_path(report_root: Path, run_id: str) -> Path:
-    return report_root / "signal" / _utc_now().date().isoformat() / f"{run_id}-audit-summary.json"
+def _report_path(report_root: Path, run_id: str, timeframe: str) -> Path:
+    return (
+        report_root
+        / "signal"
+        / _utc_now().date().isoformat()
+        / f"{run_id}-{timeframe}-audit-summary.json"
+    )
 
 
 def _load_completed_checkpoint(

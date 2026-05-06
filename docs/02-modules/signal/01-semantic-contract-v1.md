@@ -2,7 +2,7 @@
 
 日期：2026-04-27
 
-状态：frozen / freeze review passed
+状态：frozen / freeze review passed / production builder hardening passed
 
 ## 1. 合同目的
 

@@ -27,6 +27,7 @@ def build_signal_audit_rows(
     checks = [
         _source_alpha_tables_check(request, created_at),
         _alpha_hard_audit_check(request, created_at),
+        _source_alpha_run_id_check(request, created_at),
         _table_surface_check(request, created_at),
         _query_check(
             request,
@@ -140,10 +141,11 @@ def build_signal_audit_rows(
         "schema_version": request.schema_version,
         "signal_rule_version": request.signal_rule_version,
         "source_alpha_release_version": request.source_alpha_release_version,
+        "source_alpha_run_id": request.source_alpha_run_id,
         "hard_fail_count": hard_fail_count,
-        "input_candidate_count": _count_rows(request.target_signal_db, "signal_input_snapshot"),
-        "formal_signal_count": _count_rows(request.target_signal_db, "formal_signal_ledger"),
-        "component_count": _count_rows(request.target_signal_db, "signal_component_ledger"),
+        "input_candidate_count": _count_scoped_rows(request, "signal_input_snapshot"),
+        "formal_signal_count": _count_scoped_rows(request, "formal_signal_ledger"),
+        "component_count": _count_scoped_rows(request, "signal_component_ledger"),
         "checks": [_audit_payload(row) for row in checks],
         "generated_at": created_at.isoformat(),
     }
@@ -191,6 +193,29 @@ def _alpha_hard_audit_check(
             ).fetchone()
         failed_count += 0 if row is None else int(row[0])
     return _row(request, created_at, "alpha_hard_audit_zero", failed_count)
+
+
+def _source_alpha_run_id_check(
+    request: SignalBuildRequest,
+    created_at: datetime,
+) -> tuple[object, ...]:
+    if not request.source_alpha_run_id:
+        return _row(request, created_at, "source_alpha_run_id_locked", 0)
+    if not request.target_signal_db.exists():
+        return _row(request, created_at, "source_alpha_run_id_locked", 1)
+    with duckdb.connect(str(request.target_signal_db), read_only=True) as con:
+        row = con.execute(
+            """
+            select count(*)
+            from signal_input_snapshot
+            where signal_run_id = ?
+              and timeframe = ?
+              and source_alpha_run_id <> ?
+            """,
+            [request.run_id, request.timeframe, request.source_alpha_run_id],
+        ).fetchone()
+    failed_count = 0 if row is None else int(row[0])
+    return _row(request, created_at, "source_alpha_run_id_locked", failed_count)
 
 
 def _table_surface_check(
@@ -250,7 +275,7 @@ def _row(
 ) -> tuple[object, ...]:
     sample = sample_payload if sample_payload is not None else "{}"
     return (
-        f"{request.run_id}|{check_name}",
+        f"{request.run_id}|{request.timeframe}|{check_name}",
         request.run_id,
         check_name,
         "hard",
@@ -276,6 +301,43 @@ def _count_rows(path: Path, table_name: str) -> int:
     with duckdb.connect(str(path), read_only=True) as con:
         row = con.execute(f"select count(*) from {table_name}").fetchone()
         return 0 if row is None else int(row[0])
+
+
+def _count_scoped_rows(request: SignalBuildRequest, table_name: str) -> int:
+    if not request.target_signal_db.exists():
+        return 0
+    with duckdb.connect(str(request.target_signal_db), read_only=True) as con:
+        if table_name == "signal_input_snapshot":
+            row = con.execute(
+                """
+                select count(*)
+                from signal_input_snapshot
+                where signal_run_id = ? and timeframe = ?
+                """,
+                [request.run_id, request.timeframe],
+            ).fetchone()
+        elif table_name == "formal_signal_ledger":
+            row = con.execute(
+                """
+                select count(*)
+                from formal_signal_ledger
+                where run_id = ? and timeframe = ?
+                """,
+                [request.run_id, request.timeframe],
+            ).fetchone()
+        elif table_name == "signal_component_ledger":
+            row = con.execute(
+                """
+                select count(*)
+                from signal_component_ledger c
+                join formal_signal_ledger f on c.signal_id = f.signal_id
+                where c.signal_run_id = ? and f.run_id = ? and f.timeframe = ?
+                """,
+                [request.run_id, request.run_id, request.timeframe],
+            ).fetchone()
+        else:
+            row = con.execute(f"select count(*) from {table_name}").fetchone()
+    return 0 if row is None else int(row[0])
 
 
 def _audit_payload(row: tuple[object, ...]) -> dict[str, object]:

@@ -2,11 +2,12 @@
 
 日期：2026-04-27
 
-状态：frozen / freeze review passed / superseded by Signal bounded proof build card
+状态：frozen / freeze review passed / superseded by Signal production builder hardening
 
 ## 1. 本卡目标
 
-记录 Signal freeze review 通过后的冻结边界，为下一张 Signal bounded proof build card 做准备。
+记录 Signal freeze review 通过后的冻结边界。后续 Signal bounded proof 与 production builder
+hardening 均已通过。
 
 本卡不允许代码施工，不允许创建正式 DuckDB。Signal freeze review 已冻结 Signal 六件套，但不授权
 Signal construction。
@@ -53,10 +54,10 @@ Signal freeze review passed
 
 ## 6. 下一步入口
 
-Signal freeze review 通过后的唯一下一步为：
+Signal production builder hardening 通过后的唯一下一步为：
 
 ```text
-Signal bounded proof build card
+upstream-pre-position-release-decision-20260506-01
 ```
 
 该下一卡必须继续遵守本次冻结的六件套：

@@ -75,12 +75,14 @@ def bootstrap_signal_database(path: Path) -> None:
                 alpha_rule_version varchar,
                 source_malf_service_version varchar,
                 source_alpha_release_version varchar,
+                source_alpha_run_id varchar,
                 schema_version varchar,
                 signal_rule_version varchar,
                 created_at timestamp
             )
             """
         )
+        _add_column_if_missing(con, "signal_input_snapshot", "source_alpha_run_id", "varchar")
         con.execute(
             """
             create table if not exists formal_signal_ledger (
@@ -136,3 +138,14 @@ def bootstrap_signal_database(path: Path) -> None:
             )
             """
         )
+
+
+def _add_column_if_missing(
+    con: duckdb.DuckDBPyConnection,
+    table_name: str,
+    column_name: str,
+    column_type: str,
+) -> None:
+    columns = {str(row[0]) for row in con.execute(f"describe {table_name}").fetchall()}
+    if column_name not in columns:
+        con.execute(f"alter table {table_name} add column {column_name} {column_type}")

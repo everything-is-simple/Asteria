@@ -12,6 +12,7 @@ from asteria.signal.bootstrap import (
     run_signal_audit,
     run_signal_bounded_proof,
     run_signal_build,
+    run_signal_production_builder,
 )
 from asteria.signal.contracts import SignalBuildRequest
 from asteria.signal.schema import SIGNAL_TABLES
@@ -99,14 +100,16 @@ def _alpha_row(
     bias: str,
     score: float,
     bucket: str = "high",
+    timeframe: str = "day",
+    run_id: str = "alpha-run-1",
 ) -> tuple[object, ...]:
-    candidate_id = f"{family}|{symbol}|{bar_dt.isoformat()}|{state}|{bias}"
+    candidate_id = f"{family}|{symbol}|{timeframe}|{bar_dt.isoformat()}|{state}|{bias}|{run_id}"
     return (
         candidate_id,
         f"event|{candidate_id}",
         family,
         symbol,
-        "day",
+        timeframe,
         bar_dt,
         f"{family.lower()}_candidate",
         state,
@@ -116,7 +119,7 @@ def _alpha_row(
         score,
         "service-v1",
         "malf-run-1",
-        "alpha-run-1",
+        run_id,
         "alpha-schema-v1",
         "alpha-rule-v1",
     )
@@ -150,7 +153,7 @@ def _seed_all_alpha_sources(root: Path) -> None:
 
 def test_signal_request_rejects_out_of_scope_modes_and_timeframes(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="Unsupported Signal run mode"):
-        _request(tmp_path, mode="full")
+        _request(tmp_path, mode="manual")
     with pytest.raises(ValueError, match="Unsupported Signal timeframe"):
         SignalBuildRequest(
             source_alpha_root=tmp_path / "data",
@@ -160,10 +163,27 @@ def test_signal_request_rejects_out_of_scope_modes_and_timeframes(tmp_path: Path
             temp_root=tmp_path / "temp",
             run_id="run-1",
             mode="bounded",
-            timeframe="week",
+            timeframe="hour",
             source_alpha_release_version="alpha-release",
             symbol_limit=1,
         )
+
+
+def test_signal_request_accepts_production_modes_and_timeframes(tmp_path: Path) -> None:
+    request = SignalBuildRequest(
+        source_alpha_root=tmp_path / "data",
+        target_signal_db=tmp_path / "data" / "signal.duckdb",
+        report_root=tmp_path / "report",
+        validated_root=tmp_path / "validated",
+        temp_root=tmp_path / "temp",
+        run_id="signal-production-unit-001",
+        mode="full",
+        timeframe="week",
+        source_alpha_release_version="alpha-production-unit",
+        source_alpha_run_id="alpha-production-unit",
+    )
+
+    assert request.checkpoint_path("build").name == "week-build.json"
 
 
 def test_signal_build_writes_schema_and_traceable_outputs(tmp_path: Path) -> None:
@@ -296,3 +316,82 @@ def test_bounded_proof_writes_closeout_and_validated_zip(tmp_path: Path) -> None
         / "signal-bounded-proof-unit-001"
         / "manifest.json"
     ).exists()
+
+
+def test_signal_production_builder_filters_source_alpha_run_and_writes_all_timeframes(
+    tmp_path: Path,
+) -> None:
+    source_root = tmp_path / "data"
+    for family in SIGNAL_FAMILY_DATABASES:
+        rows = [
+            _alpha_row(
+                family,
+                "600000.SH",
+                date(2024, 1, 2),
+                "candidate",
+                "up",
+                0.90,
+                run_id="alpha-bounded-proof-old",
+            ),
+            _alpha_row(
+                family,
+                "600000.SH",
+                date(2024, 1, 2),
+                "candidate",
+                "up",
+                0.90,
+                run_id="alpha-production-unit",
+            ),
+            _alpha_row(
+                family,
+                "600000.SH",
+                date(2024, 1, 8),
+                "candidate",
+                "up",
+                0.80,
+                timeframe="week",
+                run_id="alpha-production-unit",
+            ),
+            _alpha_row(
+                family,
+                "600000.SH",
+                date(2024, 1, 31),
+                "candidate",
+                "up",
+                0.70,
+                timeframe="month",
+                run_id="alpha-production-unit",
+            ),
+        ]
+        _seed_alpha_family(source_root / SIGNAL_FAMILY_DATABASES[family], family, rows)
+
+    summaries = run_signal_production_builder(
+        source_alpha_root=source_root,
+        target_signal_db=source_root / "signal.duckdb",
+        report_root=tmp_path / "report",
+        validated_root=tmp_path / "validated",
+        temp_root=tmp_path / "temp",
+        run_id="signal-production-unit-001",
+        mode="full",
+        source_alpha_release_version="alpha-production-unit",
+        source_alpha_run_id="alpha-production-unit",
+    )
+
+    assert [summary.timeframe for summary in summaries] == ["day", "week", "month"]
+    assert [summary.input_candidate_count for summary in summaries] == [5, 5, 5]
+    assert [summary.formal_signal_count for summary in summaries] == [1, 1, 1]
+    assert sum(summary.hard_fail_count for summary in summaries) == 0
+    with duckdb.connect(str(source_root / "signal.duckdb"), read_only=True) as con:
+        counts = con.execute(
+            """
+            select timeframe, count(*)
+            from signal_input_snapshot
+            group by 1
+            order by 1
+            """
+        ).fetchall()
+        source_runs = con.execute(
+            "select distinct source_alpha_run_id from signal_input_snapshot"
+        ).fetchall()
+    assert counts == [("day", 5), ("month", 5), ("week", 5)]
+    assert source_runs == [("alpha-production-unit",)]

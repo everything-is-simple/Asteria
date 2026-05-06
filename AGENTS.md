@@ -28,6 +28,7 @@
 - `H:\Asteria-Validated\Asteria-malf-week-bounded-proof-build-20260506-01.zip`
 - `H:\Asteria-Validated\Asteria-malf-month-bounded-proof-build-20260506-01.zip`
 - `H:\Asteria-Validated\Asteria-alpha-production-builder-hardening-20260506-01.zip`
+- `H:\Asteria-Validated\Asteria-signal-production-builder-hardening-20260506-01.zip`
 
 当前门禁：
 
@@ -50,12 +51,13 @@
 - `MALF week bounded proof build passed`
 - `MALF month bounded proof build passed`
 - `Alpha production builder hardening passed`
-- 下一步允许动作：`signal_production_builder_hardening`
+- `Signal production builder hardening passed`
+- 下一步允许动作：`upstream_pre_position_release_decision`
 - Data 已封为主线输入底座；后续 Data 只能通过明确 maintenance card 扩展。
 - `market_meta.duckdb` 已放行最小客观事实与可匹配正式 Data 标的的申万 2021 当前行业快照；Data reference target maintenance closeout 已完成 source inventory 裁决；ST、停牌、真实上市/退市状态、历史行业沿革和 index/block membership 仍因无 approved source manifest 而 retained。
 - MALF v1.4 是 Core operational boundary 权威定义升级；不等于 runtime proof passed。
-- MALF v1.3 closeout 仍只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；MALF week/month bounded proof 与 Alpha production builder hardening 已通过，当前下一卡是 Signal production builder hardening。
-- Signal bounded proof 只放行 bounded `signal.duckdb` 表面；当前仅授权 Signal production builder hardening，不授权 Position construction、下游施工或全链路 pipeline。
+- MALF v1.3 closeout 仍只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；MALF week/month bounded proof、Alpha production builder hardening 与 Signal production builder hardening 已通过，当前下一卡是 upstream pre-position release decision。
+- Signal production builder hardening 已放行 day/week/month `signal.duckdb` 表面；当前仅授权 upstream pre-position release decision，不授权 Position construction、下游施工或全链路 pipeline。
 
 硬规则：
 
