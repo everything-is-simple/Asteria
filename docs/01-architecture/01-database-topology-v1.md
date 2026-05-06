@@ -49,6 +49,9 @@ Asteria 采用 DuckDB 多库拓扑，以空间换时间。
 | `malf_core_week.duckdb` | MALF week bounded proof passed | `docs/04-execution/records/malf/malf-week-bounded-proof-build-20260506-01.evidence-index.md` |
 | `malf_lifespan_week.duckdb` | MALF week bounded proof passed | `docs/04-execution/records/malf/malf-week-bounded-proof-build-20260506-01.evidence-index.md` |
 | `malf_service_week.duckdb` | MALF week bounded proof passed | `docs/04-execution/records/malf/malf-week-bounded-proof-build-20260506-01.evidence-index.md` |
+| `malf_core_month.duckdb` | MALF month bounded proof passed | `docs/04-execution/records/malf/malf-month-bounded-proof-build-20260506-01.evidence-index.md` |
+| `malf_lifespan_month.duckdb` | MALF month bounded proof passed | `docs/04-execution/records/malf/malf-month-bounded-proof-build-20260506-01.evidence-index.md` |
+| `malf_service_month.duckdb` | MALF month bounded proof passed | `docs/04-execution/records/malf/malf-month-bounded-proof-build-20260506-01.evidence-index.md` |
 | `malf_lifespan_day.duckdb` | MALF v1.4 day runtime sync implementation passed | `docs/04-execution/records/malf/malf-v1-4-core-runtime-sync-implementation-20260505-01.evidence-index.md` |
 | `malf_service_day.duckdb` | MALF v1.4 day runtime sync implementation passed | `docs/04-execution/records/malf/malf-v1-4-core-runtime-sync-implementation-20260505-01.evidence-index.md` |
 | `alpha_bof.duckdb` | Alpha bounded proof passed | `docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md` |
@@ -223,8 +226,8 @@ docs/00-governance/04-database-build-runner-standard-v1.md
 
 该准则适用于所有后续正式 DuckDB builder。当前第一套可执行样板为
 `scripts/malf/run_malf_day_supplemental_build.py`，只覆盖 MALF day 分批补数，不打开
-MALF month、Pipeline runtime 或下游施工。MALF week bounded proof 已通过，但未放行
-week supplemental/full build。
+MALF month supplemental/full build、Pipeline runtime 或下游施工。MALF week/month bounded proof 已通过，但未放行
+week/month supplemental/full build。
 
 ## 9. 第一批实际建库顺序
 
@@ -247,7 +250,7 @@ week supplemental/full build。
 | `market_meta.duckdb` | 已按可证事实优先口径最小正式化；申万 2021 当前行业快照部分释放；Data baseline sealed；Data reference maintenance closeout passed；其他 reference gaps retained |
 | `market_base_day.duckdb` 正式化 | 已通过 Data formal promotion、production closeout 与 execution line materialization |
 | `pipeline.duckdb` runtime | 仍未冻结，不得先于业务模块定义语义 |
-| week / month MALF | week bounded proof build 已通过；当前进入 month bounded proof build |
+| week / month MALF | week 与 month bounded proof build 已通过；当前进入 Alpha production builder hardening |
 
 Alpha bounded proof 已通过，五个 Alpha family DB 已在 bounded proof/audit 路径下创建。
 Signal bounded proof 已通过，并已在 bounded proof/audit 路径下创建 `signal.duckdb`。

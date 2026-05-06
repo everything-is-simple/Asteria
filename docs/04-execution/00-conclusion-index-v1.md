@@ -29,6 +29,8 @@
 - `H:\Asteria-Validated\Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-data-foundation-production-baseline-seal-20260502-01.zip`
 - `H:\Asteria-Validated\Asteria-data-reference-target-maintenance-closeout-20260506-01.zip`
+- `H:\Asteria-Validated\Asteria-malf-week-bounded-proof-build-20260506-01.zip`
+- `H:\Asteria-Validated\Asteria-malf-month-bounded-proof-build-20260506-01.zip`
 
 `214427` 是重要 docs/code 快照锚点；`130309` 是三天重构成果的历史系统
 docs/code 快照；`101006` 是 Data formal promotion（Data 正式提升）与 MALF v1.3
@@ -62,6 +64,8 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | MALF | `malf-v1-4-core-runtime-sync-review-20260503-01` | `只读评审已执行 / 运行同步未打开` | [conclusion](records/malf/malf-v1-4-core-runtime-sync-review-20260503-01.conclusion.md) | [evidence-index](records/malf/malf-v1-4-core-runtime-sync-review-20260503-01.evidence-index.md) |
 | MALF | `malf-v1-4-core-runtime-sync-implementation-20260505-01` | `passed` | [conclusion](records/malf/malf-v1-4-core-runtime-sync-implementation-20260505-01.conclusion.md) | [evidence-index](records/malf/malf-v1-4-core-runtime-sync-implementation-20260505-01.evidence-index.md) |
 | MALF | `malf-authority-runtime-completeness-review-20260506-01` | `review-only / day runtime clean / full target incomplete` | [conclusion](records/malf/malf-authority-runtime-completeness-review-20260506-01.conclusion.md) | [evidence-index](records/malf/malf-authority-runtime-completeness-review-20260506-01.evidence-index.md) |
+| MALF | `malf-week-bounded-proof-build-20260506-01` | `passed` | [conclusion](records/malf/malf-week-bounded-proof-build-20260506-01.conclusion.md) | [evidence-index](records/malf/malf-week-bounded-proof-build-20260506-01.evidence-index.md) |
+| MALF | `malf-month-bounded-proof-build-20260506-01` | `passed` | [conclusion](records/malf/malf-month-bounded-proof-build-20260506-01.conclusion.md) | [evidence-index](records/malf/malf-month-bounded-proof-build-20260506-01.evidence-index.md) |
 | Alpha | `alpha-freeze-review-20260429-01` | `passed` | [conclusion](records/alpha/alpha-freeze-review-20260429-01.conclusion.md) | [evidence-index](records/alpha/alpha-freeze-review-20260429-01.evidence-index.md) |
 | Alpha | `alpha-bounded-proof-20260429-01` | `passed` | [conclusion](records/alpha/alpha-bounded-proof-20260429-01.conclusion.md) | [evidence-index](records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md) |
 | Alpha | `alpha-target-completeness-review-20260506-01` | `review-only / bounded proof clean / full target incomplete` | [conclusion](records/alpha/alpha-target-completeness-review-20260506-01.conclusion.md) | [evidence-index](records/alpha/alpha-target-completeness-review-20260506-01.evidence-index.md) |
@@ -90,13 +94,13 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   alignment closeout 的正式 DB rerun 和 hard audit 结果取代为当前证据。
 - Position freeze review reentry 已完成只读评审（review-only）并通过：Position 六件套已冻结为
   文档合同表面；但 `upstream-pre-position-completeness-synthesis-20260506-01` 已裁定上游最终完整目标
-  不能全部肯定，因此下一步改为七张上游修补卡。Data scope 卡、Data closeout 卡和 MALF week
-  bounded proof 已通过，当前进入 `malf-month-bounded-proof-build-20260506-01`。Position bounded proof 仍未执行，
+  不能全部肯定，因此下一步改为七张上游修补卡。Data scope 卡、Data closeout 卡和 MALF week/month
+  bounded proof 已通过，当前进入 `alpha-production-builder-hardening-20260506-01`。Position bounded proof 仍未执行，
   `position.duckdb` 仍未创建。
 - MALF v1.4 authority package 已形成，继承 v1.3 semantic mainline 并新增 Core
   operational boundary rules；`malf-v1-4-core-runtime-sync-implementation-20260505-01`
   现为当前 MALF day runtime evidence，`malf-week-bounded-proof-build-20260506-01`
-  已补齐 week bounded runtime proof。month 证明和 full build 仍未执行。
+  与 `malf-month-bounded-proof-build-20260506-01` 已补齐 week/month bounded runtime proof。MALF full build 仍未执行。
 - Data legacy source audit、import contract freeze、import runner working build 与 formal
   promotion evidence 已通过；这只放行首轮 `stock / backward / day-week-month`
   source-fact DB，不声明 Data full build released，也不打开下游施工。
@@ -122,11 +126,10 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 
 ## 3. 已准备但未执行的 Pre-Position 修补卡
 
-以下只登记尚未执行的 prepared card 队列，不作为 passed conclusion；已通过的 week 卡移入执行结论：
+以下只登记尚未执行的 prepared card 队列，不作为 passed conclusion；已通过的 week/month 卡移入执行结论：
 
 | 顺序 | 模块 | run_id | card |
 |---:|---|---|---|
-| 4 | MALF | `malf-month-bounded-proof-build-20260506-01` | [card](records/malf/malf-month-bounded-proof-build-20260506-01.card.md) |
 | 5 | Alpha | `alpha-production-builder-hardening-20260506-01` | [card](records/alpha/alpha-production-builder-hardening-20260506-01.card.md) |
 | 6 | Signal | `signal-production-builder-hardening-20260506-01` | [card](records/signal/signal-production-builder-hardening-20260506-01.card.md) |
 | 7 | Position | `upstream-pre-position-release-decision-20260506-01` | [card](records/position/upstream-pre-position-release-decision-20260506-01.card.md) |
@@ -136,3 +139,4 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | 模块 | run_id | status | conclusion |
 |---|---|---|---|
 | MALF | `malf-week-bounded-proof-build-20260506-01` | `passed` | [conclusion](records/malf/malf-week-bounded-proof-build-20260506-01.conclusion.md) |
+| MALF | `malf-month-bounded-proof-build-20260506-01` | `passed` | [conclusion](records/malf/malf-month-bounded-proof-build-20260506-01.conclusion.md) |

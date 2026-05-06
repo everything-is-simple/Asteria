@@ -2,7 +2,7 @@
 
 日期：2026-04-30
 
-状态：frozen / v1.4 day runtime sync passed / hard audit source-bound / v1.4 authority sync passed
+状态：frozen / v1.4 day runtime sync passed / week/month bounded proof passed / hard audit source-bound / v1.4 authority sync passed
 
 ## 1. 审计目标
 

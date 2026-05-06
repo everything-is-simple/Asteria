@@ -29,9 +29,9 @@ flowchart LR
 | 项 | 当前状态 |
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal` |
-| 当前已通过 bounded proof | `MALF day`; `MALF week`; `Alpha day`; `Signal day`; `MALF v1.4 day runtime sync implementation` |
-| 当前已准备执行卡 | `malf-month-bounded-proof-build-20260506-01` after MALF week bounded proof passed |
-| 当前只允许施工 | `MALF month bounded proof build / Position construction suspended` |
+| 当前已通过 bounded proof | `MALF day`; `MALF week`; `MALF month`; `Alpha day`; `Signal day`; `MALF v1.4 day runtime sync implementation` |
+| 当前已准备执行卡 | `alpha-production-builder-hardening-20260506-01` after MALF month bounded proof passed |
+| 当前只允许施工 | `Alpha production builder hardening / Position construction suspended` |
 | 当前仍禁止 | Alpha full build、Signal full build、Position full build、Portfolio Plan/Trade/System/Pipeline 施工 |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Data Foundation
@@ -44,8 +44,8 @@ runtime evidence。随后 `upstream-pre-position-completeness-synthesis-20260506
 裁定：若按最终完整目标衡量，Data / MALF / Alpha / Signal 仍不能给出全部完成的肯定答复，
 因此 Position bounded proof 施工暂时搁置。当前仍不授权 Alpha full build、Signal full build、
 Position full build、下游施工或全链路 pipeline。
-后续必须按七张卡顺序推进：Data reference scope、Data reference closeout 与 MALF week 已通过，当前进入
-MALF month；之后是 Alpha production hardening、Signal production hardening、upstream release decision。
+后续必须按七张卡顺序推进：Data reference scope、Data reference closeout、MALF week 与 MALF month 已通过，当前进入
+Alpha production hardening；之后是 Signal production hardening、upstream release decision。
 
 ## 2. 主线模块
 
@@ -217,12 +217,11 @@ design freeze
 当前主线图不是“全系统已上线图”。它是模块依赖和施工顺序的法律图：
 
 ```text
-MALF day 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞 -> Data formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry 已通过 -> upstream pre-position completeness synthesis 已完成 -> data reference target maintenance scope 已通过 -> data reference target maintenance closeout 已通过 -> malf week bounded proof build 已通过 -> malf month bounded proof build prepared
+MALF day 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞 -> Data formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry 已通过 -> upstream pre-position completeness synthesis 已完成 -> data reference target maintenance scope 已通过 -> data reference target maintenance closeout 已通过 -> malf week bounded proof build 已通过 -> malf month bounded proof build 已通过 -> alpha production builder hardening prepared
 ```
 
 任何下游实现都必须等前置模块完成 freeze / proof / release evidence。
 
 MALF v1.4 authority package 已形成，并已落实到 day runtime sync implementation；
-当前 day runtime 证据由 MALF v1.4 runtime sync closeout 承接，week bounded proof 已通过。month proof 与
-full build 仍需另开执行卡，不授权 Alpha full build、Signal full build、Position
+当前 day runtime 证据由 MALF v1.4 runtime sync closeout 承接，week/month bounded proof 已通过。MALF full build 仍需另开执行卡，不授权 Alpha full build、Signal full build、Position
 construction 或 Pipeline 扩权。

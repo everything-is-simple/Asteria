@@ -2,7 +2,7 @@
 
 日期：2026-04-30
 
-状态：frozen / v1.4 day runtime sync 已通过 / v1.4 authority sync 已通过
+状态：frozen / v1.4 day runtime sync 已通过 / week/month bounded proof 已通过 / v1.4 authority sync 已通过
 
 ## 1. 模块定义
 
@@ -32,7 +32,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2.zip
 
 当前 repo 以 `malf-v1-4-core-runtime-sync-implementation-20260505-01` 作为已通过的 MALF
 day runtime-aligned evidence。该证据已承接 v1.4 Core operational boundary、raw-bar
-break、state snapshot、policy fields 与 candidate event type；week/month 证明与 full
+break、state snapshot、policy fields 与 candidate event type；week/month bounded proof 已通过，full
 build 仍需另开卡。
 
 本文件按 `H:\Asteria-Validated\Asteria-docs-code-20260502-104932.zip`
@@ -171,8 +171,8 @@ MALF day 首轮放行必须满足：
 
 当前 `malf-day-bounded-proof-20260428-01` 与
 `malf-v1-4-core-runtime-sync-implementation-20260505-01` 均已形成 `passed` 结论。
-该结论只覆盖 day bounded proof 与 v1.4 day runtime WavePosition closeout；
-week/month、full build 和下游施工仍需后续卡。
+该结论只覆盖 day bounded proof 与 v1.4 day runtime WavePosition closeout；week/month bounded proof
+已由后续卡补齐，full build 和下游施工仍需后续卡。
 
 ## 11. v1.4 当前承接裁决
 

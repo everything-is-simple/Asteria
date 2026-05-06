@@ -23,10 +23,10 @@ run_id：`malf-week-bounded-proof-build-20260506-01`
 | Lifespan DB | `H:\Asteria-data\malf_lifespan_week.duckdb` |
 | Service DB | `H:\Asteria-data\malf_service_week.duckdb` |
 | audit summary | `H:\Asteria-report\malf\2026-05-06\malf-week-bounded-proof-build-20260506-01-audit-summary.json` |
-| closeout report | `H:\Asteria-report\malf\2026-05-06\malf-week-bounded-proof-build-20260506-01\closeout.md` |
+| closeout | `H:\Asteria-report\malf\2026-05-06\malf-week-bounded-proof-build-20260506-01\closeout.md` |
 | manifest | `H:\Asteria-report\malf\2026-05-06\malf-week-bounded-proof-build-20260506-01\manifest.json` |
 | table counts | `H:\Asteria-report\malf\2026-05-06\malf-week-bounded-proof-build-20260506-01\table-counts.json` |
-| validated zip | `H:\Asteria-Validated\Asteria-malf-week-bounded-proof-build-20260506-01.zip` |
+| validated_zip | `H:\Asteria-Validated\Asteria-malf-week-bounded-proof-build-20260506-01.zip` |
 
 ## 3. Audit Result
 

@@ -15,7 +15,7 @@ H:\Asteria-data\malf_service_day.duckdb
 ```
 
 week / month 在 day gate 通过后复用同一规格，但仍必须另走施工卡和 release
-gate。MALF day 与 week bounded proof 已通过，不自动放行 month 或 full build。
+gate。MALF day、week 与 month bounded proof 已通过，不自动放行 full build。
 
 ## 2. 三库关系
 

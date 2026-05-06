@@ -2,7 +2,7 @@
 
 日期：2026-05-06
 
-状态：`prepared / not executed`
+状态：`passed / month bounded proof`
 
 ## 1. 背景
 
@@ -15,7 +15,7 @@
 |---|---|
 | module | `malf` |
 | run_id | `malf-month-bounded-proof-build-20260506-01` |
-| stage | `bounded-proof / month / prepared / not executed` |
+| stage | `bounded-proof / month / passed` |
 | owner | `codex` |
 
 ## 3. 输入范围
@@ -35,6 +35,7 @@
 | upstream semantics | `read-only Data source facts` |
 | formal DB permission | `allowed only when this card is explicitly executed` |
 | allowed next action before card | `malf_month_bounded_proof_build` |
+| allowed next action after pass | `alpha_production_builder_hardening` |
 
 ## 5. 允许动作
 

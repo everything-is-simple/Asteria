@@ -7,14 +7,14 @@
 当前基线：Data Foundation production baseline 已封版；`MALF day bounded proof`、
 `Alpha freeze review`、`Alpha bounded proof`、`Signal freeze review`、`Signal bounded proof`
 与 `MALF complete alignment closeout` 已通过；MALF v1.4 day runtime sync implementation
-已通过，MALF week bounded proof build 已通过。当前上游修补队列下一步只允许
-`malf_month_bounded_proof_build`，Position bounded proof 仍暂停。
+已通过，MALF week/month bounded proof build 已通过。当前上游修补队列下一步只允许
+`alpha_production_builder_hardening`，Position bounded proof 仍暂停。
 
 地基轨道 `data-formal-promotion-evidence-20260502-01` 的 allowed next action
 `MALF v1.3 formal rebuild closeout` 已由当前 MALF v1.3 closeout 闭环。
 MALF v1.4 authority sync 只改变后续实现同步的权威输入，不改变 allowed next action。
-Data reference maintenance closeout 已完成 source inventory 裁决，MALF week proof 已闭环；
-当前 allowed next action 已切到 `malf_month_bounded_proof_build`。
+Data reference maintenance closeout 已完成 source inventory 裁决，MALF week/month proof 已闭环；
+当前 allowed next action 已切到 `alpha_production_builder_hardening`。
 
 本路线图依据以下权威资产刷新：
 
@@ -26,6 +26,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4.zip
 H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip
 H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
 H:\Asteria-Validated\Asteria-malf-week-bounded-proof-build-20260506-01.zip
+H:\Asteria-Validated\Asteria-malf-month-bounded-proof-build-20260506-01.zip
 ```
 
 深度研究报告中的 “机器可读门禁、统一 schema registry、模块 API 合同、pipeline ledger

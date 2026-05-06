@@ -47,7 +47,7 @@ def test_project_governance_passes_current_repo() -> None:
     assert findings == []
 
 
-def test_current_gate_opens_malf_month_after_malf_week_closeout() -> None:
+def test_current_gate_opens_alpha_hardening_after_malf_month_closeout() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     with registry_path.open("rb") as handle:
@@ -62,45 +62,46 @@ def test_current_gate_opens_malf_month_after_malf_week_closeout() -> None:
         / "04-execution"
         / "records"
         / "malf"
-        / "malf-week-bounded-proof-build-20260506-01.conclusion.md"
+        / "malf-month-bounded-proof-build-20260506-01.conclusion.md"
     ).read_text(encoding="utf-8")
 
-    assert registry["active_mainline_module"] == "malf"
+    assert registry["active_mainline_module"] == "alpha"
     assert registry["active_foundation_card"] == "none"
-    assert registry["current_allowed_next_card"] == "malf_month_bounded_proof_build"
+    assert registry["current_allowed_next_card"] == "alpha_production_builder_hardening"
     assert registry["latest_mainline_release_run_id"] == (
-        "malf-week-bounded-proof-build-20260506-01"
+        "malf-month-bounded-proof-build-20260506-01"
     )
-    assert modules["malf"]["allow_build"] is True
-    assert modules["malf"]["next_card"] == "malf_month_bounded_proof_build"
+    assert modules["malf"]["allow_build"] is False
+    assert modules["malf"]["next_card"] == "alpha_production_builder_hardening"
+    assert modules["alpha"]["allow_build"] is True
+    assert modules["alpha"]["next_card"] == "alpha_production_builder_hardening"
     assert modules["data"]["latest_completed_card"] == "data_reference_target_maintenance_closeout"
     assert modules["position"]["allow_review"] is False
     assert modules["position"]["allow_build"] is False
-    assert modules["position"]["next_card"] == "upstream_pre_position_release_decision"
-    assert modules["position"]["position_construction_pause"].startswith("paused_until")
     assert "data-reference-target-maintenance-scope-20260506-01" in conclusion_index
     assert "data-reference-target-maintenance-closeout-20260506-01" in conclusion_index
     assert "malf-week-bounded-proof-build-20260506-01" in conclusion_index
+    assert "malf-month-bounded-proof-build-20260506-01" in conclusion_index
     assert "malf-v1-3-formal-rebuild-closeout-20260502-01" in conclusion_index
     assert "状态：`passed`" in malf_conclusion
     assert "hard_fail_count = 0" in malf_conclusion
 
 
-def test_malf_module_contract_points_at_week_bounded_closeout() -> None:
+def test_malf_module_contract_points_at_month_bounded_closeout() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     contract_path = repo_root / "governance" / "module_api_contracts" / "malf.toml"
     with contract_path.open("rb") as handle:
         contract = tomllib.load(handle)
 
     assert contract["release_conclusion"] == (
-        "docs/04-execution/records/malf/malf-week-bounded-proof-build-20260506-01.conclusion.md"
+        "docs/04-execution/records/malf/malf-month-bounded-proof-build-20260506-01.conclusion.md"
     )
     assert contract["evidence_index"] == (
-        "docs/04-execution/records/malf/malf-week-bounded-proof-build-20260506-01.evidence-index.md"
+        "docs/04-execution/records/malf/malf-month-bounded-proof-build-20260506-01.evidence-index.md"
     )
     assert (
         contract["formal_db_permission"]
-        == "released_day_week_core_lifespan_service_only; month_requires_new_card"
+        == "released_day_week_month_core_lifespan_service_only; malf_full_build_requires_new_card"
     )
 
 
@@ -112,8 +113,13 @@ def test_project_governance_rejects_multiple_build_allowed_mainline_modules(
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'doc_status = "frozen six-doc set / bounded proof passed"\nallow_build = false',
-            'doc_status = "frozen six-doc set / bounded proof passed"\nallow_build = true',
+            'status = "released"\n'
+            'doc_status = "frozen six-doc set / bounded proof passed"\n'
+            "allow_build = false",
+            'status = "released"\n'
+            'doc_status = "frozen six-doc set / bounded proof passed"\n'
+            "allow_build = true",
+            1,
         ),
         encoding="utf-8",
     )
@@ -150,8 +156,8 @@ def test_project_governance_rejects_missing_current_next_card_file(tmp_path: Pat
         / "docs"
         / "04-execution"
         / "records"
-        / "malf"
-        / "malf-month-bounded-proof-build-20260506-01.card.md"
+        / "alpha"
+        / "alpha-production-builder-hardening-20260506-01.card.md"
     )
     if card_path.exists():
         card_path.unlink()
@@ -174,22 +180,50 @@ def test_project_governance_rejects_current_next_card_that_is_already_blocked(
             'active_mainline_module = "position"',
         )
         .replace(
-            'current_allowed_next_card = "malf_month_bounded_proof_build"',
+            'active_mainline_module = "alpha"',
+            'active_mainline_module = "position"',
+        )
+        .replace(
+            'current_allowed_next_card = "alpha_production_builder_hardening"',
             'current_allowed_next_card = "position_freeze_review"',
         )
         .replace(
+            'module_id = "alpha"\n'
+            'display_name = "Alpha"\n'
+            "mainline = true\n"
+            'status = "released_production_hardening_active"\n'
+            'doc_status = "frozen six-doc set / bounded proof passed / '
+            'production hardening card prepared"\n'
             "allow_build = true",
+            'module_id = "alpha"\n'
+            'display_name = "Alpha"\n'
+            "mainline = true\n"
+            'status = "released_production_hardening_active"\n'
+            'doc_status = "frozen six-doc set / bounded proof passed / '
+            'production hardening card prepared"\n'
             "allow_build = false",
-            1,
+        )
+        .replace(
+            'module_id = "position"\n'
+            'display_name = "Position"\n'
+            "mainline = true\n"
+            'status = "freeze_review_passed"\n'
+            'doc_status = "freeze review passed / design contract frozen / '
+            'build not executed"\n'
+            "allow_build = false\n"
+            "allow_review = false",
+            'module_id = "position"\n'
+            'display_name = "Position"\n'
+            "mainline = true\n"
+            'status = "freeze_review_passed"\n'
+            'doc_status = "freeze review passed / design contract frozen / '
+            'build not executed"\n'
+            "allow_build = false\n"
+            "allow_review = true",
         )
         .replace(
             'next_card = "upstream_pre_position_release_decision"',
             'next_card = "position_freeze_review"',
-        )
-        .replace(
-            "allow_review = false",
-            "allow_review = true",
-            1,
         ),
         encoding="utf-8",
     )
@@ -270,9 +304,10 @@ def test_project_governance_rejects_docs_sync_next_card_mismatch(tmp_path: Path)
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            '\nnext_card = "malf_month_bounded_proof_build"',
-            '\nnext_card = "malf_day_bounded_proof"',
-            1,
+            'waits_for = "malf_day_week_month_bounded_proof_passed"\n'
+            'next_card = "alpha_production_builder_hardening"',
+            'waits_for = "malf_day_week_month_bounded_proof_passed"\n'
+            'next_card = "malf_day_bounded_proof"',
         ),
         encoding="utf-8",
     )

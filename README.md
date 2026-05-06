@@ -45,6 +45,8 @@ H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-foundation-production-baseline-seal-20260502-01.zip
 H:\Asteria-Validated\Asteria-data-reference-target-maintenance-closeout-20260506-01.zip
+H:\Asteria-Validated\Asteria-malf-week-bounded-proof-build-20260506-01.zip
+H:\Asteria-Validated\Asteria-malf-month-bounded-proof-build-20260506-01.zip
 ```
 
 当前门禁状态：
@@ -52,7 +54,7 @@ H:\Asteria-Validated\Asteria-data-reference-target-maintenance-closeout-20260506
 ```text
 MALF day bounded proof 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞
 -> Data legacy formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry 已通过 -> upstream pre-position completeness synthesis 已完成
--> data reference target maintenance scope 已通过 -> data reference target maintenance closeout 已通过 -> MALF week bounded proof build 已通过 -> MALF month bounded proof build
+-> data reference target maintenance scope 已通过 -> data reference target maintenance closeout 已通过 -> MALF week bounded proof build 已通过 -> MALF month bounded proof build 已通过 -> Alpha production builder hardening
 ```
 
 Data Foundation 已完成首轮 `stock / backward / day-week-month` legacy formal promotion，
@@ -70,11 +72,11 @@ MALF day 只消费 `analysis_price_line=backward` 的正式 Data 输入；`execu
 scope 已冻结并已由 closeout 闭环：ST、停牌、真实上市/退市生命周期、历史行业 coverage decision 与
 index/block source inventory 均已完成 source inventory 裁决；由于无 approved source manifest，本轮不释放新增
 reference facts，缺口显式 retained。week/month execution price line
-不作为 MALF week/month 前置必补，继续保留给未来执行语义卡。MALF week bounded proof
-已通过，当前只授权 MALF month bounded proof build；Position bounded proof
+不作为 MALF week/month 前置必补，继续保留给未来执行语义卡。MALF week/month bounded proof
+已通过，当前只授权 Alpha production builder hardening；Position bounded proof
 施工已暂停，直到 Data / MALF / Alpha / Signal 的修补卡序完成并由总控 release decision 裁定。不授权
 Alpha full build、Signal full build、Position full build、下游施工或全链路 pipeline。
-MALF month 证明尚未执行。
+MALF month bounded proof 只放行 month Core/Lifespan/Service 三个 bounded runtime proof 正式库，不等于 MALF full build。
 仍不能宣称全主线数据已经齐全或完整证券主数据已齐。
 
 ## 阅读入口
