@@ -7,14 +7,15 @@
 当前基线：Data Foundation production baseline 已封版；`MALF day bounded proof`、
 `Alpha freeze review`、`Alpha bounded proof`、`Signal freeze review`、`Signal bounded proof`
 与 `MALF complete alignment closeout` 已通过；MALF v1.4 day runtime sync implementation
-已通过，MALF week/month bounded proof build 已通过。当前上游修补队列下一步只允许
-`alpha_production_builder_hardening`，Position bounded proof 仍暂停。
+已通过，MALF week/month bounded proof build 与 Alpha production builder hardening 已通过。
+当前上游修补队列下一步只允许 `signal_production_builder_hardening`，Position bounded proof 仍暂停。
 
 地基轨道 `data-formal-promotion-evidence-20260502-01` 的 allowed next action
 `MALF v1.3 formal rebuild closeout` 已由当前 MALF v1.3 closeout 闭环。
 MALF v1.4 authority sync 只改变后续实现同步的权威输入，不改变 allowed next action。
-Data reference maintenance closeout 已完成 source inventory 裁决，MALF week/month proof 已闭环；
-当前 allowed next action 已切到 `alpha_production_builder_hardening`。
+Data reference maintenance closeout 已完成 source inventory 裁决，MALF week/month proof 与 Alpha production
+hardening 已闭环；当前 allowed next action 已切到 `signal_production_builder_hardening`。
+历史 MALF month 结论的 allowed next action `alpha_production_builder_hardening` 已由本轮 Alpha 卡闭环。
 
 本路线图依据以下权威资产刷新：
 
@@ -27,6 +28,7 @@ H:\Asteria-Validated\Asteria-data-formal-promotion-evidence-20260502-01.zip
 H:\Asteria-Validated\Asteria-malf-v1-3-formal-rebuild-closeout-20260502-01.zip
 H:\Asteria-Validated\Asteria-malf-week-bounded-proof-build-20260506-01.zip
 H:\Asteria-Validated\Asteria-malf-month-bounded-proof-build-20260506-01.zip
+H:\Asteria-Validated\Asteria-alpha-production-builder-hardening-20260506-01.zip
 ```
 
 深度研究报告中的 “机器可读门禁、统一 schema registry、模块 API 合同、pipeline ledger
@@ -197,8 +199,8 @@ Pipeline 只调度和记录
 
 - 当前事实基线以 `Data foundation production baseline sealed`、`MALF v1.3 day formal-data bounded closeout 已通过`、
   `Alpha bounded proof 已通过` 和 `Signal bounded proof 已通过` 为准。
-- MALF v1.4 是当前语义与操作边界权威包；day runtime sync 已通过，week/month proof 和 full build 仍需另开卡。
-- 当前下一卡固定为 `Position freeze review reentry`，不是 Position construction。
+- MALF v1.4 是当前语义与操作边界权威包；day runtime sync 与 week/month proof 已通过，full build 仍需另开卡。
+- 当前下一卡固定为 `Signal production builder hardening`，不是 Position construction。
 - Data Foundation 是地基轨道，不进入策略主线排序。
 - Pipeline 是编排与记录轨道，不进入业务主线排序。
 - 不同时施工两个策略主线模块。

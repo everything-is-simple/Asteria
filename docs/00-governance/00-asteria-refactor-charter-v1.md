@@ -48,6 +48,7 @@
 | `H:\Asteria-Validated\Asteria-data-reference-target-maintenance-closeout-20260506-01.zip` | Data reference maintenance closeout 证据 | 证明本轮 reference source inventory 已闭环；无 approved manifest 的 ST、停牌、上市退市、历史行业和 index/block facts 保持 retained |
 | `H:\Asteria-Validated\Asteria-malf-week-bounded-proof-build-20260506-01.zip` | MALF week bounded proof 证据 | 证明 week Core/Lifespan/Service bounded runtime proof 已通过 |
 | `H:\Asteria-Validated\Asteria-malf-month-bounded-proof-build-20260506-01.zip` | MALF month bounded proof 证据 | 证明 month Core/Lifespan/Service bounded runtime proof 已通过 |
+| `H:\Asteria-Validated\Asteria-alpha-production-builder-hardening-20260506-01.zip` | Alpha production builder hardening 证据 | 证明 Alpha 五族在 day/week/month released MALF Service 表面已通过 hard audit |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 架构剖切面研究 | 支撑治理、主线、数据、编排四个切面的后续裁决 |
 
 裁决：
@@ -181,7 +182,7 @@ MALF v1.4 Core runtime sync implementation 已通过
 下一张允许进入的卡：
 
 ```text
-alpha-production-builder-hardening-20260506-01
+signal-production-builder-hardening-20260506-01
 ```
 
 MALF 当前 runtime formal evidence 以
@@ -196,9 +197,9 @@ Data reference target maintenance closeout 已完成 source inventory 裁决；S
 Signal bounded proof 已通过；Position freeze review reentry 已完成只读评审并通过；
 MALF v1.3 formal-data closeout 已被 v1.4 day runtime sync implementation supersede 为当前
 MALF day 正式证据。Position freeze review reentry 已通过，Data reference target
-maintenance scope 已冻结并完成 closeout；MALF week/month bounded proof build 已通过，当前下一卡改为 Alpha production builder hardening。
+maintenance scope 已冻结并完成 closeout；MALF week/month bounded proof build 和 Alpha production builder hardening 已通过，当前下一卡改为 Signal production builder hardening。
 在上游最终完整目标未能给出肯定答复前，
-Position bounded proof 施工暂时搁置。已准备的修补队列中 Data scope、Data closeout、MALF week 与 MALF month 已通过；
-当前进入 Alpha production hardening，之后仍需 Signal production hardening 和
+Position bounded proof 施工暂时搁置。已准备的修补队列中 Data scope、Data closeout、MALF week、MALF month 与 Alpha production hardening 已通过；
+当前进入 Signal production hardening，之后仍需
 upstream pre-position release decision；不直接授权 Signal full build、Position full build、
 下游施工或全链路 pipeline。

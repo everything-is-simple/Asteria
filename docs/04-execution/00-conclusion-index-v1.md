@@ -69,6 +69,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Alpha | `alpha-freeze-review-20260429-01` | `passed` | [conclusion](records/alpha/alpha-freeze-review-20260429-01.conclusion.md) | [evidence-index](records/alpha/alpha-freeze-review-20260429-01.evidence-index.md) |
 | Alpha | `alpha-bounded-proof-20260429-01` | `passed` | [conclusion](records/alpha/alpha-bounded-proof-20260429-01.conclusion.md) | [evidence-index](records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md) |
 | Alpha | `alpha-target-completeness-review-20260506-01` | `review-only / bounded proof clean / full target incomplete` | [conclusion](records/alpha/alpha-target-completeness-review-20260506-01.conclusion.md) | [evidence-index](records/alpha/alpha-target-completeness-review-20260506-01.evidence-index.md) |
+| Alpha | `alpha-production-builder-hardening-20260506-01` | `passed` | [conclusion](records/alpha/alpha-production-builder-hardening-20260506-01.conclusion.md) | [evidence-index](records/alpha/alpha-production-builder-hardening-20260506-01.evidence-index.md) |
 | Signal | `signal-freeze-review-20260429-01` | `passed` | [conclusion](records/signal/signal-freeze-review-20260429-01.conclusion.md) | [evidence-index](records/signal/signal-freeze-review-20260429-01.evidence-index.md) |
 | Signal | `signal-bounded-proof-20260429-01` | `passed` | [conclusion](records/signal/signal-bounded-proof-20260429-01.conclusion.md) | [evidence-index](records/signal/signal-bounded-proof-20260429-01.evidence-index.md) |
 | Signal | `signal-target-completeness-review-20260506-01` | `review-only / bounded proof clean / full target incomplete` | [conclusion](records/signal/signal-target-completeness-review-20260506-01.conclusion.md) | [evidence-index](records/signal/signal-target-completeness-review-20260506-01.evidence-index.md) |
@@ -95,7 +96,8 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 - Position freeze review reentry 已完成只读评审（review-only）并通过：Position 六件套已冻结为
   文档合同表面；但 `upstream-pre-position-completeness-synthesis-20260506-01` 已裁定上游最终完整目标
   不能全部肯定，因此下一步改为七张上游修补卡。Data scope 卡、Data closeout 卡和 MALF week/month
-  bounded proof 已通过，当前进入 `alpha-production-builder-hardening-20260506-01`。Position bounded proof 仍未执行，
+  bounded proof 已通过，Alpha production builder hardening 已通过，当前进入
+  `signal-production-builder-hardening-20260506-01`。Position bounded proof 仍未执行，
   `position.duckdb` 仍未创建。
 - MALF v1.4 authority package 已形成，继承 v1.3 semantic mainline 并新增 Core
   operational boundary rules；`malf-v1-4-core-runtime-sync-implementation-20260505-01`
@@ -130,7 +132,6 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 
 | 顺序 | 模块 | run_id | card |
 |---:|---|---|---|
-| 5 | Alpha | `alpha-production-builder-hardening-20260506-01` | [card](records/alpha/alpha-production-builder-hardening-20260506-01.card.md) |
 | 6 | Signal | `signal-production-builder-hardening-20260506-01` | [card](records/signal/signal-production-builder-hardening-20260506-01.card.md) |
 | 7 | Position | `upstream-pre-position-release-decision-20260506-01` | [card](records/position/upstream-pre-position-release-decision-20260506-01.card.md) |
 
@@ -140,3 +141,4 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 |---|---|---|---|
 | MALF | `malf-week-bounded-proof-build-20260506-01` | `passed` | [conclusion](records/malf/malf-week-bounded-proof-build-20260506-01.conclusion.md) |
 | MALF | `malf-month-bounded-proof-build-20260506-01` | `passed` | [conclusion](records/malf/malf-month-bounded-proof-build-20260506-01.conclusion.md) |
+| Alpha | `alpha-production-builder-hardening-20260506-01` | `passed` | [conclusion](records/alpha/alpha-production-builder-hardening-20260506-01.conclusion.md) |

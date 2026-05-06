@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from datetime import datetime
-from pathlib import Path
 from typing import Any
 
 import duckdb
@@ -19,6 +18,7 @@ def build_alpha_audit_rows(
     checks = [
         _source_check(request, created_at),
         _malf_interface_check(request, created_at),
+        _source_sample_version_check(request, created_at),
         _table_surface_check(request, created_at),
         _duplicate_check(
             request,
@@ -74,9 +74,9 @@ def build_alpha_audit_rows(
         "schema_version": request.schema_version,
         "alpha_rule_version": request.alpha_rule_version,
         "hard_fail_count": hard_fail_count,
-        "event_count": _count_rows(request.target_alpha_db, "alpha_event_ledger"),
-        "score_count": _count_rows(request.target_alpha_db, "alpha_score_ledger"),
-        "candidate_count": _count_rows(request.target_alpha_db, "alpha_signal_candidate"),
+        "event_count": _count_request_rows(request, "alpha_event_ledger"),
+        "score_count": _count_request_rows(request, "alpha_score_ledger"),
+        "candidate_count": _count_request_rows(request, "alpha_signal_candidate"),
         "checks": [_audit_payload(row) for row in checks],
         "generated_at": created_at.isoformat(),
     }
@@ -119,6 +119,46 @@ def _malf_interface_check(
             ).fetchone()
             failed_count = 0 if row is None else int(row[0])
     return _row(request, created_at, "malf_interface_hard_fail_zero", failed_count)
+
+
+def _source_sample_version_check(
+    request: AlphaFamilyRequest,
+    created_at: datetime,
+) -> tuple[object, ...]:
+    failed_count = 1
+    sample = "{}"
+    if request.source_malf_db.exists():
+        with duckdb.connect(str(request.source_malf_db), read_only=True) as con:
+            columns = {
+                str(row[1])
+                for row in con.execute("pragma table_info(malf_wave_position)").fetchall()
+            }
+            if "sample_version" in columns:
+                clauses = ["timeframe = ?", "service_version = ?", "sample_version is not null"]
+                params: list[object] = [request.timeframe, request.source_malf_service_version]
+                if request.source_malf_run_id:
+                    clauses.append("run_id = ?")
+                    params.append(request.source_malf_run_id)
+                if request.source_malf_sample_version:
+                    clauses.append("sample_version = ?")
+                    params.append(request.source_malf_sample_version)
+                rows = con.execute(
+                    f"""
+                    select distinct sample_version
+                    from malf_wave_position
+                    where {" and ".join(clauses)}
+                    order by 1
+                    """,
+                    params,
+                ).fetchall()
+                versions = [str(row[0]) for row in rows]
+                failed_count = 0 if versions else 1
+                sample = "{}" if versions else '{"missing": "source_malf_sample_version"}'
+                if versions:
+                    sample = f'{{"source_malf_sample_versions": {versions!r}}}'
+            else:
+                sample = '{"missing_column": "sample_version"}'
+    return _row(request, created_at, "source_malf_sample_version_traceable", failed_count, sample)
 
 
 def _table_surface_check(
@@ -226,7 +266,7 @@ def _row(
 ) -> tuple[object, ...]:
     sample = sample_payload if sample_payload is not None else "{}"
     return (
-        f"{request.run_id}|{request.alpha_family}|{check_name}",
+        f"{request.run_id}|{request.alpha_family}|{request.timeframe}|{check_name}",
         request.run_id,
         request.alpha_family,
         check_name,
@@ -247,11 +287,34 @@ def _table_names(con: duckdb.DuckDBPyConnection) -> set[str]:
     }
 
 
-def _count_rows(path: Path, table_name: str) -> int:
-    if not path.exists():
+def _count_request_rows(request: AlphaFamilyRequest, table_name: str) -> int:
+    if not request.target_alpha_db.exists():
         return 0
-    with duckdb.connect(str(path), read_only=True) as con:
-        row = con.execute(f"select count(*) from {table_name}").fetchone()
+    with duckdb.connect(str(request.target_alpha_db), read_only=True) as con:
+        if table_name == "alpha_score_ledger":
+            row = con.execute(
+                """
+                select count(*)
+                from alpha_score_ledger score
+                join alpha_event_ledger event
+                  on event.alpha_event_id = score.alpha_event_id
+                where score.run_id = ?
+                  and score.alpha_family = ?
+                  and event.timeframe = ?
+                """,
+                [request.run_id, request.alpha_family, request.timeframe],
+            ).fetchone()
+            return 0 if row is None else int(row[0])
+        row = con.execute(
+            f"""
+            select count(*)
+            from {table_name}
+            where run_id = ?
+              and alpha_family = ?
+              and timeframe = ?
+            """,
+            [request.run_id, request.alpha_family, request.timeframe],
+        ).fetchone()
         return 0 if row is None else int(row[0])
 
 

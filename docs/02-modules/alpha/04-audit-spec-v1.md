@@ -22,6 +22,7 @@ Alpha 审计已实现或已放行。
 | `malf_interface_audit` 硬规则通过 | hard fail |
 | source MALF service version 已记录 | hard fail |
 | source MALF run id 已记录 | hard fail |
+| source MALF sample version 可追溯 | hard fail |
 
 ## 3. 输入边界硬审计
 

@@ -31,6 +31,7 @@ Alpha bounded proof build card opened
 | `scripts/alpha/run_alpha_family_build.py` | 对单个 alpha family 构建 event / score / candidate |
 | `scripts/alpha/run_alpha_family_audit.py` | 对单个 alpha family 执行输入、输出、边界审计 |
 | `scripts/alpha/run_alpha_bounded_proof.py` | 编排五个 family 的 bounded proof |
+| `scripts/alpha/run_alpha_production_builder.py` | 编排五个 family 的 day/week/month production builder hardening |
 
 这些 runner 在本次 freeze review 阶段不创建代码文件。
 
@@ -64,7 +65,7 @@ flowchart TD
 | 参数 | 要求 |
 |---|---|
 | `--alpha-family` | `BOF / TST / PB / CPB / BPB` |
-| `--timeframe` | 第一阶段固定为 `day` |
+| `--timeframe` | `day / week / month`；production builder 使用已 release 的 MALF Service DB |
 | `--mode` | `bounded / segmented / full / resume / audit-only` |
 | `--run-id` | 可传入；未传入时由 runner 生成 |
 | `--source-malf-db` | MALF Service DB 路径 |
@@ -75,6 +76,8 @@ flowchart TD
 | `--schema-version` | 必填 |
 | `--alpha-rule-version` | 必填 |
 | `--source-malf-service-version` | 必填 |
+| `--source-malf-run-id` | production builder 对同名 service version 的历史 rows 必须显式锁定 |
+| `--source-malf-sample-version` | production builder 必须记录/审计上游 sample version |
 
 ## 7. 幂等与断点
 

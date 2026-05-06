@@ -1,25 +1,42 @@
 module_id = "alpha"
 display_name = "Alpha"
 contract_version = "v1"
-status = "released"
+status = "released_production_builder_hardening_passed"
 authority_assets = [
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2",
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+    "H:/Asteria-Validated/Asteria-alpha-production-builder-hardening-20260506-01.zip",
 ]
-release_conclusion = "docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.conclusion.md"
-evidence_index = "docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md"
-gate_state = "bounded_proof_passed; signal_freeze_review_next"
-formal_db_permission = "released_bounded_proof_family_dbs_only; full_build_requires_new_card"
+release_conclusion = "docs/04-execution/records/alpha/alpha-production-builder-hardening-20260506-01.conclusion.md"
+evidence_index = "docs/04-execution/records/alpha/alpha-production-builder-hardening-20260506-01.evidence-index.md"
+gate_state = "bounded_proof_passed; production_builder_hardening_passed; signal_production_builder_hardening_next"
+formal_db_permission = "released_day_week_month_production_builder_family_dbs_only; signal_requires_own_card"
 writeback_boundary = "read_malf_wave_position_only; never write back to MALF"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from alpha family checkpoint after MALF service release"
-source_manifest_fields = ["source_malf_service_version", "source_malf_run_id"]
+source_manifest_fields = ["source_malf_service_version", "source_malf_run_id", "source_malf_sample_version"]
 forbidden_inputs = ["raw_market.duckdb.raw_market_bar", "malf_core_internal", "malf_lifespan_internal", "legacy_downstream", "mock_formal_data"]
 forbidden_outputs = ["malf_writeback", "wave_core_state_redefinition", "system_state_redefinition", "position_size", "portfolio_allocation", "order_intent"]
 
 [[official_inputs]]
 input_type = "database"
 db_name = "malf_service_day.duckdb"
+table = "malf_wave_position"
+source_role = "official"
+natural_key = ["symbol", "timeframe", "bar_dt", "service_version"]
+required_fields = ["symbol", "timeframe", "bar_dt", "system_state", "wave_core_state", "direction", "life_state", "position_quadrant"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "malf_service_week.duckdb"
+table = "malf_wave_position"
+source_role = "official"
+natural_key = ["symbol", "timeframe", "bar_dt", "service_version"]
+required_fields = ["symbol", "timeframe", "bar_dt", "system_state", "wave_core_state", "direction", "life_state", "position_quadrant"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "malf_service_month.duckdb"
 table = "malf_wave_position"
 source_role = "official"
 natural_key = ["symbol", "timeframe", "bar_dt", "service_version"]

@@ -5,11 +5,11 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-ALPHA_SCHEMA_VERSION = "alpha-bounded-proof-v1"
-ALPHA_RULE_VERSION = "alpha-waveposition-minimal-v1"
+ALPHA_SCHEMA_VERSION = "alpha-family-schema-v1"
+ALPHA_RULE_VERSION = "alpha-waveposition-production-v1"
 VALID_ALPHA_FAMILIES = {"BOF", "TST", "PB", "CPB", "BPB"}
-VALID_ALPHA_RUN_MODES = {"bounded", "resume", "audit-only"}
-VALID_ALPHA_TIMEFRAMES = {"day"}
+VALID_ALPHA_RUN_MODES = {"audit-only", "bounded", "full", "resume", "segmented"}
+VALID_ALPHA_TIMEFRAMES = {"day", "month", "week"}
 
 
 @dataclass(frozen=True)
@@ -23,6 +23,8 @@ class AlphaFamilyRequest:
     mode: str
     alpha_family: str
     source_malf_service_version: str
+    source_malf_run_id: str | None = None
+    source_malf_sample_version: str | None = None
     schema_version: str = ALPHA_SCHEMA_VERSION
     alpha_rule_version: str = ALPHA_RULE_VERSION
     timeframe: str = "day"
@@ -39,10 +41,10 @@ class AlphaFamilyRequest:
             raise ValueError(f"Unsupported Alpha run mode: {self.mode}")
         if self.timeframe not in VALID_ALPHA_TIMEFRAMES:
             raise ValueError(f"Unsupported Alpha timeframe: {self.timeframe}")
-        if self.mode == "bounded" and not (
+        if self.mode in {"bounded", "segmented"} and not (
             self.start_dt or self.end_dt or self.symbol_limit is not None
         ):
-            raise ValueError("bounded Alpha runs require start_dt, end_dt, or symbol_limit")
+            raise ValueError(f"{self.mode} Alpha runs require start_dt, end_dt, or symbol_limit")
         if self.start_date and self.end_date and self.start_date > self.end_date:
             raise ValueError("start_dt cannot be later than end_dt")
 
@@ -55,7 +57,8 @@ class AlphaFamilyRequest:
         return date.fromisoformat(self.end_dt) if self.end_dt else None
 
     def checkpoint_path(self, stage: str) -> Path:
-        return self.temp_root / "alpha" / self.run_id / f"{self.alpha_family}-{stage}.json"
+        name = f"{self.alpha_family}-{self.timeframe}-{stage}.json"
+        return self.temp_root / "alpha" / self.run_id / name
 
 
 @dataclass(frozen=True)
@@ -64,6 +67,7 @@ class AlphaBuildSummary:
     alpha_family: str
     stage: str
     status: str
+    timeframe: str = "day"
     event_count: int = 0
     score_count: int = 0
     candidate_count: int = 0

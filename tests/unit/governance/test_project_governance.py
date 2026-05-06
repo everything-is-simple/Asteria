@@ -47,7 +47,7 @@ def test_project_governance_passes_current_repo() -> None:
     assert findings == []
 
 
-def test_current_gate_opens_alpha_hardening_after_malf_month_closeout() -> None:
+def test_current_gate_opens_signal_hardening_after_alpha_hardening() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     with registry_path.open("rb") as handle:
@@ -56,25 +56,24 @@ def test_current_gate_opens_alpha_hardening_after_malf_month_closeout() -> None:
     conclusion_index = (
         repo_root / "docs" / "04-execution" / "00-conclusion-index-v1.md"
     ).read_text(encoding="utf-8")
-    malf_conclusion = (
-        repo_root
-        / "docs"
-        / "04-execution"
-        / "records"
-        / "malf"
-        / "malf-month-bounded-proof-build-20260506-01.conclusion.md"
-    ).read_text(encoding="utf-8")
+    alpha_conclusion_path = repo_root / (
+        "docs/04-execution/records/alpha/"
+        "alpha-production-builder-hardening-20260506-01.conclusion.md"
+    )
+    alpha_conclusion = alpha_conclusion_path.read_text(encoding="utf-8")
 
-    assert registry["active_mainline_module"] == "alpha"
+    assert registry["active_mainline_module"] == "signal"
     assert registry["active_foundation_card"] == "none"
-    assert registry["current_allowed_next_card"] == "alpha_production_builder_hardening"
+    assert registry["current_allowed_next_card"] == "signal_production_builder_hardening"
     assert registry["latest_mainline_release_run_id"] == (
-        "malf-month-bounded-proof-build-20260506-01"
+        "alpha-production-builder-hardening-20260506-01"
     )
     assert modules["malf"]["allow_build"] is False
     assert modules["malf"]["next_card"] == "alpha_production_builder_hardening"
-    assert modules["alpha"]["allow_build"] is True
-    assert modules["alpha"]["next_card"] == "alpha_production_builder_hardening"
+    assert modules["alpha"]["allow_build"] is False
+    assert modules["alpha"]["next_card"] == "signal_production_builder_hardening"
+    assert modules["signal"]["allow_build"] is True
+    assert modules["signal"]["next_card"] == "signal_production_builder_hardening"
     assert modules["data"]["latest_completed_card"] == "data_reference_target_maintenance_closeout"
     assert modules["position"]["allow_review"] is False
     assert modules["position"]["allow_build"] is False
@@ -82,9 +81,10 @@ def test_current_gate_opens_alpha_hardening_after_malf_month_closeout() -> None:
     assert "data-reference-target-maintenance-closeout-20260506-01" in conclusion_index
     assert "malf-week-bounded-proof-build-20260506-01" in conclusion_index
     assert "malf-month-bounded-proof-build-20260506-01" in conclusion_index
+    assert "alpha-production-builder-hardening-20260506-01" in conclusion_index
     assert "malf-v1-3-formal-rebuild-closeout-20260502-01" in conclusion_index
-    assert "状态：`passed`" in malf_conclusion
-    assert "hard_fail_count = 0" in malf_conclusion
+    assert "状态：`passed`" in alpha_conclusion
+    assert "hard_fail_count = 0" in alpha_conclusion
 
 
 def test_malf_module_contract_points_at_month_bounded_closeout() -> None:
@@ -113,11 +113,11 @@ def test_project_governance_rejects_multiple_build_allowed_mainline_modules(
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'status = "released"\n'
-            'doc_status = "frozen six-doc set / bounded proof passed"\n'
+            'doc_status = "frozen six-doc set / bounded proof passed / '
+            'production hardening passed"\n'
             "allow_build = false",
-            'status = "released"\n'
-            'doc_status = "frozen six-doc set / bounded proof passed"\n'
+            'doc_status = "frozen six-doc set / bounded proof passed / '
+            'production hardening passed"\n'
             "allow_build = true",
             1,
         ),
@@ -151,13 +151,8 @@ def test_project_governance_rejects_pyproject_next_card_state(tmp_path: Path) ->
 
 def test_project_governance_rejects_missing_current_next_card_file(tmp_path: Path) -> None:
     repo_root = _copy_governance_repo(tmp_path)
-    card_path = (
-        repo_root
-        / "docs"
-        / "04-execution"
-        / "records"
-        / "alpha"
-        / "alpha-production-builder-hardening-20260506-01.card.md"
+    card_path = repo_root / (
+        "docs/04-execution/records/signal/signal-production-builder-hardening-20260506-01.card.md"
     )
     if card_path.exists():
         card_path.unlink()
@@ -184,19 +179,23 @@ def test_project_governance_rejects_current_next_card_that_is_already_blocked(
             'active_mainline_module = "position"',
         )
         .replace(
-            'current_allowed_next_card = "alpha_production_builder_hardening"',
+            'active_mainline_module = "signal"',
+            'active_mainline_module = "position"',
+        )
+        .replace(
+            'current_allowed_next_card = "signal_production_builder_hardening"',
             'current_allowed_next_card = "position_freeze_review"',
         )
         .replace(
-            'module_id = "alpha"\n'
-            'display_name = "Alpha"\n'
+            'module_id = "signal"\n'
+            'display_name = "Signal"\n'
             "mainline = true\n"
             'status = "released_production_hardening_active"\n'
             'doc_status = "frozen six-doc set / bounded proof passed / '
             'production hardening card prepared"\n'
             "allow_build = true",
-            'module_id = "alpha"\n'
-            'display_name = "Alpha"\n'
+            'module_id = "signal"\n'
+            'display_name = "Signal"\n'
             "mainline = true\n"
             'status = "released_production_hardening_active"\n'
             'doc_status = "frozen six-doc set / bounded proof passed / '
@@ -304,9 +303,9 @@ def test_project_governance_rejects_docs_sync_next_card_mismatch(tmp_path: Path)
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'waits_for = "malf_day_week_month_bounded_proof_passed"\n'
-            'next_card = "alpha_production_builder_hardening"',
-            'waits_for = "malf_day_week_month_bounded_proof_passed"\n'
+            'waits_for = "alpha_production_builder_hardening_passed"\n'
+            'next_card = "signal_production_builder_hardening"',
+            'waits_for = "alpha_production_builder_hardening_passed"\n'
             'next_card = "malf_day_bounded_proof"',
         ),
         encoding="utf-8",

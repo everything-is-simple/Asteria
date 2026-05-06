@@ -16,6 +16,9 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-data-foundation-production-baseline-seal-20260502-01.zip",
     "H:/Asteria-Validated/Asteria-data-reference-target-maintenance-closeout-20260506-01.zip",
+    "H:/Asteria-Validated/Asteria-malf-week-bounded-proof-build-20260506-01.zip",
+    "H:/Asteria-Validated/Asteria-malf-month-bounded-proof-build-20260506-01.zip",
+    "H:/Asteria-Validated/Asteria-alpha-production-builder-hardening-20260506-01.zip",
 ]
 release_evidence_index = "docs/04-execution/00-conclusion-index-v1.md"
 released_formal_dbs = [
@@ -221,9 +224,9 @@ ledger_role = "alpha_family"
 writer = "run_alpha_bof_build"
 allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 checkpoint_policy = "alpha_replay_scope"
-checkpoint_key = ["symbol_bucket", "bar_dt"]
-replay_scope = ["bar_dt", "symbol", "alpha_family"]
-promote_rule = "alpha_audit_passed"
+checkpoint_key = ["alpha_family", "timeframe", "symbol_bucket", "bar_dt"]
+replay_scope = ["timeframe", "bar_dt", "symbol", "alpha_family", "source_malf_run_id"]
+promote_rule = "alpha_production_audit_passed"
 
 [[databases]]
 db_name = "alpha_tst.duckdb"
@@ -233,9 +236,9 @@ ledger_role = "alpha_family"
 writer = "run_alpha_tst_build"
 allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 checkpoint_policy = "alpha_replay_scope"
-checkpoint_key = ["symbol_bucket", "bar_dt"]
-replay_scope = ["bar_dt", "symbol", "alpha_family"]
-promote_rule = "alpha_audit_passed"
+checkpoint_key = ["alpha_family", "timeframe", "symbol_bucket", "bar_dt"]
+replay_scope = ["timeframe", "bar_dt", "symbol", "alpha_family", "source_malf_run_id"]
+promote_rule = "alpha_production_audit_passed"
 
 [[databases]]
 db_name = "alpha_pb.duckdb"
@@ -245,9 +248,9 @@ ledger_role = "alpha_family"
 writer = "run_alpha_pb_build"
 allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 checkpoint_policy = "alpha_replay_scope"
-checkpoint_key = ["symbol_bucket", "bar_dt"]
-replay_scope = ["bar_dt", "symbol", "alpha_family"]
-promote_rule = "alpha_audit_passed"
+checkpoint_key = ["alpha_family", "timeframe", "symbol_bucket", "bar_dt"]
+replay_scope = ["timeframe", "bar_dt", "symbol", "alpha_family", "source_malf_run_id"]
+promote_rule = "alpha_production_audit_passed"
 
 [[databases]]
 db_name = "alpha_cpb.duckdb"
@@ -257,9 +260,9 @@ ledger_role = "alpha_family"
 writer = "run_alpha_cpb_build"
 allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 checkpoint_policy = "alpha_replay_scope"
-checkpoint_key = ["symbol_bucket", "bar_dt"]
-replay_scope = ["bar_dt", "symbol", "alpha_family"]
-promote_rule = "alpha_audit_passed"
+checkpoint_key = ["alpha_family", "timeframe", "symbol_bucket", "bar_dt"]
+replay_scope = ["timeframe", "bar_dt", "symbol", "alpha_family", "source_malf_run_id"]
+promote_rule = "alpha_production_audit_passed"
 
 [[databases]]
 db_name = "alpha_bpb.duckdb"
@@ -269,9 +272,9 @@ ledger_role = "alpha_family"
 writer = "run_alpha_bpb_build"
 allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 checkpoint_policy = "alpha_replay_scope"
-checkpoint_key = ["symbol_bucket", "bar_dt"]
-replay_scope = ["bar_dt", "symbol", "alpha_family"]
-promote_rule = "alpha_audit_passed"
+checkpoint_key = ["alpha_family", "timeframe", "symbol_bucket", "bar_dt"]
+replay_scope = ["timeframe", "bar_dt", "symbol", "alpha_family", "source_malf_run_id"]
+promote_rule = "alpha_production_audit_passed"
 
 [[databases]]
 db_name = "signal.duckdb"

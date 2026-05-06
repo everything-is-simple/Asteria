@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 from asteria.alpha.bootstrap import run_alpha_bounded_proof
-from asteria.alpha.contracts import ALPHA_RULE_VERSION, ALPHA_SCHEMA_VERSION
+from asteria.alpha.contracts import ALPHA_RULE_VERSION, ALPHA_SCHEMA_VERSION, VALID_ALPHA_TIMEFRAMES
 
 
 def main() -> int:
@@ -16,6 +16,7 @@ def main() -> int:
     parser.add_argument("--validated-root", default="H:/Asteria-Validated")
     parser.add_argument("--temp-root", default="H:/Asteria-temp")
     parser.add_argument("--mode", choices=["bounded", "resume"], default="bounded")
+    parser.add_argument("--timeframe", choices=sorted(VALID_ALPHA_TIMEFRAMES), default="day")
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--start-dt")
     parser.add_argument("--end-dt")
@@ -23,6 +24,8 @@ def main() -> int:
     parser.add_argument("--schema-version", default=ALPHA_SCHEMA_VERSION)
     parser.add_argument("--alpha-rule-version", default=ALPHA_RULE_VERSION)
     parser.add_argument("--source-malf-service-version", required=True)
+    parser.add_argument("--source-malf-run-id")
+    parser.add_argument("--source-malf-sample-version")
     args = parser.parse_args()
 
     summaries = run_alpha_bounded_proof(
@@ -36,9 +39,12 @@ def main() -> int:
         end_dt=args.end_dt,
         symbol_limit=args.symbol_limit,
         source_malf_service_version=args.source_malf_service_version,
+        source_malf_run_id=args.source_malf_run_id,
+        source_malf_sample_version=args.source_malf_sample_version,
         schema_version=args.schema_version,
         alpha_rule_version=args.alpha_rule_version,
         mode=args.mode,
+        timeframe=args.timeframe,
     )
     payload = [summary.as_dict() for summary in summaries]
     print(json.dumps(payload, ensure_ascii=False, indent=2))

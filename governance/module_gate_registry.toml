@@ -1,5 +1,5 @@
 registry_version = "2026-05-02.v1"
-active_mainline_module = "alpha"
+active_mainline_module = "signal"
 active_foundation_card = "none"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
@@ -18,11 +18,12 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-data-reference-target-maintenance-closeout-20260506-01.zip",
     "H:/Asteria-Validated/Asteria-malf-week-bounded-proof-build-20260506-01.zip",
     "H:/Asteria-Validated/Asteria-malf-month-bounded-proof-build-20260506-01.zip",
+    "H:/Asteria-Validated/Asteria-alpha-production-builder-hardening-20260506-01.zip",
 ]
 latest_governance_run_id = "validated-historical-evidence-rehydration-20260502-01"
-latest_mainline_release_run_id = "malf-month-bounded-proof-build-20260506-01"
+latest_mainline_release_run_id = "alpha-production-builder-hardening-20260506-01"
 latest_authority_sync_run_id = "malf-v1-4-core-operational-boundary-authority-sync-20260503-01"
-current_allowed_next_card = "alpha_production_builder_hardening"
+current_allowed_next_card = "signal_production_builder_hardening"
 pre_position_repair_sequence = [
     "data_reference_target_maintenance_scope",
     "data_reference_target_maintenance_closeout",
@@ -33,8 +34,6 @@ pre_position_repair_sequence = [
     "upstream_pre_position_release_decision",
 ]
 construction_lock = [
-    "alpha_full_build",
-    "alpha_segmented_production_build",
     "signal_construction_without_build_card",
     "position_portfolio_trade_system_construction",
     "full_chain_pipeline",
@@ -81,40 +80,40 @@ allowed_downstream_use = "read_only_wave_position_for_alpha_freeze_review"
 module_id = "alpha"
 display_name = "Alpha"
 mainline = true
-status = "released_production_hardening_active"
-doc_status = "frozen six-doc set / bounded proof passed / production hardening card prepared"
-allow_build = true
+status = "released"
+doc_status = "frozen six-doc set / bounded proof passed / production hardening passed"
+allow_build = false
 doc_path = "docs/02-modules/alpha"
 waits_for = "malf_day_week_month_bounded_proof_passed"
-next_card = "alpha_production_builder_hardening"
+next_card = "signal_production_builder_hardening"
 freeze_review_status = "passed"
 freeze_review_run_id = "alpha-freeze-review-20260429-01"
 active_card = "docs/04-execution/records/alpha/alpha-production-builder-hardening-20260506-01.card.md"
-proof_status = "bounded_proof_passed"
-proof_run_id = "alpha-bounded-proof-20260429-01"
-release_conclusion = "docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.conclusion.md"
-evidence_index = "docs/04-execution/records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md"
-next_allowed_action = "alpha_production_builder_hardening"
-formal_db_permission = "released_bounded_proof_family_dbs_only; full_build_requires_new_card"
+proof_status = "bounded_proof_passed; production_builder_hardening_passed"
+proof_run_id = "alpha-production-builder-hardening-20260506-01"
+release_conclusion = "docs/04-execution/records/alpha/alpha-production-builder-hardening-20260506-01.conclusion.md"
+evidence_index = "docs/04-execution/records/alpha/alpha-production-builder-hardening-20260506-01.evidence-index.md"
+next_allowed_action = "signal_production_builder_hardening"
+formal_db_permission = "released_day_week_month_production_builder_family_dbs_only; signal_requires_own_card"
 input_boundary = "read_only_malf_wave_position"
 
 [[modules]]
 module_id = "signal"
 display_name = "Signal"
 mainline = true
-status = "released"
-doc_status = "frozen six-doc set / bounded proof passed"
-allow_build = false
+status = "released_production_hardening_active"
+doc_status = "frozen six-doc set / bounded proof passed / production hardening card prepared"
+allow_build = true
 doc_path = "docs/02-modules/signal"
-waits_for = "alpha_released"
-next_card = "position_freeze_review"
+waits_for = "alpha_production_builder_hardening_passed"
+next_card = "signal_production_builder_hardening"
 freeze_review_status = "passed"
 freeze_review_run_id = "signal-freeze-review-20260429-01"
 proof_status = "bounded_proof_passed"
 proof_run_id = "signal-bounded-proof-20260429-01"
 release_conclusion = "docs/04-execution/records/signal/signal-bounded-proof-20260429-01.conclusion.md"
 evidence_index = "docs/04-execution/records/signal/signal-bounded-proof-20260429-01.evidence-index.md"
-active_card = "docs/04-execution/records/signal/signal-bounded-proof-build-card-20260429-01.card.md"
+active_card = "docs/04-execution/records/signal/signal-production-builder-hardening-20260506-01.card.md"
 formal_db_permission = "released_bounded_proof_signal_db_only; full_build_requires_new_card"
 input_boundary = "read_only_released_alpha_signal_candidate"
 
@@ -137,7 +136,7 @@ evidence_index = "docs/04-execution/records/position/position-freeze-review-reen
 formal_db_permission = "blocked_until_position_bounded_proof_build_card_execution"
 input_boundary = "read_only_released_signal_bounded_surface"
 position_construction_pause = "paused_until_upstream_full_target_completeness_decision"
-pre_position_repair_queue = "data_reference_target_maintenance_scope -> data_reference_target_maintenance_closeout -> malf_week_bounded_proof_build -> malf_month_bounded_proof_build -> alpha_production_builder_hardening -> signal_production_builder_hardening -> upstream_pre_position_release_decision"
+pre_position_repair_queue = "data_reference_target_maintenance_scope -> data_reference_target_maintenance_closeout -> malf_week_bounded_proof_build -> malf_month_bounded_proof_build -> alpha_production_builder_hardening -> signal_production_builder_hardening -> upstream_pre_position_release_decision; current=signal_production_builder_hardening"
 
 [[modules]]
 module_id = "portfolio_plan"

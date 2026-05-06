@@ -5,14 +5,20 @@ import json
 from pathlib import Path
 
 from asteria.alpha.bootstrap import ALPHA_FAMILY_DATABASES, run_alpha_family_audit
-from asteria.alpha.contracts import ALPHA_RULE_VERSION, ALPHA_SCHEMA_VERSION, AlphaFamilyRequest
+from asteria.alpha.contracts import (
+    ALPHA_RULE_VERSION,
+    ALPHA_SCHEMA_VERSION,
+    VALID_ALPHA_RUN_MODES,
+    VALID_ALPHA_TIMEFRAMES,
+    AlphaFamilyRequest,
+)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run one Alpha family hard audit.")
     parser.add_argument("--alpha-family", required=True, choices=sorted(ALPHA_FAMILY_DATABASES))
-    parser.add_argument("--timeframe", default="day")
-    parser.add_argument("--mode", choices=["bounded", "resume", "audit-only"], default="audit-only")
+    parser.add_argument("--timeframe", choices=sorted(VALID_ALPHA_TIMEFRAMES), default="day")
+    parser.add_argument("--mode", choices=sorted(VALID_ALPHA_RUN_MODES), default="audit-only")
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--source-malf-db", required=True)
     parser.add_argument("--target-alpha-db")
@@ -26,6 +32,8 @@ def main() -> int:
     parser.add_argument("--schema-version", default=ALPHA_SCHEMA_VERSION)
     parser.add_argument("--alpha-rule-version", default=ALPHA_RULE_VERSION)
     parser.add_argument("--source-malf-service-version", required=True)
+    parser.add_argument("--source-malf-run-id")
+    parser.add_argument("--source-malf-sample-version")
     args = parser.parse_args()
 
     target_db = (
@@ -44,6 +52,8 @@ def main() -> int:
             mode=args.mode,
             alpha_family=args.alpha_family,
             source_malf_service_version=args.source_malf_service_version,
+            source_malf_run_id=args.source_malf_run_id,
+            source_malf_sample_version=args.source_malf_sample_version,
             schema_version=args.schema_version,
             alpha_rule_version=args.alpha_rule_version,
             timeframe=args.timeframe,

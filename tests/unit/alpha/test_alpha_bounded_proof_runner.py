@@ -17,7 +17,12 @@ from asteria.alpha.contracts import AlphaFamilyRequest
 from asteria.alpha.schema import ALPHA_TABLES
 
 
-def _seed_malf_service(path: Path) -> None:
+def _seed_malf_service(
+    path: Path,
+    timeframe: str = "day",
+    service_version: str = "service-v1",
+    sample_version: str = "sample-v1",
+) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     columns = """
         symbol varchar,
@@ -69,13 +74,26 @@ def _seed_malf_service(path: Path) -> None:
             values ('audit-1', 'malf-run-1', 'source_ok', 'hard', 'pass', 0, '{}', now())
             """
         )
-        rows = [_wave_row(i) for i in range(8)]
+        rows = [
+            _wave_row(
+                i,
+                timeframe=timeframe,
+                service_version=service_version,
+                sample_version=sample_version,
+            )
+            for i in range(8)
+        ]
         placeholders = ", ".join(["?"] * 25)
         con.executemany(f"insert into malf_wave_position values ({placeholders})", rows)
         con.executemany(f"insert into malf_wave_position_latest values ({placeholders})", rows[-2:])
 
 
-def _wave_row(offset: int) -> tuple[object, ...]:
+def _wave_row(
+    offset: int,
+    timeframe: str = "day",
+    service_version: str = "service-v1",
+    sample_version: str = "sample-v1",
+) -> tuple[object, ...]:
     states = [
         ("up_alive", "alive", "up", 1, 0, 0, 0.95, 0.30, "developing", "developing"),
         ("up_alive", "alive", "up", 2, 0, 0, 0.90, 0.50, "extended", "extended_active"),
@@ -91,7 +109,7 @@ def _wave_row(offset: int) -> tuple[object, ...]:
     bar_dt = date(2024, 1, 1) + timedelta(days=offset)
     return (
         "600000.SH",
-        "day",
+        timeframe,
         bar_dt,
         system_state,
         f"wave-{offset}" if system_state != "transition" else None,
@@ -107,9 +125,9 @@ def _wave_row(offset: int) -> tuple[object, ...]:
         quadrant,
         10.0 + offset,
         "unit-scope",
-        "sample-v1",
+        sample_version,
         "lifespan-rule-v1",
-        "service-v1",
+        service_version,
         "malf-run-1",
         "malf-schema-v1",
         "core-run-1",
@@ -137,7 +155,7 @@ def _request(tmp_path: Path, family: str, mode: str = "bounded") -> AlphaFamilyR
 
 def test_alpha_request_rejects_out_of_scope_modes_and_timeframes(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="Unsupported Alpha run mode"):
-        _request(tmp_path, "BOF", mode="full")
+        _request(tmp_path, "BOF", mode="unsafe")
     with pytest.raises(ValueError, match="Unsupported Alpha timeframe"):
         AlphaFamilyRequest(
             source_malf_db=tmp_path / "source.duckdb",
@@ -148,7 +166,7 @@ def test_alpha_request_rejects_out_of_scope_modes_and_timeframes(tmp_path: Path)
             run_id="run-1",
             mode="bounded",
             alpha_family="BOF",
-            timeframe="week",
+            timeframe="quarter",
             source_malf_service_version="service-v1",
             symbol_limit=1,
         )
@@ -231,6 +249,171 @@ def test_bounded_proof_runs_all_families_and_writes_closeout(tmp_path: Path) -> 
     closeout = tmp_path / "report" / "alpha" / date.today().isoformat()
     payloads = list(closeout.glob("alpha-proof-unit-001*summary.json"))
     assert payloads
+
+
+def test_family_build_accepts_week_and_month_timeframes(tmp_path: Path) -> None:
+    _seed_malf_service(
+        tmp_path / "data" / "malf_service_week.duckdb",
+        timeframe="week",
+        service_version="malf-wave-position-week-v1",
+        sample_version="malf-week-sample-v1",
+    )
+    request = AlphaFamilyRequest(
+        source_malf_db=tmp_path / "data" / "malf_service_week.duckdb",
+        target_alpha_db=tmp_path / "data" / "alpha_bof.duckdb",
+        report_root=tmp_path / "report",
+        validated_root=tmp_path / "validated",
+        temp_root=tmp_path / "temp",
+        run_id="alpha-proof-unit-001",
+        mode="segmented",
+        alpha_family="BOF",
+        source_malf_service_version="malf-wave-position-week-v1",
+        timeframe="week",
+        symbol_limit=10,
+    )
+
+    summary = run_alpha_family_build(request)
+
+    assert summary.status == "completed"
+    assert summary.timeframe == "week"
+    with duckdb.connect(str(request.target_alpha_db), read_only=True) as con:
+        assert con.execute("select distinct timeframe from alpha_event_ledger").fetchall() == [
+            ("week",)
+        ]
+
+
+def test_same_run_id_keeps_distinct_timeframe_outputs(tmp_path: Path) -> None:
+    day_db = tmp_path / "data" / "malf_service_day.duckdb"
+    week_db = tmp_path / "data" / "malf_service_week.duckdb"
+    target_db = tmp_path / "data" / "alpha_bof.duckdb"
+    _seed_malf_service(day_db)
+    _seed_malf_service(
+        week_db,
+        timeframe="week",
+        service_version="malf-wave-position-week-v1",
+        sample_version="malf-week-sample-v1",
+    )
+
+    day_request = _request(tmp_path, "BOF")
+    week_request = AlphaFamilyRequest(
+        source_malf_db=week_db,
+        target_alpha_db=target_db,
+        report_root=tmp_path / "report",
+        validated_root=tmp_path / "validated",
+        temp_root=tmp_path / "temp",
+        run_id=day_request.run_id,
+        mode="segmented",
+        alpha_family="BOF",
+        source_malf_service_version="malf-wave-position-week-v1",
+        timeframe="week",
+        symbol_limit=10,
+    )
+
+    run_alpha_family_build(day_request)
+    run_alpha_family_build(week_request)
+
+    with duckdb.connect(str(target_db), read_only=True) as con:
+        assert con.execute(
+            """
+            select timeframe, count(*)
+            from alpha_event_ledger
+            group by 1
+            order by 1
+            """
+        ).fetchall() == [("day", 8), ("week", 8)]
+
+
+def test_family_build_can_lock_source_run_and_sample_version(tmp_path: Path) -> None:
+    source_db = tmp_path / "data" / "malf_service_day.duckdb"
+    _seed_malf_service(
+        source_db,
+        service_version="malf-wave-position-dense-v1",
+        sample_version="current-sample",
+    )
+    with duckdb.connect(str(source_db)) as con:
+        old_rows = [
+            _wave_row(
+                i,
+                service_version="malf-wave-position-dense-v1",
+                sample_version="old-sample",
+            )
+            for i in range(8)
+        ]
+        placeholders = ", ".join(["?"] * 25)
+        con.executemany(f"insert into malf_wave_position values ({placeholders})", old_rows)
+        con.execute(
+            """
+            update malf_wave_position
+            set run_id = 'old-run'
+            where sample_version = 'old-sample'
+            """
+        )
+        con.execute(
+            """
+            update malf_wave_position
+            set run_id = 'current-run'
+            where sample_version = 'current-sample'
+            """
+        )
+
+    request = AlphaFamilyRequest(
+        source_malf_db=source_db,
+        target_alpha_db=tmp_path / "data" / "alpha_bof.duckdb",
+        report_root=tmp_path / "report",
+        validated_root=tmp_path / "validated",
+        temp_root=tmp_path / "temp",
+        run_id="alpha-proof-unit-001",
+        mode="bounded",
+        alpha_family="BOF",
+        source_malf_service_version="malf-wave-position-dense-v1",
+        source_malf_run_id="current-run",
+        source_malf_sample_version="current-sample",
+        symbol_limit=10,
+    )
+
+    summary = run_alpha_family_build(request)
+
+    assert summary.event_count == 8
+    with duckdb.connect(str(request.target_alpha_db), read_only=True) as con:
+        assert con.execute(
+            "select distinct source_malf_run_id from alpha_event_ledger"
+        ).fetchall() == [("current-run",)]
+
+
+def test_production_builder_runs_configured_timeframes(tmp_path: Path) -> None:
+    from asteria.alpha.bootstrap import run_alpha_production_builder
+
+    _seed_malf_service(tmp_path / "data" / "malf_service_day.duckdb")
+    _seed_malf_service(
+        tmp_path / "data" / "malf_service_week.duckdb",
+        timeframe="week",
+        service_version="malf-wave-position-week-v1",
+        sample_version="malf-week-sample-v1",
+    )
+
+    summaries = run_alpha_production_builder(
+        source_malf_dbs={
+            "day": tmp_path / "data" / "malf_service_day.duckdb",
+            "week": tmp_path / "data" / "malf_service_week.duckdb",
+        },
+        source_malf_service_versions={
+            "day": "service-v1",
+            "week": "malf-wave-position-week-v1",
+        },
+        target_data_root=tmp_path / "data",
+        report_root=tmp_path / "report",
+        validated_root=tmp_path / "validated",
+        temp_root=tmp_path / "temp",
+        run_id="alpha-production-unit-001",
+        mode="segmented",
+        symbol_limit=10,
+        timeframes=("day", "week"),
+    )
+
+    assert len(summaries) == 10
+    assert {summary.timeframe for summary in summaries} == {"day", "week"}
+    assert all(summary.hard_fail_count == 0 for summary in summaries)
+    assert (tmp_path / "validated" / "Asteria-alpha-production-unit-001.zip").exists()
 
 
 def test_audit_only_does_not_write_business_rows(tmp_path: Path) -> None:
