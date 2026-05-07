@@ -2,15 +2,15 @@
 
 日期：2026-04-27
 
-状态：frozen / freeze review passed / build not executed
+状态：frozen / freeze review passed / bounded proof passed / full build not executed
 
 ## 1. 本卡目标
 
 补齐 Portfolio Plan pre-gate 六件套 draft 的历史卡已由
 `portfolio-plan-freeze-review-20260507-01` 承接并冻结为 review-only 合同表面。
 
-本卡仍不允许代码施工，不允许创建正式 DuckDB；Portfolio Plan bounded proof build
-必须走后续 prepared card。
+本历史 pre-gate 卡不直接执行代码施工。Portfolio Plan bounded proof 已由
+`portfolio-plan-bounded-proof-build-card-20260507-01` 执行通过；full build 仍必须另开卡。
 
 ## 2. 当前卡位
 

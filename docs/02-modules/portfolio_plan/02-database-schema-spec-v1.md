@@ -2,7 +2,7 @@
 
 日期：2026-04-27
 
-状态：frozen / freeze review passed / build not executed
+状态：frozen / freeze review passed / bounded proof passed / full build not executed
 
 ## 1. 规格范围
 
@@ -18,8 +18,8 @@ Position bounded proof passed
 H:\Asteria-data\portfolio_plan.duckdb
 ```
 
-本次 freeze review 不创建该库。`portfolio_plan.duckdb` 只能在后续
-Portfolio Plan bounded proof build card 明确执行时创建。
+`portfolio_plan.duckdb` 已在 `portfolio-plan-bounded-proof-build-card-20260507-01`
+中按 bounded proof 范围创建。Portfolio Plan full build 仍必须另开卡。
 
 ## 2. 上游关系
 
@@ -182,7 +182,7 @@ erDiagram
 | 同库多写 | 禁止 |
 | 旧数据替换 | staging 审计通过后 promote |
 | `run_id` | 审计字段，不作为业务自然键 |
-| formal DB create | 后续 Portfolio Plan bounded proof build card 执行时才允许 |
+| formal DB create | bounded proof 已创建；full build 仍需新卡 |
 
 ## 13. 不允许的 schema
 

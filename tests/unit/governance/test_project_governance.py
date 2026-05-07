@@ -47,7 +47,7 @@ def test_project_governance_passes_current_repo() -> None:
     assert findings == []
 
 
-def test_current_gate_opens_portfolio_bounded_proof_after_freeze_review() -> None:
+def test_current_gate_opens_trade_freeze_review_after_portfolio_proof() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     with registry_path.open("rb") as handle:
@@ -61,17 +61,22 @@ def test_current_gate_opens_portfolio_bounded_proof_after_freeze_review() -> Non
         "position-bounded-proof-build-card-20260506-01.conclusion.md"
     )
     position_conclusion = position_conclusion_path.read_text(encoding="utf-8")
-    portfolio_conclusion_path = repo_root / (
+    portfolio_freeze_conclusion_path = repo_root / (
         "docs/04-execution/records/portfolio_plan/"
         "portfolio-plan-freeze-review-20260507-01.conclusion.md"
     )
-    portfolio_conclusion = portfolio_conclusion_path.read_text(encoding="utf-8")
+    portfolio_freeze_conclusion = portfolio_freeze_conclusion_path.read_text(encoding="utf-8")
+    portfolio_proof_conclusion_path = repo_root / (
+        "docs/04-execution/records/portfolio_plan/"
+        "portfolio-plan-bounded-proof-build-card-20260507-01.conclusion.md"
+    )
+    portfolio_proof_conclusion = portfolio_proof_conclusion_path.read_text(encoding="utf-8")
 
-    assert registry["active_mainline_module"] == "portfolio_plan"
+    assert registry["active_mainline_module"] == "trade"
     assert registry["active_foundation_card"] == "none"
-    assert registry["current_allowed_next_card"] == "portfolio_plan_bounded_proof_build_card"
+    assert registry["current_allowed_next_card"] == "trade_freeze_review"
     assert registry["latest_mainline_release_run_id"] == (
-        "portfolio-plan-freeze-review-20260507-01"
+        "portfolio-plan-bounded-proof-build-card-20260507-01"
     )
     assert modules["malf"]["allow_build"] is False
     assert modules["malf"]["next_card"] == "alpha_production_builder_hardening"
@@ -84,23 +89,30 @@ def test_current_gate_opens_portfolio_bounded_proof_after_freeze_review() -> Non
     assert modules["position"]["allow_build"] is False
     assert modules["position"]["next_card"] == "portfolio_plan_freeze_review"
     assert modules["portfolio_plan"]["allow_review"] is False
-    assert modules["portfolio_plan"]["allow_build"] is True
-    assert modules["portfolio_plan"]["next_card"] == "portfolio_plan_bounded_proof_build_card"
+    assert modules["portfolio_plan"]["allow_build"] is False
+    assert modules["portfolio_plan"]["next_card"] == "trade_freeze_review"
     assert modules["portfolio_plan"]["freeze_review_status"] == "passed"
+    assert modules["trade"]["allow_review"] is True
+    assert modules["trade"]["allow_build"] is False
+    assert modules["trade"]["next_card"] == "trade_freeze_review"
     assert "data-reference-target-maintenance-scope-20260506-01" in conclusion_index
     assert "data-reference-target-maintenance-closeout-20260506-01" in conclusion_index
     assert "malf-week-bounded-proof-build-20260506-01" in conclusion_index
     assert "malf-month-bounded-proof-build-20260506-01" in conclusion_index
     assert "alpha-production-builder-hardening-20260506-01" in conclusion_index
     assert "signal-production-builder-hardening-20260506-01" in conclusion_index
+    assert "portfolio-plan-bounded-proof-build-card-20260507-01" in conclusion_index
+    assert "trade-freeze-review-20260507-01" in conclusion_index
     assert "upstream-pre-position-release-decision-20260506-01" in conclusion_index
     assert "position-bounded-proof-build-card-20260506-01" in conclusion_index
     assert "portfolio-plan-freeze-review-20260507-01" in conclusion_index
     assert "malf-v1-3-formal-rebuild-closeout-20260502-01" in conclusion_index
     assert "状态：`passed`" in position_conclusion
     assert "| allowed next action | `portfolio_plan_freeze_review` |" in position_conclusion
-    assert "状态：`passed`" in portfolio_conclusion
-    assert "`portfolio_plan_bounded_proof_build_card`" in portfolio_conclusion
+    assert "状态：`passed`" in portfolio_freeze_conclusion
+    assert "`portfolio_plan_bounded_proof_build_card`" in portfolio_freeze_conclusion
+    assert "状态：`passed`" in portfolio_proof_conclusion
+    assert "| allowed next action | `trade_freeze_review` |" in portfolio_proof_conclusion
 
 
 def test_malf_module_contract_points_at_month_bounded_closeout() -> None:
@@ -168,8 +180,7 @@ def test_project_governance_rejects_pyproject_next_card_state(tmp_path: Path) ->
 def test_project_governance_rejects_missing_current_next_card_file(tmp_path: Path) -> None:
     repo_root = _copy_governance_repo(tmp_path)
     card_path = repo_root / (
-        "docs/04-execution/records/portfolio_plan/"
-        "portfolio-plan-bounded-proof-build-card-20260507-01.card.md"
+        "docs/04-execution/records/trade/trade-freeze-review-20260507-01.card.md"
     )
     if card_path.exists():
         card_path.unlink()
@@ -184,55 +195,11 @@ def test_project_governance_rejects_current_next_card_that_is_already_blocked(
     tmp_path: Path,
 ) -> None:
     repo_root = _copy_governance_repo(tmp_path)
-    registry_path = repo_root / "governance" / "module_gate_registry.toml"
-    registry_text = registry_path.read_text(encoding="utf-8")
-    registry_path.write_text(
-        registry_text.replace(
-            'active_mainline_module = "portfolio_plan"',
-            'active_mainline_module = "position"',
-        )
-        .replace(
-            'current_allowed_next_card = "portfolio_plan_bounded_proof_build_card"',
-            'current_allowed_next_card = "position_freeze_review"',
-        )
-        .replace(
-            'module_id = "position"\n'
-            'display_name = "Position"\n'
-            "mainline = true\n"
-            'status = "released"\n'
-            'doc_status = "freeze review passed / release decision passed / '
-            'bounded proof passed / full build not executed"\n'
-            "allow_build = false\n"
-            "allow_review = false",
-            'module_id = "position"\n'
-            'display_name = "Position"\n'
-            "mainline = true\n"
-            'status = "released"\n'
-            'doc_status = "freeze review passed / release decision passed / '
-            'bounded proof passed / full build not executed"\n'
-            "allow_build = false\n"
-            "allow_review = true",
-        )
-        .replace(
-            'module_id = "portfolio_plan"\n'
-            'display_name = "Portfolio Plan"\n'
-            "mainline = true\n"
-            'status = "freeze_review_passed"\n'
-            'doc_status = "frozen six-doc set / freeze review passed / build not executed"\n'
-            "allow_build = true\n"
-            "allow_review = false",
-            'module_id = "portfolio_plan"\n'
-            'display_name = "Portfolio Plan"\n'
-            "mainline = true\n"
-            'status = "freeze_review_passed"\n'
-            'doc_status = "frozen six-doc set / freeze review passed / build not executed"\n'
-            "allow_build = false\n"
-            "allow_review = false",
-        )
-        .replace(
-            'next_card = "portfolio_plan_freeze_review"',
-            'next_card = "position_freeze_review"',
-        ),
+    conclusion_path = repo_root / (
+        "docs/04-execution/records/trade/trade-freeze-review-20260507-01.conclusion.md"
+    )
+    conclusion_path.write_text(
+        "# Trade Freeze Review Conclusion\n\n状态：`blocked`\n",
         encoding="utf-8",
     )
 
@@ -312,9 +279,8 @@ def test_project_governance_rejects_docs_sync_next_card_mismatch(tmp_path: Path)
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'waits_for = "position_released"\n'
-            'next_card = "portfolio_plan_bounded_proof_build_card"',
-            'waits_for = "position_released"\nnext_card = "malf_day_bounded_proof"',
+            'waits_for = "portfolio_plan_released"\nnext_card = "trade_freeze_review"',
+            'waits_for = "portfolio_plan_released"\nnext_card = "malf_day_bounded_proof"',
         ),
         encoding="utf-8",
     )

@@ -1,16 +1,17 @@
 module_id = "portfolio_plan"
 display_name = "Portfolio Plan"
 contract_version = "v1"
-status = "freeze_review_passed"
+status = "released"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
     "H:/Asteria-Validated/Asteria-position-bounded-proof-build-card-20260506-01.zip",
     "H:/Asteria-Validated/Asteria-portfolio-plan-freeze-review-20260507-01.zip",
+    "H:/Asteria-Validated/Asteria-portfolio-plan-bounded-proof-build-card-20260507-01.zip",
 ]
-gate_state = "freeze_review_passed; bounded_proof_build_card_prepared_not_executed"
-formal_db_permission = "not_allowed_until_bounded_proof_build_card_execution"
+gate_state = "freeze_review_passed; bounded_proof_passed; full_build_not_executed"
+formal_db_permission = "released_day_bounded_portfolio_admission_target_exposure_trim_only; full_build_requires_new_card"
 writeback_boundary = "consume released Position only; never write back upstream"
-run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+run_modes = ["bounded", "resume", "audit-only"]
 resume_behavior = "resume from portfolio checkpoint after Position release"
 source_manifest_fields = ["source_position_release_version", "source_position_run_id"]
 forbidden_inputs = ["alpha_internal", "malf_internal", "signal_internal", "mock_formal_data"]
@@ -29,4 +30,18 @@ db_name = "portfolio_plan.duckdb"
 table = "portfolio_admission_ledger"
 natural_key = ["position_candidate_id", "portfolio_plan_rule_version"]
 public_fields = ["position_candidate_id", "admission_status", "target_exposure_ref"]
+version_fields = ["run_id", "schema_version", "portfolio_plan_rule_version", "source_position_release_version"]
+
+[[official_outputs]]
+db_name = "portfolio_plan.duckdb"
+table = "portfolio_target_exposure"
+natural_key = ["portfolio_admission_id", "exposure_type", "portfolio_plan_rule_version"]
+public_fields = ["portfolio_admission_id", "exposure_type", "target_weight", "target_notional", "target_quantity_hint"]
+version_fields = ["run_id", "schema_version", "portfolio_plan_rule_version", "source_position_release_version"]
+
+[[official_outputs]]
+db_name = "portfolio_plan.duckdb"
+table = "portfolio_trim_ledger"
+natural_key = ["portfolio_admission_id", "trim_reason", "portfolio_plan_rule_version"]
+public_fields = ["portfolio_admission_id", "trim_reason", "pre_trim_exposure", "post_trim_exposure", "constraint_name"]
 version_fields = ["run_id", "schema_version", "portfolio_plan_rule_version", "source_position_release_version"]

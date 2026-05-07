@@ -2,7 +2,7 @@
 
 日期：2026-04-27
 
-状态：frozen / freeze review passed / build not executed
+状态：frozen / freeze review passed / bounded proof passed / full build not executed
 
 ## 1. 模块定义
 
@@ -28,8 +28,9 @@ Position bounded proof passed
 | Release Evidence | Position bounded proof / release evidence 已落档 |
 
 上述条件已由 `position-bounded-proof-build-card-20260506-01` 结论与
-`H:\Asteria-data\position.duckdb` 只读核验证明。本文件冻结为 Portfolio Plan
-design contract；本次 freeze review 不创建 Portfolio Plan formal DB、runner 或下游产物。
+`H:\Asteria-data\position.duckdb` 只读核验证明。本文件已冻结为 Portfolio Plan
+design contract；后续 `portfolio-plan-bounded-proof-build-card-20260507-01` 已创建
+Portfolio Plan bounded proof formal DB 和最小 runner，但不创建下游产物。
 
 ## 3. 权威来源
 
@@ -106,8 +107,8 @@ H:\Asteria-data\portfolio_plan.duckdb
 | `portfolio_trim_ledger` | 裁剪记录 |
 | `portfolio_plan_audit` | Portfolio Plan 审计 |
 
-该 DB 只能在后续 Portfolio Plan bounded proof build card 明确执行时创建。
-本次 freeze review 只冻结 schema 合同，不创建 `portfolio_plan.duckdb`。
+该 DB 已在 `portfolio-plan-bounded-proof-build-card-20260507-01` 中按 bounded proof
+范围创建。Portfolio Plan full build 仍必须另开卡。
 
 ## 8. 数据流
 

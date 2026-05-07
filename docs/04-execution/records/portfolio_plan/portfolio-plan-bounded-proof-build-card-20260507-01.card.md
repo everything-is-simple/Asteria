@@ -2,13 +2,13 @@
 
 日期：2026-05-07
 
-状态：`prepared / not executed`
+状态：`executed / passed`
 
 ## 1. 背景
 
 `portfolio-plan-freeze-review-20260507-01` 已通过，Portfolio Plan 六件套已冻结为
-`frozen / freeze review passed / build not executed`。下一步只允许准备 Portfolio Plan
-bounded proof build card；本文件仅登记下一卡，不代表已执行 build。
+`frozen / freeze review passed / build not executed`。本卡已在 2026-05-07 执行并形成
+Portfolio Plan bounded proof 结论。
 
 ## 2. 基本信息
 
@@ -16,7 +16,7 @@ bounded proof build card；本文件仅登记下一卡，不代表已执行 buil
 |---|---|
 | module | `portfolio_plan` |
 | run_id | `portfolio-plan-bounded-proof-build-card-20260507-01` |
-| stage | `bounded-proof-build / prepared / not executed` |
+| stage | `bounded-proof-build / executed / passed` |
 | owner | `codex` |
 
 ## 3. 输入范围
@@ -27,12 +27,16 @@ bounded proof build card；本文件仅登记下一卡，不代表已执行 buil
 | source DB | `H:\Asteria-data\position.duckdb` |
 | source tables | `position_candidate_ledger`; `position_entry_plan`; `position_exit_plan`; `position_audit` |
 | source boundary | `read-only released Position bounded proof surface` |
+| bounded scope | `day / symbol_limit = 5` |
+| working path | `H:\Asteria-temp\portfolio_plan\<run_id>\` |
+| formal DB path | `H:\Asteria-data\portfolio_plan.duckdb` |
 
 ## 4. 允许动作
 
-- 后续执行 turn 可实现 Portfolio Plan bounded proof 的最小 runner / audit 表面。
-- 后续执行 turn 可在审计通过后创建 `H:\Asteria-data\portfolio_plan.duckdb`。
-- 后续执行 turn 必须生成 Portfolio Plan bounded proof 的 record、evidence-index、conclusion。
+- 本卡已实现 Portfolio Plan bounded proof 的最小 runner / audit 表面。
+- 本卡已在 hard audit 通过后创建 `H:\Asteria-data\portfolio_plan.duckdb`。
+- 本卡已生成 Portfolio Plan bounded proof 的 record、evidence-index、conclusion、
+  report closeout 和 validated evidence。
 
 ## 5. 当前仍禁止
 
@@ -43,4 +47,4 @@ bounded proof build card；本文件仅登记下一卡，不代表已执行 buil
 
 ## 6. 验收与后续门禁
 
-Portfolio Plan bounded proof 通过后，才允许准备 Trade freeze review。
+Portfolio Plan bounded proof 已通过，后续只允许准备 Trade freeze review。

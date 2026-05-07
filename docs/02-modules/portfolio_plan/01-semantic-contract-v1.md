@@ -2,7 +2,7 @@
 
 日期：2026-04-27
 
-状态：frozen / freeze review passed / build not executed
+状态：frozen / freeze review passed / bounded proof passed / full build not executed
 
 ## 1. 合同目的
 
@@ -16,8 +16,9 @@
 Position bounded proof passed
 ```
 
-Portfolio Plan 的任何正式输入字段必须以 Position 已放行字段为准。本次 freeze review
-只冻结语义合同，不创建 Portfolio Plan DB 或 runner。
+Portfolio Plan 的任何正式输入字段必须以 Position 已放行字段为准。
+`portfolio-plan-bounded-proof-build-card-20260507-01` 已创建 bounded proof DB 与 runner；
+full build 仍必须另开卡。
 
 ## 3. 输入语义
 

@@ -51,6 +51,7 @@ H:\Asteria-Validated\Asteria-alpha-production-builder-hardening-20260506-01.zip
 H:\Asteria-Validated\Asteria-signal-production-builder-hardening-20260506-01.zip
 H:\Asteria-Validated\Asteria-position-bounded-proof-build-card-20260506-01.zip
 H:\Asteria-Validated\Asteria-portfolio-plan-freeze-review-20260507-01.zip
+H:\Asteria-Validated\Asteria-portfolio-plan-bounded-proof-build-card-20260507-01.zip
 ```
 
 当前门禁状态：
@@ -58,7 +59,7 @@ H:\Asteria-Validated\Asteria-portfolio-plan-freeze-review-20260507-01.zip
 ```text
 MALF day bounded proof 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞
 -> Data legacy formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry 已通过 -> upstream pre-position completeness synthesis 已完成
--> data reference target maintenance scope 已通过 -> data reference target maintenance closeout 已通过 -> MALF week bounded proof build 已通过 -> MALF month bounded proof build 已通过 -> Alpha production builder hardening 已通过 -> Signal production builder hardening 已通过 -> upstream pre-position release decision 已通过 -> Position bounded proof 已通过 -> Portfolio Plan freeze review 已通过 -> portfolio plan bounded proof build card
+-> data reference target maintenance scope 已通过 -> data reference target maintenance closeout 已通过 -> MALF week bounded proof build 已通过 -> MALF month bounded proof build 已通过 -> Alpha production builder hardening 已通过 -> Signal production builder hardening 已通过 -> upstream pre-position release decision 已通过 -> Position bounded proof 已通过 -> Portfolio Plan freeze review 已通过 -> Portfolio Plan bounded proof 已通过 -> Trade freeze review
 ```
 
 Data Foundation 已完成首轮 `stock / backward / day-week-month` legacy formal promotion，
@@ -78,12 +79,13 @@ index/block source inventory 均已完成 source inventory 裁决；由于无 ap
 reference facts，缺口显式 retained。week/month execution price line
 不作为 MALF week/month 前置必补，继续保留给未来执行语义卡。MALF week/month bounded proof
 和 Alpha / Signal production builder hardening 已通过，upstream pre-position release decision 与
-Position bounded proof 已通过；Portfolio Plan freeze review 已通过；当前只授权准备
-Portfolio Plan bounded proof build card，不授权 Portfolio Plan full build、Position full build、
-Trade/System 下游施工或全链路 pipeline。
+Position bounded proof 已通过；Portfolio Plan freeze review 与 Portfolio Plan bounded proof 已通过；
+当前只授权准备 Trade freeze review，不授权 Trade build、Portfolio Plan full build、
+Position full build、System 下游施工或全链路 pipeline。
 MALF month bounded proof 只放行 month Core/Lifespan/Service 三个 bounded runtime proof 正式库，不等于 MALF full build。
 Signal production builder hardening 只放行 day/week/month formal signal ledger 的 production builder 表面。
 Position bounded proof 只放行 day bounded position candidate / entry plan / exit plan 表面。
+Portfolio Plan bounded proof 只放行 day portfolio admission / target exposure / trim 表面。
 仍不能宣称全主线数据已经齐全或完整证券主数据已齐。
 
 ## 阅读入口
