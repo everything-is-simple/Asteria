@@ -72,7 +72,7 @@ MALF day bounded proof passed
 | Signal | 正式 signal 聚合层 | pre-gate six-doc draft / not frozen | `signal.duckdb` 未建 | Alpha 未 released | 等 Alpha release 后重审并冻结 |
 | Position | 持仓候选 / 进出场计划层 | pre-gate six-doc draft / not frozen | `position.duckdb` 未建 | Signal 未 released | 等 Signal release 后重审并冻结 |
 | Portfolio Plan | 组合约束 / 准入 / 目标暴露层 | pre-gate six-doc draft / not frozen | `portfolio_plan.duckdb` 未建 | Position 未 released | 等 Position release 后重审并冻结 |
-| Trade | 订单意图 / 执行 / 成交账本层 | pre-gate six-doc draft / not frozen | `trade.duckdb` 未建 | Portfolio Plan 未 released | 等 Portfolio Plan release 后重审并冻结 |
+| Trade | 订单意图 / 执行 / 成交账本层 | freeze review passed / bounded proof not executed | `trade.duckdb` 未建 | Portfolio Plan bounded proof 已 released；真实 fill source 未放行 | 下一卡执行 Trade bounded proof build card |
 | System Readout | 全链路只读汇总 / 审计快照层 | pre-gate six-doc draft / not frozen | `system.duckdb` 未建 | Trade 未 released | 等 Trade release 后重审并冻结 |
 | Pipeline | 编排层 / 运行记录层 / 非业务语义模块 | pre-gate six-doc draft / not frozen | `pipeline.duckdb` runtime 未冻结 | 当前卡位不授权 Pipeline freeze 或全链路 | 等明确 Pipeline freeze review 卡，不抢 Alpha 卡位 |
 

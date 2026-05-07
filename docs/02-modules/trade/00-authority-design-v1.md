@@ -2,13 +2,15 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / bounded proof not executed
 
 ## 1. 模块定义
 
 Trade 是 Asteria 主线中位于 Portfolio Plan 之后、System Readout 之前的执行事实模块。
 
 Trade 只负责把已放行的 Portfolio Plan 输出转化为 order intent、execution plan、fill ledger 和 rejection ledger。Trade 不解释 MALF 结构，不重新计算 Alpha、Signal、Position 或 Portfolio Plan，不修改 Portfolio Plan 历史裁决，不输出系统级结论。
+
+`trade-freeze-review-20260507-01` 已将本文件冻结为 Trade v1 合同表面。当前冻结只授权后续准备 Trade bounded proof build card；不授权在 freeze review 内创建 `trade.duckdb`、Trade runner 或真实成交事实。
 
 ## 2. 前置门槛
 
@@ -104,7 +106,7 @@ H:\Asteria-data\trade.duckdb
 | `order_rejection_ledger` | 拒单 / 拒绝执行账本 |
 | `trade_audit` | Trade 审计 |
 
-该 DB 只能在 Trade 设计冻结且 Portfolio Plan released 后创建。
+该 DB 只能在 Trade 设计冻结、Portfolio Plan released，且后续 Trade bounded proof build card 明确执行后创建。freeze review passed 本身不创建正式 Trade DB。
 
 ## 8. 数据流
 
@@ -187,6 +189,8 @@ System Readout -> readonly order intent / execution / fill / rejection
 
 Trade 不得修改 Portfolio Plan 历史输出。System Readout 不得写回 Trade。
 
+当前 Data 正式表面只证明 `execution_price_line = none` 已物化，尚未提供 evidence-backed fill source。Trade v1 冻结 `fill_ledger` schema，但首轮 bounded proof 不得伪造真实成交价或成交账本；若后续 build 无真实执行/成交来源，fill rows 必须保持空表或 retained gap，并由 `trade_audit` 显式记录。
+
 ## 13. 上线门禁
 
 Trade 未来冻结必须满足：
@@ -199,3 +203,5 @@ Trade 未来冻结必须满足：
 | Runner | bounded / segmented / full / resume 语义冻结 |
 | Audit | 只读 Portfolio Plan、无策略重算和系统结论输出、自然键唯一等硬审计冻结 |
 | Evidence | Trade bounded proof 证据落入 `H:\Asteria-report` 或 `H:\Asteria-Validated` |
+
+freeze review 通过后的下一张允许卡是 `trade_bounded_proof_build_card`。该后续卡执行前，Trade full build、System Readout 施工和 full-chain Pipeline 仍未放行。

@@ -2,13 +2,13 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / bounded proof not executed
 
 ## 1. Runner 目标
 
 Trade runner 负责在 Portfolio Plan released 之后，读取 admitted plan / target exposure，构建 order intent、execution plan、fill ledger 和 rejection ledger，并执行边界与一致性审计。
 
-在 Trade 设计冻结前，本文件只冻结草案方向，不要求创建代码文件。
+本文件已由 `trade-freeze-review-20260507-01` 冻结为后续 Trade bounded proof runner 合同。freeze review 本身不创建代码文件；`scripts/trade` 只能由后续 `trade_bounded_proof_build_card` 创建。
 
 ## 2. 前置门槛
 
@@ -103,3 +103,5 @@ flowchart TD
 | 创建 System DB | 禁止 |
 | 写入 system readout 字段 | 禁止 |
 | 绕过 Portfolio Plan release gate 启动 full build | 禁止 |
+
+当前不得伪造成交事实。后续 runner 若缺少 evidence-backed execution / fill source，必须保持 `fill_ledger` 为空或记录 retained gap 审计，不得把 Data `analysis_price_line`、Portfolio Plan target exposure 或人工样例当作真实成交价。

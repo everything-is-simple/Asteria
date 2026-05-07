@@ -2,11 +2,11 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / bounded proof not executed
 
 ## 1. 规格范围
 
-本规格为 Trade pre-gate draft。正式 schema 冻结必须等待：
+本规格已由 `trade-freeze-review-20260507-01` 冻结为 Trade v1 schema contract。正式 DB 创建必须等待：
 
 ```text
 Portfolio Plan released
@@ -15,7 +15,7 @@ Portfolio Plan released
 目标 Trade DB：
 
 ```text
-H:\Asteria-data\trade.duckdb
+trade_bounded_proof_build_card
 ```
 
 该库在 Trade 设计冻结前不得创建。
@@ -191,3 +191,5 @@ erDiagram
 | `portfolio_admission_state_override` | 禁止，归属 Portfolio Plan |
 | `system_readout_id` | 禁止，归属 System Readout |
 | 自定义 MALF / Alpha / Signal / Position / Portfolio Plan 字段 | 禁止 |
+
+`fill_ledger` 表族在本卡只冻结 schema。后续 bounded proof 若没有 evidence-backed execution / fill source，不得向 `fill_ledger` 写入模拟成交事实；该缺口必须通过 `trade_audit` 记录为 retained gap。

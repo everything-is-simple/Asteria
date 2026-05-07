@@ -2,11 +2,13 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / bounded proof not executed
 
 ## 1. 审计目标
 
 Trade 审计用于证明 Trade 只读消费 Portfolio Plan 输出，输出仅限 order intent、execution plan、fill ledger 和 rejection ledger，并且没有越界写入 Portfolio Plan、Position、Signal、Alpha、MALF 或 System。
+
+`trade-freeze-review-20260507-01` 已冻结本审计表面。当前审计还必须证明 bounded proof 不伪造真实成交事实：没有 evidence-backed execution / fill source 时，`fill_ledger` 可以是冻结 schema 或空表，但不得出现模拟 fill rows。
 
 ## 2. 前置审计
 
@@ -53,6 +55,7 @@ Trade 审计用于证明 Trade 只读消费 Portfolio Plan 输出，输出仅限
 | fill price / order price 必须来自 Data `execution_price_line` | hard fail |
 | Trade 不得使用 Data `analysis_price_line` 作为真实成交价 | hard fail |
 | rejected order 必须记录 rejection reason | hard fail |
+| 无 evidence-backed fill source 时不得写入正式 fill rows | hard fail |
 
 ## 6. 软观察
 
@@ -101,8 +104,8 @@ trade_audit
 |---|---|
 | order intent created | 必须 |
 | execution plan created | 必须 |
-| fill recorded | 必须 |
-| partial fill 或 expired order | 必须 |
+| fill recorded | 仅在 evidence-backed fill source 已放行时必须；否则必须记录 retained gap |
+| partial fill 或 expired order | 二选一；无 fill source 时至少覆盖 expired order |
 | rejection recorded | 必须 |
 | source Portfolio Plan trace | 必须 |
 

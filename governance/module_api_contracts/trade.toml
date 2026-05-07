@@ -1,18 +1,24 @@
 module_id = "trade"
 display_name = "Trade"
 contract_version = "v1"
-status = "pre_gate_draft"
+status = "freeze_review_passed"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+    "H:/Asteria-Validated/Asteria-trade-freeze-review-20260507-01.zip",
 ]
-gate_state = "pre_gate_draft; wait_for_portfolio_plan_release"
-formal_db_permission = "not_allowed"
+gate_state = "freeze_review_passed; bounded_proof_not_executed; full_build_not_executed"
+formal_db_permission = "not_allowed_in_freeze_review; allowed_only_by_trade_bounded_proof_build_card"
 writeback_boundary = "consume released Portfolio Plan only; never write back upstream"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from trade checkpoint after Portfolio Plan release"
 source_manifest_fields = ["source_portfolio_plan_release_version", "source_portfolio_plan_run_id"]
 forbidden_inputs = ["alpha_internal", "malf_internal", "position_internal", "mock_formal_data"]
 forbidden_outputs = ["portfolio_plan_writeback", "position_writeback", "strategy_score", "portfolio_constraint"]
+freeze_review_run_id = "trade-freeze-review-20260507-01"
+release_conclusion = "docs/04-execution/records/trade/trade-freeze-review-20260507-01.conclusion.md"
+evidence_index = "docs/04-execution/records/trade/trade-freeze-review-20260507-01.evidence-index.md"
+next_allowed_action = "trade_bounded_proof_build_card"
+fill_fact_policy = "schema_frozen; formal_fill_rows_require_evidence_backed_execution_or_fill_source"
 
 [[official_inputs]]
 input_type = "database"

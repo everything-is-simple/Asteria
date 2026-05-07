@@ -23,11 +23,12 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-position-bounded-proof-build-card-20260506-01.zip",
     "H:/Asteria-Validated/Asteria-portfolio-plan-freeze-review-20260507-01.zip",
     "H:/Asteria-Validated/Asteria-portfolio-plan-bounded-proof-build-card-20260507-01.zip",
+    "H:/Asteria-Validated/Asteria-trade-freeze-review-20260507-01.zip",
 ]
 latest_governance_run_id = "validated-historical-evidence-rehydration-20260502-01"
 latest_mainline_release_run_id = "portfolio-plan-bounded-proof-build-card-20260507-01"
 latest_authority_sync_run_id = "malf-v1-4-core-operational-boundary-authority-sync-20260503-01"
-current_allowed_next_card = "trade_freeze_review"
+current_allowed_next_card = "trade_bounded_proof_build_card"
 pre_position_repair_sequence = [
     "data_reference_target_maintenance_scope",
     "data_reference_target_maintenance_closeout",
@@ -172,17 +173,21 @@ next_allowed_action = "trade_freeze_review"
 module_id = "trade"
 display_name = "Trade"
 mainline = true
-status = "freeze_review_prepared"
-doc_status = "pre-gate six-doc draft / freeze review prepared"
-allow_build = false
-allow_review = true
+status = "freeze_review_passed"
+doc_status = "frozen six-doc set / freeze review passed / bounded proof not executed"
+allow_build = true
+allow_review = false
 doc_path = "docs/02-modules/trade"
 waits_for = "portfolio_plan_released"
-next_card = "trade_freeze_review"
-active_card = "docs/04-execution/records/trade/trade-freeze-review-20260507-01.card.md"
-formal_db_permission = "not_allowed"
+next_card = "trade_bounded_proof_build_card"
+active_card = "docs/04-execution/records/trade/trade-bounded-proof-build-card-20260507-01.card.md"
+freeze_review_status = "passed"
+freeze_review_run_id = "trade-freeze-review-20260507-01"
+release_conclusion = "docs/04-execution/records/trade/trade-freeze-review-20260507-01.conclusion.md"
+evidence_index = "docs/04-execution/records/trade/trade-freeze-review-20260507-01.evidence-index.md"
+formal_db_permission = "not_allowed_in_freeze_review; allowed_only_by_trade_bounded_proof_build_card"
 input_boundary = "read_only_released_portfolio_plan_bounded_proof_surface"
-next_allowed_action = "trade_freeze_review"
+next_allowed_action = "trade_bounded_proof_build_card"
 
 [[modules]]
 module_id = "system_readout"

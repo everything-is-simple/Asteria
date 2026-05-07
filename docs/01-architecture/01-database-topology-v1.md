@@ -258,7 +258,7 @@ week/month supplemental/full build。
 | `market_meta.duckdb` | 已按可证事实优先口径最小正式化；申万 2021 当前行业快照部分释放；Data baseline sealed；Data reference maintenance closeout passed；其他 reference gaps retained |
 | `market_base_day.duckdb` 正式化 | 已通过 Data formal promotion、production closeout 与 execution line materialization |
 | `pipeline.duckdb` runtime | 仍未冻结，不得先于业务模块定义语义 |
-| week / month MALF | week 与 month bounded proof build 已通过；Alpha 与 Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review 与 Portfolio Plan bounded proof 已通过；当前进入 Trade freeze review |
+| week / month MALF | week 与 month bounded proof build 已通过；Alpha 与 Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof 与 Trade freeze review 已通过；当前进入 Trade bounded proof build card |
 
 Alpha bounded proof 与 production builder hardening 已通过，五个 Alpha family DB 已在
 day/week/month released MALF Service 表面补齐 production-builder rows。
@@ -266,5 +266,6 @@ Signal bounded proof 与 production builder hardening 已通过，`signal.duckdb
 day/week/month formal signal ledger production surface。Position bounded proof 已通过，
 `position.duckdb` 已形成 day bounded position candidate / entry plan / exit plan surface。
 Portfolio Plan bounded proof 已通过，`portfolio_plan.duckdb` 已形成 day bounded portfolio
-admission / target exposure / trim surface。但不得因此提前打开 Position full build、
-Portfolio Plan full build、Trade build、System 下游正式库或 full-chain Pipeline。
+admission / target exposure / trim surface。Trade freeze review 已通过并冻结 `trade.duckdb`
+schema 合同，但尚未创建正式 `trade.duckdb`。不得因此提前打开 Position full build、
+Portfolio Plan full build、Trade full build、System 下游正式库或 full-chain Pipeline。

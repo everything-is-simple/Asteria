@@ -36,6 +36,7 @@
 - `H:\Asteria-Validated\Asteria-position-bounded-proof-build-card-20260506-01.zip`
 - `H:\Asteria-Validated\Asteria-portfolio-plan-freeze-review-20260507-01.zip`
 - `H:\Asteria-Validated\Asteria-portfolio-plan-bounded-proof-build-card-20260507-01.zip`
+- `H:\Asteria-Validated\Asteria-trade-freeze-review-20260507-01.zip`
 
 `214427` 是重要 docs/code 快照锚点；`130309` 是三天重构成果的历史系统
 docs/code 快照；`101006` 是 Data formal promotion（Data 正式提升）与 MALF v1.3
@@ -86,6 +87,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Position | `position-bounded-proof-build-card-20260506-01` | `passed` | [conclusion](records/position/position-bounded-proof-build-card-20260506-01.conclusion.md) | [evidence-index](records/position/position-bounded-proof-build-card-20260506-01.evidence-index.md) |
 | Portfolio Plan | `portfolio-plan-freeze-review-20260507-01` | `passed` | [conclusion](records/portfolio_plan/portfolio-plan-freeze-review-20260507-01.conclusion.md) | [evidence-index](records/portfolio_plan/portfolio-plan-freeze-review-20260507-01.evidence-index.md) |
 | Portfolio Plan | `portfolio-plan-bounded-proof-build-card-20260507-01` | `passed` | [conclusion](records/portfolio_plan/portfolio-plan-bounded-proof-build-card-20260507-01.conclusion.md) | [evidence-index](records/portfolio_plan/portfolio-plan-bounded-proof-build-card-20260507-01.evidence-index.md) |
+| Trade | `trade-freeze-review-20260507-01` | `passed` | [conclusion](records/trade/trade-freeze-review-20260507-01.conclusion.md) | [evidence-index](records/trade/trade-freeze-review-20260507-01.evidence-index.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
@@ -110,10 +112,12 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   `upstream-pre-position-release-decision-20260506-01` 与
   `position-bounded-proof-build-card-20260506-01`、
   `portfolio-plan-freeze-review-20260507-01` 与
-  `portfolio-plan-bounded-proof-build-card-20260507-01` 已通过；当前下一张允许卡推进为
-  `trade-freeze-review-20260507-01`。Position bounded proof 已执行，
+  `portfolio-plan-bounded-proof-build-card-20260507-01` 与
+  `trade-freeze-review-20260507-01` 已通过；当前下一张允许卡推进为
+  `trade-bounded-proof-build-card-20260507-01`。Position bounded proof 已执行，
   `position.duckdb` 已创建 day bounded surface；Portfolio Plan bounded proof 已执行，
-  `portfolio_plan.duckdb` 已创建 day bounded surface。
+  `portfolio_plan.duckdb` 已创建 day bounded surface。Trade freeze review 只冻结合同表面，
+  尚未创建 `trade.duckdb` 或 Trade runner。
 - MALF v1.4 authority package 已形成，继承 v1.3 semantic mainline 并新增 Core
   operational boundary rules；`malf-v1-4-core-runtime-sync-implementation-20260505-01`
   现为当前 MALF day runtime evidence，`malf-week-bounded-proof-build-20260506-01`
@@ -137,7 +141,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   泛化补数入口。
 - Validated 历史 evidence zip 已对齐到 `H:\Asteria-Validated\2.backups` 冷归档路径；
   这是治理资产布局维护，不改变任何模块门禁。
-- 当前只准备 Trade freeze review；Trade build、Portfolio Plan full build、Position full build、
+- 当前只准备 Trade bounded proof build card；Trade full build、Portfolio Plan full build、Position full build、
   System 施工和全链路 pipeline 仍未放行，直到后续门禁通过并明确授权。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
 
@@ -147,7 +151,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 
 | 顺序 | 模块 | run_id | card |
 |---:|---|---|---|
-| 1 | Trade | `trade-freeze-review-20260507-01` | [card](records/trade/trade-freeze-review-20260507-01.card.md) |
+| 1 | Trade | `trade-bounded-proof-build-card-20260507-01` | [card](records/trade/trade-bounded-proof-build-card-20260507-01.card.md) |
 
 ## 3.1 Newly Passed Pre-Position Repair Card
 
@@ -161,3 +165,4 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Position | `position-bounded-proof-build-card-20260506-01` | `passed` | [conclusion](records/position/position-bounded-proof-build-card-20260506-01.conclusion.md) |
 | Portfolio Plan | `portfolio-plan-freeze-review-20260507-01` | `passed` | [conclusion](records/portfolio_plan/portfolio-plan-freeze-review-20260507-01.conclusion.md) |
 | Portfolio Plan | `portfolio-plan-bounded-proof-build-card-20260507-01` | `passed` | [conclusion](records/portfolio_plan/portfolio-plan-bounded-proof-build-card-20260507-01.conclusion.md) |
+| Trade | `trade-freeze-review-20260507-01` | `passed` | [conclusion](records/trade/trade-freeze-review-20260507-01.conclusion.md) |

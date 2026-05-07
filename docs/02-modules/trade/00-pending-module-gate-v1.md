@@ -2,14 +2,13 @@
 
 日期：2026-04-29
 
-状态：pre-gate draft / not frozen
+状态：superseded by freeze review / retained for pre-gate history
 
 ## 1. 当前裁决
 
-Trade 是 Portfolio Plan 之后的主线模块。本目录已补齐 pre-gate 六件套 draft，但本轮不冻结 Trade 设计，不允许进入施工。
+Trade 是 Portfolio Plan 之后的主线模块。本目录已补齐 pre-gate 六件套 draft；`trade-freeze-review-20260507-01` 已完成 review-only 审查并冻结六件套合同表面。
 
-截至 2026-04-29，当前唯一允许推进的是 `Alpha freeze review`。Trade 仍必须等待
-Portfolio Plan release，不得绕过组合裁决生成订单或成交账本。
+截至 2026-05-07，Portfolio Plan bounded proof 已通过，Trade freeze review 已通过。当前只允许准备 `trade_bounded_proof_build_card`；不得绕过该 build card 创建 Trade DB、Trade runner、System Readout 或 full-chain Pipeline。
 
 ## 2. 等待条件
 
@@ -19,7 +18,7 @@ Trade 必须等待：
 Portfolio Plan released
 ```
 
-Portfolio Plan 放行前，Trade 不得定义订单意图、执行价格线、成交账本或拒单账本。
+Portfolio Plan 已放行 day bounded surface；Trade 已冻结订单意图、执行价格线、成交账本和拒单账本的合同表面。真实成交事实仍不得伪造：没有 evidence-backed execution / fill source 前，`fill_ledger` 只能作为 schema 或 retained gap。
 
 ## 3. 上游依赖
 

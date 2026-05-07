@@ -47,7 +47,7 @@ def test_project_governance_passes_current_repo() -> None:
     assert findings == []
 
 
-def test_current_gate_opens_trade_freeze_review_after_portfolio_proof() -> None:
+def test_current_gate_opens_trade_bounded_proof_after_freeze_review() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     with registry_path.open("rb") as handle:
@@ -71,10 +71,14 @@ def test_current_gate_opens_trade_freeze_review_after_portfolio_proof() -> None:
         "portfolio-plan-bounded-proof-build-card-20260507-01.conclusion.md"
     )
     portfolio_proof_conclusion = portfolio_proof_conclusion_path.read_text(encoding="utf-8")
+    trade_freeze_conclusion_path = repo_root / (
+        "docs/04-execution/records/trade/trade-freeze-review-20260507-01.conclusion.md"
+    )
+    trade_freeze_conclusion = trade_freeze_conclusion_path.read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == "trade"
     assert registry["active_foundation_card"] == "none"
-    assert registry["current_allowed_next_card"] == "trade_freeze_review"
+    assert registry["current_allowed_next_card"] == "trade_bounded_proof_build_card"
     assert registry["latest_mainline_release_run_id"] == (
         "portfolio-plan-bounded-proof-build-card-20260507-01"
     )
@@ -92,9 +96,10 @@ def test_current_gate_opens_trade_freeze_review_after_portfolio_proof() -> None:
     assert modules["portfolio_plan"]["allow_build"] is False
     assert modules["portfolio_plan"]["next_card"] == "trade_freeze_review"
     assert modules["portfolio_plan"]["freeze_review_status"] == "passed"
-    assert modules["trade"]["allow_review"] is True
-    assert modules["trade"]["allow_build"] is False
-    assert modules["trade"]["next_card"] == "trade_freeze_review"
+    assert modules["trade"]["allow_review"] is False
+    assert modules["trade"]["allow_build"] is True
+    assert modules["trade"]["next_card"] == "trade_bounded_proof_build_card"
+    assert modules["trade"]["freeze_review_status"] == "passed"
     assert "data-reference-target-maintenance-scope-20260506-01" in conclusion_index
     assert "data-reference-target-maintenance-closeout-20260506-01" in conclusion_index
     assert "malf-week-bounded-proof-build-20260506-01" in conclusion_index
@@ -113,6 +118,8 @@ def test_current_gate_opens_trade_freeze_review_after_portfolio_proof() -> None:
     assert "`portfolio_plan_bounded_proof_build_card`" in portfolio_freeze_conclusion
     assert "状态：`passed`" in portfolio_proof_conclusion
     assert "| allowed next action | `trade_freeze_review` |" in portfolio_proof_conclusion
+    assert "状态：`passed`" in trade_freeze_conclusion
+    assert "| allowed next action | `trade_bounded_proof_build_card` |" in trade_freeze_conclusion
 
 
 def test_malf_module_contract_points_at_month_bounded_closeout() -> None:
@@ -180,7 +187,7 @@ def test_project_governance_rejects_pyproject_next_card_state(tmp_path: Path) ->
 def test_project_governance_rejects_missing_current_next_card_file(tmp_path: Path) -> None:
     repo_root = _copy_governance_repo(tmp_path)
     card_path = repo_root / (
-        "docs/04-execution/records/trade/trade-freeze-review-20260507-01.card.md"
+        "docs/04-execution/records/trade/trade-bounded-proof-build-card-20260507-01.card.md"
     )
     if card_path.exists():
         card_path.unlink()
@@ -196,10 +203,10 @@ def test_project_governance_rejects_current_next_card_that_is_already_blocked(
 ) -> None:
     repo_root = _copy_governance_repo(tmp_path)
     conclusion_path = repo_root / (
-        "docs/04-execution/records/trade/trade-freeze-review-20260507-01.conclusion.md"
+        "docs/04-execution/records/trade/trade-bounded-proof-build-card-20260507-01.conclusion.md"
     )
     conclusion_path.write_text(
-        "# Trade Freeze Review Conclusion\n\n状态：`blocked`\n",
+        "# Trade Bounded Proof Build Conclusion\n\n状态：`blocked`\n",
         encoding="utf-8",
     )
 
@@ -243,9 +250,9 @@ def test_project_governance_rejects_mock_or_legacy_official_input(tmp_path: Path
 
 def test_project_governance_rejects_pre_gate_runner_script(tmp_path: Path) -> None:
     repo_root = _copy_governance_repo(tmp_path)
-    trade_script = repo_root / "scripts" / "trade" / "run_trade_build.py"
-    trade_script.parent.mkdir(parents=True)
-    trade_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
+    system_script = repo_root / "scripts" / "system_readout" / "run_system_readout_build.py"
+    system_script.parent.mkdir(parents=True)
+    system_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
 
     assert any(
         "pre-gate module has forbidden formal runner" in message for message in _messages(repo_root)
@@ -254,9 +261,9 @@ def test_project_governance_rejects_pre_gate_runner_script(tmp_path: Path) -> No
 
 def test_project_governance_rejects_pre_gate_db_create_script(tmp_path: Path) -> None:
     repo_root = _copy_governance_repo(tmp_path)
-    trade_script = repo_root / "scripts" / "trade" / "create_trade_schema.py"
-    trade_script.parent.mkdir(parents=True)
-    trade_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
+    system_script = repo_root / "scripts" / "system_readout" / "create_system_readout_schema.py"
+    system_script.parent.mkdir(parents=True)
+    system_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
 
     assert any(
         "pre-gate module has forbidden formal DB create script" in message
@@ -279,7 +286,7 @@ def test_project_governance_rejects_docs_sync_next_card_mismatch(tmp_path: Path)
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'waits_for = "portfolio_plan_released"\nnext_card = "trade_freeze_review"',
+            'waits_for = "portfolio_plan_released"\nnext_card = "trade_bounded_proof_build_card"',
             'waits_for = "portfolio_plan_released"\nnext_card = "malf_day_bounded_proof"',
         ),
         encoding="utf-8",

@@ -2,13 +2,13 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：superseded by freeze review / next build card prepared
 
 ## 1. 本卡目标
 
-补齐 Trade pre-gate 六件套 draft，为 Portfolio Plan released 之后的 Trade 设计冻结做准备。
+本历史卡补齐 Trade pre-gate 六件套 draft；`trade-freeze-review-20260507-01` 已完成设计冻结。
 
-本卡不允许代码施工，不允许创建正式 DuckDB，不允许冻结 Trade。
+本卡本身不允许代码施工，不允许创建正式 DuckDB；冻结结论由 `trade-freeze-review-20260507-01` 承接。后续唯一允许准备的执行卡为 `trade-bounded-proof-build-card-20260507-01`。
 
 ## 2. 当前卡位
 

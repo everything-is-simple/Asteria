@@ -29,6 +29,7 @@
 | `H:\Asteria-Validated\Asteria-data-market-meta-formalization-20260502-01.zip` | Data market_meta 最小正式证据 | 证明 `market_meta.duckdb` 已按可证事实优先口径落地，reference gaps retained |
 | `H:\Asteria-Validated\Asteria-data-market-meta-sw-industry-snapshot-20260502-01.zip` | Data 申万行业快照证据 | 证明 `industry_classification` 已部分释放申万 2021 当前快照，其他 reference gaps retained |
 | `H:\Asteria-Validated\Asteria-data-foundation-production-baseline-seal-20260502-01.zip` | Data baseline seal 证据 | 证明 Data 已封为主线输入底座，后续 Data 只能走 maintenance card |
+| `H:\Asteria-Validated\Asteria-trade-freeze-review-20260507-01.zip` | Trade freeze review 证据 | 证明 Trade 六件套已冻结为 review-only 合同表面；未创建 `trade.duckdb` 或 Trade runner |
 | `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0` | 全系统权威设计整理包 | 覆盖 Data / MALF / Alpha / Signal / Position / Portfolio Plan / Trade / System Readout / Pipeline 的当前设计状态 |
 | `H:\Asteria-Validated\Asteria_System_Design_Set_v1_0.zip` | 全系统权威设计整理包归档 | 与同名目录一致；作为系统级设计包 validated archive |
 | `H:\Asteria-Validated\Asteria-malf-day-bounded-proof-20260428-01.zip` | MALF day 放行证据 | 证明 MALF day Core/Lifespan/Service 三库 bounded proof 已通过 |

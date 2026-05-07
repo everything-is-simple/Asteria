@@ -2,7 +2,7 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / bounded proof not executed
 
 ## 1. 合同目的
 
@@ -51,6 +51,8 @@ Trade 不得把 Portfolio Plan 缺行解释为 Position、Signal、Alpha 或 MAL
 | `trade_state` | intended / executable / filled / partially_filled / rejected / expired |
 
 Trade 是执行事实层，不是策略解释层。
+
+`trade-freeze-review-20260507-01` 已冻结本语义合同：Trade v1 只读消费 released Portfolio Plan bounded proof surface，不直接读取 Position / Signal / Alpha / MALF 形成业务输出，不回写任何上游模块。
 
 ## 5. 输出语义
 
@@ -109,7 +111,7 @@ Trade 正式输出分五层：
 | `fill_amount` | 必填 |
 | `trade_rule_version` | 必填 |
 
-Fill 只记录执行事实，不改写 Portfolio Plan 历史裁决。
+Fill 只记录执行事实，不改写 Portfolio Plan 历史裁决。当前不得伪造真实 fill：在没有 evidence-backed execution / fill source 前，`fill_ledger` 只作为冻结 schema，首轮 bounded proof 可以记录 empty / retained gap 状态，但不得写入模拟成交作为正式事实。
 
 ## 9. 不允许表达
 
