@@ -1,12 +1,13 @@
 module_id = "position"
 display_name = "Position"
 contract_version = "v1"
-status = "freeze_review_passed"
+status = "released"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+    "H:/Asteria-Validated/Asteria-position-bounded-proof-build-card-20260506-01.zip",
 ]
-gate_state = "freeze_review_passed; bounded_proof_build_card_prepared; build_not_executed"
-formal_db_permission = "blocked_until_position_bounded_proof_build_card_execution"
+gate_state = "freeze_review_passed; bounded_proof_passed; full_build_not_executed"
+formal_db_permission = "released_day_bounded_position_candidate_entry_exit_only; full_build_requires_new_card"
 writeback_boundary = "consume released Signal only; never write back upstream"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from position checkpoint after Signal release"

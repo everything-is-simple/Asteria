@@ -47,7 +47,7 @@ def test_project_governance_passes_current_repo() -> None:
     assert findings == []
 
 
-def test_current_gate_opens_position_build_after_release_decision() -> None:
+def test_current_gate_opens_portfolio_freeze_review_after_position_bounded_proof() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     with registry_path.open("rb") as handle:
@@ -56,17 +56,17 @@ def test_current_gate_opens_position_build_after_release_decision() -> None:
     conclusion_index = (
         repo_root / "docs" / "04-execution" / "00-conclusion-index-v1.md"
     ).read_text(encoding="utf-8")
-    release_decision_path = repo_root / (
+    position_conclusion_path = repo_root / (
         "docs/04-execution/records/position/"
-        "upstream-pre-position-release-decision-20260506-01.conclusion.md"
+        "position-bounded-proof-build-card-20260506-01.conclusion.md"
     )
-    release_decision = release_decision_path.read_text(encoding="utf-8")
+    position_conclusion = position_conclusion_path.read_text(encoding="utf-8")
 
-    assert registry["active_mainline_module"] == "position"
+    assert registry["active_mainline_module"] == "portfolio_plan"
     assert registry["active_foundation_card"] == "none"
-    assert registry["current_allowed_next_card"] == "position_bounded_proof_build_card"
+    assert registry["current_allowed_next_card"] == "portfolio_plan_freeze_review"
     assert registry["latest_mainline_release_run_id"] == (
-        "signal-production-builder-hardening-20260506-01"
+        "position-bounded-proof-build-card-20260506-01"
     )
     assert modules["malf"]["allow_build"] is False
     assert modules["malf"]["next_card"] == "alpha_production_builder_hardening"
@@ -76,8 +76,11 @@ def test_current_gate_opens_position_build_after_release_decision() -> None:
     assert modules["signal"]["next_card"] == "upstream_pre_position_release_decision"
     assert modules["data"]["latest_completed_card"] == "data_reference_target_maintenance_closeout"
     assert modules["position"]["allow_review"] is False
-    assert modules["position"]["allow_build"] is True
-    assert modules["position"]["next_card"] == "position_bounded_proof_build_card"
+    assert modules["position"]["allow_build"] is False
+    assert modules["position"]["next_card"] == "portfolio_plan_freeze_review"
+    assert modules["portfolio_plan"]["allow_review"] is True
+    assert modules["portfolio_plan"]["allow_build"] is False
+    assert modules["portfolio_plan"]["next_card"] == "portfolio_plan_freeze_review"
     assert "data-reference-target-maintenance-scope-20260506-01" in conclusion_index
     assert "data-reference-target-maintenance-closeout-20260506-01" in conclusion_index
     assert "malf-week-bounded-proof-build-20260506-01" in conclusion_index
@@ -85,9 +88,10 @@ def test_current_gate_opens_position_build_after_release_decision() -> None:
     assert "alpha-production-builder-hardening-20260506-01" in conclusion_index
     assert "signal-production-builder-hardening-20260506-01" in conclusion_index
     assert "upstream-pre-position-release-decision-20260506-01" in conclusion_index
+    assert "position-bounded-proof-build-card-20260506-01" in conclusion_index
     assert "malf-v1-3-formal-rebuild-closeout-20260502-01" in conclusion_index
-    assert "状态：`passed / review-only release decision closed`" in release_decision
-    assert "| allowed next action | `position_bounded_proof_build_card` |" in release_decision
+    assert "状态：`passed`" in position_conclusion
+    assert "| allowed next action | `portfolio_plan_freeze_review` |" in position_conclusion
 
 
 def test_malf_module_contract_points_at_month_bounded_closeout() -> None:
@@ -155,8 +159,7 @@ def test_project_governance_rejects_pyproject_next_card_state(tmp_path: Path) ->
 def test_project_governance_rejects_missing_current_next_card_file(tmp_path: Path) -> None:
     repo_root = _copy_governance_repo(tmp_path)
     card_path = repo_root / (
-        "docs/04-execution/records/position/"
-        "upstream-pre-position-release-decision-20260506-01.card.md"
+        "docs/04-execution/records/portfolio_plan/portfolio-plan-freeze-review-20260507-01.card.md"
     )
     if card_path.exists():
         card_path.unlink()
@@ -175,57 +178,51 @@ def test_project_governance_rejects_current_next_card_that_is_already_blocked(
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'active_mainline_module = "malf"',
+            'active_mainline_module = "portfolio_plan"',
             'active_mainline_module = "position"',
         )
         .replace(
-            'active_mainline_module = "alpha"',
-            'active_mainline_module = "position"',
-        )
-        .replace(
-            'active_mainline_module = "signal"',
-            'active_mainline_module = "position"',
-        )
-        .replace(
-            'current_allowed_next_card = "signal_production_builder_hardening"',
+            'current_allowed_next_card = "portfolio_plan_freeze_review"',
             'current_allowed_next_card = "position_freeze_review"',
-        )
-        .replace(
-            'module_id = "signal"\n'
-            'display_name = "Signal"\n'
-            "mainline = true\n"
-            'status = "released_production_hardening_active"\n'
-            'doc_status = "frozen six-doc set / bounded proof passed / '
-            'production hardening card prepared"\n'
-            "allow_build = true",
-            'module_id = "signal"\n'
-            'display_name = "Signal"\n'
-            "mainline = true\n"
-            'status = "released_production_hardening_active"\n'
-            'doc_status = "frozen six-doc set / bounded proof passed / '
-            'production hardening card prepared"\n'
-            "allow_build = false",
         )
         .replace(
             'module_id = "position"\n'
             'display_name = "Position"\n'
             "mainline = true\n"
-            'status = "freeze_review_passed"\n'
-            'doc_status = "freeze review passed / design contract frozen / '
-            'build not executed"\n'
+            'status = "released"\n'
+            'doc_status = "freeze review passed / release decision passed / '
+            'bounded proof passed / full build not executed"\n'
             "allow_build = false\n"
             "allow_review = false",
             'module_id = "position"\n'
             'display_name = "Position"\n'
             "mainline = true\n"
-            'status = "freeze_review_passed"\n'
-            'doc_status = "freeze review passed / design contract frozen / '
-            'build not executed"\n'
+            'status = "released"\n'
+            'doc_status = "freeze review passed / release decision passed / '
+            'bounded proof passed / full build not executed"\n'
             "allow_build = false\n"
             "allow_review = true",
         )
         .replace(
-            'next_card = "upstream_pre_position_release_decision"',
+            'module_id = "portfolio_plan"\n'
+            'display_name = "Portfolio Plan"\n'
+            "mainline = true\n"
+            'status = "freeze_review_ready"\n'
+            'doc_status = "pre-gate six-doc draft / position bounded proof passed / '
+            'freeze review allowed"\n'
+            "allow_build = false\n"
+            "allow_review = true",
+            'module_id = "portfolio_plan"\n'
+            'display_name = "Portfolio Plan"\n'
+            "mainline = true\n"
+            'status = "freeze_review_ready"\n'
+            'doc_status = "pre-gate six-doc draft / position bounded proof passed / '
+            'freeze review allowed"\n'
+            "allow_build = false\n"
+            "allow_review = false",
+        )
+        .replace(
+            'next_card = "portfolio_plan_freeze_review"',
             'next_card = "position_freeze_review"',
         ),
         encoding="utf-8",
@@ -271,9 +268,9 @@ def test_project_governance_rejects_mock_or_legacy_official_input(tmp_path: Path
 
 def test_project_governance_rejects_pre_gate_runner_script(tmp_path: Path) -> None:
     repo_root = _copy_governance_repo(tmp_path)
-    position_script = repo_root / "scripts" / "position" / "run_position_bounded_proof.py"
-    position_script.parent.mkdir(parents=True)
-    position_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
+    portfolio_script = repo_root / "scripts" / "portfolio_plan" / "run_portfolio_plan_build.py"
+    portfolio_script.parent.mkdir(parents=True)
+    portfolio_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
 
     assert any(
         "pre-gate module has forbidden formal runner" in message for message in _messages(repo_root)
@@ -282,9 +279,9 @@ def test_project_governance_rejects_pre_gate_runner_script(tmp_path: Path) -> No
 
 def test_project_governance_rejects_pre_gate_db_create_script(tmp_path: Path) -> None:
     repo_root = _copy_governance_repo(tmp_path)
-    position_script = repo_root / "scripts" / "position" / "create_position_schema.py"
-    position_script.parent.mkdir(parents=True)
-    position_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
+    portfolio_script = repo_root / "scripts" / "portfolio_plan" / "create_portfolio_plan_schema.py"
+    portfolio_script.parent.mkdir(parents=True)
+    portfolio_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
 
     assert any(
         "pre-gate module has forbidden formal DB create script" in message
@@ -307,8 +304,8 @@ def test_project_governance_rejects_docs_sync_next_card_mismatch(tmp_path: Path)
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'waits_for = "signal_released"\nnext_card = "upstream_pre_position_release_decision"',
-            'waits_for = "signal_released"\nnext_card = "malf_day_bounded_proof"',
+            'waits_for = "position_released"\nnext_card = "portfolio_plan_freeze_review"',
+            'waits_for = "position_released"\nnext_card = "malf_day_bounded_proof"',
         ),
         encoding="utf-8",
     )

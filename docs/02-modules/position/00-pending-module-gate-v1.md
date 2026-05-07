@@ -2,16 +2,16 @@
 
 日期：2026-04-29
 
-状态：superseded by freeze review reentry / build not executed
+状态：superseded by bounded proof / full build not executed
 
 ## 1. 当前裁决
 
 Position 是 Signal 之后的主线模块。本目录曾用于登记 pre-gate 六件套 draft。当前已通过
 Signal bounded proof，且 `position-freeze-review-reentry-20260430-01` 已完成 review-only
-审查并通过；下一步只允许 Position bounded proof build card。
+审查并通过；Position bounded proof build card 已通过。
 
 截至 2026-05-06，Position 六件套已冻结为文档合同表面，但 Position runner、正式 DB、
-bounded proof 和下游施工仍未执行。Position 不得绕过 Signal 直接消费 Alpha 草案或
+Position full build 和下游施工仍未执行。Position 不得绕过 Signal 直接消费 Alpha 草案或
 MALF WavePosition。
 
 ## 2. 等待条件
@@ -45,12 +45,12 @@ Position 只能消费正式 Signal 账本，不得直接用 Alpha 草案或 MALF
 
 | 文档 | 状态 |
 |---|---|
-| `00-authority-design-v1.md` | freeze review passed / design contract frozen / build not executed |
-| `01-semantic-contract-v1.md` | freeze review passed / design contract frozen / build not executed |
-| `02-database-schema-spec-v1.md` | freeze review passed / design contract frozen / build not executed |
-| `03-runner-contract-v1.md` | freeze review passed / design contract frozen / build not executed |
-| `04-audit-spec-v1.md` | freeze review passed / design contract frozen / build not executed |
-| `05-build-card-v1.md` | freeze review passed / bounded-proof card specification frozen / build not executed |
+| `00-authority-design-v1.md` | freeze review passed / bounded proof passed / full build not executed |
+| `01-semantic-contract-v1.md` | freeze review passed / bounded proof passed / full build not executed |
+| `02-database-schema-spec-v1.md` | freeze review passed / bounded proof passed / full build not executed |
+| `03-runner-contract-v1.md` | freeze review passed / bounded proof passed / full build not executed |
+| `04-audit-spec-v1.md` | freeze review passed / bounded proof passed / full build not executed |
+| `05-build-card-v1.md` | freeze review passed / bounded proof passed / full build not executed |
 
-下一步只能进入 Position bounded proof build card。任何 Position full daily mainline 声明，
-仍必须等待 bounded proof 和后续 release gate。
+下一步只能进入 Portfolio Plan freeze review。任何 Position full daily mainline 声明，
+仍必须等待新的 Position full build card 和后续 release gate。

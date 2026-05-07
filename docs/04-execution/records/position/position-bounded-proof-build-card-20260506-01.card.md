@@ -2,13 +2,13 @@
 
 日期：2026-05-06
 
-状态：`prepared / not executed`
+状态：`executed / passed`
 
 ## 1. 背景
 
 `position-freeze-review-reentry-20260430-01` 已完成 review-only 审查，并将 Position
-六件套冻结为文档和合同表面。当前卡只是下一步可寻址的 build card，不代表本轮已经执行
-Position bounded proof。
+六件套冻结为文档和合同表面。本卡已在 2026-05-07 执行并形成 Position bounded proof
+结论。
 
 ## 2. 基本信息
 
@@ -16,7 +16,7 @@ Position bounded proof。
 |---|---|
 | module | `position` |
 | run_id | `position-bounded-proof-build-card-20260506-01` |
-| stage | `bounded-proof / build-card-prepared / not executed` |
+| stage | `bounded-proof / executed / passed` |
 | owner | `codex` |
 
 ## 3. 输入范围
@@ -28,7 +28,7 @@ Position bounded proof。
 | source DB | `H:\Asteria-data\signal.duckdb` |
 | source tables | `formal_signal_ledger`; `signal_component_ledger`; `signal_input_snapshot`; `signal_audit` |
 | source boundary | `read-only released Signal bounded surface` |
-| bounded scope | `day / bounded sample only; exact scope to be set by execution turn` |
+| bounded scope | `day / bounded sample only; symbol_limit = 5` |
 | working path | `H:\Asteria-temp\position\<run_id>\` |
 | formal DB path | `H:\Asteria-data\position.duckdb` |
 
@@ -39,22 +39,19 @@ Position bounded proof。
 | frozen docs | `docs/02-modules/position/00-authority-design-v1.md` through `05-build-card-v1.md` |
 | release conclusion | `docs/04-execution/records/position/position-freeze-review-reentry-20260430-01.conclusion.md` |
 | upstream semantics | `Signal aggregates intent; Position materializes holding logic` |
-| formal DB permission | `not created by this review; allowed only when this card is explicitly executed` |
+| formal DB permission | `created for bounded proof only; full build still requires a new card` |
 | allowed run modes | `bounded`; `resume`; `audit-only` |
 
 ## 5. 允许动作
 
-- 后续执行 turn 可创建 Position bounded proof 所需的最小 runner、schema、audit 和测试。
-- 后续执行 turn 可只读消费 `signal.duckdb` 的 released bounded proof 表面。
-- 后续执行 turn 可在 bounded proof/audit 路径明确需要时创建 `H:\Asteria-data\position.duckdb`。
-- 后续执行 turn 必须生成 Position bounded proof 的 record、evidence-index、conclusion、report
+- 本卡已创建 Position bounded proof 所需的最小 runner、schema、audit 和测试。
+- 本卡只读消费 `signal.duckdb` 的 released production builder 表面。
+- 本卡已在 bounded proof/audit 路径创建 `H:\Asteria-data\position.duckdb`。
+- 本卡已生成 Position bounded proof 的 record、evidence-index、conclusion、report
   closeout 和 validated evidence。
 
 ## 6. 当前仍禁止
 
-- 本次 review-only 关闭不创建 `src\asteria\position`。
-- 本次 review-only 关闭不创建 `scripts\position`。
-- 本次 review-only 关闭不创建 `H:\Asteria-data\position.duckdb`。
 - 不运行 Position full build、segmented production build 或 daily incremental build。
 - 不创建 Portfolio Plan / Trade / System / Pipeline 正式 runner 或正式 DB。
 - 不建立 full-chain Pipeline runtime。

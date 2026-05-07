@@ -2,7 +2,7 @@
 
 日期：2026-04-27
 
-状态：freeze review passed / bounded-proof card specification frozen / build not executed
+状态：freeze review passed / bounded proof passed / full build not executed
 
 ## 1. 本卡目标
 
