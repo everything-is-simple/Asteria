@@ -37,11 +37,23 @@ mypy src --cache-dir H:\Asteria-temp\mypy-cache
 
 ## 当前门禁状态
 
-下一步允许动作：`trade_freeze_review`
-- Portfolio Plan bounded proof 已通过
-- Position bounded proof 已通过
-- 未授权：Trade build、Position full build、Portfolio Plan full build、System 下游施工
+- **当前 active module**：`trade`
+- **当前允许下一卡**：`trade_bounded_proof_build_card`（run_id: `trade-bounded-proof-build-card-20260507-01`，prepared / not executed）
+- Trade freeze review 已通过（`trade-freeze-review-20260507-01`），Trade 六件套已冻结
+- Portfolio Plan bounded proof 已通过；`portfolio_plan.duckdb` day bounded surface 已存在
+- Position bounded proof 已通过；`position.duckdb` day bounded surface 已存在
+- **已授权**：创建 `src/asteria/trade`、`scripts/trade`、`trade.duckdb` day bounded proof 表面
+- **未授权**：Trade full build、Position/Portfolio Plan full build、System 下游施工、全链路 pipeline
+
+## 治理权威源（每次施工前必须核对）
+
+- `governance/module_gate_registry.toml` — 模块门禁与 allow_build 权威
+- `governance/database_topology_registry.toml` — DB 拓扑与 released/blocked DB 权威
+- `governance/historical_ledger_registry.toml` — 历史账本协议
+- `governance/module_api_contracts/<module>.toml` — 模块 API 契约
+- `docs/03-refactor/00-module-gate-ledger-v1.md` — 门禁账本
+- `docs/04-execution/00-conclusion-index-v1.md` — 结论索引
 
 ## 模块主线顺序
 
-MALF → Alpha → Signal → Position → Portfolio Plan → **Trade**（当前） → System
+MALF → Alpha → Signal → Position → Portfolio Plan → **Trade**（当前，freeze review passed） → System
