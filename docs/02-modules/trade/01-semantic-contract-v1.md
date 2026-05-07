@@ -2,7 +2,7 @@
 
 日期：2026-04-27
 
-状态：frozen / freeze review passed / bounded proof not executed
+状态：frozen / freeze review passed / bounded proof passed / full build not executed
 
 ## 1. 合同目的
 
@@ -52,7 +52,9 @@ Trade 不得把 Portfolio Plan 缺行解释为 Position、Signal、Alpha 或 MAL
 
 Trade 是执行事实层，不是策略解释层。
 
-`trade-freeze-review-20260507-01` 已冻结本语义合同：Trade v1 只读消费 released Portfolio Plan bounded proof surface，不直接读取 Position / Signal / Alpha / MALF 形成业务输出，不回写任何上游模块。
+`trade-freeze-review-20260507-01` 已冻结本语义合同，且 `trade-bounded-proof-build-card-20260507-01`
+已完成执行。Trade v1 仍只读消费 released Portfolio Plan bounded proof surface，不直接读取
+Position / Signal / Alpha / MALF 形成业务输出，不回写任何上游模块。
 
 ## 5. 输出语义
 

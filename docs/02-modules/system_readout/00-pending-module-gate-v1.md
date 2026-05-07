@@ -2,14 +2,14 @@
 
 日期：2026-04-29
 
-状态：pre-gate draft / not frozen
+状态：freeze review prepared / not frozen
 
 ## 1. 当前裁决
 
-System Readout 是 Trade 之后的只读主线读出模块。本目录已补齐 pre-gate 六件套 draft，但本轮不冻结 System Readout 设计，不允许进入施工。
+System Readout 是 Trade 之后的只读主线读出模块。本目录已补齐 pre-gate 六件套 draft；当前已进入 freeze review prepared 状态，但本轮仍不执行 System Readout 正式施工。
 
-截至 2026-04-29，当前唯一允许推进的是 `Alpha freeze review`。System Readout
-仍必须等待 Trade release，不得触发全链路重算或重定义上游字段。
+截至 2026-05-07，Trade freeze review 与 Trade bounded proof 均已通过。System Readout
+当前只允许准备 `system_readout_freeze_review`，不得触发全链路重算或重定义上游字段。
 
 ## 2. 等待条件
 
@@ -19,7 +19,8 @@ System Readout 必须等待：
 Trade released
 ```
 
-Trade 放行前，System Readout 不得定义全链路 readout、summary 或 audit snapshot。
+Trade 放行前，System Readout 不得定义全链路 readout、summary 或 audit snapshot。Trade 已放行后，
+仍仅允许 review-only 审阅，不允许创建 `system.duckdb` 或 System runner。
 
 ## 3. 上游依赖
 

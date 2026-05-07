@@ -1,0 +1,55 @@
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+
+from asteria.trade.bootstrap import run_trade_audit
+from asteria.trade.contracts import TRADE_RULE_VERSION, TRADE_SCHEMA_VERSION, TradeBuildRequest
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Run Trade audit.")
+    _add_common_args(parser)
+    args = parser.parse_args()
+    summary = run_trade_audit(_request_from_args(args))
+    print(json.dumps(summary.as_dict(), ensure_ascii=False, indent=2))
+    return 0 if summary.hard_fail_count == 0 else 1
+
+
+def _add_common_args(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--source-portfolio-plan-db", default="H:/Asteria-data/portfolio_plan.duckdb"
+    )
+    parser.add_argument("--target-trade-db", default="H:/Asteria-data/trade.duckdb")
+    parser.add_argument("--report-root", default="H:/Asteria-report")
+    parser.add_argument("--validated-root", default="H:/Asteria-Validated")
+    parser.add_argument("--temp-root", default="H:/Asteria-temp")
+    parser.add_argument("--mode", choices=["audit-only", "bounded", "resume"], default="audit-only")
+    parser.add_argument("--run-id", required=True)
+    parser.add_argument("--timeframe", choices=["day"], default="day")
+    parser.add_argument("--schema-version", default=TRADE_SCHEMA_VERSION)
+    parser.add_argument("--trade-rule-version", default=TRADE_RULE_VERSION)
+    parser.add_argument("--source-portfolio-plan-release-version", required=True)
+    parser.add_argument("--source-portfolio-plan-run-id")
+
+
+def _request_from_args(args: argparse.Namespace) -> TradeBuildRequest:
+    return TradeBuildRequest(
+        source_portfolio_plan_db=Path(args.source_portfolio_plan_db),
+        target_trade_db=Path(args.target_trade_db),
+        report_root=Path(args.report_root),
+        validated_root=Path(args.validated_root),
+        temp_root=Path(args.temp_root),
+        run_id=args.run_id,
+        mode=args.mode,
+        source_portfolio_plan_release_version=args.source_portfolio_plan_release_version,
+        source_portfolio_plan_run_id=args.source_portfolio_plan_run_id,
+        schema_version=args.schema_version,
+        trade_rule_version=args.trade_rule_version,
+        timeframe=args.timeframe,
+    )
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

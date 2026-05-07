@@ -88,6 +88,8 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Portfolio Plan | `portfolio-plan-freeze-review-20260507-01` | `passed` | [conclusion](records/portfolio_plan/portfolio-plan-freeze-review-20260507-01.conclusion.md) | [evidence-index](records/portfolio_plan/portfolio-plan-freeze-review-20260507-01.evidence-index.md) |
 | Portfolio Plan | `portfolio-plan-bounded-proof-build-card-20260507-01` | `passed` | [conclusion](records/portfolio_plan/portfolio-plan-bounded-proof-build-card-20260507-01.conclusion.md) | [evidence-index](records/portfolio_plan/portfolio-plan-bounded-proof-build-card-20260507-01.evidence-index.md) |
 | Trade | `trade-freeze-review-20260507-01` | `passed` | [conclusion](records/trade/trade-freeze-review-20260507-01.conclusion.md) | [evidence-index](records/trade/trade-freeze-review-20260507-01.evidence-index.md) |
+| Trade | `trade-bounded-proof-build-card-20260507-01` | `passed` | [conclusion](records/trade/trade-bounded-proof-build-card-20260507-01.conclusion.md) | [evidence-index](records/trade/trade-bounded-proof-build-card-20260507-01.evidence-index.md) |
+| System Readout | `system-readout-freeze-review-20260507-01` | `prepared / not executed` | [card](records/system_readout/system-readout-freeze-review-20260507-01.card.md) | [card](records/system_readout/system-readout-freeze-review-20260507-01.card.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
@@ -141,7 +143,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   泛化补数入口。
 - Validated 历史 evidence zip 已对齐到 `H:\Asteria-Validated\2.backups` 冷归档路径；
   这是治理资产布局维护，不改变任何模块门禁。
-- 当前只准备 Trade bounded proof build card；Trade full build、Portfolio Plan full build、Position full build、
+- Trade bounded proof build 已通过；当前只准备 System Readout freeze review。Trade full build、Portfolio Plan full build、Position full build、
   System 施工和全链路 pipeline 仍未放行，直到后续门禁通过并明确授权。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
 
@@ -151,7 +153,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 
 | 顺序 | 模块 | run_id | card |
 |---:|---|---|---|
-| 1 | Trade | `trade-bounded-proof-build-card-20260507-01` | [card](records/trade/trade-bounded-proof-build-card-20260507-01.card.md) |
+| 1 | System Readout | `system-readout-freeze-review-20260507-01` | [card](records/system_readout/system-readout-freeze-review-20260507-01.card.md) |
 
 ## 3.1 Newly Passed Pre-Position Repair Card
 
@@ -166,3 +168,4 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Portfolio Plan | `portfolio-plan-freeze-review-20260507-01` | `passed` | [conclusion](records/portfolio_plan/portfolio-plan-freeze-review-20260507-01.conclusion.md) |
 | Portfolio Plan | `portfolio-plan-bounded-proof-build-card-20260507-01` | `passed` | [conclusion](records/portfolio_plan/portfolio-plan-bounded-proof-build-card-20260507-01.conclusion.md) |
 | Trade | `trade-freeze-review-20260507-01` | `passed` | [conclusion](records/trade/trade-freeze-review-20260507-01.conclusion.md) |
+| Trade | `trade-bounded-proof-build-card-20260507-01` | `passed` | [conclusion](records/trade/trade-bounded-proof-build-card-20260507-01.conclusion.md) |

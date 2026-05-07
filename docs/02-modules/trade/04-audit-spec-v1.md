@@ -2,13 +2,16 @@
 
 日期：2026-04-27
 
-状态：frozen / freeze review passed / bounded proof not executed
+状态：frozen / freeze review passed / bounded proof passed / full build not executed
 
 ## 1. 审计目标
 
 Trade 审计用于证明 Trade 只读消费 Portfolio Plan 输出，输出仅限 order intent、execution plan、fill ledger 和 rejection ledger，并且没有越界写入 Portfolio Plan、Position、Signal、Alpha、MALF 或 System。
 
-`trade-freeze-review-20260507-01` 已冻结本审计表面。当前审计还必须证明 bounded proof 不伪造真实成交事实：没有 evidence-backed execution / fill source 时，`fill_ledger` 可以是冻结 schema 或空表，但不得出现模拟 fill rows。
+`trade-freeze-review-20260507-01` 已冻结本审计表面，且 `trade-bounded-proof-build-card-20260507-01`
+已完成执行。当前审计仍必须证明 bounded proof 不伪造真实成交事实：没有
+evidence-backed execution / fill source 时，`fill_ledger` 可以是冻结 schema 或空表，但不得出现
+模拟 fill rows。
 
 ## 2. 前置审计
 

@@ -1,24 +1,32 @@
 module_id = "trade"
 display_name = "Trade"
 contract_version = "v1"
-status = "freeze_review_passed"
+status = "released"
 authority_assets = [
-    "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+    "H:/Asteria-Validated/Asteria-docs-code-20260502-104932.zip",
     "H:/Asteria-Validated/Asteria-trade-freeze-review-20260507-01.zip",
+    "H:/Asteria-Validated/Asteria-trade-bounded-proof-build-card-20260507-01.zip",
 ]
-gate_state = "freeze_review_passed; bounded_proof_not_executed; full_build_not_executed"
-formal_db_permission = "not_allowed_in_freeze_review; allowed_only_by_trade_bounded_proof_build_card"
+gate_state = "freeze_review_passed; bounded_proof_passed; full_build_not_executed"
+formal_db_permission = "released_day_bounded_trade_order_intent_execution_plan_only; fill_ledger_retained_gap_without_evidence_source; full_build_requires_new_card"
 writeback_boundary = "consume released Portfolio Plan only; never write back upstream"
-run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+run_modes = ["bounded", "resume", "audit-only"]
 resume_behavior = "resume from trade checkpoint after Portfolio Plan release"
 source_manifest_fields = ["source_portfolio_plan_release_version", "source_portfolio_plan_run_id"]
-forbidden_inputs = ["alpha_internal", "malf_internal", "position_internal", "mock_formal_data"]
-forbidden_outputs = ["portfolio_plan_writeback", "position_writeback", "strategy_score", "portfolio_constraint"]
-freeze_review_run_id = "trade-freeze-review-20260507-01"
-release_conclusion = "docs/04-execution/records/trade/trade-freeze-review-20260507-01.conclusion.md"
-evidence_index = "docs/04-execution/records/trade/trade-freeze-review-20260507-01.evidence-index.md"
-next_allowed_action = "trade_bounded_proof_build_card"
-fill_fact_policy = "schema_frozen; formal_fill_rows_require_evidence_backed_execution_or_fill_source"
+forbidden_inputs = ["position_internal", "signal_internal", "alpha_internal", "malf_internal", "mock_formal_data"]
+forbidden_outputs = [
+    "position_writeback",
+    "signal_writeback",
+    "alpha_writeback",
+    "malf_writeback",
+    "system_readout_id",
+    "strategy_score",
+]
+release_conclusion = "docs/04-execution/records/trade/trade-bounded-proof-build-card-20260507-01.conclusion.md"
+evidence_index = "docs/04-execution/records/trade/trade-bounded-proof-build-card-20260507-01.evidence-index.md"
+next_allowed_action = "system_readout_freeze_review"
+proof_status = "bounded_proof_passed; full_build_not_executed"
+input_boundary = "read_only_released_portfolio_plan_bounded_proof_surface"
 
 [[official_inputs]]
 input_type = "database"
@@ -26,11 +34,91 @@ db_name = "portfolio_plan.duckdb"
 table = "portfolio_admission_ledger"
 source_role = "official"
 natural_key = ["position_candidate_id", "portfolio_plan_rule_version"]
-required_fields = ["position_candidate_id", "admission_status", "target_exposure_ref"]
+required_fields = ["position_candidate_id", "symbol", "admission_state", "source_position_release_version"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "portfolio_plan.duckdb"
+table = "portfolio_target_exposure"
+source_role = "official"
+natural_key = ["portfolio_admission_id", "exposure_type", "portfolio_plan_rule_version"]
+required_fields = ["portfolio_admission_id", "target_weight", "target_quantity_hint"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "portfolio_plan.duckdb"
+table = "portfolio_trim_ledger"
+source_role = "official"
+natural_key = ["portfolio_admission_id", "trim_reason", "portfolio_plan_rule_version"]
+required_fields = ["portfolio_admission_id", "trim_reason", "constraint_name"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "portfolio_plan.duckdb"
+table = "portfolio_plan_audit"
+source_role = "official"
+natural_key = ["audit_id"]
+required_fields = ["run_id", "severity", "status", "failed_count"]
+
+[[official_outputs]]
+db_name = "trade.duckdb"
+table = "trade_run"
+natural_key = ["run_id"]
+public_fields = ["run_id", "status", "input_portfolio_plan_count", "order_intent_count", "execution_plan_count", "fill_count", "rejection_count"]
+version_fields = ["run_id", "schema_version", "trade_rule_version", "source_portfolio_plan_release_version"]
+
+[[official_outputs]]
+db_name = "trade.duckdb"
+table = "trade_schema_version"
+natural_key = ["schema_version"]
+public_fields = ["schema_version"]
+version_fields = ["schema_version", "created_at"]
+
+[[official_outputs]]
+db_name = "trade.duckdb"
+table = "trade_rule_version"
+natural_key = ["trade_rule_version"]
+public_fields = ["trade_rule_version", "rule_scope", "fill_policy"]
+version_fields = ["trade_rule_version", "created_at"]
+
+[[official_outputs]]
+db_name = "trade.duckdb"
+table = "trade_portfolio_snapshot"
+natural_key = ["trade_run_id", "portfolio_admission_id"]
+public_fields = ["trade_run_id", "portfolio_admission_id", "symbol", "admission_state", "target_exposure_id"]
+version_fields = ["run_id", "schema_version", "trade_rule_version", "source_portfolio_plan_release_version"]
 
 [[official_outputs]]
 db_name = "trade.duckdb"
 table = "order_intent_ledger"
 natural_key = ["portfolio_admission_id", "order_side", "trade_rule_version"]
-public_fields = ["portfolio_admission_id", "order_side", "order_intent_status", "execution_plan_ref"]
+public_fields = ["portfolio_admission_id", "symbol", "order_side", "order_intent_state", "target_quantity_hint"]
 version_fields = ["run_id", "schema_version", "trade_rule_version", "source_portfolio_plan_release_version"]
+
+[[official_outputs]]
+db_name = "trade.duckdb"
+table = "execution_plan_ledger"
+natural_key = ["order_intent_id", "execution_plan_type", "trade_rule_version"]
+public_fields = ["order_intent_id", "execution_plan_type", "execution_price_line", "execution_state"]
+version_fields = ["run_id", "schema_version", "trade_rule_version", "source_portfolio_plan_release_version"]
+
+[[official_outputs]]
+db_name = "trade.duckdb"
+table = "fill_ledger"
+natural_key = ["order_intent_id", "execution_dt", "fill_seq", "trade_rule_version"]
+public_fields = ["order_intent_id", "execution_dt", "fill_seq", "fill_price", "fill_quantity", "fill_amount"]
+version_fields = ["run_id", "schema_version", "trade_rule_version", "source_portfolio_plan_release_version"]
+
+[[official_outputs]]
+db_name = "trade.duckdb"
+table = "order_rejection_ledger"
+natural_key = ["order_intent_id", "rejection_reason", "trade_rule_version"]
+public_fields = ["order_intent_id", "rejection_dt", "rejection_reason", "rejection_stage"]
+version_fields = ["run_id", "schema_version", "trade_rule_version", "source_portfolio_plan_release_version"]
+
+[[official_outputs]]
+db_name = "trade.duckdb"
+table = "trade_audit"
+natural_key = ["audit_id"]
+public_fields = ["run_id", "check_name", "severity", "status", "failed_count"]
+version_fields = ["run_id", "created_at"]

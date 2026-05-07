@@ -2,13 +2,16 @@
 
 日期：2026-04-27
 
-状态：superseded by freeze review / next build card prepared
+状态：superseded by freeze review / bounded proof passed
 
 ## 1. 本卡目标
 
-本历史卡补齐 Trade pre-gate 六件套 draft；`trade-freeze-review-20260507-01` 已完成设计冻结。
+本历史卡补齐 Trade pre-gate 六件套 draft；`trade-freeze-review-20260507-01` 已完成设计冻结，
+`trade-bounded-proof-build-card-20260507-01` 已完成 bounded proof。
 
-本卡本身不允许代码施工，不允许创建正式 DuckDB；冻结结论由 `trade-freeze-review-20260507-01` 承接。后续唯一允许准备的执行卡为 `trade-bounded-proof-build-card-20260507-01`。
+本卡本身不允许代码施工，不允许创建正式 DuckDB；冻结结论由
+`trade-freeze-review-20260507-01` 承接。bounded proof 已由
+`trade-bounded-proof-build-card-20260507-01` 承接。
 
 ## 2. 当前卡位
 

@@ -2,13 +2,15 @@
 
 日期：2026-04-27
 
-状态：frozen / freeze review passed / bounded proof not executed
+状态：frozen / freeze review passed / bounded proof passed / full build not executed
 
 ## 1. Runner 目标
 
 Trade runner 负责在 Portfolio Plan released 之后，读取 admitted plan / target exposure，构建 order intent、execution plan、fill ledger 和 rejection ledger，并执行边界与一致性审计。
 
-本文件已由 `trade-freeze-review-20260507-01` 冻结为后续 Trade bounded proof runner 合同。freeze review 本身不创建代码文件；`scripts/trade` 只能由后续 `trade_bounded_proof_build_card` 创建。
+本文件已由 `trade-freeze-review-20260507-01` 冻结为后续 Trade bounded proof runner 合同，且
+`trade-bounded-proof-build-card-20260507-01` 已完成执行。`scripts/trade` 现已创建，但仍只保留
+bounded proof / audit / resume 范围。
 
 ## 2. 前置门槛
 
@@ -28,7 +30,7 @@ Portfolio Plan released
 | `scripts/trade/run_trade_audit.py` | 执行 Trade 输入、输出、边界审计 |
 | `scripts/trade/run_trade_bounded_proof.py` | 编排 Trade bounded proof |
 
-这些 runner 在 pre-gate draft 阶段不创建代码文件。
+这些 runner 已完成 bounded proof 最小表面创建；production/full runner 仍必须另开卡。
 
 ## 4. 构建顺序
 
@@ -104,4 +106,6 @@ flowchart TD
 | 写入 system readout 字段 | 禁止 |
 | 绕过 Portfolio Plan release gate 启动 full build | 禁止 |
 
-当前不得伪造成交事实。后续 runner 若缺少 evidence-backed execution / fill source，必须保持 `fill_ledger` 为空或记录 retained gap 审计，不得把 Data `analysis_price_line`、Portfolio Plan target exposure 或人工样例当作真实成交价。
+当前不得伪造成交事实。`trade-bounded-proof-build-card-20260507-01` 已执行完成，但因缺少
+evidence-backed execution / fill source，`fill_ledger` 保持为空并由 retained gap 审计记录；
+不得把 Data `analysis_price_line`、Portfolio Plan target exposure 或人工样例当作真实成交价。

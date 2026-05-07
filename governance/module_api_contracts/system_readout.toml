@@ -1,11 +1,11 @@
 module_id = "system_readout"
 display_name = "System Readout"
 contract_version = "v1"
-status = "pre_gate_draft"
+status = "freeze_review_prepared"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
 ]
-gate_state = "pre_gate_draft; wait_for_trade_release"
+gate_state = "freeze_review_prepared; trade_released"
 formal_db_permission = "not_allowed"
 writeback_boundary = "readout only; never trigger business mutation"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
