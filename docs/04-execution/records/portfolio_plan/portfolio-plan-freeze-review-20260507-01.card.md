@@ -2,7 +2,7 @@
 
 日期：2026-05-07
 
-状态：`prepared / not executed`
+状态：`executed / passed`
 
 ## 1. 背景
 
@@ -16,7 +16,7 @@ freeze review，不授权 Portfolio Plan build。
 |---|---|
 | module | `portfolio_plan` |
 | run_id | `portfolio-plan-freeze-review-20260507-01` |
-| stage | `freeze-review / prepared / not executed` |
+| stage | `freeze-review / executed / passed` |
 | owner | `codex` |
 
 ## 3. 输入范围

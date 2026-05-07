@@ -76,6 +76,8 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4\
 | `H:\Asteria-Validated\Asteria-signal-freeze-review-20260429-01.zip` | Signal freeze review evidence |
 | `docs/04-execution/records/signal/signal-bounded-proof-20260429-01.conclusion.md` | Signal bounded proof 已通过 |
 | `H:\Asteria-Validated\Asteria-signal-bounded-proof-20260429-01.zip` | Signal bounded proof evidence |
+| `docs/04-execution/records/portfolio_plan/portfolio-plan-freeze-review-20260507-01.conclusion.md` | Portfolio Plan freeze review 已通过 |
+| `H:\Asteria-Validated\Asteria-portfolio-plan-freeze-review-20260507-01.zip` | Portfolio Plan freeze review evidence |
 | `H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip` | 文档权威链刷新归档 |
 | `docs/04-execution/records/governance/malf-authority-compatibility-audit-20260429-01.conclusion.md` | 当前系统快照未偏移 MALF 权威 |
 | `docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.conclusion.md` | MALF v1.3 day formal-data bounded proof 已通过 |
@@ -90,7 +92,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4\
 | 2 | Alpha | `docs/02-modules/alpha/` | frozen six-doc set / bounded proof passed | 否 | full build 另需新卡 |
 | 3 | Signal | `docs/02-modules/signal/` | frozen six-doc set / bounded proof passed | 否 | full build 另需新卡 |
 | 4 | Position | `docs/02-modules/position/` | freeze review passed / design contract frozen / build not executed | 否，construction suspended | 当前暂停 Position 施工，先完成上游七张修补卡与 release decision |
-| 5 | Portfolio Plan | `docs/02-modules/portfolio_plan/` | pre-gate six-doc draft | 否 | 等 Position 放行后重新审阅并冻结 |
+| 5 | Portfolio Plan | `docs/02-modules/portfolio_plan/` | frozen six-doc set / freeze review passed / build not executed | 是，仅限 bounded proof build card | `portfolio_plan_bounded_proof_build_card` prepared / not executed |
 | 6 | Trade | `docs/02-modules/trade/` | pre-gate six-doc draft | 否 | 等 Portfolio Plan 放行后重新审阅并冻结 |
 | 7 | System Readout | `docs/02-modules/system_readout/` | pre-gate six-doc draft | 否 | 等 Trade 放行后重新审阅并冻结 |
 | 8 | Pipeline | `docs/02-modules/pipeline/` | pre-gate six-doc draft | 否 | MALF gate 已过但当前不占主线卡位；不得建立全链路 |
@@ -129,13 +131,13 @@ Signal bounded proof
 当前已打开执行卡：
 
 ```text
-data reference target maintenance closeout
+portfolio plan bounded proof build card
 ```
 
 当前只允许施工对象：
 
 ```text
-data reference target maintenance closeout / Data maintenance / Position construction suspended
+Portfolio Plan bounded proof build card / prepared / not executed
 ```
 
 除 MALF day proof、Alpha freeze review、Alpha bounded proof passed、Signal freeze
@@ -158,7 +160,8 @@ Signal construction、Pipeline 或任何下游施工。Signal freeze review pass
 只允许 Signal bounded proof build card。Signal bounded proof passed 后，Position freeze review
 reentry 已通过；随后上游完整性总控卡裁定在最终完整目标标准下暂停 Position bounded proof
 施工。Data reference target maintenance scope 已通过并冻结下一张 Data closeout 范围；
-不允许 Position full build 或下游施工。
+Position bounded proof 与 Portfolio Plan freeze review 已通过；当前只准备
+`portfolio_plan_bounded_proof_build_card`，不允许 Position full build 或 Trade/System/Pipeline 下游施工。
 
 ## 6. 硬边界
 

@@ -2,7 +2,7 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / build not executed
 
 ## 1. 审计目标
 
@@ -62,6 +62,9 @@ Portfolio Plan 审计用于证明 Portfolio Plan 只读消费 Position 输出，
 | target exposure 分布异常集中 | observe |
 
 软观察只形成报告，不自动放行或阻塞。是否阻塞由 Portfolio Plan release review 决定。
+
+本次 freeze review 只冻结审计合同；实际 `portfolio_plan_audit` 写入和 bounded proof
+审计必须等待后续 Portfolio Plan bounded proof build card。
 
 ## 7. 审计输出
 

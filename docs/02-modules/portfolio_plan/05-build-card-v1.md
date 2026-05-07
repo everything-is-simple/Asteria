@@ -2,72 +2,70 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / build not executed
 
 ## 1. 本卡目标
 
-补齐 Portfolio Plan pre-gate 六件套 draft，为 Position released 之后的 Portfolio Plan 设计冻结做准备。
+补齐 Portfolio Plan pre-gate 六件套 draft 的历史卡已由
+`portfolio-plan-freeze-review-20260507-01` 承接并冻结为 review-only 合同表面。
 
-本卡不允许代码施工，不允许创建正式 DuckDB，不允许冻结 Portfolio Plan。
+本卡仍不允许代码施工，不允许创建正式 DuckDB；Portfolio Plan bounded proof build
+必须走后续 prepared card。
 
 ## 2. 当前卡位
 
 | 项 | 值 |
 |---|---|
 | active_module | `portfolio_plan` |
-| card_type | pre-gate documentation draft |
+| card_type | freeze review passed / historical pre-gate card |
 | implementation_allowed | no |
 | formal_db_write_allowed | no |
-| freeze_allowed | no |
+| freeze_allowed | completed by `portfolio-plan-freeze-review-20260507-01` |
 
 ## 3. 前置门槛
 
-Portfolio Plan 进入 design freeze 前必须等待：
+Portfolio Plan design freeze 已在以下上游 release 后完成：
 
 ```text
-Position released
+Position bounded proof passed
 ```
 
 ## 4. 本轮允许
 
 | 项 | 裁决 |
 |---|---|
-| 创建 Portfolio Plan 六件套 draft | 允许 |
+| 保留 Portfolio Plan 六件套冻结合同 | 允许 |
 | 明确 Portfolio Plan 只读消费 Position 输出 | 允许 |
 | 定义 Portfolio Plan 不回写 Position / Signal / Alpha / MALF 的硬边界 | 允许 |
-| 定义 `portfolio_plan.duckdb` 的 draft schema | 允许 |
-| 定义 runner / audit draft contract | 允许 |
-| 更新模块文档索引和门禁账本中的 draft 状态 | 允许 |
+| 冻结 `portfolio_plan.duckdb` schema 合同 | 允许 |
+| 冻结 runner / audit contract | 允许 |
+| 更新模块文档索引和门禁账本中的 freeze review passed 状态 | 允许 |
 
 ## 5. 本轮不允许
 
 | 项 | 裁决 |
 |---|---|
-| 冻结 Portfolio Plan 设计 | 禁止 |
 | 迁移旧 Portfolio engine | 禁止 |
 | 创建正式 Portfolio Plan DuckDB | 禁止 |
 | 修改 MALF / Alpha / Signal / Position / Trade / System 代码 | 禁止 |
 | 建立 Trade 执行逻辑 | 禁止 |
-| 把 Position pre-gate draft 直接当作 released 上游 | 禁止 |
+| 执行 Portfolio Plan bounded proof / full build / segmented build | 禁止 |
 
 ## 6. 下一步入口
 
-Position released 后，Portfolio Plan 才能进入：
+freeze review 通过后，Portfolio Plan 只能准备下一张卡：
 
 ```text
-Portfolio Plan design freeze review
+portfolio-plan-bounded-proof-build-card-20260507-01
 ```
 
-该 review 必须重新审阅：
+该下一卡必须继续只读消费：
 
 ```text
-docs/02-modules/portfolio_plan/00-authority-design-v1.md
-docs/02-modules/portfolio_plan/01-semantic-contract-v1.md
-docs/02-modules/portfolio_plan/02-database-schema-spec-v1.md
-docs/02-modules/portfolio_plan/03-runner-contract-v1.md
-docs/02-modules/portfolio_plan/04-audit-spec-v1.md
-docs/02-modules/portfolio_plan/05-build-card-v1.md
+H:\Asteria-data\position.duckdb
 ```
+
+本卡不执行下一卡。
 
 ## 7. 验收命令
 
@@ -83,7 +81,7 @@ release gate 前再运行：
 H:\Asteria\.venv\Scripts\ruff.exe check . --cache-dir H:\Asteria-temp\ruff-cache
 H:\Asteria\.venv\Scripts\ruff.exe format --check . --cache-dir H:\Asteria-temp\ruff-cache
 H:\Asteria\.venv\Scripts\mypy.exe src --cache-dir H:\Asteria-temp\mypy-cache
-H:\Asteria\.venv\Scripts\pytest.exe
+H:\Asteria\.venv\Scripts\pytest.exe --basetemp=H:/Asteria-temp/pytest-tmp-portfolio-plan-freeze-review-20260507-01 -o cache_dir=H:/Asteria-temp/pytest-cache-portfolio-plan-freeze-review-20260507-01
 ```
 
 ## 8. 交付物

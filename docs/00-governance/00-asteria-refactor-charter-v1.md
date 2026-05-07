@@ -50,6 +50,7 @@
 | `H:\Asteria-Validated\Asteria-malf-month-bounded-proof-build-20260506-01.zip` | MALF month bounded proof 证据 | 证明 month Core/Lifespan/Service bounded runtime proof 已通过 |
 | `H:\Asteria-Validated\Asteria-alpha-production-builder-hardening-20260506-01.zip` | Alpha production builder hardening 证据 | 证明 Alpha 五族在 day/week/month released MALF Service 表面已通过 hard audit |
 | `H:\Asteria-Validated\Asteria-signal-production-builder-hardening-20260506-01.zip` | Signal production builder hardening 证据 | 证明 Signal 在 day/week/month released Alpha 表面已通过 hard audit |
+| `H:\Asteria-Validated\Asteria-portfolio-plan-freeze-review-20260507-01.zip` | Portfolio Plan freeze review 证据 | 证明 Portfolio Plan 六件套已在 Position bounded proof 后冻结为 review-only 合同表面 |
 | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.*` | 架构剖切面研究 | 支撑治理、主线、数据、编排四个切面的后续裁决 |
 
 裁决：
@@ -201,7 +202,6 @@ Signal bounded proof 已通过；Position freeze review reentry 已完成只读�
 MALF v1.3 formal-data closeout 已被 v1.4 day runtime sync implementation supersede 为当前
 MALF day 正式证据。Position freeze review reentry 已通过，Data reference target
 maintenance scope 已冻结并完成 closeout；MALF week/month bounded proof build、Alpha production builder hardening、
-Signal production builder hardening 与 upstream pre-position release decision 已通过，当前下一卡改为
-position bounded proof build card。
-Position bounded proof build card 已恢复为下一张允许卡，但本 release decision 没有执行 Position。
-不直接授权 Position full build、下游施工或全链路 pipeline。
+Signal production builder hardening、upstream pre-position release decision、Position bounded proof 与
+Portfolio Plan freeze review 已通过，当前下一卡改为 portfolio plan bounded proof build card。
+不直接授权 Portfolio Plan full build、Position full build、下游施工或全链路 pipeline。

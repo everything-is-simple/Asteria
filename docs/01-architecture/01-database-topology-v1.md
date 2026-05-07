@@ -257,12 +257,12 @@ week/month supplemental/full build。
 | `market_meta.duckdb` | 已按可证事实优先口径最小正式化；申万 2021 当前行业快照部分释放；Data baseline sealed；Data reference maintenance closeout passed；其他 reference gaps retained |
 | `market_base_day.duckdb` 正式化 | 已通过 Data formal promotion、production closeout 与 execution line materialization |
 | `pipeline.duckdb` runtime | 仍未冻结，不得先于业务模块定义语义 |
-| week / month MALF | week 与 month bounded proof build 已通过；Alpha 与 Signal production builder hardening、upstream pre-position release decision 已通过；当前进入 Position bounded proof build card |
+| week / month MALF | week 与 month bounded proof build 已通过；Alpha 与 Signal production builder hardening、upstream pre-position release decision、Position bounded proof 与 Portfolio Plan freeze review 已通过；当前进入 Portfolio Plan bounded proof build card |
 
 Alpha bounded proof 与 production builder hardening 已通过，五个 Alpha family DB 已在
 day/week/month released MALF Service 表面补齐 production-builder rows。
 Signal bounded proof 与 production builder hardening 已通过，`signal.duckdb` 已补齐
 day/week/month formal signal ledger production surface。Position bounded proof 已通过，
 `position.duckdb` 已形成 day bounded position candidate / entry plan / exit plan surface。
-不得因此提前打开 Position full build、Portfolio Plan build、Trade/System 下游正式库或
-full-chain Pipeline。
+Portfolio Plan freeze review 已通过并冻结六件套合同，但不得因此提前打开 Position full build、
+Portfolio Plan full build、Trade/System 下游正式库或 full-chain Pipeline。

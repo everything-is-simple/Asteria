@@ -2,24 +2,25 @@
 
 日期：2026-04-29
 
-状态：pre-gate draft / not frozen
+状态：superseded by freeze review / retained for pre-gate history
 
 ## 1. 当前裁决
 
-Portfolio Plan 是 Position 之后的主线模块。本目录已补齐 pre-gate 六件套 draft，但本轮不冻结 Portfolio Plan 设计，不允许进入施工。
+Portfolio Plan 是 Position 之后的主线模块。本目录原先补齐 pre-gate 六件套 draft；
+`portfolio-plan-freeze-review-20260507-01` 已完成 review-only 审查并冻结六件套合同表面。
 
-截至 2026-04-29，当前唯一允许推进的是 `Alpha freeze review`。Portfolio Plan
-仍必须等待 Position release，不得绕过 Position 定义组合资金或目标暴露。
+当前只允许准备 Portfolio Plan bounded proof build card；不得绕过 Position，也不得进入
+Trade / System / Pipeline 下游施工。
 
-## 2. 等待条件
+## 2. 冻结依据
 
-Portfolio Plan 必须等待：
+Portfolio Plan freeze review 的依据为：
 
 ```text
-Position released
+Position bounded proof passed
 ```
 
-Position 放行前，Portfolio Plan 不得定义组合准入、资金分配或目标暴露。
+Position bounded proof 已放行 day `position.duckdb` 表面；Portfolio Plan 只能只读消费该表面。
 
 ## 3. 上游依赖
 
@@ -35,17 +36,17 @@ Portfolio Plan 只能消费正式 Position 输出，不得绕过 Position 直接
 | 生成成交事实 | 归属 Trade |
 | 输出全链路系统读出 | 归属 System Readout |
 
-## 5. 已补齐的 pre-gate draft
+## 5. 已冻结的六件套合同表面
 
-以下文档只表示预门禁草案，不表示设计冻结或施工许可：
+以下文档已由 `portfolio-plan-freeze-review-20260507-01` 冻结为 review-only 合同表面：
 
 | 文档 | 状态 |
 |---|---|
-| `00-authority-design-v1.md` | draft / pre-gate / not frozen |
-| `01-semantic-contract-v1.md` | draft / pre-gate / not frozen |
-| `02-database-schema-spec-v1.md` | draft / pre-gate / not frozen |
-| `03-runner-contract-v1.md` | draft / pre-gate / not frozen |
-| `04-audit-spec-v1.md` | draft / pre-gate / not frozen |
-| `05-build-card-v1.md` | draft / pre-gate / not frozen |
+| `00-authority-design-v1.md` | frozen / freeze review passed / build not executed |
+| `01-semantic-contract-v1.md` | frozen / freeze review passed / build not executed |
+| `02-database-schema-spec-v1.md` | frozen / freeze review passed / build not executed |
+| `03-runner-contract-v1.md` | frozen / freeze review passed / build not executed |
+| `04-audit-spec-v1.md` | frozen / freeze review passed / build not executed |
+| `05-build-card-v1.md` | frozen / freeze review passed / build not executed |
 
-Portfolio Plan 进入设计冻结前必须在 Position released 之后重新审阅这些文档。
+本冻结不创建 `portfolio_plan.duckdb`，不创建 runner，不执行 bounded proof。

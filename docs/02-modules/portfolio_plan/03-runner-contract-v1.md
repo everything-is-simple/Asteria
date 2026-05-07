@@ -2,20 +2,20 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / build not executed
 
 ## 1. Runner 目标
 
 Portfolio Plan runner 负责在 Position released 之后，读取 position candidate / entry plan / exit plan，构建组合准入、约束、目标暴露和裁剪账本，并执行边界与一致性审计。
 
-在 Portfolio Plan 设计冻结前，本文件只冻结草案方向，不要求创建代码文件。
+本文件已冻结 runner contract；本次 freeze review 不创建代码文件。
 
 ## 2. 前置门槛
 
 所有 Portfolio Plan runner 必须在运行前验证：
 
 ```text
-Position released
+Position bounded proof passed
 ```
 
 缺少 Position release evidence、缺少 position 输出、或 Position hard audit 未通过时，runner 必须拒绝正式 build。
@@ -28,7 +28,8 @@ Position released
 | `scripts/portfolio_plan/run_portfolio_plan_audit.py` | 执行 Portfolio Plan 输入、输出、边界审计 |
 | `scripts/portfolio_plan/run_portfolio_plan_bounded_proof.py` | 编排 Portfolio Plan bounded proof |
 
-这些 runner 在 pre-gate draft 阶段不创建代码文件。
+这些 runner 在本次 freeze review 中不创建代码文件；后续 bounded proof build card
+执行时才允许创建最小 runner 表面。
 
 ## 4. 构建顺序
 

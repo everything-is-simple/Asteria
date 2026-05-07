@@ -2,21 +2,22 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / build not executed
 
 ## 1. 合同目的
 
 本合同定义 Portfolio Plan 在 Asteria 主线中的语义边界。Portfolio Plan 只能把已放行的 Position 输出转化为组合准入、资金约束、目标暴露和裁剪后的组合计划，不得重定义 Position、Signal、Alpha 或 MALF，不得输出订单或成交语义。
 
-## 2. 前置门槛
+## 2. 冻结依据
 
-本合同在以下条件满足前不得冻结：
+本合同已在以下上游 release 后完成 freeze review：
 
 ```text
-Position released
+Position bounded proof passed
 ```
 
-Portfolio Plan 的任何正式输入字段必须以 Position 已放行字段为准。
+Portfolio Plan 的任何正式输入字段必须以 Position 已放行字段为准。本次 freeze review
+只冻结语义合同，不创建 Portfolio Plan DB 或 runner。
 
 ## 3. 输入语义
 

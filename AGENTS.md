@@ -30,6 +30,7 @@
 - `H:\Asteria-Validated\Asteria-alpha-production-builder-hardening-20260506-01.zip`
 - `H:\Asteria-Validated\Asteria-signal-production-builder-hardening-20260506-01.zip`
 - `H:\Asteria-Validated\Asteria-position-bounded-proof-build-card-20260506-01.zip`
+- `H:\Asteria-Validated\Asteria-portfolio-plan-freeze-review-20260507-01.zip`
 
 当前门禁：
 
@@ -55,12 +56,13 @@
 - `Signal production builder hardening passed`
 - `Upstream pre-position release decision passed`
 - `Position bounded proof passed`
-- 下一步允许动作：`portfolio_plan_freeze_review`
+- `Portfolio Plan freeze review passed`
+- 下一步允许动作：`portfolio_plan_bounded_proof_build_card`
 - Data 已封为主线输入底座；后续 Data 只能通过明确 maintenance card 扩展。
 - `market_meta.duckdb` 已放行最小客观事实与可匹配正式 Data 标的的申万 2021 当前行业快照；Data reference target maintenance closeout 已完成 source inventory 裁决；ST、停牌、真实上市/退市状态、历史行业沿革和 index/block membership 仍因无 approved source manifest 而 retained。
 - MALF v1.4 是 Core operational boundary 权威定义升级；不等于 runtime proof passed。
-- MALF v1.3 closeout 仍只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；MALF week/month bounded proof、Alpha production builder hardening、Signal production builder hardening、upstream pre-position release decision 与 Position bounded proof 已通过，当前下一卡是 portfolio plan freeze review。
-- Position bounded proof 已放行 day `position.duckdb` 表面；当前仅授权 Portfolio Plan freeze review，不授权 Portfolio Plan build、Position full build、Trade/System 下游施工或全链路 pipeline。
+- MALF v1.3 closeout 仍只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；MALF week/month bounded proof、Alpha production builder hardening、Signal production builder hardening、upstream pre-position release decision、Position bounded proof 与 Portfolio Plan freeze review 已通过，当前下一卡是 portfolio plan bounded proof build card。
+- Position bounded proof 已放行 day `position.duckdb` 表面；Portfolio Plan freeze review 已冻结六件套合同；当前仅授权准备 Portfolio Plan bounded proof build card，不授权 Portfolio Plan full build、Position full build、Trade/System 下游施工或全链路 pipeline。
 
 硬规则：
 

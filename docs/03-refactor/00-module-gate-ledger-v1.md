@@ -25,6 +25,7 @@ H:\Asteria-Validated\Asteria-malf-month-bounded-proof-build-20260506-01.zip
 H:\Asteria-Validated\Asteria-alpha-production-builder-hardening-20260506-01.zip
 H:\Asteria-Validated\Asteria-signal-production-builder-hardening-20260506-01.zip
 H:\Asteria-Validated\Asteria-position-bounded-proof-build-card-20260506-01.zip
+H:\Asteria-Validated\Asteria-portfolio-plan-freeze-review-20260507-01.zip
 ```
 
 `214427` 快照是 2026-04-28 docs/code 基线；`130309` 快照是三天重构成果的
@@ -56,6 +57,7 @@ Data reference target maintenance closeout 已通过
 MALF week bounded proof build 已通过
 MALF month bounded proof build 已通过
 Position bounded proof 已通过
+Portfolio Plan freeze review 已通过
 ```
 
 当前已交付主线模块文档索引：
@@ -71,12 +73,13 @@ MALF
 Alpha
 Signal
 Position
+Portfolio Plan
 ```
 
 当前最新通过门禁：
 
 ```text
-Position bounded proof build
+Portfolio Plan freeze review
 ```
 
 当前最新语义升级资产：
@@ -93,13 +96,13 @@ rules；当前 runtime passed evidence 已升级为 MALF v1.4 day runtime sync i
 当前已准备的下一张执行卡：
 
 ```text
-Portfolio Plan freeze review card
+Portfolio Plan bounded proof build card
 ```
 
 当前只允许施工对象：
 
 ```text
-Portfolio Plan freeze review / review-only
+Portfolio Plan bounded proof build card / prepared / not executed
 ```
 
 当前已通过 bounded proof 的主线模块：
@@ -127,9 +130,10 @@ v1.3 day bounded formal-data evidence；Position freeze review reentry 已通过
 `alpha-production-builder-hardening-20260506-01`、
 `signal-production-builder-hardening-20260506-01`、
 `upstream-pre-position-release-decision-20260506-01` 与
-`position-bounded-proof-build-card-20260506-01` 已通过，当前只允许进入
-`portfolio-plan-freeze-review-20260507-01`。仍不得扩展为 Position full build、
-Portfolio Plan build、Trade / System 下游施工或全链路 pipeline。
+`position-bounded-proof-build-card-20260506-01` 与
+`portfolio-plan-freeze-review-20260507-01` 已通过，当前只允许准备
+`portfolio-plan-bounded-proof-build-card-20260507-01`。仍不得扩展为 Position full build、
+Portfolio Plan full build、Trade / System 下游施工或全链路 pipeline。
 
 ## 1.1 Pre-Position 上游修补队列
 
@@ -143,9 +147,9 @@ Portfolio Plan build、Trade / System 下游施工或全链路 pipeline。
 | 6 | `signal-production-builder-hardening-20260506-01` | Signal | passed / production builder hardening | 补 full/segmented Signal build 与审计 |
 | 7 | `upstream-pre-position-release-decision-20260506-01` | Position | passed / review-only release decision closed | 恢复 Position bounded proof build card |
 
-七张上游修补卡已全部形成结论，Position bounded proof 也已通过。当前只把下一步推进到
-Portfolio Plan freeze review；该 review 未通过前，不创建任何正式 Portfolio/Trade/System/Pipeline
-产物。
+七张上游修补卡已全部形成结论，Position bounded proof 与 Portfolio Plan freeze review
+也已通过。当前只把下一步推进到 Portfolio Plan bounded proof build card；该 build card
+未执行前，不创建任何正式 Portfolio/Trade/System/Pipeline 产物。
 
 ## 2. 模块状态表
 
@@ -156,7 +160,7 @@ Portfolio Plan freeze review；该 review 未通过前，不创建任何正式 P
 | 2 | Alpha | 六件套已冻结 / bounded proof 已通过 / production hardening passed | released | 否 | `docs/02-modules/alpha/` | bounded proof 与 production builder hardening 已通过；不打开 Position |
 | 3 | Signal | 六件套已冻结 / bounded proof 已通过 / production hardening passed | released | 否 | `docs/02-modules/signal/` | bounded proof 与 production builder hardening 已通过；不打开 Position |
 | 4 | Position | 六件套 freeze review passed / release decision passed / bounded proof passed | released / full build not executed | 否 | `docs/02-modules/position/` | day bounded proof 已通过；Position full build 仍需另开卡 |
-| 5 | Portfolio Plan | pre-gate 六件套草案 / Position bounded proof passed | freeze review ready | 是，仅限 `portfolio-plan-freeze-review-20260507-01` review-only | `docs/02-modules/portfolio_plan/` | 当前只允许设计冻结评审；不创建 `portfolio_plan.duckdb` |
+| 5 | Portfolio Plan | 六件套 freeze review passed / build not executed | frozen / bounded proof build card prepared | 是，仅限 `portfolio-plan-bounded-proof-build-card-20260507-01` | `docs/02-modules/portfolio_plan/` | 当前只允许准备 bounded proof；未执行前不创建 `portfolio_plan.duckdb` |
 | 6 | Trade | pre-gate 六件套草案 | not frozen | 否 | `docs/02-modules/trade/` | 等 Portfolio Plan 放行后重新审阅并冻结 |
 | 7 | System Readout | pre-gate 六件套草案 | not frozen | 否 | `docs/02-modules/system_readout/` | 等 Trade 放行后重新审阅并冻结 |
 | 8 | Pipeline | pre-gate 六件套草案 | not frozen | 否 | `docs/02-modules/pipeline/` | 只编排和记录，不抢业务施工位 |
@@ -252,6 +256,12 @@ Position bounded proof build 当前执行结论：
 |---|---|---|
 | `position-bounded-proof-build-card-20260506-01` | `passed` | `portfolio_plan_freeze_review` |
 
+Portfolio Plan freeze review 当前执行结论：
+
+| run_id | 状态 | allowed next action |
+|---|---|---|
+| `portfolio-plan-freeze-review-20260507-01` | `passed` | `portfolio_plan_bounded_proof_build_card` |
+
 MALF 冻结文档与当前 proof 状态：
 
 | 文档 | 状态 |
@@ -288,12 +298,12 @@ MALF 冻结文档与当前 proof 状态：
 | Position | `docs/02-modules/position/03-runner-contract-v1.md` | freeze review passed / bounded proof passed / full build not executed |
 | Position | `docs/02-modules/position/04-audit-spec-v1.md` | freeze review passed / bounded proof passed / full build not executed |
 | Position | `docs/02-modules/position/05-build-card-v1.md` | freeze review passed / bounded proof passed / full build not executed |
-| Portfolio Plan | `docs/02-modules/portfolio_plan/00-authority-design-v1.md` | draft / pre-gate / not frozen |
-| Portfolio Plan | `docs/02-modules/portfolio_plan/01-semantic-contract-v1.md` | draft / pre-gate / not frozen |
-| Portfolio Plan | `docs/02-modules/portfolio_plan/02-database-schema-spec-v1.md` | draft / pre-gate / not frozen |
-| Portfolio Plan | `docs/02-modules/portfolio_plan/03-runner-contract-v1.md` | draft / pre-gate / not frozen |
-| Portfolio Plan | `docs/02-modules/portfolio_plan/04-audit-spec-v1.md` | draft / pre-gate / not frozen |
-| Portfolio Plan | `docs/02-modules/portfolio_plan/05-build-card-v1.md` | draft / pre-gate / not frozen |
+| Portfolio Plan | `docs/02-modules/portfolio_plan/00-authority-design-v1.md` | frozen / freeze review passed / build not executed |
+| Portfolio Plan | `docs/02-modules/portfolio_plan/01-semantic-contract-v1.md` | frozen / freeze review passed / build not executed |
+| Portfolio Plan | `docs/02-modules/portfolio_plan/02-database-schema-spec-v1.md` | frozen / freeze review passed / build not executed |
+| Portfolio Plan | `docs/02-modules/portfolio_plan/03-runner-contract-v1.md` | frozen / freeze review passed / build not executed |
+| Portfolio Plan | `docs/02-modules/portfolio_plan/04-audit-spec-v1.md` | frozen / freeze review passed / build not executed |
+| Portfolio Plan | `docs/02-modules/portfolio_plan/05-build-card-v1.md` | frozen / freeze review passed / build not executed |
 | Trade | `docs/02-modules/trade/00-authority-design-v1.md` | draft / pre-gate / not frozen |
 | Trade | `docs/02-modules/trade/01-semantic-contract-v1.md` | draft / pre-gate / not frozen |
 | Trade | `docs/02-modules/trade/02-database-schema-spec-v1.md` | draft / pre-gate / not frozen |
@@ -363,7 +373,7 @@ review 和 Signal bounded proof 均已通过。Position freeze review reentry �
 review-only 审查并通过。MALF complete alignment closeout 已通过。Data reference target maintenance closeout
 已通过。MALF week/month bounded proof build、Alpha production builder hardening、
 Signal production builder hardening 和 upstream pre-position release decision 已通过。
-当前下一步唯一允许动作已改为 Portfolio Plan freeze review；Portfolio Plan build、
+当前下一步唯一允许动作已改为 Portfolio Plan bounded proof build card；Portfolio Plan full build、
 Position full build、Trade、System Readout、Pipeline 仍不允许直接施工。
 
 ## 6. Alpha Freeze Review 放行记录
@@ -481,7 +491,7 @@ Position bounded proof、Position 施工、Signal pinning、下游施工或全�
 
 ## 11. 施工锁
 
-在 Portfolio Plan freeze review 未明确执行并通过 release gate 前，不允许：
+在 Portfolio Plan bounded proof build card 未明确执行并通过 release gate 前，不允许：
 
 | 禁止项 |
 |---|

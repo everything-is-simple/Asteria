@@ -2,14 +2,14 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / build not executed
 
 ## 1. 规格范围
 
-本规格为 Portfolio Plan pre-gate draft。正式 schema 冻结必须等待：
+本规格已完成 Portfolio Plan freeze review。schema 合同冻结依据为：
 
 ```text
-Position released
+Position bounded proof passed
 ```
 
 目标 Portfolio Plan DB：
@@ -18,7 +18,8 @@ Position released
 H:\Asteria-data\portfolio_plan.duckdb
 ```
 
-该库在 Portfolio Plan 设计冻结前不得创建。
+本次 freeze review 不创建该库。`portfolio_plan.duckdb` 只能在后续
+Portfolio Plan bounded proof build card 明确执行时创建。
 
 ## 2. 上游关系
 
@@ -181,7 +182,7 @@ erDiagram
 | 同库多写 | 禁止 |
 | 旧数据替换 | staging 审计通过后 promote |
 | `run_id` | 审计字段，不作为业务自然键 |
-| formal DB create | Portfolio Plan design freeze 后才允许 |
+| formal DB create | 后续 Portfolio Plan bounded proof build card 执行时才允许 |
 
 ## 13. 不允许的 schema
 
