@@ -1,0 +1,47 @@
+# Windsurf Cascade Rules — Asteria Project
+
+## 工具路由优先级
+
+1. **本地代码语义检索** → 优先使用 MCP `codebase-retrieval`（Augment Context Engine，实时索引工作目录）；不可用时退回内置 `code_search`（Fast Context）
+2. **外部库官方文档** → 优先使用 MCP `context7`
+3. **指定 URL 内容抓取** → 优先使用 MCP `fetch`
+4. **复杂推理、迁移规划、排错** → 必要时使用 MCP `sequential-thinking`
+5. **不要先用 grep/find** 代替语义检索
+6. **结论优先** → 先给结论和关键证据，再展开细节
+
+## 项目基本约束
+
+- Python 环境：`H:\Asteria\.venv\Scripts\python.exe`，基础 provider `D:\miniconda\py310`
+- 正式数据库：`H:\Asteria-data`（不得写临时产物）
+- 临时产物：`H:\Asteria-temp`（pytest cache、working DB、ruff/mypy cache）
+- 权威资产目录：`H:\Asteria-Validated`（只读输入，不作 scratch）
+
+## 编辑硬规则
+
+- 修改任何模块前，必须先用 `code_search` 理解当前实现，再给方案
+- 一次 turn 只允许编辑一个主线模块
+- 不得在没有权威设计文档的情况下向主线迁入 legacy code
+- 下游模块不得重定义上游模块语义
+- `data` 层是 foundation infrastructure，不是策略层
+- Alpha、Signal、Portfolio、Trade、System 不得写回 MALF
+- Python 文件 ≤ 500 行；脚本 wrapper ≤ 240 行；Markdown 设计文档 ≤ 1200 行
+
+## 治理检查（结构性变更前必跑）
+
+```
+python scripts\governance\check_project_governance.py
+ruff check . --cache-dir H:\Asteria-temp\ruff-cache
+ruff format --check . --cache-dir H:\Asteria-temp\ruff-cache
+mypy src --cache-dir H:\Asteria-temp\mypy-cache
+```
+
+## 当前门禁状态
+
+下一步允许动作：`trade_freeze_review`
+- Portfolio Plan bounded proof 已通过
+- Position bounded proof 已通过
+- 未授权：Trade build、Position full build、Portfolio Plan full build、System 下游施工
+
+## 模块主线顺序
+
+MALF → Alpha → Signal → Position → Portfolio Plan → **Trade**（当前） → System
