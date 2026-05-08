@@ -37,13 +37,12 @@ mypy src --cache-dir H:\Asteria-temp\mypy-cache
 
 ## 当前门禁状态
 
-- **当前 active module**：`trade`
-- **当前允许下一卡**：`trade_bounded_proof_build_card`（run_id: `trade-bounded-proof-build-card-20260507-01`，prepared / not executed）
-- Trade freeze review 已通过（`trade-freeze-review-20260507-01`），Trade 六件套已冻结
-- Portfolio Plan bounded proof 已通过；`portfolio_plan.duckdb` day bounded surface 已存在
-- Position bounded proof 已通过；`position.duckdb` day bounded surface 已存在
-- **已授权**：创建 `src/asteria/trade`、`scripts/trade`、`trade.duckdb` day bounded proof 表面
-- **未授权**：Trade full build、Position/Portfolio Plan full build、System 下游施工、全链路 pipeline
+- **当前 active module**：`pipeline`
+- **当前允许下一卡**：`pipeline_full_chain_bounded_proof_build_card`（run_id: `pipeline-full-chain-bounded-proof-build-card-20260508-01`，prepared / not executed）
+- 已通过：Trade bounded proof（`trade-bounded-proof-build-card-20260507-01`）、System Readout freeze review、System Readout bounded proof、Pipeline freeze review、Pipeline build/runtime authorization scope freeze、Pipeline single-module orchestration build、Pipeline full-chain dry-run authorization scope freeze、Pipeline full-chain dry-run、Pipeline full-chain bounded proof authorization scope freeze
+- `trade.duckdb` day bounded surface 已存在；`system.duckdb` day bounded surface 已存在；`pipeline.duckdb` 已存在（含 system_readout 单模块 orchestration run + full_chain_day dry-run run）
+- **已授权**：执行 `pipeline-full-chain-bounded-proof-build-card-20260508-01`，在 released day bounded surfaces 上跑全链路 bounded proof runtime
+- **未授权**：Trade full build、Position/Portfolio Plan full build、System full build、任何模块 full build、full-chain bounded proof passed 扩权
 
 ## 治理权威源（每次施工前必须核对）
 
@@ -56,4 +55,4 @@ mypy src --cache-dir H:\Asteria-temp\mypy-cache
 
 ## 模块主线顺序
 
-MALF → Alpha → Signal → Position → Portfolio Plan → **Trade**（当前，freeze review passed） → System
+MALF ✅ → Alpha ✅ → Signal ✅ → Position ✅ → Portfolio Plan ✅ → Trade ✅ → System Readout ✅ → **Pipeline**（当前，full-chain bounded proof build card prepared / not executed）
