@@ -5,6 +5,10 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from asteria.governance.pre_gate_surface_checks import (
+    collect_pre_gate_surface_violations,
+)
+
 try:
     import tomllib
 except ModuleNotFoundError:  # Python 3.10
@@ -393,25 +397,8 @@ def _check_external_evidence_paths(evidence_path: Path, report: SyncReport) -> N
 def _check_pre_gate_sources(
     repo_root: Path, gate_registry: dict[str, Any], report: SyncReport
 ) -> None:
-    for module_id, module in _module_map(gate_registry).items():
-        if (
-            bool(module.get("allow_build"))
-            or module.get("status") in {"released", "integrated"}
-            or module.get("exception") == "bounded_bootstrap_support"
-        ):
-            continue
-        script_dir = repo_root / "scripts" / module_id
-        if not script_dir.exists():
-            continue
-        for script_path in script_dir.glob("run_*.py"):
-            report.findings.append(
-                SyncFinding(script_path, "pre-gate module has forbidden formal runner")
-            )
-        db_scripts = set(script_dir.glob("create_*.py")) | set(script_dir.glob("*_schema.py"))
-        for script_path in sorted(db_scripts):
-            report.findings.append(
-                SyncFinding(script_path, "pre-gate module has forbidden formal DB create script")
-            )
+    for path, message in collect_pre_gate_surface_violations(repo_root, gate_registry):
+        report.findings.append(SyncFinding(path, message))
 
 
 def _plan_safe_actions(

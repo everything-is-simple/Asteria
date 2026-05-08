@@ -37,6 +37,11 @@ released_formal_dbs = [
     "alpha_cpb.duckdb",
     "alpha_bpb.duckdb",
     "signal.duckdb",
+    "position.duckdb",
+    "portfolio_plan.duckdb",
+    "trade.duckdb",
+    "system.duckdb",
+    "pipeline.duckdb",
 ]
 blocked_formal_db_modules = [
     "position",
@@ -343,7 +348,7 @@ module_id = "pipeline"
 grain = "run"
 ledger_role = "orchestration_ledger"
 writer = "run_pipeline_record"
-allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+allowed_modes = ["bounded", "resume", "audit-only"]
 checkpoint_policy = "pipeline_step_checkpoint"
 checkpoint_key = ["pipeline_run_id", "step_seq"]
 replay_scope = ["pipeline_run_id", "module_scope", "step_seq"]

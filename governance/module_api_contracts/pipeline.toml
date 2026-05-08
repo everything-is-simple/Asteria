@@ -1,24 +1,25 @@
 module_id = "pipeline"
 display_name = "Pipeline"
 contract_version = "v1"
-status = "freeze_review_passed"
+status = "released"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
     "H:/Asteria-Validated/Asteria-docs-code-20260502-104932.zip",
     "H:/Asteria-Validated/Asteria-pipeline-freeze-review-20260508-01.zip",
+    "H:/Asteria-Validated/Asteria-pipeline-single-module-orchestration-build-card-20260508-01.zip",
 ]
-gate_state = "freeze_review_passed; single_module_orchestration_build_prepared; build_not_executed"
-formal_db_permission = "freeze_review_passed_but_pipeline_db_not_released; single_module_orchestration_build_card_only"
+gate_state = "single_module_orchestration_build_passed; full_chain_not_executed"
+formal_db_permission = "released_single_module_orchestration_ledger_only; full_chain_requires_new_card"
 business_boundary = "orchestrate and record only; never define module semantics"
-run_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
+run_modes = ["bounded", "resume", "audit-only"]
 resume_behavior = "resume from pipeline step checkpoint after module gate validation"
-source_manifest_fields = ["gate_registry_version", "manifest_version", "module_scope"]
+source_manifest_fields = ["gate_registry_version", "module_scope", "source_release_version"]
 forbidden_inputs = ["business_internal_table", "mock_formal_data"]
 forbidden_outputs = ["business_field", "business_mutation"]
-release_conclusion = "docs/04-execution/records/pipeline/pipeline-build-runtime-authorization-scope-freeze-20260508-01.conclusion.md"
-evidence_index = "docs/04-execution/records/pipeline/pipeline-build-runtime-authorization-scope-freeze-20260508-01.evidence-index.md"
-next_allowed_action = "pipeline_single_module_orchestration_build_card"
-input_boundary = "orchestration_metadata_only; single_module_orchestration_build_card_first"
+release_conclusion = "docs/04-execution/records/pipeline/pipeline-single-module-orchestration-build-card-20260508-01.conclusion.md"
+evidence_index = "docs/04-execution/records/pipeline/pipeline-single-module-orchestration-build-card-20260508-01.evidence-index.md"
+next_allowed_action = "none"
+input_boundary = "orchestration_metadata_only; released_system_readout_single_module_only"
 
 [[official_inputs]]
 input_type = "registry"
@@ -26,9 +27,44 @@ name = "module_gate_registry"
 source_role = "official"
 required_fields = ["active_mainline_module", "registry_version"]
 
+[[official_inputs]]
+input_type = "database"
+name = "system_readout_release"
+db_name = "system.duckdb"
+source_role = "official"
+required_fields = ["run_id", "schema_version", "system_readout_version"]
+
 [[official_outputs]]
 db_name = "pipeline.duckdb"
 table = "pipeline_run"
 natural_key = ["pipeline_run_id"]
-public_fields = ["pipeline_run_id", "run_scope", "run_mode", "run_status", "manifest_version"]
+public_fields = ["pipeline_run_id", "module_scope", "run_mode", "run_status", "source_release_version"]
 version_fields = ["run_id", "schema_version", "pipeline_version", "gate_registry_version"]
+
+[[official_outputs]]
+db_name = "pipeline.duckdb"
+table = "pipeline_step_run"
+natural_key = ["pipeline_run_id", "step_seq"]
+public_fields = ["pipeline_step_run_id", "module_name", "step_name", "step_status", "source_release_version"]
+version_fields = ["pipeline_run_id", "created_at"]
+
+[[official_outputs]]
+db_name = "pipeline.duckdb"
+table = "module_gate_snapshot"
+natural_key = ["pipeline_run_id", "module_name", "gate_name"]
+public_fields = ["gate_snapshot_id", "module_name", "gate_name", "gate_value", "source_registry_version"]
+version_fields = ["pipeline_run_id", "created_at"]
+
+[[official_outputs]]
+db_name = "pipeline.duckdb"
+table = "build_manifest"
+natural_key = ["pipeline_run_id", "artifact_name", "artifact_role"]
+public_fields = ["manifest_entry_id", "artifact_name", "artifact_role", "artifact_path", "source_ref"]
+version_fields = ["pipeline_run_id", "created_at"]
+
+[[official_outputs]]
+db_name = "pipeline.duckdb"
+table = "pipeline_audit"
+natural_key = ["audit_id"]
+public_fields = ["audit_id", "check_name", "severity", "status", "failed_count"]
+version_fields = ["run_id", "created_at"]

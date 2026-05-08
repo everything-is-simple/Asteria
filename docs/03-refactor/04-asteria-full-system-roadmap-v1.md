@@ -11,10 +11,9 @@
 Signal production builder hardening、upstream pre-position release decision、Position bounded proof、
 Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof、
 System Readout freeze review、System Readout bounded proof build、Pipeline freeze review 与
-Pipeline build/runtime authorization scope freeze 已通过。当前 allowed next action 为
-`pipeline_single_module_orchestration_build_card`，对应 prepared card
-`pipeline-single-module-orchestration-build-card-20260508-01`；未来如需进入 full-chain dry-run 或
-full-chain bounded proof，仍必须另开卡。
+Pipeline build/runtime authorization scope freeze 与
+`pipeline-single-module-orchestration-build-card-20260508-01` 已通过。当前 allowed next action 为
+`none`；未来如需进入 full-chain dry-run 或 full-chain bounded proof，仍必须另开新卡。
 
 地基轨道 `data-formal-promotion-evidence-20260502-01` 的 allowed next action
 `MALF v1.3 formal rebuild closeout` 已由当前 MALF v1.3 closeout 闭环。
@@ -177,7 +176,7 @@ Pipeline 只调度和记录
 - [x] 用 `pipeline-build-runtime-authorization-scope-freeze-20260508-01` 把下一步施工范围冻结为 `pipeline_single_module_orchestration_build_card`，不直接跳 full-chain。
 - [x] 重审 Pipeline 六件套，确认 Pipeline 只调度、记录、汇总状态，不定义业务语义。
 - [x] 冻结 `pipeline.duckdb` schema 文档表面：pipeline_run、pipeline_step_run、module_gate_snapshot、build_manifest。
-- [ ] 在 `pipeline-single-module-orchestration-build-card-20260508-01` 中实现单模块调度。
+- [x] 在 `pipeline-single-module-orchestration-build-card-20260508-01` 中实现单模块调度。
 - [ ] 在未来独立 full-chain 授权卡中实现全链路 dry-run。
 - [ ] 在未来独立 full-chain 授权卡中实现全链路 bounded run。
 - [ ] 在未来显式 Pipeline build/runtime card 中审计 Pipeline 不绕过 module gate、不写业务表、不替模块解释字段。
@@ -222,7 +221,7 @@ Pipeline 只调度和记录
 - 当前事实基线以 `Data foundation production baseline sealed`、`MALF v1.3 day formal-data bounded closeout 已通过`、
   `Alpha bounded proof 已通过` 和 `Signal bounded proof 已通过` 为准。
 - MALF v1.4 是当前语义与操作边界权威包；day runtime sync 与 week/month proof 已通过，full build 仍需另开卡。
-- 当前 allowed next action 为 `pipeline_single_module_orchestration_build_card`；它仍只是 prepared / not executed，不是 System full build、Pipeline runtime passed 或下游扩展施工授权。
+- 当前 allowed next action 为 `none`；Pipeline 已通过 `system_readout` 单模块 orchestration 证据，但这仍不是 System full build、full-chain dry-run、full-chain bounded proof 或下游扩展施工授权。
 - Data Foundation 是地基轨道，不进入策略主线排序。
 - Pipeline 是编排与记录轨道，不进入业务主线排序。
 - 不同时施工两个策略主线模块。

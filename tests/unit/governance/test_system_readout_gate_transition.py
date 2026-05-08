@@ -115,10 +115,10 @@ def test_project_governance_rejects_stale_reopened_pipeline_handoff(tmp_path: Pa
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'current_allowed_next_card = "pipeline_single_module_orchestration_build_card"',
+            'current_allowed_next_card = ""',
             'current_allowed_next_card = "pipeline_build_runtime_authorization_scope_freeze"',
         ).replace(
-            'next_card = "pipeline_single_module_orchestration_build_card"',
+            'next_card = "none"',
             'next_card = "pipeline_build_runtime_authorization_scope_freeze"',
         ),
         encoding="utf-8",

@@ -69,6 +69,7 @@ Asteria 采用 DuckDB 多库拓扑，以空间换时间。
 | `portfolio_plan.duckdb` | Portfolio Plan bounded proof passed | `docs/04-execution/records/portfolio_plan/portfolio-plan-bounded-proof-build-card-20260507-01.evidence-index.md` |
 | `trade.duckdb` | Trade bounded proof passed | `docs/04-execution/records/trade/trade-bounded-proof-build-card-20260507-01.evidence-index.md` |
 | `system.duckdb` | System Readout bounded proof passed | `docs/04-execution/records/system_readout/system-readout-bounded-proof-build-card-20260508-01.evidence-index.md` |
+| `pipeline.duckdb` | Pipeline single-module orchestration build passed | `docs/04-execution/records/pipeline/pipeline-single-module-orchestration-build-card-20260508-01.evidence-index.md` |
 
 其他目标库仍是 schema / topology 裁决，不得在对应模块 gate 前创建为正式库。
 
@@ -211,7 +212,7 @@ Alpha 库可跨 timeframe 存储，以 `timeframe` 字段区分。
 
 | DB | 职责 |
 |---|---|
-| `pipeline.duckdb` | pipeline_run, pipeline_step_run, module_gate_snapshot, build_manifest |
+| `pipeline.duckdb` | pipeline_run, pipeline_step_run, module_gate_snapshot, build_manifest, pipeline_audit |
 
 Pipeline 只能调度和记录，不得定义业务语义。
 
@@ -259,8 +260,8 @@ week/month supplemental/full build。
 | MALF day 三库 | 已通过 complete alignment closeout 并重建到 `H:\Asteria-data` |
 | `market_meta.duckdb` | 已按可证事实优先口径最小正式化；申万 2021 当前行业快照部分释放；Data baseline sealed；Data reference maintenance closeout passed；其他 reference gaps retained |
 | `market_base_day.duckdb` 正式化 | 已通过 Data formal promotion、production closeout 与 execution line materialization |
-| `pipeline.duckdb` runtime | Pipeline freeze review 与 build/runtime authorization scope freeze 已通过；当前只准备 `pipeline-single-module-orchestration-build-card-20260508-01`，runtime 仍未执行，不得先于业务模块定义语义 |
-| week / month MALF | week 与 month bounded proof build 已通过；Alpha 与 Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review 与 Pipeline build/runtime authorization scope freeze 已通过；当前 prepared next card 为 `pipeline-single-module-orchestration-build-card-20260508-01` |
+| `pipeline.duckdb` runtime | Pipeline single-module orchestration build 已通过；当前只放行 `system_readout` 单模块 orchestration，不得先于业务模块定义语义，也未放行 full-chain |
+| week / month MALF | week 与 month bounded proof build 已通过；Alpha 与 Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review、Pipeline build/runtime authorization scope freeze 与 Pipeline single-module orchestration build 已通过；当前已无 prepared next card |
 
 Alpha bounded proof 与 production builder hardening 已通过，五个 Alpha family DB 已在
 day/week/month released MALF Service 表面补齐 production-builder rows。

@@ -6,6 +6,9 @@ from pathlib import Path
 from typing import Any
 
 from asteria.governance.docs_sync import run_docs_sync_checks
+from asteria.governance.pre_gate_surface_checks import (
+    collect_pre_gate_surface_violations,
+)
 from asteria.governance.release_gates import run_release_gate_checks
 
 try:
@@ -351,27 +354,10 @@ def _check_forbidden_repo_artifacts(repo_root: Path) -> list[Finding]:
 def _check_forbidden_pre_gate_sources(
     repo_root: Path, gate_registry: dict[str, Any]
 ) -> list[Finding]:
-    findings: list[Finding] = []
-    for module_id, module in _module_map(gate_registry).items():
-        if (
-            bool(module.get("allow_build"))
-            or module.get("status") in {"released", "integrated"}
-            or module.get("exception") == "bounded_bootstrap_support"
-        ):
-            continue
-        script_dir = repo_root / "scripts" / module_id
-        if not script_dir.exists():
-            continue
-        for script_path in script_dir.glob("run_*.py"):
-            findings.append(Finding(script_path, "pre-gate module has forbidden formal runner"))
-        db_create_scripts = set(script_dir.glob("create_*.py")) | set(
-            script_dir.glob("*_schema.py")
-        )
-        for script_path in sorted(db_create_scripts):
-            findings.append(
-                Finding(script_path, "pre-gate module has forbidden formal DB create script")
-            )
-    return findings
+    return [
+        Finding(path, message)
+        for path, message in collect_pre_gate_surface_violations(repo_root, gate_registry)
+    ]
 
 
 def run_checks(repo_root: Path) -> list[Finding]:

@@ -2,186 +2,96 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build prepared / build not executed
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain not executed
 
 ## 1. 模块定义
 
 Pipeline 是 Asteria 的编排层与治理记录层，不是业务语义模块，也不属于策略主线。
 
-Pipeline 只负责记录模块运行顺序、步骤状态、门禁快照和构建 manifest。Pipeline 不定义 MALF、Alpha、Signal、Position、Portfolio Plan、Trade 或 System Readout 的业务含义，不回写业务真值，不以自身状态代替模块 release 状态。
+Pipeline 当前只释放一层最小运行面：编排 `system_readout` 单模块样本，并记录运行、步骤、门禁快照、构建清单和审计结果。它不定义 MALF、Alpha、Signal、Position、Portfolio Plan、Trade 或 System Readout 的业务含义，不回写业务真值，不以自身状态代替模块 release 状态。
 
-`pipeline-freeze-review-20260508-01` 已完成 review-only 审阅，随后
-`pipeline-build-runtime-authorization-scope-freeze-20260508-01` 又把下一步施工范围冻结为
-single-module orchestration build first。Pipeline 六件套当前已冻结为文档合同表面，但这仍不等于
-`pipeline.duckdb`、Pipeline runtime passed 或 full-chain pipeline 已授权。
-
-## 2. 前置门槛
-
-Pipeline freeze review 已在以下条件满足后闭环：
+## 2. 当前放行事实
 
 ```text
-System Readout bounded proof passed
-active card explicitly authorizes Pipeline freeze review
+pipeline-freeze-review-20260508-01 passed
+pipeline-build-runtime-authorization-scope-freeze-20260508-01 passed
+pipeline-single-module-orchestration-build-card-20260508-01 passed
 ```
 
-该门槛至少要求：
+当前 Pipeline 已证明：
 
-| 项 | 要求 |
+| 项 | 当前状态 |
 |---|---|
-| Upstream release | System Readout day bounded proof 已形成 release evidence |
-| Module gate registry | 门禁状态可被记录，且当前只挂 `pipeline-single-module-orchestration-build-card-20260508-01` 这一张 prepared next card |
-| Build manifest convention | run / step / gate / manifest 字段口径已明确 |
-| Governance rule | 仍坚持单模块施工门禁与 orchestration-only 边界 |
-
-未来如需进入 Pipeline build/runtime，当前第一张且唯一已准备的入口卡是
-`pipeline-single-module-orchestration-build-card-20260508-01`；full-chain dry-run 与 full-chain
-bounded proof 仍必须另开新卡。
+| formal DB | `H:\Asteria-data\pipeline.duckdb` 已创建 |
+| released module scope | `system_readout` only |
+| released run modes | `bounded / resume / audit-only` |
+| full-chain dry-run | 未授权 |
+| full-chain bounded proof | 未授权 |
 
 ## 3. 权威来源
 
-Pipeline 的输入只来自模块运行元数据、门禁账本和构建 manifest 约定：
+Pipeline 输入只来自编排元数据：
 
 ```text
-module gate status
+module gate registry
 module run metadata
 build manifest inputs
 ```
 
-Pipeline 不得定义任何业务字段，不得通过编排层改写业务模块 contract。
+它不读取业务表来重新解释业务语义。
 
-## 4. 模块只回答什么
+## 4. 只回答什么
 
 | 问题 | Pipeline 是否回答 |
 |---|---:|
-| 某次构建运行了哪些模块步骤 | 是 |
-| 每个步骤的状态、起止时间、输入输出是什么 | 是 |
+| 某次编排运行了哪些步骤 | 是 |
 | 当前门禁快照是什么 | 是 |
-| 本轮 build manifest 记录了哪些 source / target | 是 |
-| MALF / Alpha / Signal 等业务字段代表什么 | 否 |
-| 是否该买卖、是否该持仓 | 否 |
-| 是否覆盖上游历史事实 | 否 |
+| source / target / artifact 清单是什么 | 是 |
+| 审计是否通过 | 是 |
+| 业务模块字段代表什么 | 否 |
+| 是否买卖、是否持仓、是否分配资金 | 否 |
 
-## 5. 模块不回答什么
+## 5. 当前输出
 
-| 禁止输出 | 归属模块 |
-|---|---|
-| WavePosition 结构事实 | MALF |
-| Alpha opportunity event / score | Alpha |
-| formal signal 聚合 | Signal |
-| position candidate / entry / exit plan | Position |
-| portfolio constraints / target exposure | Portfolio Plan |
-| order intent / fill | Trade |
-| 全链路业务读出 | System Readout |
-
-## 6. 输入
-
-Pipeline 第一阶段只读消费治理和运行元数据：
-
-```text
-docs/03-refactor/00-module-gate-ledger-v1.md
-module run metadata
-build manifest inputs
-```
-
-若后续落地正式 DB，Pipeline 也只读取模块 run ledger 和门禁状态，不读取业务表来定义业务语义。
-
-## 7. 输出
-
-Pipeline 目标 DB：
+目标 DB：
 
 ```text
 H:\Asteria-data\pipeline.duckdb
 ```
 
-输出表族：
+当前正式表族：
 
 | 表 | 职责 |
 |---|---|
-| `pipeline_run` | Pipeline 级运行审计 |
+| `pipeline_run` | 编排运行记录 |
 | `pipeline_step_run` | 单步运行记录 |
 | `module_gate_snapshot` | 门禁快照 |
-| `build_manifest` | source / target / artifact manifest |
+| `build_manifest` | artifact 清单 |
 | `pipeline_audit` | Pipeline 审计 |
 
-该 DB 只能在已完成 freeze review 且后续明确存在 Pipeline build/runtime card 之后创建；
-本次 freeze review 通过本身不授权创建 Pipeline DB。
-
-## 8. 数据流
+## 6. 数据流
 
 ```mermaid
 flowchart LR
     G[module gate registry] --> P[Pipeline]
-    R[module run metadata] --> P
+    R[system_readout run metadata] --> P
     M[build manifest inputs] --> P
     P --> PR[pipeline_run]
     P --> PS[pipeline_step_run]
     P --> GS[module_gate_snapshot]
     P --> BM[build_manifest]
+    P --> PA[pipeline_audit]
 ```
 
-## 9. 状态边界
+## 7. 边界
 
-Pipeline 的状态只描述编排状态，不描述业务状态。
-
-| 状态域 | 允许值示例 | 含义 |
-|---|---|---|
-| `pipeline_step_status` | `planned / running / passed / failed / skipped` | 编排步骤状态 |
-| `module_gate_status` | `draft / frozen / building / verifying / released / integrated / blocked` | 模块门禁状态 |
-| 业务状态 | 禁止复用 | 归属各业务模块 |
-
-## 10. 自然键
-
-| 表 | 自然键 |
+| 边界 | 裁决 |
 |---|---|
-| `pipeline_run` | `pipeline_run_id` |
-| `pipeline_step_run` | `pipeline_run_id + step_seq` |
-| `module_gate_snapshot` | `pipeline_run_id + module_name + gate_name` |
-| `build_manifest` | `pipeline_run_id + artifact_name + artifact_role` |
-| `pipeline_audit` | `audit_id` |
+| released module scope | `system_readout` only |
+| business mutation | 禁止 |
+| downstream writeback | 禁止 |
+| full-chain pipeline | 仍需新卡 |
 
-## 11. 版本字段
+## 8. 下一步
 
-正式 Pipeline 表默认包含：
-
-```text
-run_id
-schema_version
-pipeline_version
-created_at
-```
-
-如需追溯配置，还必须记录：
-
-```text
-gate_registry_version
-manifest_version
-```
-
-## 12. 上下游边界
-
-上游：
-
-```text
-module gate registry / module run metadata / build manifest inputs
-```
-
-下游：
-
-```text
-operator review / release review / audit review
-```
-
-Pipeline 是编排层末端记录，不得写回任何业务模块。
-
-## 13. 上线门禁
-
-Pipeline 未来冻结必须满足：
-
-| 门禁 | 要求 |
-|---|---|
-| MALF Gate | MALF bounded proof gate 已通过并可记录 |
-| Design | Pipeline 六件套已完成 freeze review 并冻结为文档合同表面 |
-| Schema | `pipeline.duckdb` 表族、自然键、版本字段冻结 |
-| Runner | bounded / segmented / resume / audit-only 语义冻结，但 runtime 仍未打开 |
-| Audit | 不定义业务语义、不回写业务模块、单模块施工纪律可验证 |
-| Evidence | Pipeline bounded proof 证据落入 `H:\Asteria-report` 或 `H:\Asteria-Validated` |
+当前没有已准备但未执行的下一张卡。未来如需进入 full-chain dry-run 或 full-chain bounded proof，必须另开明确授权卡。

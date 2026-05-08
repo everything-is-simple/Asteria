@@ -2,27 +2,22 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build prepared / build not executed
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain not executed
 
 ## 1. 合同目的
 
 本合同定义 Pipeline 在 Asteria 中的语义边界。Pipeline 只能记录编排状态和门禁状态，不得定义业务语义，不得把 gate 状态当作策略状态，不得写回任何业务模块。
 
-## 2. 前置门槛
+## 2. 当前释放面
 
-本合同已在以下条件满足后冻结：
+当前正式释放面只覆盖：
 
 ```text
-System Readout bounded proof passed
-active card explicitly authorizes Pipeline freeze review
+module_scope = system_readout
+run_mode in {bounded, resume, audit-only}
 ```
 
-Pipeline 的正式输入字段必须来自模块运行元数据、门禁账本或 manifest 约定，而不是业务表语义。
-
-当前 Pipeline freeze review 已闭环，但 Pipeline 不得因 freeze review passed
-自行进入建库、single-module orchestration build 或 full-chain pipeline。
-当前唯一已准备但未执行的下一张卡是 `pipeline-single-module-orchestration-build-card-20260508-01`；
-它只允许最小 single-module orchestration build，不放行 full-chain dry-run 或 full-chain bounded proof。
+full / segmented / daily_incremental / full-chain dry-run / full-chain bounded proof 都未放行。
 
 ## 3. 输入语义
 
@@ -30,91 +25,80 @@ Pipeline 只读消费以下元数据：
 
 | 输入 | 语义来源 |
 |---|---|
+| `active_mainline_module` | gate registry |
+| `current_allowed_next_card` | gate registry |
 | `module_name` | gate registry / run metadata |
 | `gate_name` | gate registry |
-| `gate_status` | gate registry |
-| `step_name` | pipeline step metadata |
-| `step_status` | pipeline step metadata |
+| `gate_value` | gate registry |
 | `artifact_name` | build manifest |
 | `artifact_role` | build manifest |
 | `source_ref` | build manifest |
-| `target_ref` | build manifest |
+| `source_release_version` | source System Readout run |
 
-Pipeline 不得把这些字段解释成买卖、持仓、目标暴露、订单或成交事实。
+Pipeline 不得把这些字段解释成买卖、持仓、组合暴露、订单或成交事实。
 
-## 4. Pipeline 语义
+## 4. 输出语义
 
 | 对象 | 语义 |
 |---|---|
 | `pipeline_run` | 一次编排运行 |
 | `pipeline_step_run` | 一次编排运行中的单步记录 |
-| `module_gate_snapshot` | 某时刻的门禁快照 |
-| `build_manifest` | 本次构建的 source / target / artifact 记录 |
-| `pipeline_status` | 编排状态 |
+| `module_gate_snapshot` | 某时刻门禁快照 |
+| `build_manifest` | source / target / artifact 记录 |
+| `pipeline_audit` | 编排层硬审计结果 |
 
-Pipeline status 只表示 orchestration health，不表示业务结论。
+## 5. 最小字段口径
 
-## 5. 输出语义
+`pipeline_run` 当前至少记录：
 
-Pipeline 正式输出分四层：
+```text
+pipeline_run_id
+module_scope
+run_mode
+run_status
+source_release_version
+gate_registry_version
+schema_version
+pipeline_version
+created_at
+```
 
-| 输出 | 语义 |
-|---|---|
-| `pipeline_run` | 编排运行记录 |
-| `pipeline_step_run` | 步骤运行记录 |
-| `module_gate_snapshot` | 门禁快照 |
-| `build_manifest` | 构建清单 |
+`pipeline_step_run` 当前至少记录：
 
-这些输出只能给 operator / audit review 使用，不能覆盖业务模块事实。
+```text
+pipeline_step_run_id
+pipeline_run_id
+step_seq
+module_name
+step_name
+step_status
+source_db
+source_run_id
+source_release_version
+started_at
+completed_at
+created_at
+```
 
-## 6. Pipeline Run 最小字段
-
-| 字段 | 要求 |
-|---|---|
-| `pipeline_run_id` | 必填 |
-| `pipeline_version` | 必填 |
-| `run_scope` | 必填 |
-| `run_mode` | `bounded / segmented / full / resume / audit-only` |
-| `run_status` | `planned / running / passed / failed / skipped` |
-| `started_at` | 必填 |
-| `ended_at` | 可空但字段必有 |
-| `manifest_version` | 必填 |
-
-## 7. Pipeline Step 最小字段
-
-| 字段 | 要求 |
-|---|---|
-| `pipeline_step_id` | 必填 |
-| `pipeline_run_id` | 必填 |
-| `step_seq` | 必填 |
-| `step_name` | 必填 |
-| `module_name` | 必填 |
-| `step_status` | `planned / running / passed / failed / skipped` |
-| `source_ref` | 可空但字段必有 |
-| `target_ref` | 可空但字段必有 |
-| `started_at` | 可空但字段必有 |
-| `ended_at` | 可空但字段必有 |
-
-## 8. 不允许表达
+## 6. 不允许表达
 
 | 表达 | 裁决 |
 |---|---|
 | Pipeline 定义 MALF / Alpha / Signal 等业务字段 | 禁止 |
-| Pipeline 修改业务模块输出 | 禁止 |
+| Pipeline 修改任何业务模块输出 | 禁止 |
 | Pipeline 把 gate 状态当作策略信号 | 禁止 |
-| Pipeline 合并模块 DB | 禁止 |
+| Pipeline 把步骤状态冒充模块 release 结论 | 禁止 |
 | Pipeline 绕过冻结直接运行全链路 | 禁止 |
-| Pipeline 覆盖模块 release 结论 | 禁止 |
 
-## 9. 消费原则
+## 7. 消费原则
 
 ```mermaid
 flowchart LR
     G[Gate registry] --> P[Pipeline]
-    R[Run metadata] --> P
+    R[System Readout run metadata] --> P
     M[Manifest inputs] --> P
     P --> O[Operator review]
     P --> A[Audit review]
 ```
 
-Pipeline 是编排与记录层，不向业务模块反馈新的业务含义。
+Pipeline 只向 operator / audit review 暴露编排元数据，不向业务模块反馈新的业务含义。
