@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked
 
 ## 1. 合同目的
 
@@ -14,10 +14,11 @@
 
 ```text
 module_scope = system_readout with run_mode in {bounded, resume, audit-only}
-module_scope = full_chain_day with run_mode in {dry-run, resume, audit-only}
+module_scope = full_chain_day with run_mode in {bounded, dry-run, resume, audit-only}
+module_scope = year_replay with run_mode in {bounded, resume, audit-only}
 ```
 
-full / segmented / daily_incremental 仍未放行；full-chain dry-run 已通过；full-chain bounded proof 仍未放行。
+full / segmented / daily_incremental 仍未放行；full-chain dry-run 与 full-chain bounded proof 已通过；year replay 已执行但 blocked。
 
 ## 3. 输入语义
 
@@ -88,7 +89,7 @@ created_at
 | Pipeline 修改任何业务模块输出 | 禁止 |
 | Pipeline 把 gate 状态当作策略信号 | 禁止 |
 | Pipeline 把步骤状态冒充模块 release 结论 | 禁止 |
-| Pipeline 绕过冻结直接运行全链路 | 禁止 |
+| Pipeline 在完整自然年不足时把 year replay 说成 passed | 禁止 |
 
 ## 7. 消费原则
 

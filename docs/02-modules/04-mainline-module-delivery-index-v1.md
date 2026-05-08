@@ -103,7 +103,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4\
 | 5 | Portfolio Plan | `docs/02-modules/portfolio_plan/` | frozen six-doc set / freeze review passed / bounded proof passed / full build not executed | 否 | full build 另需新卡 |
 | 6 | Trade | `docs/02-modules/trade/` | frozen six-doc set / freeze review passed / bounded proof passed | 否 | Trade bounded proof 已通过；`fill_ledger` retained gap；full build 另需新卡 |
 | 7 | System Readout | `docs/02-modules/system_readout/` | frozen six-doc set / freeze review passed / bounded proof passed / full build not executed | 否 | bounded proof 已通过；`system.duckdb` 与 runner 已创建为 day bounded surface |
-| 8 | Pipeline | `docs/02-modules/pipeline/` | frozen six-doc set / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain bounded proof authorization scope freeze passed / bounded proof prepared | 否，仅 prepared card 已恢复 | freeze review、三张 scope freeze、single-module orchestration build 与 full-chain dry-run 已通过；`pipeline.duckdb` 已创建，当前唯一已准备卡为 `pipeline_full_chain_bounded_proof_build_card`，bounded runtime 仍未执行 |
+| 8 | Pipeline | `docs/02-modules/pipeline/` | frozen six-doc set / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked | 否 | freeze review、三张 scope freeze、single-module orchestration build、full-chain dry-run、full-chain bounded proof build 与其 closeout、year replay scope freeze 均已通过；`pipeline.duckdb` 已创建，year replay 已真实执行并产出行为摘要，但因 `2024-01-08..2024-12-31` 不是完整自然年覆盖而 truthful blocked |
 
 ## 4. 主线顺序
 

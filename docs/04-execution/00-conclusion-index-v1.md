@@ -99,6 +99,10 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Pipeline | `pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01` | `passed / scope frozen` | [conclusion](records/pipeline/pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01.evidence-index.md) |
 | Pipeline | `pipeline-full-chain-dry-run-card-20260508-01` | `passed` | [conclusion](records/pipeline/pipeline-full-chain-dry-run-card-20260508-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-full-chain-dry-run-card-20260508-01.evidence-index.md) |
 | Pipeline | `pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01` | `passed / scope frozen` | [conclusion](records/pipeline/pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01.evidence-index.md) |
+| Pipeline | `pipeline-full-chain-bounded-proof-build-card-20260508-01` | `passed` | [conclusion](records/pipeline/pipeline-full-chain-bounded-proof-build-card-20260508-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-full-chain-bounded-proof-build-card-20260508-01.evidence-index.md) |
+| Pipeline | `pipeline-full-chain-bounded-proof-closeout-20260508-01` | `passed` | [conclusion](records/pipeline/pipeline-full-chain-bounded-proof-closeout-20260508-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-full-chain-bounded-proof-closeout-20260508-01.evidence-index.md) |
+| Pipeline | `pipeline-one-year-strategy-behavior-replay-authorization-scope-freeze-20260508-01` | `passed / scope frozen` | [conclusion](records/pipeline/pipeline-one-year-strategy-behavior-replay-authorization-scope-freeze-20260508-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-one-year-strategy-behavior-replay-authorization-scope-freeze-20260508-01.evidence-index.md) |
+| Pipeline | `pipeline-one-year-strategy-behavior-replay-build-card-20260508-01` | `blocked` | [conclusion](records/pipeline/pipeline-one-year-strategy-behavior-replay-build-card-20260508-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-one-year-strategy-behavior-replay-build-card-20260508-01.evidence-index.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
@@ -156,10 +160,10 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   这是治理资产布局维护，不改变任何模块门禁。
 - Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review、
   Pipeline build/runtime authorization scope freeze、Pipeline single-module orchestration build、
-  Pipeline full-chain dry-run authorization scope freeze、Pipeline full-chain dry-run 与
-  Pipeline full-chain bounded proof authorization scope freeze 已通过。当前 live prepared next card 为
-  `pipeline_full_chain_bounded_proof_build_card`；但 full-chain bounded proof runtime 仍未执行，Trade full build、
-  Portfolio Plan full build、Position full build、System full build与 full-chain bounded proof passed 仍未放行。
+  Pipeline full-chain dry-run authorization scope freeze、Pipeline full-chain dry-run、Pipeline full-chain bounded proof
+  build 与其 closeout，以及 Pipeline one-year strategy behavior replay authorization scope freeze 已通过。
+  `pipeline-one-year-strategy-behavior-replay-build-card-20260508-01` 已真实执行，但因 `2024`
+  不是完整自然年覆盖而 `blocked`；当前没有 live prepared next card。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
 
 ## 3. 当前已准备但未执行的下一卡
@@ -167,7 +171,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 以下只登记尚未执行的 prepared card 队列，不作为 passed conclusion：
 
 ```text
-pipeline-full-chain-bounded-proof-build-card-20260508-01
+none
 ```
 
 ## 3.1 Newly Passed Pre-Position Repair Card

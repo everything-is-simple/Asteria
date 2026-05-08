@@ -2,13 +2,13 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain bounded proof authorization scope freeze passed / bounded proof prepared
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked
 
 ## 1. 模块定义
 
 Pipeline 是 Asteria 的编排层与治理记录层，不是业务语义模块，也不属于策略主线。
 
-Pipeline 当前已释放两层最小运行面：`system_readout` 单模块 orchestration，与 full-chain day dry-run orchestration。它只记录运行、步骤、门禁快照、构建清单和审计结果；不定义 MALF、Alpha、Signal、Position、Portfolio Plan、Trade 或 System Readout 的业务含义，不回写业务真值，不以自身状态代替模块 release 状态。
+Pipeline 当前已释放三层运行事实：`system_readout` 单模块 orchestration、`full_chain_day` dry-run、以及 `full_chain_day` bounded proof。另有一次 `year_replay` 已真实执行，但因完整自然年覆盖不足而 blocked。它只记录运行、步骤、门禁快照、构建清单和审计结果；不定义 MALF、Alpha、Signal、Position、Portfolio Plan、Trade 或 System Readout 的业务含义，不回写业务真值，不以自身状态代替模块 release 状态。
 
 ## 2. 当前放行事实
 
@@ -18,7 +18,10 @@ pipeline-build-runtime-authorization-scope-freeze-20260508-01 passed
 pipeline-single-module-orchestration-build-card-20260508-01 passed
 pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01 passed
 pipeline-full-chain-dry-run-card-20260508-01 passed
-pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01 passed
+pipeline-full-chain-bounded-proof-build-card-20260508-01 passed
+pipeline-full-chain-bounded-proof-closeout-20260508-01 passed
+pipeline-one-year-strategy-behavior-replay-authorization-scope-freeze-20260508-01 passed
+pipeline-one-year-strategy-behavior-replay-build-card-20260508-01 blocked
 ```
 
 当前 Pipeline 已证明：
@@ -26,11 +29,12 @@ pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01 passed
 | 项 | 当前状态 |
 |---|---|
 | formal DB | `H:\Asteria-data\pipeline.duckdb` 已创建 |
-| released module scope | `system_readout` single-module orchestration + `full_chain_day` dry-run |
+| released module scope | `system_readout` single-module orchestration + `full_chain_day` dry-run + `full_chain_day` bounded proof |
 | released run modes | `bounded / dry-run / resume / audit-only` |
-| next prepared card | `pipeline_full_chain_bounded_proof_build_card` |
+| current next card | `none` |
 | full-chain dry-run | 已执行 / 已通过 |
-| full-chain bounded proof | 已授权下一张 prepared card / 尚未执行 |
+| full-chain bounded proof | 已执行 / 已通过 |
+| one-year strategy behavior replay | 已执行 / `blocked`（完整自然年覆盖不足） |
 
 ## 3. 权威来源
 
@@ -91,12 +95,12 @@ flowchart LR
 
 | 边界 | 裁决 |
 |---|---|
-| released module scope | `system_readout` single-module orchestration + `full_chain_day` dry-run |
+| released module scope | `system_readout` single-module orchestration + `full_chain_day` dry-run + `full_chain_day` bounded proof |
 | business mutation | 禁止 |
 | downstream writeback | 禁止 |
-| full-chain bounded proof | 仍需新卡 |
+| year replay release truth | 完整自然年不足时不得 passed |
 
 ## 8. 下一步
 
-当前已准备但未执行的 Pipeline 下一张卡为 `pipeline_full_chain_bounded_proof_build_card`。
-后续必须由 `pipeline-full-chain-bounded-proof-build-card-20260508-01` 单独执行 bounded runtime。
+当前没有 live `current_allowed_next_card`。year replay 已执行过一次，但因为 `2024-01-01..2024-12-31`
+未被完整覆盖，只能保持 `blocked`，等待后续新 repair / replay 决策卡。

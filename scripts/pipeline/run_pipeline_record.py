@@ -23,11 +23,12 @@ def main() -> int:
     )
     parser.add_argument(
         "--module-scope",
-        choices=["system_readout", "full_chain_day"],
+        choices=["system_readout", "full_chain_day", "year_replay"],
         default="system_readout",
     )
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--source-chain-release-version", required=True)
+    parser.add_argument("--target-year", type=int)
     args = parser.parse_args()
     summary = run_pipeline_build(
         PipelineBuildRequest(
@@ -41,6 +42,7 @@ def main() -> int:
             mode=args.mode,
             module_scope=args.module_scope,
             source_chain_release_version=args.source_chain_release_version,
+            target_year=args.target_year,
         )
     )
     print(json.dumps(summary.as_dict(), ensure_ascii=False, indent=2))

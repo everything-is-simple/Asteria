@@ -23,6 +23,9 @@ except ModuleNotFoundError:  # Python 3.10
 
 AUTHORIZED_SINGLE_MODULE_NEXT_CARD = "pipeline_single_module_orchestration_build_card"
 AUTHORIZED_FULL_CHAIN_NEXT_CARD = "pipeline_full_chain_dry_run_card"
+AUTHORIZED_FULL_CHAIN_BOUNDED_NEXT_CARD = "pipeline_full_chain_bounded_proof_build_card"
+AUTHORIZED_YEAR_REPLAY_NEXT_CARD = "pipeline_one_year_strategy_behavior_replay_build_card"
+AUTHORIZED_FULL_CHAIN_BOUNDED_RUN_ID = "pipeline-full-chain-bounded-proof-build-card-20260508-01"
 ALPHA_SOURCE_MODULES = ("alpha_bof", "alpha_tst", "alpha_pb", "alpha_cpb", "alpha_bpb")
 
 
@@ -47,6 +50,8 @@ class PipelineRuntimeInputs:
     gate_rows: list[list[object]]
     manifest_rows: list[list[object]]
     manifest: BuildManifest
+    target_start_dt: date
+    target_end_dt: date
 
 
 def load_runtime_inputs(
@@ -57,9 +62,10 @@ def load_runtime_inputs(
     registry = _load_gate_registry(request)
     source_run = _load_source_system_run(request)
     gate_registry_version = str(registry.get("registry_version", "unknown"))
+    target_start_dt, target_end_dt = _resolve_target_window(request, source_run)
     full_chain_sources = (
         _load_full_chain_sources(request, source_run.run_id)
-        if request.module_scope == "full_chain_day"
+        if request.module_scope in {"full_chain_day", "year_replay"}
         else []
     )
     steps = _build_steps(request, created_at, source_run, full_chain_sources)
@@ -76,10 +82,10 @@ def load_runtime_inputs(
         db_names=("pipeline.duckdb",),
         scope=BuildScope(
             timeframe="day",
-            target_start_dt=source_run.min_readout_dt,
-            target_end_dt=source_run.max_readout_dt,
-            compute_start_dt=source_run.min_readout_dt,
-            compute_end_dt=source_run.max_readout_dt,
+            target_start_dt=target_start_dt,
+            target_end_dt=target_end_dt,
+            compute_start_dt=target_start_dt,
+            compute_end_dt=target_end_dt,
         ),
         schema_version=request.schema_version,
         rule_versions={
@@ -121,6 +127,8 @@ def load_runtime_inputs(
         gate_rows=gate_rows,
         manifest_rows=manifest_rows,
         manifest=manifest,
+        target_start_dt=target_start_dt,
+        target_end_dt=target_end_dt,
     )
 
 
@@ -144,17 +152,49 @@ def _load_gate_registry(request: PipelineBuildRequest) -> dict[str, Any]:
             raise ValueError("pipeline status must remain freeze_review_passed before execution")
         if pipeline_module.get("next_card") != AUTHORIZED_SINGLE_MODULE_NEXT_CARD:
             raise ValueError("pipeline next_card does not match single-module orchestration card")
-    else:
-        if registry.get("current_allowed_next_card") != AUTHORIZED_FULL_CHAIN_NEXT_CARD:
-            raise ValueError("full-chain dry-run is not currently authorized")
+    elif request.module_scope == "full_chain_day":
+        expected_next_card = (
+            AUTHORIZED_FULL_CHAIN_BOUNDED_NEXT_CARD
+            if request.mode == "bounded"
+            else AUTHORIZED_FULL_CHAIN_NEXT_CARD
+        )
+        if registry.get("current_allowed_next_card") != expected_next_card:
+            message = (
+                "full-chain bounded proof is not currently authorized"
+                if request.mode == "bounded"
+                else "full-chain dry-run is not currently authorized"
+            )
+            raise ValueError(message)
         if pipeline_module.get("status") != "released":
-            raise ValueError("pipeline status must remain released before full-chain dry-run")
-        if pipeline_module.get("next_card") != AUTHORIZED_FULL_CHAIN_NEXT_CARD:
-            raise ValueError("pipeline next_card does not match full-chain dry-run card")
-        if pipeline_module.get("proof_run_id") != (
-            "pipeline-single-module-orchestration-build-card-20260508-01"
-        ):
-            raise ValueError("full-chain dry-run requires single-module orchestration proof first")
+            raise ValueError("pipeline status must remain released before full-chain runtime")
+        if pipeline_module.get("next_card") != expected_next_card:
+            message = (
+                "pipeline next_card does not match full-chain bounded proof card"
+                if request.mode == "bounded"
+                else "pipeline next_card does not match full-chain dry-run card"
+            )
+            raise ValueError(message)
+        expected_previous_run = (
+            "pipeline-full-chain-dry-run-card-20260508-01"
+            if request.mode == "bounded"
+            else "pipeline-single-module-orchestration-build-card-20260508-01"
+        )
+        if pipeline_module.get("proof_run_id") != expected_previous_run:
+            message = (
+                "full-chain bounded proof requires full-chain dry-run proof first"
+                if request.mode == "bounded"
+                else "full-chain dry-run requires single-module orchestration proof first"
+            )
+            raise ValueError(message)
+    else:
+        if registry.get("current_allowed_next_card") != AUTHORIZED_YEAR_REPLAY_NEXT_CARD:
+            raise ValueError("one-year strategy behavior replay is not currently authorized")
+        if pipeline_module.get("status") != "released":
+            raise ValueError("pipeline status must remain released before year replay")
+        if pipeline_module.get("next_card") != AUTHORIZED_YEAR_REPLAY_NEXT_CARD:
+            raise ValueError("pipeline next_card does not match year replay card")
+        if pipeline_module.get("proof_run_id") != AUTHORIZED_FULL_CHAIN_BOUNDED_RUN_ID:
+            raise ValueError("year replay requires full-chain bounded proof first")
 
     if registry.get("active_mainline_module") != "system_readout":
         raise ValueError("pipeline orchestration requires active mainline system_readout")
@@ -263,11 +303,16 @@ def _build_steps(
 
     alpha_run_id = alpha_entries[0].source_run_id
     alpha_release_version = alpha_entries[0].source_release_version
+    step_name = (
+        "year_strategy_behavior_replay"
+        if request.module_scope == "year_replay"
+        else ("full_chain_bounded_proof" if request.mode == "bounded" else "full_chain_dry_run")
+    )
     return [
         PipelineStep(
             step_seq=1,
             module_name="malf",
-            step_name="full_chain_dry_run",
+            step_name=step_name,
             source_db=source_map["malf"].source_db,
             source_run_id=source_map["malf"].source_run_id,
             source_release_version=source_map["malf"].source_release_version,
@@ -275,7 +320,7 @@ def _build_steps(
         PipelineStep(
             step_seq=2,
             module_name="alpha",
-            step_name="full_chain_dry_run",
+            step_name=step_name,
             source_db=str(request.source_system_db.parent / "alpha_*.duckdb"),
             source_run_id=alpha_run_id,
             source_release_version=alpha_release_version,
@@ -283,7 +328,7 @@ def _build_steps(
         PipelineStep(
             step_seq=3,
             module_name="signal",
-            step_name="full_chain_dry_run",
+            step_name=step_name,
             source_db=source_map["signal"].source_db,
             source_run_id=source_map["signal"].source_run_id,
             source_release_version=source_map["signal"].source_release_version,
@@ -291,7 +336,7 @@ def _build_steps(
         PipelineStep(
             step_seq=4,
             module_name="position",
-            step_name="full_chain_dry_run",
+            step_name=step_name,
             source_db=source_map["position"].source_db,
             source_run_id=source_map["position"].source_run_id,
             source_release_version=source_map["position"].source_release_version,
@@ -299,7 +344,7 @@ def _build_steps(
         PipelineStep(
             step_seq=5,
             module_name="portfolio_plan",
-            step_name="full_chain_dry_run",
+            step_name=step_name,
             source_db=source_map["portfolio_plan"].source_db,
             source_run_id=source_map["portfolio_plan"].source_run_id,
             source_release_version=source_map["portfolio_plan"].source_release_version,
@@ -307,7 +352,7 @@ def _build_steps(
         PipelineStep(
             step_seq=6,
             module_name="trade",
-            step_name="full_chain_dry_run",
+            step_name=step_name,
             source_db=source_map["trade"].source_db,
             source_run_id=source_map["trade"].source_run_id,
             source_release_version=source_map["trade"].source_release_version,
@@ -315,12 +360,20 @@ def _build_steps(
         PipelineStep(
             step_seq=7,
             module_name="system_readout",
-            step_name="full_chain_dry_run",
+            step_name=step_name,
             source_db=str(request.source_system_db),
             source_run_id=source_run.run_id,
             source_release_version=request.source_chain_release_version,
         ),
     ]
+
+
+def _resolve_target_window(
+    request: PipelineBuildRequest, source_run: SourceSystemRun
+) -> tuple[date, date]:
+    if request.module_scope != "year_replay" or request.target_year is None:
+        return source_run.min_readout_dt, source_run.max_readout_dt
+    return date(request.target_year, 1, 1), date(request.target_year, 12, 31)
 
 
 def _coerce_date(value: object) -> date:

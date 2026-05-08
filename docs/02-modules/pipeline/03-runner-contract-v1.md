@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked
 
 ## 1. 当前 runner 面
 
@@ -12,7 +12,7 @@
 |---|---|
 | `scripts/pipeline/run_pipeline_record.py` | 写入 `pipeline_run / pipeline_step_run / module_gate_snapshot / build_manifest`，并支持 `audit-only` 复审 |
 | `scripts/pipeline/run_pipeline_audit.py` | 独立执行 Pipeline 审计 |
-| `scripts/pipeline/run_pipeline_bounded_proof.py` | 执行单模块 orchestration bounded proof 并产出 closeout / manifest / validated zip |
+| `scripts/pipeline/run_pipeline_bounded_proof.py` | 执行 `system_readout` / `full_chain_day` / `year_replay` 的 bounded proof 或 behavior replay，并产出 closeout / manifest / validated zip |
 | `scripts/pipeline/run_pipeline_full_chain_dry_run.py` | 执行 full-chain day dry-run，并产出 closeout / manifest / validated zip |
 
 ## 2. 当前门禁
@@ -21,10 +21,11 @@
 
 ```text
 module_scope = system_readout with run_mode = bounded / resume / audit-only
-module_scope = full_chain_day with run_mode = dry-run / resume / audit-only
+module_scope = full_chain_day with run_mode = bounded / dry-run / resume / audit-only
+module_scope = year_replay with run_mode = bounded / resume / audit-only
 ```
 
-任何 full / segmented / daily_incremental 行为都未授权；full-chain bounded proof 仍未执行。
+任何 full / segmented / daily_incremental 行为都未授权；year replay 在完整自然年不足时必须 `blocked`。
 
 ## 3. 构建顺序
 
@@ -49,10 +50,11 @@ flowchart TD
 | `--report-root` | 报告根目录 |
 | `--validated-root` | validated 根目录 |
 | `--temp-root` | 临时根目录 |
-| `--module-scope` | `system_readout` 或 `full_chain_day` |
+| `--module-scope` | `system_readout`、`full_chain_day` 或 `year_replay` |
 | `--mode` | `bounded / dry-run / resume / audit-only` |
 | `--run-id` | 必填 |
 | `--source-chain-release-version` | 必填 |
+| `--target-year` | `year_replay` 必填 |
 
 ## 5. 幂等与断点
 
@@ -83,4 +85,4 @@ flowchart TD
 | 修改任何业务模块输出 | 禁止 |
 | 在 Pipeline 中定义业务字段 | 禁止 |
 | 让一个 run 同时施工多个主线模块 | 禁止 |
-| 以当前 released surface 宣称 full-chain bounded proof 已放行 | 禁止 |
+| 在完整自然年不足时把 year replay 说成 passed | 禁止 |

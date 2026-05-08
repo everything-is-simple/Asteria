@@ -142,6 +142,20 @@ def build_pipeline_audit_rows(
             },
         ),
     ]
+    if request.module_scope == "year_replay":
+        checks.append(
+            _hard_check(
+                request,
+                created_at,
+                "pipeline_year_replay_full_year_coverage",
+                _year_replay_full_year_coverage_ok(request),
+                {
+                    "target_year": request.target_year,
+                    "required_start": f"{request.target_year}-01-01",
+                    "required_end": f"{request.target_year}-12-31",
+                },
+            )
+        )
     hard_fail_count = sum(
         _coerce_int(row[5]) for row in checks if row[3] == "hard" and row[4] == "fail"
     )
@@ -162,7 +176,9 @@ def _run_mode_authorized(module_scope: str, run_mode: str) -> bool:
     if module_scope == "system_readout":
         return run_mode in {"bounded", "resume", "audit-only"}
     if module_scope == "full_chain_day":
-        return run_mode in {"dry-run", "resume", "audit-only"}
+        return run_mode in {"bounded", "dry-run", "resume", "audit-only"}
+    if module_scope == "year_replay":
+        return run_mode in {"bounded", "resume", "audit-only"}
     return False
 
 
@@ -173,7 +189,7 @@ def _scope_shape_authorized(
 ) -> bool:
     if module_scope == "system_readout":
         return step_modules == ["system_readout"] and step_count == 1
-    if module_scope == "full_chain_day":
+    if module_scope in {"full_chain_day", "year_replay"}:
         return step_modules == list(FULL_CHAIN_DAY_MODULES) and step_count == len(
             FULL_CHAIN_DAY_MODULES
         )
@@ -195,7 +211,7 @@ def _gate_snapshot_traceability_ok(
             ("system_readout", "proof_status"),
             ("system_readout", "next_card"),
         }
-    elif module_scope == "full_chain_day":
+    elif module_scope in {"full_chain_day", "year_replay"}:
         required |= {(module_name, "proof_status") for module_name in FULL_CHAIN_DAY_MODULES}
     return required.issubset(gate_pairs)
 
@@ -204,6 +220,32 @@ def _required_checkpoints_present(request: PipelineBuildRequest, module_scope: s
     step_count = 1 if module_scope == "system_readout" else len(FULL_CHAIN_DAY_MODULES)
     return request.runtime_manifest_path.exists() and all(
         request.step_checkpoint_path(step_seq).exists() for step_seq in range(1, step_count + 1)
+    )
+
+
+def _year_replay_full_year_coverage_ok(request: PipelineBuildRequest) -> bool:
+    if request.target_year is None:
+        return False
+    with duckdb.connect(str(request.source_system_db), read_only=True) as con:
+        row = con.execute(
+            """
+            select min(readout_dt), max(readout_dt)
+            from system_chain_readout
+            where system_readout_run_id = ?
+              and readout_dt >= ?
+              and readout_dt <= ?
+            """,
+            [
+                request.source_chain_release_version,
+                f"{request.target_year}-01-01",
+                f"{request.target_year}-12-31",
+            ],
+        ).fetchone()
+    if row is None or row[0] is None or row[1] is None:
+        return False
+    return (
+        str(row[0]) == f"{request.target_year}-01-01"
+        and str(row[1]) == f"{request.target_year}-12-31"
     )
 
 

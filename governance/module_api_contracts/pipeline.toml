@@ -8,20 +8,23 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-pipeline-freeze-review-20260508-01.zip",
     "H:/Asteria-Validated/Asteria-pipeline-single-module-orchestration-build-card-20260508-01.zip",
     "H:/Asteria-Validated/Asteria-pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01.zip",
-    "H:/Asteria-Validated/Asteria-pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01.zip",
+    "H:/Asteria-Validated/Asteria-pipeline-full-chain-bounded-proof-build-card-20260508-01.zip",
+    "H:/Asteria-Validated/Asteria-pipeline-full-chain-bounded-proof-closeout-20260508-01.zip",
+    "H:/Asteria-Validated/Asteria-pipeline-one-year-strategy-behavior-replay-authorization-scope-freeze-20260508-01.zip",
+    "H:/Asteria-Validated/Asteria-pipeline-one-year-strategy-behavior-replay-build-card-20260508-01.zip",
 ]
-gate_state = "single_module_orchestration_build_passed; full_chain_dry_run_passed; full_chain_bounded_proof_not_opened"
-formal_db_permission = "released_full_chain_dry_run_ledger_only; bounded_proof_requires_new_card"
+gate_state = "single_module_orchestration_build_passed; full_chain_dry_run_passed; full_chain_day_bounded_proof_passed; one_year_strategy_behavior_replay_blocked"
+formal_db_permission = "released_full_chain_bounded_proof_ledger_only; one_year_strategy_behavior_replay_blocked_incomplete_natural_year_coverage; full_rebuild_requires_new_card"
 business_boundary = "orchestrate and record only; never define module semantics"
 run_modes = ["bounded", "dry-run", "resume", "audit-only"]
 resume_behavior = "resume from pipeline step checkpoint after module gate validation"
-source_manifest_fields = ["gate_registry_version", "module_scope", "source_release_version"]
+source_manifest_fields = ["gate_registry_version", "module_scope", "source_release_version", "target_year"]
 forbidden_inputs = ["business_internal_table", "mock_formal_data"]
 forbidden_outputs = ["business_field", "business_mutation"]
-release_conclusion = "docs/04-execution/records/pipeline/pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01.conclusion.md"
-evidence_index = "docs/04-execution/records/pipeline/pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01.evidence-index.md"
-next_allowed_action = "pipeline_full_chain_bounded_proof_build_card"
-input_boundary = "orchestration_metadata_only; released_full_chain_day_bounded_surfaces_dry_run_only"
+release_conclusion = "docs/04-execution/records/pipeline/pipeline-full-chain-bounded-proof-closeout-20260508-01.conclusion.md"
+evidence_index = "docs/04-execution/records/pipeline/pipeline-full-chain-bounded-proof-closeout-20260508-01.evidence-index.md"
+next_allowed_action = "none"
+input_boundary = "orchestration_metadata_only; released_full_chain_day_bounded_surfaces; year_replay_behavior_observation_without_fill_pnl"
 
 [[official_inputs]]
 input_type = "registry"

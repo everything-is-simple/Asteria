@@ -15,7 +15,8 @@ Pipeline build/runtime authorization scope freeze、`pipeline-single-module-orch
 与 `pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01`、
 `pipeline-full-chain-dry-run-card-20260508-01` 与
 `pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01` 已通过。当前 allowed next action 为
-`pipeline_full_chain_bounded_proof_build_card`；full-chain dry-run 已通过，full-chain bounded proof 仍未执行。
+Pipeline full-chain bounded proof build 与 closeout 已通过；one-year strategy behavior replay authorization scope freeze 已通过；
+year replay build 已执行但因完整自然年覆盖不足而 blocked；当前没有 live `current_allowed_next_card`。
 
 地基轨道 `data-formal-promotion-evidence-20260502-01` 的 allowed next action
 `MALF v1.3 formal rebuild closeout` 已由当前 MALF v1.3 closeout 闭环。
@@ -182,9 +183,14 @@ Pipeline 只调度和记录
 - [x] 用 `pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01` 把下一步范围冻结为 `pipeline_full_chain_dry_run_card`，不直接跳 bounded proof。
 - [x] 在 `pipeline-full-chain-dry-run-card-20260508-01` 中实现全链路 dry-run。
 - [x] 用 `pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01` 把下一步范围冻结为 `pipeline_full_chain_bounded_proof_build_card`，不直接把 prepared card 偷换成 passed runtime。
-- [ ] 在 `pipeline-full-chain-bounded-proof-build-card-20260508-01` 中实现全链路 bounded run。
-- [ ] 在未来显式 Pipeline build/runtime card 中审计 Pipeline 不绕过 module gate、不写业务表、不替模块解释字段。
-- [ ] 在未来显式 Pipeline build/runtime card 中产出 full-chain evidence 与 release conclusion。
+- [x] 在 `pipeline-full-chain-bounded-proof-build-card-20260508-01` 中实现全链路 bounded run。
+- [x] 接住 `pipeline-full-chain-bounded-proof-build-card-20260508-01` 的 allowed next action `pipeline_full_chain_bounded_proof_closeout`，独立完成 closeout / release evidence 封存。
+- [x] 审计 Pipeline 不绕过 module gate、不写业务表、不替模块解释字段。
+- [x] 产出 full-chain evidence 与 release conclusion。
+- [x] 把 bounded proof closeout 的 allowed next action 明确切到 `pipeline_one_year_strategy_behavior_replay_authorization_scope_freeze`，不提前开 full rebuild 长线卡。
+- [x] 冻结 `pipeline-one-year-strategy-behavior-replay-authorization-scope-freeze-20260508-01`，把 observation scope 限定为 `signal -> position -> portfolio_plan -> trade(order_intent / execution_plan / rejection) -> system_readout`。
+- [x] 接住 year replay scope freeze 的 allowed next action `pipeline_one_year_strategy_behavior_replay_build_card`，只执行一年行为回放，不偷换成 full rebuild。
+- [x] 执行 `pipeline-one-year-strategy-behavior-replay-build-card-20260508-01`，并 truthful 记录 `2024` 完整自然年覆盖不足导致的 `blocked`。
 
 ## 12. 阶段 9：Timeframe 扩展
 
@@ -225,7 +231,9 @@ Pipeline 只调度和记录
 - 当前事实基线以 `Data foundation production baseline sealed`、`MALF v1.3 day formal-data bounded closeout 已通过`、
   `Alpha bounded proof 已通过` 和 `Signal bounded proof 已通过` 为准。
 - MALF v1.4 是当前语义与操作边界权威包；day runtime sync 与 week/month proof 已通过，full build 仍需另开卡。
-- 当前 allowed next action 为 `pipeline_full_chain_bounded_proof_build_card`；Pipeline 已通过 `system_readout` 单模块 orchestration、full-chain dry-run 与 bounded proof authorization scope freeze，但这仍不是 System full build、full-chain bounded proof passed 或下游扩展施工授权。
+- 当前没有 live `current_allowed_next_card`；Pipeline 已通过 `system_readout` 单模块 orchestration、full-chain dry-run 与 full-chain day bounded proof，
+  并已执行过一次 one-year strategy behavior replay，但因为 `2024` 不是完整自然年覆盖而 blocked。这仍不是 System full build、
+  full rebuild、daily incremental 或 `v1 complete` 授权。
 - Data Foundation 是地基轨道，不进入策略主线排序。
 - Pipeline 是编排与记录轨道，不进入业务主线排序。
 - 不同时施工两个策略主线模块。

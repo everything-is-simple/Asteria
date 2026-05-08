@@ -152,6 +152,7 @@ def run_pipeline_bounded_proof(
     source_chain_release_version: str,
     module_scope: str = "system_readout",
     mode: str = "bounded",
+    target_year: int | None = None,
 ) -> PipelineBuildSummary:
     request = PipelineBuildRequest(
         repo_root=repo_root,
@@ -164,6 +165,7 @@ def run_pipeline_bounded_proof(
         mode=mode,
         source_chain_release_version=source_chain_release_version,
         module_scope=module_scope,
+        target_year=target_year,
     )
     summary = run_pipeline_build(request)
     evidence = write_pipeline_evidence(request, summary)
