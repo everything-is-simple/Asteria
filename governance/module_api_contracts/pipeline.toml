@@ -8,6 +8,7 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-pipeline-freeze-review-20260508-01.zip",
     "H:/Asteria-Validated/Asteria-pipeline-single-module-orchestration-build-card-20260508-01.zip",
     "H:/Asteria-Validated/Asteria-pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01.zip",
+    "H:/Asteria-Validated/Asteria-pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01.zip",
 ]
 gate_state = "single_module_orchestration_build_passed; full_chain_dry_run_passed; full_chain_bounded_proof_not_opened"
 formal_db_permission = "released_full_chain_dry_run_ledger_only; bounded_proof_requires_new_card"
@@ -17,9 +18,9 @@ resume_behavior = "resume from pipeline step checkpoint after module gate valida
 source_manifest_fields = ["gate_registry_version", "module_scope", "source_release_version"]
 forbidden_inputs = ["business_internal_table", "mock_formal_data"]
 forbidden_outputs = ["business_field", "business_mutation"]
-release_conclusion = "docs/04-execution/records/pipeline/pipeline-full-chain-dry-run-card-20260508-01.conclusion.md"
-evidence_index = "docs/04-execution/records/pipeline/pipeline-full-chain-dry-run-card-20260508-01.evidence-index.md"
-next_allowed_action = "none"
+release_conclusion = "docs/04-execution/records/pipeline/pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01.conclusion.md"
+evidence_index = "docs/04-execution/records/pipeline/pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01.evidence-index.md"
+next_allowed_action = "pipeline_full_chain_bounded_proof_build_card"
 input_boundary = "orchestration_metadata_only; released_full_chain_day_bounded_surfaces_dry_run_only"
 
 [[official_inputs]]

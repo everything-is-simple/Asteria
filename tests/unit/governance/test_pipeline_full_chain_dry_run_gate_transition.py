@@ -6,6 +6,8 @@ except ModuleNotFoundError:  # pragma: no cover
     import tomli as tomllib
 
 from tests.unit.pipeline.support import (
+    PIPELINE_BOUNDED_PROOF_CARD_ACTION,
+    PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID,
     PIPELINE_DRY_RUN_CARD_RUN_ID,
     PIPELINE_FULL_CHAIN_PASSED_DOC_STATUS,
 )
@@ -27,13 +29,15 @@ def test_pipeline_full_chain_dry_run_passes_and_closes_current_next_card() -> No
     ).read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == "system_readout"
-    assert registry["current_allowed_next_card"] == ""
+    assert registry["current_allowed_next_card"] == PIPELINE_BOUNDED_PROOF_CARD_ACTION
     assert modules["pipeline"]["status"] == "released"
-    assert modules["pipeline"]["doc_status"] == PIPELINE_FULL_CHAIN_PASSED_DOC_STATUS
-    assert modules["pipeline"]["next_card"] == "none"
+    assert modules["pipeline"]["doc_status"] != PIPELINE_FULL_CHAIN_PASSED_DOC_STATUS
+    assert modules["pipeline"]["next_card"] == PIPELINE_BOUNDED_PROOF_CARD_ACTION
     assert modules["pipeline"]["proof_run_id"] == PIPELINE_DRY_RUN_CARD_RUN_ID
+    assert PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID in conclusion_index
     assert f"| Pipeline | `{PIPELINE_DRY_RUN_CARD_RUN_ID}` | `passed` |" in conclusion_index
     prepared_queue = conclusion_index.split("## 3. 当前已准备但未执行的下一卡", 1)[1]
+    assert "pipeline-full-chain-bounded-proof-build-card-20260508-01" in prepared_queue
     assert PIPELINE_DRY_RUN_CARD_RUN_ID not in prepared_queue
     assert "状态：`passed`" in dry_run_conclusion
     assert "| allowed next action | `none` |" in dry_run_conclusion

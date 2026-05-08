@@ -55,6 +55,7 @@ H:\Asteria-Validated\Asteria-portfolio-plan-bounded-proof-build-card-20260507-01
 H:\Asteria-Validated\Asteria-trade-freeze-review-20260507-01.zip
 H:\Asteria-Validated\Asteria-trade-bounded-proof-build-card-20260507-01.zip
 H:\Asteria-Validated\Asteria-system-readout-freeze-review-20260507-01.zip
+H:\Asteria-Validated\Asteria-pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01.zip
 ```
 
 当前门禁状态：
@@ -62,7 +63,7 @@ H:\Asteria-Validated\Asteria-system-readout-freeze-review-20260507-01.zip
 ```text
 MALF day bounded proof 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞
 -> Data legacy formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry 已通过 -> upstream pre-position completeness synthesis 已完成
--> data reference target maintenance scope 已通过 -> data reference target maintenance closeout 已通过 -> MALF week bounded proof build 已通过 -> MALF month bounded proof build 已通过 -> Alpha production builder hardening 已通过 -> Signal production builder hardening 已通过 -> upstream pre-position release decision 已通过 -> Position bounded proof 已通过 -> Portfolio Plan freeze review 已通过 -> Portfolio Plan bounded proof 已通过 -> Trade freeze review 已通过 -> Trade bounded proof build 已通过 -> System Readout freeze review 已通过 -> System Readout bounded proof build 已通过 -> Pipeline freeze review 已通过
+-> data reference target maintenance scope 已通过 -> data reference target maintenance closeout 已通过 -> MALF week bounded proof build 已通过 -> MALF month bounded proof build 已通过 -> Alpha production builder hardening 已通过 -> Signal production builder hardening 已通过 -> upstream pre-position release decision 已通过 -> Position bounded proof 已通过 -> Portfolio Plan freeze review 已通过 -> Portfolio Plan bounded proof 已通过 -> Trade freeze review 已通过 -> Trade bounded proof build 已通过 -> System Readout freeze review 已通过 -> System Readout bounded proof build 已通过 -> Pipeline freeze review 已通过 -> Pipeline full-chain bounded proof authorization scope freeze 已通过
 ```
 
 Data Foundation 已完成首轮 `stock / backward / day-week-month` legacy formal promotion，
@@ -104,7 +105,9 @@ System Readout design / schema / runner / audit / bounded proof 表面，`system
 不等于 System full build。Pipeline freeze review 只冻结了文档合同面；随后
 `pipeline-single-module-orchestration-build-card-20260508-01` 已补齐最小 runtime 证据，
 `pipeline-full-chain-dry-run-card-20260508-01` 也已补齐 full-chain day dry-run runtime 证据；
-但当前仍不能把这解释成 full-chain bounded proof 或下游扩权。
+`pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01` 已把当前唯一 prepared next card
+恢复为 `pipeline_full_chain_bounded_proof_build_card`；但当前仍不能把这解释成 full-chain bounded proof passed
+或下游扩权。
 仍不能宣称全主线数据已经齐全或完整证券主数据已齐。
 
 ## 阅读入口

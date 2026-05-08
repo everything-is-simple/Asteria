@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain bounded proof authorization scope freeze passed / bounded proof prepared
 
 ## 1. 模块定义
 
@@ -18,6 +18,7 @@ pipeline-build-runtime-authorization-scope-freeze-20260508-01 passed
 pipeline-single-module-orchestration-build-card-20260508-01 passed
 pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01 passed
 pipeline-full-chain-dry-run-card-20260508-01 passed
+pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01 passed
 ```
 
 当前 Pipeline 已证明：
@@ -27,9 +28,9 @@ pipeline-full-chain-dry-run-card-20260508-01 passed
 | formal DB | `H:\Asteria-data\pipeline.duckdb` 已创建 |
 | released module scope | `system_readout` single-module orchestration + `full_chain_day` dry-run |
 | released run modes | `bounded / dry-run / resume / audit-only` |
-| next prepared card | `none` |
+| next prepared card | `pipeline_full_chain_bounded_proof_build_card` |
 | full-chain dry-run | 已执行 / 已通过 |
-| full-chain bounded proof | 未授权 |
+| full-chain bounded proof | 已授权下一张 prepared card / 尚未执行 |
 
 ## 3. 权威来源
 
@@ -97,5 +98,5 @@ flowchart LR
 
 ## 8. 下一步
 
-当前没有已准备但未执行的 Pipeline 下一张卡。
-如需进入 full-chain bounded proof，仍必须另开明确授权卡。
+当前已准备但未执行的 Pipeline 下一张卡为 `pipeline_full_chain_bounded_proof_build_card`。
+后续必须由 `pipeline-full-chain-bounded-proof-build-card-20260508-01` 单独执行 bounded runtime。

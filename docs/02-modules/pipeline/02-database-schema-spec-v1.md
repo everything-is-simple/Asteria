@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain bounded proof authorization scope freeze passed / bounded proof prepared
 
 ## 1. 规格范围
 
@@ -109,4 +109,4 @@ H:\Asteria-data\pipeline.duckdb
 | working DB 路径 | `H:\Asteria-temp\pipeline\<run_id>\` |
 | promote | staging 审计通过后执行 |
 | current released scope | `system_readout` single-module orchestration + `full_chain_day` dry-run |
-| full-chain bounded proof 扩权 | 仍需新卡 |
+| full-chain bounded proof 扩权 | 已准备独立 build card / 仍未执行 |
