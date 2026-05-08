@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain not executed
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run prepared
 
 ## 1. 合同目的
 
@@ -17,7 +17,7 @@ module_scope = system_readout
 run_mode in {bounded, resume, audit-only}
 ```
 
-full / segmented / daily_incremental / full-chain dry-run / full-chain bounded proof 都未放行。
+full / segmented / daily_incremental 仍未放行；full-chain dry-run 已准备但未执行；full-chain bounded proof 仍未放行。
 
 ## 3. 输入语义
 

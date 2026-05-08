@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain not executed
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run prepared
 
 ## 1. 当前 runner 面
 
@@ -23,7 +23,7 @@ module_scope = system_readout
 run_mode = bounded / resume / audit-only
 ```
 
-任何 full / segmented / daily_incremental / full-chain 行为都未授权。
+任何 full / segmented / daily_incremental 行为都未授权；full-chain dry-run 仅 prepared、尚未执行。
 
 ## 3. 构建顺序
 

@@ -261,7 +261,7 @@ week/month supplemental/full build。
 | `market_meta.duckdb` | 已按可证事实优先口径最小正式化；申万 2021 当前行业快照部分释放；Data baseline sealed；Data reference maintenance closeout passed；其他 reference gaps retained |
 | `market_base_day.duckdb` 正式化 | 已通过 Data formal promotion、production closeout 与 execution line materialization |
 | `pipeline.duckdb` runtime | Pipeline single-module orchestration build 已通过；当前只放行 `system_readout` 单模块 orchestration，不得先于业务模块定义语义，也未放行 full-chain |
-| week / month MALF | week 与 month bounded proof build 已通过；Alpha 与 Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review、Pipeline build/runtime authorization scope freeze 与 Pipeline single-module orchestration build 已通过；当前已无 prepared next card |
+| week / month MALF | week 与 month bounded proof build 已通过；Alpha 与 Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review、Pipeline build/runtime authorization scope freeze、Pipeline single-module orchestration build 与 Pipeline full-chain dry-run authorization scope freeze 已通过；当前已准备 `pipeline-full-chain-dry-run-card-20260508-01` |
 
 Alpha bounded proof 与 production builder hardening 已通过，五个 Alpha family DB 已在
 day/week/month released MALF Service 表面补齐 production-builder rows。

@@ -15,9 +15,14 @@ from asteria.system_readout.bootstrap import run_system_readout_build
 SYSTEM_SOURCE_RUN_ID = "system-readout-bounded-proof-unit-001"
 PIPELINE_RUN_ID = "pipeline-single-module-orchestration-build-card-20260508-01"
 PIPELINE_SCOPE_FREEZE_RUN_ID = "pipeline-build-runtime-authorization-scope-freeze-20260508-01"
-PIPELINE_RELEASE_DOC_STATUS = (
+PIPELINE_DRY_RUN_SCOPE_FREEZE_RUN_ID = (
+    "pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01"
+)
+PIPELINE_DRY_RUN_CARD_RUN_ID = "pipeline-full-chain-dry-run-card-20260508-01"
+PIPELINE_DRY_RUN_CARD_ACTION = "pipeline_full_chain_dry_run_card"
+PIPELINE_CURRENT_DOC_STATUS = (
     "frozen six-doc set / freeze review passed / single-module orchestration build passed / "
-    "full-chain not executed"
+    "full-chain dry-run prepared"
 )
 PIPELINE_PREPARED_DOC_STATUS = (
     "frozen six-doc set / freeze review passed / single-module orchestration build prepared / "
@@ -57,16 +62,16 @@ def build_prepared_pipeline_repo(tmp_path: Path) -> Path:
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'current_allowed_next_card = ""',
+            f'current_allowed_next_card = "{PIPELINE_DRY_RUN_CARD_ACTION}"',
             'current_allowed_next_card = "pipeline_single_module_orchestration_build_card"',
         )
         .replace(
-            f'status = "released"\ndoc_status = "{PIPELINE_RELEASE_DOC_STATUS}"',
+            f'status = "released"\ndoc_status = "{PIPELINE_CURRENT_DOC_STATUS}"',
             f'status = "freeze_review_passed"\ndoc_status = "{PIPELINE_PREPARED_DOC_STATUS}"',
             1,
         )
         .replace(
-            'next_card = "none"',
+            f'next_card = "{PIPELINE_DRY_RUN_CARD_ACTION}"',
             'next_card = "pipeline_single_module_orchestration_build_card"',
             1,
         )

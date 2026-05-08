@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain not executed
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run prepared
 
 ## 1. 规格范围
 
