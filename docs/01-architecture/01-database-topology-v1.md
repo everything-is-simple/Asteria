@@ -259,8 +259,8 @@ week/month supplemental/full build。
 | MALF day 三库 | 已通过 complete alignment closeout 并重建到 `H:\Asteria-data` |
 | `market_meta.duckdb` | 已按可证事实优先口径最小正式化；申万 2021 当前行业快照部分释放；Data baseline sealed；Data reference maintenance closeout passed；其他 reference gaps retained |
 | `market_base_day.duckdb` 正式化 | 已通过 Data formal promotion、production closeout 与 execution line materialization |
-| `pipeline.duckdb` runtime | 仍未冻结，不得先于业务模块定义语义 |
-| week / month MALF | week 与 month bounded proof build 已通过；Alpha 与 Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review 与 System Readout bounded proof build 已通过；当前进入 Pipeline freeze review prepared 状态 |
+| `pipeline.duckdb` runtime | Pipeline freeze review 与 build/runtime authorization scope freeze 已通过；当前只准备 `pipeline-single-module-orchestration-build-card-20260508-01`，runtime 仍未执行，不得先于业务模块定义语义 |
+| week / month MALF | week 与 month bounded proof build 已通过；Alpha 与 Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review 与 Pipeline build/runtime authorization scope freeze 已通过；当前 prepared next card 为 `pipeline-single-module-orchestration-build-card-20260508-01` |
 
 Alpha bounded proof 与 production builder hardening 已通过，五个 Alpha family DB 已在
 day/week/month released MALF Service 表面补齐 production-builder rows。

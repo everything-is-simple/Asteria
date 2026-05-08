@@ -1,6 +1,7 @@
 registry_version = "2026-05-02.v1"
 active_mainline_module = "system_readout"
 active_foundation_card = "none"
+current_allowed_next_card = "pipeline_single_module_orchestration_build_card"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
     "H:/Asteria-Validated/2.backups/Asteria-docs-code-20260428-214427.zip",
@@ -30,7 +31,6 @@ authority_assets = [
 latest_governance_run_id = "validated-historical-evidence-rehydration-20260502-01"
 latest_mainline_release_run_id = "system-readout-bounded-proof-build-card-20260508-01"
 latest_authority_sync_run_id = "malf-v1-4-core-operational-boundary-authority-sync-20260503-01"
-current_allowed_next_card = "pipeline_freeze_review"
 pre_position_repair_sequence = [
     "data_reference_target_maintenance_scope",
     "data_reference_target_maintenance_closeout",
@@ -199,7 +199,7 @@ display_name = "System Readout"
 mainline = true
 status = "released"
 doc_status = "frozen six-doc set / freeze review passed / bounded proof passed / full build not executed"
-allow_build = true
+allow_build = false
 allow_review = false
 doc_path = "docs/02-modules/system_readout"
 db_name = "system.duckdb"
@@ -221,10 +221,18 @@ module_id = "pipeline"
 display_name = "Pipeline"
 mainline = false
 orchestration = true
-status = "pre_gate_draft"
-doc_status = "pre-gate six-doc draft"
+status = "freeze_review_passed"
+doc_status = "frozen six-doc set / freeze review passed / single-module orchestration build prepared / build not executed"
 allow_build = false
+allow_review = false
 doc_path = "docs/02-modules/pipeline"
 waits_for = "malf_bounded_proof_gate"
-formal_db_permission = "not_allowed"
-input_boundary = "orchestration_metadata_only_after_gate"
+next_card = "pipeline_single_module_orchestration_build_card"
+active_card = "docs/04-execution/records/pipeline/pipeline-build-runtime-authorization-scope-freeze-20260508-01.card.md"
+freeze_review_status = "passed"
+freeze_review_run_id = "pipeline-freeze-review-20260508-01"
+release_conclusion = "docs/04-execution/records/pipeline/pipeline-build-runtime-authorization-scope-freeze-20260508-01.conclusion.md"
+evidence_index = "docs/04-execution/records/pipeline/pipeline-build-runtime-authorization-scope-freeze-20260508-01.evidence-index.md"
+formal_db_permission = "freeze_review_passed_but_pipeline_db_not_released; single_module_orchestration_build_card_only"
+input_boundary = "orchestration_metadata_only; single_module_orchestration_build_card_first"
+next_allowed_action = "pipeline_single_module_orchestration_build_card"

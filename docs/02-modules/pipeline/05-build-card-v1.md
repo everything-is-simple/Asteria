@@ -2,74 +2,66 @@
 
 日期：2026-04-29
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / single-module orchestration build prepared / build not executed
 
 ## 1. 本卡目标
 
-补齐 Pipeline pre-gate 六件套 draft，为后续明确授权的 Pipeline 设计冻结做准备。
-MALF bounded proof gate 已通过，但当前主线下一步仍是 `Alpha freeze review`。
-
-本卡不允许代码施工，不允许建立全链路业务运行，不允许冻结 Pipeline。
+本文件记录 Pipeline 在 `pipeline-freeze-review-20260508-01` 与
+`pipeline-build-runtime-authorization-scope-freeze-20260508-01` 通过后的当前卡位：
+六件套已冻结为文档合同表面，且下一卡只允许进入 single-module orchestration build prepared / not executed；
+仍未打开 `pipeline.duckdb`、已执行的正式 runtime、full-chain dry-run 或 full-chain bounded proof。
 
 ## 2. 当前卡位
 
 | 项 | 值 |
 |---|---|
 | active_module | `pipeline` |
-| card_type | pre-gate documentation draft |
+| card_type | single-module orchestration build prepared after scope freeze |
 | implementation_allowed | no |
 | formal_db_write_allowed | no |
-| freeze_allowed | no |
+| freeze_allowed | already passed via `pipeline-freeze-review-20260508-01` |
+| next_prepared_card | `pipeline-single-module-orchestration-build-card-20260508-01` |
 
 ## 3. 前置门槛
 
-Pipeline 进入 design freeze 前必须等待：
+Pipeline future build/runtime 仍必须等待：
 
 ```text
-MALF bounded proof gate passed
-active card explicitly authorizes Pipeline freeze review
+Pipeline freeze review passed
+pipeline-build-runtime-authorization-scope-freeze passed
+pipeline-single-module-orchestration-build-card prepared
 ```
 
 ## 4. 本轮允许
 
 | 项 | 裁决 |
 |---|---|
-| 创建 Pipeline 六件套 draft | 允许 |
-| 明确 Pipeline 只做编排和记录 | 允许 |
-| 定义 Pipeline 不写回业务模块的硬边界 | 允许 |
-| 定义 `pipeline.duckdb` 的 draft schema | 允许 |
-| 定义 runner / audit draft contract | 允许 |
-| 更新模块文档索引和门禁账本中的 draft 状态 | 允许 |
+| 冻结 Pipeline 六件套为文档合同表面 | 已完成 |
+| 明确 Pipeline 只做编排和记录 | 已完成 |
+| 定义 Pipeline 不写回业务模块的硬边界 | 已完成 |
+| 冻结 `pipeline.duckdb` 的文档 schema surface | 已完成 |
+| 冻结 runner / audit 文档合同 | 已完成 |
+| 明确第一张执行卡只能是 single-module orchestration build | 已完成 |
+| 更新模块文档索引和门禁账本中的 current prepared state | 本卡要求 |
 
 ## 5. 本轮不允许
 
 | 项 | 裁决 |
 |---|---|
-| 冻结 Pipeline 设计 | 禁止 |
-| 建立全链路施工 | 禁止 |
 | 创建正式 Pipeline DuckDB | 禁止 |
+| 创建 `src\asteria\pipeline` 或 `scripts\pipeline` 正式 runtime | 禁止 |
+| 跳过 prepared card 直接建立 single-module orchestration build | 禁止 |
+| 建立 full-chain dry-run | 禁止 |
+| 建立 full-chain bounded proof | 禁止 |
 | 修改任何业务模块代码或输出 | 禁止 |
 | 在 Pipeline 中定义业务语义 | 禁止 |
 | 绕过单模块施工门禁 | 禁止 |
 
 ## 6. 下一步入口
 
-MALF bounded proof gate 已通过后，Pipeline 仍必须等待明确 Pipeline 卡，才可进入：
-
-```text
-Pipeline freeze review
-```
-
-该 review 必须重新审阅：
-
-```text
-docs/02-modules/pipeline/00-authority-design-v1.md
-docs/02-modules/pipeline/01-semantic-contract-v1.md
-docs/02-modules/pipeline/02-database-schema-spec-v1.md
-docs/02-modules/pipeline/03-runner-contract-v1.md
-docs/02-modules/pipeline/04-audit-spec-v1.md
-docs/02-modules/pipeline/05-build-card-v1.md
-```
+当前已准备但未执行的下一张卡是 `pipeline-single-module-orchestration-build-card-20260508-01`。
+未来如需进入 full-chain dry-run 或 full-chain bounded proof，仍必须另开明确 card，不得把
+freeze review passed 或 single-module prepared 状态直接解释成全链路施工授权。
 
 ## 7. 验收命令
 

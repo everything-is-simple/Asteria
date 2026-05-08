@@ -62,7 +62,7 @@ H:\Asteria-Validated\Asteria-system-readout-freeze-review-20260507-01.zip
 ```text
 MALF day bounded proof 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞
 -> Data legacy formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry 已通过 -> upstream pre-position completeness synthesis 已完成
--> data reference target maintenance scope 已通过 -> data reference target maintenance closeout 已通过 -> MALF week bounded proof build 已通过 -> MALF month bounded proof build 已通过 -> Alpha production builder hardening 已通过 -> Signal production builder hardening 已通过 -> upstream pre-position release decision 已通过 -> Position bounded proof 已通过 -> Portfolio Plan freeze review 已通过 -> Portfolio Plan bounded proof 已通过 -> Trade freeze review 已通过 -> Trade bounded proof build 已通过 -> System Readout freeze review 已通过 -> System Readout bounded proof build 已通过 -> Pipeline freeze review 已准备
+-> data reference target maintenance scope 已通过 -> data reference target maintenance closeout 已通过 -> MALF week bounded proof build 已通过 -> MALF month bounded proof build 已通过 -> Alpha production builder hardening 已通过 -> Signal production builder hardening 已通过 -> upstream pre-position release decision 已通过 -> Position bounded proof 已通过 -> Portfolio Plan freeze review 已通过 -> Portfolio Plan bounded proof 已通过 -> Trade freeze review 已通过 -> Trade bounded proof build 已通过 -> System Readout freeze review 已通过 -> System Readout bounded proof build 已通过 -> Pipeline freeze review 已通过
 ```
 
 Data Foundation 已完成首轮 `stock / backward / day-week-month` legacy formal promotion，
@@ -85,8 +85,10 @@ reference facts，缺口显式 retained。week/month execution price line
 Position bounded proof 已通过；Portfolio Plan freeze review 与 Portfolio Plan bounded proof 已通过；
 Trade freeze review 与 Trade bounded proof build 已通过，Trade 六件套已冻结；System Readout freeze review
 与 System Readout bounded proof build 也已通过，System Readout 六件套已落为只读 bounded proof 表面；
-当前只授权准备 Pipeline freeze review，不授权 Trade full build、Portfolio Plan full build、
-Position full build、System full build、Pipeline runtime 或全链路 pipeline。
+Pipeline build/runtime authorization scope freeze 已通过；当前已恢复
+`pipeline-single-module-orchestration-build-card-20260508-01` 作为 prepared next card，但它仍未执行，
+不授权 Trade full build、Portfolio Plan full build、Position full build、System full build、除该卡外的
+Pipeline runtime、full-chain dry-run 或 full-chain bounded proof。
 MALF month bounded proof 只放行 month Core/Lifespan/Service 三个 bounded runtime proof 正式库，不等于 MALF full build。
 Signal production builder hardening 只放行 day/week/month formal signal ledger 的 production builder 表面。
 Position bounded proof 只放行 day bounded position candidate / entry plan / exit plan 表面。
@@ -96,7 +98,9 @@ Trade freeze review 与 Trade bounded proof build 已放行 Trade design / schem
 execution / fill source。System Readout freeze review 与 System Readout bounded proof build 已放行
 System Readout design / schema / runner / audit / bounded proof 表面，`system.duckdb`、
 `src\asteria\system_readout` 与 `scripts\system_readout` 已创建；但这仍只覆盖 day bounded proof，
-不等于 System full build 或 Pipeline runtime。
+不等于 System full build。Pipeline freeze review 只冻结 Pipeline 六件套；当前
+`pipeline-single-module-orchestration-build-card-20260508-01` 也只是已准备未执行的最小 runtime 入口，
+不等于 Pipeline runtime passed，更不等于 full-chain pipeline。
 仍不能宣称全主线数据已经齐全或完整证券主数据已齐。
 
 ## 阅读入口

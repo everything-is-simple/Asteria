@@ -30,9 +30,9 @@ flowchart LR
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal`; `Position`; `Portfolio Plan`; `Trade`; `System Readout` |
 | 当前已通过 bounded proof | `MALF day`; `MALF week`; `MALF month`; `Alpha day`; `Signal day`; `Position day`; `Portfolio Plan day`; `Trade bounded proof`; `System Readout day bounded proof`; `MALF v1.4 day runtime sync implementation` |
-| 当前已准备执行卡 | `pipeline-freeze-review-20260508-01` after System Readout bounded proof passed |
-| 当前只允许施工 | `Pipeline freeze review / prepared / review-only` |
-| 当前仍禁止 | Position full build、Portfolio Plan full build、Trade full build、System full build / Pipeline runtime |
+| 当前已准备执行卡 | `pipeline-single-module-orchestration-build-card-20260508-01` |
+| 当前只允许施工 | `pipeline_single_module_orchestration_build_card (prepared / not executed)` |
+| 当前仍禁止 | Position full build、Portfolio Plan full build、Trade full build、System full build、除已准备 single-module orchestration build 外的 Pipeline runtime、full-chain dry-run、full-chain bounded proof |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Data Foundation
 已补齐正式 `market_meta.duckdb` 的最小事实，并部分释放可匹配正式 Data 标的的申万
@@ -47,8 +47,10 @@ Position full build、下游施工或全链路 pipeline。
 后续七张卡中 Data reference scope、Data reference closeout、MALF week、MALF month、
 Alpha production hardening、Signal production hardening、upstream release decision、Position bounded proof
 与 Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、
-System Readout freeze review 与 System Readout bounded proof build 已通过，当前进入 Pipeline freeze review
-prepared 状态。
+System Readout freeze review 与 System Readout bounded proof build 已通过；随后
+`pipeline-freeze-review-20260508-01` 与
+`pipeline-build-runtime-authorization-scope-freeze-20260508-01` 也已闭环。当前已准备但未执行的下一卡是
+`pipeline-single-module-orchestration-build-card-20260508-01`；Pipeline 仍未执行任何 runtime。
 
 ## 2. 主线模块
 

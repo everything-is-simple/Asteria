@@ -2,14 +2,14 @@
 
 日期：2026-04-29
 
-状态：pre-gate draft / not frozen
+状态：historical pre-gate note / superseded by `pipeline-freeze-review-20260508-01`
 
 ## 1. 当前裁决
 
-Pipeline 是编排层，不是业务语义模块。本轮已补齐 pre-gate 六件套 draft，但不冻结 Pipeline 设计，不允许建立全链路施工。
-
-MALF bounded proof gate 已通过；但当前唯一允许推进的是 `Alpha freeze review`，
-不是 Pipeline freeze 或全链路施工。
+Pipeline 是编排层，不是业务语义模块。本说明记录的是 freeze review 之前的 pre-gate 裁决，
+现已由 `pipeline-freeze-review-20260508-01` supersede。当前真实状态是 Pipeline freeze review 与
+`pipeline-build-runtime-authorization-scope-freeze-20260508-01` 已通过；下一卡只准备
+`pipeline-single-module-orchestration-build-card-20260508-01`，但仍未执行，不允许直接跳 full-chain。
 
 ## 2. 等待条件
 

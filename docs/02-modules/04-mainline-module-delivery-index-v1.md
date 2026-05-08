@@ -102,8 +102,8 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4\
 | 4 | Position | `docs/02-modules/position/` | freeze review passed / bounded proof passed / full build not executed | 否 | full build 另需新卡 |
 | 5 | Portfolio Plan | `docs/02-modules/portfolio_plan/` | frozen six-doc set / freeze review passed / bounded proof passed / full build not executed | 否 | full build 另需新卡 |
 | 6 | Trade | `docs/02-modules/trade/` | frozen six-doc set / freeze review passed / bounded proof passed | 否 | Trade bounded proof 已通过；`fill_ledger` retained gap；full build 另需新卡 |
-| 7 | System Readout | `docs/02-modules/system_readout/` | frozen six-doc set / freeze review passed / bounded proof passed / full build not executed | 是，仅限 `pipeline_freeze_review` | bounded proof 已通过；`system.duckdb` 与 runner 已创建为 day bounded surface |
-| 8 | Pipeline | `docs/02-modules/pipeline/` | pre-gate six-doc draft | 否 | MALF gate 已过但当前不占主线卡位；不得建立全链路 |
+| 7 | System Readout | `docs/02-modules/system_readout/` | frozen six-doc set / freeze review passed / bounded proof passed / full build not executed | 否 | bounded proof 已通过；`system.duckdb` 与 runner 已创建为 day bounded surface |
+| 8 | Pipeline | `docs/02-modules/pipeline/` | frozen six-doc set / freeze review passed / single-module orchestration build prepared / build not executed | 否 | freeze review 与 scope freeze 已通过；`pipeline-single-module-orchestration-build-card-20260508-01` 已准备但未执行；`pipeline.duckdb` 仍未创建 |
 
 ## 4. 主线顺序
 
@@ -142,13 +142,13 @@ System Readout freeze review
 当前已打开执行卡：
 
 ```text
-system readout bounded proof build card
+none
 ```
 
 当前只允许施工对象：
 
 ```text
-Pipeline freeze review / prepared / review-only
+none; Pipeline freeze review 已通过，等待未来显式 Pipeline build/runtime card
 ```
 
 除 MALF day proof、Alpha freeze review、Alpha bounded proof passed、Signal freeze
@@ -156,19 +156,18 @@ review passed、Signal bounded proof passed、Trade freeze review passed 和 Tra
 foundation draft 或 pre-gate draft，不冻结：
 
 ```text
-Pipeline
+none
 ```
 
 Data Foundation maintenance release 与 Position / Portfolio Plan / Trade /
-System Readout / Pipeline pre-gate draft 都不得被解释为下游施工许可。
+System Readout / Pipeline freeze review passed 都不得被解释为下游施工许可。
 Signal freeze review passed 只冻结 Signal 六件套，不表示代码施工许可。
 Alpha bounded proof build card 只授权 Alpha bounded proof，不授权 Alpha full build、
 Signal construction、Pipeline 或任何下游施工。Signal freeze review passed 后，下一步
 只允许 Signal bounded proof build card。Signal bounded proof passed 后，Position freeze review
 reentry 已通过；随后上游完整性总控卡裁定在最终完整目标标准下暂停 Position bounded proof
 施工。Data reference target maintenance scope 已通过并冻结下一张 Data closeout 范围；
-Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review 与 System Readout bounded proof build 已通过；当前只准备
-`pipeline_freeze_review`，不允许 Trade full build、Position full build、System full build 或 System/Pipeline 下游扩权。
+Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review 与 Pipeline build/runtime authorization scope freeze 已通过；当前 prepared next card 是 `pipeline-single-module-orchestration-build-card-20260508-01`，不允许 Trade full build、Position full build、System full build 或 full-chain Pipeline 扩权。
 
 ## 6. 硬边界
 

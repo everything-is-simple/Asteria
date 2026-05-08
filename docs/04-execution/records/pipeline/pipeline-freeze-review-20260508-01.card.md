@@ -2,7 +2,7 @@
 
 日期：2026-05-08
 
-状态：`prepared / not executed / review-only`
+状态：`executed / passed`
 
 ## 1. 背景
 
@@ -17,7 +17,7 @@ Pipeline freeze review，不自动打开 Pipeline runtime、single-module orches
 |---|---|
 | module | `pipeline` |
 | run_id | `pipeline-freeze-review-20260508-01` |
-| stage | `freeze-review / prepared / review-only` |
+| stage | `freeze-review / executed / passed` |
 | owner | `codex` |
 
 ## 3. 评审输入
@@ -32,9 +32,9 @@ Pipeline freeze review，不自动打开 Pipeline runtime、single-module orches
 
 ## 4. 本卡允许
 
-- 只读重审 Pipeline 六件套与当前门禁挂接关系。
-- 明确 Pipeline 只做 orchestration / gate snapshot / run record，不定义业务语义。
-- 补齐 freeze review 所需的问题清单、边界确认和后续 build card 入口。
+- 本卡已完成 Pipeline 六件套 review-only 重审。
+- 本卡已确认 Pipeline 只做 orchestration / gate snapshot / run record，不定义业务语义。
+- 本卡已补齐 freeze review 的 record、evidence-index 与 conclusion。
 
 ## 5. 本卡仍禁止
 
@@ -45,5 +45,5 @@ Pipeline freeze review，不自动打开 Pipeline runtime、single-module orches
 
 ## 6. 后续门禁
 
-本卡执行并通过前，Pipeline 仍保持 `pre-gate six-doc draft / not frozen`。即使本卡已准备，
-也不代表 Pipeline runtime 已授权。
+本卡已通过，Pipeline 当前进入 `freeze review passed / build not executed` 状态。即使本卡已闭环，
+也不代表 Pipeline runtime、single-module orchestration build 或 full-chain pipeline 已授权。

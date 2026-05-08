@@ -93,6 +93,8 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Trade | `trade-bounded-proof-build-card-20260507-01` | `passed` | [conclusion](records/trade/trade-bounded-proof-build-card-20260507-01.conclusion.md) | [evidence-index](records/trade/trade-bounded-proof-build-card-20260507-01.evidence-index.md) |
 | System Readout | `system-readout-freeze-review-20260507-01` | `passed` | [conclusion](records/system_readout/system-readout-freeze-review-20260507-01.conclusion.md) | [evidence-index](records/system_readout/system-readout-freeze-review-20260507-01.evidence-index.md) |
 | System Readout | `system-readout-bounded-proof-build-card-20260508-01` | `passed` | [conclusion](records/system_readout/system-readout-bounded-proof-build-card-20260508-01.conclusion.md) | [evidence-index](records/system_readout/system-readout-bounded-proof-build-card-20260508-01.evidence-index.md) |
+| Pipeline | `pipeline-freeze-review-20260508-01` | `passed` | [conclusion](records/pipeline/pipeline-freeze-review-20260508-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-freeze-review-20260508-01.evidence-index.md) |
+| Pipeline | `pipeline-build-runtime-authorization-scope-freeze-20260508-01` | `passed / scope frozen` | [conclusion](records/pipeline/pipeline-build-runtime-authorization-scope-freeze-20260508-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-build-runtime-authorization-scope-freeze-20260508-01.evidence-index.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
@@ -148,17 +150,19 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   泛化补数入口。
 - Validated 历史 evidence zip 已对齐到 `H:\Asteria-Validated\2.backups` 冷归档路径；
   这是治理资产布局维护，不改变任何模块门禁。
-- Trade bounded proof build、System Readout freeze review 与 System Readout bounded proof build 已通过；当前只准备 Pipeline freeze review。Trade full build、Portfolio Plan full build、Position full build、
-  System full build、Pipeline runtime 和全链路 pipeline 仍未放行，直到后续门禁通过并明确授权。
+- Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review 与
+  Pipeline build/runtime authorization scope freeze 已通过；当前 prepared next card 是
+  `pipeline-single-module-orchestration-build-card-20260508-01`。Trade full build、Portfolio Plan full build、
+  Position full build、System full build、full-chain dry-run 与 full-chain bounded proof 仍未放行，直到后续门禁通过并明确授权。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
 
 ## 3. 当前已准备但未执行的下一卡
 
 以下只登记尚未执行的 prepared card 队列，不作为 passed conclusion：
 
-| 顺序 | 模块 | run_id | card |
-|---:|---|---|---|
-| 1 | Pipeline | `pipeline-freeze-review-20260508-01` | [card](records/pipeline/pipeline-freeze-review-20260508-01.card.md) |
+| 模块 | prepared card | status | card |
+|---|---|---|---|
+| Pipeline | `pipeline-single-module-orchestration-build-card-20260508-01` | `prepared / not executed` | [card](records/pipeline/pipeline-single-module-orchestration-build-card-20260508-01.card.md) |
 
 ## 3.1 Newly Passed Pre-Position Repair Card
 

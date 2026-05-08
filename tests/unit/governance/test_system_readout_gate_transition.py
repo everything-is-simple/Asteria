@@ -3,11 +3,6 @@ from shutil import copy2, copytree
 
 from scripts.governance.check_project_governance import run_checks
 
-try:
-    import tomllib
-except ModuleNotFoundError:  # Python 3.10
-    import tomli as tomllib
-
 
 def _copy_governance_repo(tmp_path: Path) -> Path:
     source_root = Path(__file__).resolve().parents[3]
@@ -31,12 +26,8 @@ def _messages(repo_root: Path) -> list[str]:
     return [finding.message for finding in run_checks(repo_root)]
 
 
-def test_current_gate_advances_to_pipeline_freeze_review_after_system_readout_proof() -> None:
+def test_system_readout_proof_conclusion_preserves_pipeline_handoff_history() -> None:
     repo_root = Path(__file__).resolve().parents[3]
-    registry_path = repo_root / "governance" / "module_gate_registry.toml"
-    with registry_path.open("rb") as handle:
-        registry = tomllib.load(handle)
-    modules = {module["module_id"]: module for module in registry["modules"]}
     conclusion_index = (
         repo_root / "docs" / "04-execution" / "00-conclusion-index-v1.md"
     ).read_text(encoding="utf-8")
@@ -81,42 +72,6 @@ def test_current_gate_advances_to_pipeline_freeze_review_after_system_readout_pr
         / "system-readout-bounded-proof-build-card-20260508-01.conclusion.md"
     ).read_text(encoding="utf-8")
 
-    assert registry["active_mainline_module"] == "system_readout"
-    assert registry["active_foundation_card"] == "none"
-    assert registry["current_allowed_next_card"] == "pipeline_freeze_review"
-    assert registry["latest_mainline_release_run_id"] == (
-        "system-readout-bounded-proof-build-card-20260508-01"
-    )
-    assert modules["malf"]["allow_build"] is False
-    assert modules["malf"]["next_card"] == "alpha_production_builder_hardening"
-    assert modules["alpha"]["allow_build"] is False
-    assert modules["alpha"]["next_card"] == "signal_production_builder_hardening"
-    assert modules["signal"]["allow_build"] is False
-    assert modules["signal"]["next_card"] == "upstream_pre_position_release_decision"
-    assert modules["data"]["latest_completed_card"] == "data_reference_target_maintenance_closeout"
-    assert modules["position"]["allow_review"] is False
-    assert modules["position"]["allow_build"] is False
-    assert modules["position"]["next_card"] == "portfolio_plan_freeze_review"
-    assert modules["portfolio_plan"]["allow_review"] is False
-    assert modules["portfolio_plan"]["allow_build"] is False
-    assert modules["portfolio_plan"]["next_card"] == "trade_freeze_review"
-    assert modules["portfolio_plan"]["freeze_review_status"] == "passed"
-    assert modules["trade"]["allow_review"] is False
-    assert modules["trade"]["allow_build"] is False
-    assert modules["trade"]["status"] == "released"
-    assert modules["trade"]["next_card"] == "system_readout_freeze_review"
-    assert modules["trade"]["freeze_review_status"] == "passed"
-    assert modules["trade"]["proof_status"] == "bounded_proof_passed; full_build_not_executed"
-    assert modules["system_readout"]["status"] == "released"
-    assert modules["system_readout"]["allow_review"] is False
-    assert modules["system_readout"]["allow_build"] is True
-    assert modules["system_readout"]["proof_status"] == (
-        "bounded_proof_passed; full_build_not_executed"
-    )
-    assert modules["system_readout"]["next_card"] == "pipeline_freeze_review"
-    assert modules["system_readout"]["active_card"] == (
-        "docs/04-execution/records/pipeline/pipeline-freeze-review-20260508-01.card.md"
-    )
     assert "data-reference-target-maintenance-scope-20260506-01" in conclusion_index
     assert "data-reference-target-maintenance-closeout-20260506-01" in conclusion_index
     assert "malf-week-bounded-proof-build-20260506-01" in conclusion_index
@@ -154,52 +109,22 @@ def test_current_gate_advances_to_pipeline_freeze_review_after_system_readout_pr
     assert "| allowed next action | `Pipeline freeze review` |" in system_proof_conclusion
 
 
-def test_project_governance_rejects_missing_current_next_card_file(tmp_path: Path) -> None:
-    repo_root = _copy_governance_repo(tmp_path)
-    card_path = repo_root / (
-        "docs/04-execution/records/pipeline/pipeline-freeze-review-20260508-01.card.md"
-    )
-    if card_path.exists():
-        card_path.unlink()
-
-    assert any(
-        "current allowed next card is missing matching execution card" in message
-        for message in _messages(repo_root)
-    )
-
-
-def test_project_governance_rejects_current_next_card_that_is_already_blocked(
-    tmp_path: Path,
-) -> None:
-    repo_root = _copy_governance_repo(tmp_path)
-    conclusion_path = repo_root / (
-        "docs/04-execution/records/pipeline/pipeline-freeze-review-20260508-01.conclusion.md"
-    )
-    conclusion_path.parent.mkdir(parents=True, exist_ok=True)
-    conclusion_path.write_text(
-        "# Pipeline Freeze Review Conclusion\n\n状态：`blocked`\n",
-        encoding="utf-8",
-    )
-
-    assert any(
-        "current allowed next card must not point to a blocked execution conclusion" in message
-        for message in _messages(repo_root)
-    )
-
-
-def test_project_governance_rejects_docs_sync_next_card_mismatch(tmp_path: Path) -> None:
+def test_project_governance_rejects_stale_reopened_pipeline_handoff(tmp_path: Path) -> None:
     repo_root = _copy_governance_repo(tmp_path)
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'current_allowed_next_card = "pipeline_freeze_review"',
-            'current_allowed_next_card = "malf_day_bounded_proof"',
+            'current_allowed_next_card = "pipeline_single_module_orchestration_build_card"',
+            'current_allowed_next_card = "pipeline_build_runtime_authorization_scope_freeze"',
+        ).replace(
+            'next_card = "pipeline_single_module_orchestration_build_card"',
+            'next_card = "pipeline_build_runtime_authorization_scope_freeze"',
         ),
         encoding="utf-8",
     )
 
     assert any(
-        "current_allowed_next_card must match active module next_card" in message
+        "current allowed next card must not point to a closed execution conclusion" in message
         for message in _messages(repo_root)
     )

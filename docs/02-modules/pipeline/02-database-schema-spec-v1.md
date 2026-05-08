@@ -2,15 +2,15 @@
 
 日期：2026-04-29
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / single-module orchestration build prepared / build not executed
 
 ## 1. 规格范围
 
-本规格为 Pipeline pre-gate draft。正式 schema 冻结必须等待：
+本规格已在 Pipeline freeze review 中冻结为文档合同表面。未来正式 schema 落地仍必须等待：
 
 ```text
-MALF bounded proof gate passed
-active card explicitly authorizes Pipeline freeze review
+Pipeline freeze review passed
+explicit Pipeline build/runtime card opened
 ```
 
 目标 Pipeline DB：
@@ -19,8 +19,10 @@ active card explicitly authorizes Pipeline freeze review
 H:\Asteria-data\pipeline.duckdb
 ```
 
-该库在 Pipeline 设计冻结前不得创建。MALF bounded proof gate passed 本身不授权
-创建正式 Pipeline DB。
+该库在本轮 freeze review 中仍不得创建。只有后续显式 Pipeline build/runtime card
+才可能授权创建正式 Pipeline DB。当前已准备但未执行的第一张执行卡是
+`pipeline-single-module-orchestration-build-card-20260508-01`；full-chain dry-run 与 full-chain
+bounded proof 仍需后续新卡。
 
 ## 2. 上游关系
 
@@ -156,7 +158,7 @@ erDiagram
 | 同库多写 | 禁止 |
 | 旧数据替换 | staging 审计通过后 promote |
 | `run_id` | 审计字段，不作为业务自然键 |
-| formal DB create | Pipeline design freeze 后才允许 |
+| formal DB create | freeze review passed 仍不允许；需后续显式 Pipeline build/runtime card |
 
 ## 12. 不允许的 schema
 

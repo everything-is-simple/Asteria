@@ -44,15 +44,58 @@ def check_gate_registry(repo_root: Path, gate_registry: dict[str, Any]) -> list[
         and (bool(module.get("allow_build")) or bool(module.get("allow_review")))
     ]
 
-    if len(action_allowed) != 1:
-        findings.append(Finding(path, "only one mainline module may allow build or review"))
-    if active not in action_allowed:
-        findings.append(
-            Finding(path, "active_mainline_module must be the action-allowed mainline module")
-        )
     if current_next:
-        _check_current_next_card(
-            repo_root, path, findings, gate_registry, modules, str(active), str(current_next)
+        orchestration_module = _pipeline_next_card_module(gate_registry, modules, str(current_next))
+        if orchestration_module is None:
+            if len(action_allowed) != 1:
+                findings.append(Finding(path, "only one mainline module may allow build or review"))
+            if active not in action_allowed:
+                findings.append(
+                    Finding(
+                        path,
+                        ("active_mainline_module must be the action-allowed mainline module"),
+                    )
+                )
+            _check_current_next_card(
+                repo_root, path, findings, gate_registry, modules, str(active), str(current_next)
+            )
+        else:
+            if action_allowed:
+                findings.append(
+                    Finding(
+                        path,
+                        (
+                            "pipeline orchestration next card must not reopen any "
+                            "mainline build/review flag"
+                        ),
+                    )
+                )
+            if active != "system_readout":
+                findings.append(
+                    Finding(
+                        path,
+                        (
+                            "pipeline orchestration next card requires "
+                            "active_mainline_module to remain system_readout"
+                        ),
+                    )
+                )
+            _check_current_next_card(
+                repo_root,
+                path,
+                findings,
+                gate_registry,
+                modules,
+                str(active),
+                str(current_next),
+                forced_module=orchestration_module,
+            )
+    elif action_allowed:
+        findings.append(
+            Finding(
+                path,
+                "terminal gate state must not leave any mainline module build/review enabled",
+            )
         )
     if "system" in modules or "system_readout" not in modules:
         findings.append(
@@ -72,9 +115,10 @@ def _check_current_next_card(
     modules: dict[str, dict[str, Any]],
     active: str,
     current_next: str,
+    forced_module: str | None = None,
 ) -> None:
-    next_card_module = active
-    if modules.get(active, {}).get("next_card") != current_next:
+    next_card_module = forced_module or active
+    if forced_module is None and modules.get(active, {}).get("next_card") != current_next:
         foundation_module = _foundation_next_card_module(gate_registry, modules, current_next)
         if foundation_module is None:
             findings.append(
@@ -86,11 +130,11 @@ def _check_current_next_card(
         findings.append(
             Finding(path, "current allowed next card is missing matching execution card")
         )
-    if _current_next_card_has_blocked_conclusion(repo_root, next_card_module, current_next):
+    if _current_next_card_has_closed_conclusion(repo_root, next_card_module, current_next):
         findings.append(
             Finding(
                 path,
-                "current allowed next card must not point to a blocked execution conclusion",
+                "current allowed next card must not point to a closed execution conclusion",
             )
         )
 
@@ -113,6 +157,23 @@ def _foundation_next_card_module(
     ):
         return "data"
     return None
+
+
+def _pipeline_next_card_module(
+    gate_registry: dict[str, Any],
+    modules: dict[str, dict[str, Any]],
+    current_next: str,
+) -> str | None:
+    pipeline_module = modules.get("pipeline", {})
+    if not current_next.startswith("pipeline_"):
+        return None
+    if gate_registry.get("active_mainline_module") != "system_readout":
+        return None
+    if pipeline_module.get("orchestration") is not True:
+        return None
+    if pipeline_module.get("next_card") != current_next:
+        return None
+    return "pipeline"
 
 
 def _check_module_docs(
@@ -150,7 +211,7 @@ def _current_next_card_file_exists(repo_root: Path, module_id: str, next_card: s
     return False
 
 
-def _current_next_card_has_blocked_conclusion(
+def _current_next_card_has_closed_conclusion(
     repo_root: Path, module_id: str, next_card: str
 ) -> bool:
     record_dir = _next_card_record_dir(repo_root, module_id, next_card)
@@ -162,7 +223,7 @@ def _current_next_card_has_blocked_conclusion(
         if run_id != card_prefix and not run_id.startswith(f"{card_prefix}-"):
             continue
         text = conclusion_path.read_text(encoding="utf-8")
-        if re.search(r"状态：`blocked`", text):
+        if re.search(r"状态：`(?:passed|blocked)`", text):
             return True
     return False
 

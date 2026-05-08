@@ -1,19 +1,24 @@
 module_id = "pipeline"
 display_name = "Pipeline"
 contract_version = "v1"
-status = "pre_gate_draft"
+status = "freeze_review_passed"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
-    "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+    "H:/Asteria-Validated/Asteria-docs-code-20260502-104932.zip",
+    "H:/Asteria-Validated/Asteria-pipeline-freeze-review-20260508-01.zip",
 ]
-gate_state = "pre_gate_draft; metadata protocol only"
-formal_db_permission = "not_allowed_until_pipeline_gate"
+gate_state = "freeze_review_passed; single_module_orchestration_build_prepared; build_not_executed"
+formal_db_permission = "freeze_review_passed_but_pipeline_db_not_released; single_module_orchestration_build_card_only"
 business_boundary = "orchestrate and record only; never define module semantics"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
 resume_behavior = "resume from pipeline step checkpoint after module gate validation"
 source_manifest_fields = ["gate_registry_version", "manifest_version", "module_scope"]
 forbidden_inputs = ["business_internal_table", "mock_formal_data"]
 forbidden_outputs = ["business_field", "business_mutation"]
+release_conclusion = "docs/04-execution/records/pipeline/pipeline-build-runtime-authorization-scope-freeze-20260508-01.conclusion.md"
+evidence_index = "docs/04-execution/records/pipeline/pipeline-build-runtime-authorization-scope-freeze-20260508-01.evidence-index.md"
+next_allowed_action = "pipeline_single_module_orchestration_build_card"
+input_boundary = "orchestration_metadata_only; single_module_orchestration_build_card_first"
 
 [[official_inputs]]
 input_type = "registry"

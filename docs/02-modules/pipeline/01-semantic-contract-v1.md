@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / single-module orchestration build prepared / build not executed
 
 ## 1. 合同目的
 
@@ -10,17 +10,19 @@
 
 ## 2. 前置门槛
 
-本合同在以下条件满足前不得冻结：
+本合同已在以下条件满足后冻结：
 
 ```text
-MALF bounded proof gate passed
+System Readout bounded proof passed
 active card explicitly authorizes Pipeline freeze review
 ```
 
 Pipeline 的正式输入字段必须来自模块运行元数据、门禁账本或 manifest 约定，而不是业务表语义。
 
-当前唯一业务下一步是 `Alpha freeze review`。Pipeline 不得因 MALF gate passed
-自行进入冻结、建库或全链路编排。
+当前 Pipeline freeze review 已闭环，但 Pipeline 不得因 freeze review passed
+自行进入建库、single-module orchestration build 或 full-chain pipeline。
+当前唯一已准备但未执行的下一张卡是 `pipeline-single-module-orchestration-build-card-20260508-01`；
+它只允许最小 single-module orchestration build，不放行 full-chain dry-run 或 full-chain bounded proof。
 
 ## 3. 输入语义
 

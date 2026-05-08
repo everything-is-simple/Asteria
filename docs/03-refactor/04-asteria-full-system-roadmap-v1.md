@@ -10,8 +10,11 @@
 已通过，MALF week/month bounded proof build、Alpha production builder hardening、
 Signal production builder hardening、upstream pre-position release decision、Position bounded proof、
 Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof、
-System Readout freeze review 与 System Readout bounded proof build 已通过。当前下一步只允许
-`pipeline_freeze_review`，Pipeline freeze review 尚未执行。
+System Readout freeze review、System Readout bounded proof build、Pipeline freeze review 与
+Pipeline build/runtime authorization scope freeze 已通过。当前 allowed next action 为
+`pipeline_single_module_orchestration_build_card`，对应 prepared card
+`pipeline-single-module-orchestration-build-card-20260508-01`；未来如需进入 full-chain dry-run 或
+full-chain bounded proof，仍必须另开卡。
 
 地基轨道 `data-formal-promotion-evidence-20260502-01` 的 allowed next action
 `MALF v1.3 formal rebuild closeout` 已由当前 MALF v1.3 closeout 闭环。
@@ -22,7 +25,8 @@ Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze revie
 System Readout freeze review 与 System Readout bounded proof build 已闭环。Portfolio Plan bounded proof 的 allowed next action
 `trade_freeze_review` 已由本轮 Trade freeze review 承接；Trade freeze review 的 allowed next action
 `trade_bounded_proof_build_card` 已由本轮 Trade bounded proof 承接；`system_readout_bounded_proof_build_card`
-已由本轮 System Readout bounded proof 承接；当前 allowed next action 已切到 `pipeline_freeze_review`。
+已由本轮 System Readout bounded proof 承接；其历史 allowed next action `pipeline_freeze_review`
+也已由本轮 Pipeline freeze review 闭环。
 历史 MALF month 结论的 allowed next action `alpha_production_builder_hardening` 已由本轮 Alpha 卡闭环。
 历史 Alpha 结论的 allowed next action `signal_production_builder_hardening` 已由本轮 Signal 卡闭环。
 历史 Signal 结论的 allowed next action `upstream_pre_position_release_decision` 已由本轮 release decision 闭环。
@@ -165,18 +169,19 @@ Pipeline 只调度和记录
 - [x] 实现只读 bounded runner。
 - [x] 审计 System Readout freeze review 不触发业务重算、不回写任何上游模块。
 - [x] 产出 System freeze review evidence 与 release conclusion。
-- [x] Release gate（放行门禁）已通过 `system_readout_bounded_proof_build_card`；当前只授权 `pipeline_freeze_review`。
+- [x] Release gate（放行门禁）已通过 `system_readout_bounded_proof_build_card`；其历史下游 handoff `pipeline_freeze_review` 已闭环。
 
 ## 11. 阶段 8：Pipeline 集成
 
-- [ ] 在任何 Pipeline runtime 施工前，先确认当前 active card 明确授权 Pipeline freeze review。
-- [ ] 重审 Pipeline 六件套，确认 Pipeline 只调度、记录、汇总状态，不定义业务语义。
-- [ ] 冻结 `pipeline.duckdb` schema：pipeline_run、pipeline_step_run、module_gate_snapshot、build_manifest。
-- [ ] 实现单模块调度。
-- [ ] 实现全链路 dry-run。
-- [ ] 实现全链路 bounded run。
-- [ ] 审计 Pipeline 不绕过 module gate、不写业务表、不替模块解释字段。
-- [ ] 产出 full-chain evidence 与 release conclusion。
+- [x] 在 review-only 范围内完成 Pipeline freeze review，确认当前 card 只授权冻结文档合同，不授权 runtime。
+- [x] 用 `pipeline-build-runtime-authorization-scope-freeze-20260508-01` 把下一步施工范围冻结为 `pipeline_single_module_orchestration_build_card`，不直接跳 full-chain。
+- [x] 重审 Pipeline 六件套，确认 Pipeline 只调度、记录、汇总状态，不定义业务语义。
+- [x] 冻结 `pipeline.duckdb` schema 文档表面：pipeline_run、pipeline_step_run、module_gate_snapshot、build_manifest。
+- [ ] 在 `pipeline-single-module-orchestration-build-card-20260508-01` 中实现单模块调度。
+- [ ] 在未来独立 full-chain 授权卡中实现全链路 dry-run。
+- [ ] 在未来独立 full-chain 授权卡中实现全链路 bounded run。
+- [ ] 在未来显式 Pipeline build/runtime card 中审计 Pipeline 不绕过 module gate、不写业务表、不替模块解释字段。
+- [ ] 在未来显式 Pipeline build/runtime card 中产出 full-chain evidence 与 release conclusion。
 
 ## 12. 阶段 9：Timeframe 扩展
 
@@ -217,7 +222,7 @@ Pipeline 只调度和记录
 - 当前事实基线以 `Data foundation production baseline sealed`、`MALF v1.3 day formal-data bounded closeout 已通过`、
   `Alpha bounded proof 已通过` 和 `Signal bounded proof 已通过` 为准。
 - MALF v1.4 是当前语义与操作边界权威包；day runtime sync 与 week/month proof 已通过，full build 仍需另开卡。
-- 当前下一卡固定为 `pipeline_freeze_review`；这只准备 Pipeline freeze review，不是 System full build、Pipeline runtime 或下游扩展施工。
+- 当前 allowed next action 为 `pipeline_single_module_orchestration_build_card`；它仍只是 prepared / not executed，不是 System full build、Pipeline runtime passed 或下游扩展施工授权。
 - Data Foundation 是地基轨道，不进入策略主线排序。
 - Pipeline 是编排与记录轨道，不进入业务主线排序。
 - 不同时施工两个策略主线模块。

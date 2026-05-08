@@ -2,27 +2,28 @@
 
 日期：2026-04-29
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / single-module orchestration build prepared / build not executed
 
 ## 1. Runner 目标
 
-Pipeline runner 负责在 MALF bounded proof gate passed 且有明确 Pipeline 卡之后，
+Pipeline runner 的未来职责是在已完成 Pipeline freeze review 且后续有明确 Pipeline build/runtime card 之后，
 记录单模块或受限范围内的编排运行、步骤记录、门禁快照和构建 manifest。
 
-在 Pipeline 设计冻结前，本文件只冻结草案方向，不要求创建代码文件。
+`pipeline-freeze-review-20260508-01` 已将本合同冻结为文档表面；本轮仍不要求创建代码文件。
 
 ## 2. 前置门槛
 
-所有 Pipeline runner 必须在运行前验证：
+所有未来 Pipeline runner 必须在运行前验证：
 
 ```text
-MALF bounded proof gate passed
-active card explicitly authorizes Pipeline freeze review
+Pipeline freeze review passed
+explicit Pipeline build/runtime card opened
 ```
 
 缺少门禁账本、缺少最小模块运行证据、或当前施工位不允许该模块进入时，runner 必须拒绝推进编排。
 
-当前唯一业务下一步是 `Alpha freeze review`；Pipeline runner 仍不得创建。
+当前已准备但未执行的下一张卡是 `pipeline-single-module-orchestration-build-card-20260508-01`；
+除该卡未来执行外，Pipeline runner 仍不得创建。
 
 ## 3. Runner 列表
 
@@ -32,7 +33,7 @@ active card explicitly authorizes Pipeline freeze review
 | `scripts/pipeline/run_pipeline_audit.py` | 执行 Pipeline 只编排、不定义业务语义的审计 |
 | `scripts/pipeline/run_pipeline_bounded_proof.py` | 编排受限范围的 Pipeline bounded proof |
 
-这些 runner 在 pre-gate draft 阶段不创建代码文件。
+这些 runner 当前仍只保留合同占位；freeze review 不创建正式代码文件。
 
 ## 4. 构建顺序
 
@@ -53,7 +54,7 @@ flowchart TD
 |---|---|
 | `bounded` | 必须限制在单模块或单批次范围 |
 | `segmented` | 必须传 step range、batch id 或 module scope |
-| `full` | 只能在治理明确允许时开启 |
+| `full` | 只能在未来独立 full-chain 授权卡通过后开启 |
 | `resume` | 必须读取 checkpoint |
 | `audit-only` | 不写业务表，只写 audit 或报告 |
 | `daily_incremental` | 未来只记录 Data/module incremental manifest，不定义业务语义 |
@@ -85,7 +86,7 @@ flowchart TD
 | active module lock | 必须验证当前施工位只允许一个主线模块 |
 
 当前 Data Foundation 已支持自身 daily incremental 与 resume；Pipeline 仍只登记未来
-编排合同，不得因此创建 `pipeline.duckdb` 或全链路 runtime。
+编排合同，不得因此创建 `pipeline.duckdb`、single-module orchestration runtime 或全链路 runtime。
 
 ## 8. 输出证据
 
