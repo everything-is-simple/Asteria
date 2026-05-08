@@ -84,6 +84,8 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4\
 | `H:\Asteria-Validated\Asteria-trade-freeze-review-20260507-01.zip` | Trade freeze review evidence |
 | `docs/04-execution/records/trade/trade-bounded-proof-build-card-20260507-01.conclusion.md` | Trade bounded proof 已通过 |
 | `H:\Asteria-Validated\Asteria-trade-bounded-proof-build-card-20260507-01.zip` | Trade bounded proof evidence |
+| `docs/04-execution/records/system_readout/system-readout-freeze-review-20260507-01.conclusion.md` | System Readout freeze review 已通过 |
+| `H:\Asteria-Validated\Asteria-system-readout-freeze-review-20260507-01.zip` | System Readout freeze review evidence |
 | `H:\Asteria-Validated\Asteria-docs-authority-refresh-20260429-01.zip` | 文档权威链刷新归档 |
 | `docs/04-execution/records/governance/malf-authority-compatibility-audit-20260429-01.conclusion.md` | 当前系统快照未偏移 MALF 权威 |
 | `docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.conclusion.md` | MALF v1.3 day formal-data bounded proof 已通过 |
@@ -99,8 +101,8 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4\
 | 3 | Signal | `docs/02-modules/signal/` | frozen six-doc set / bounded proof passed | 否 | full build 另需新卡 |
 | 4 | Position | `docs/02-modules/position/` | freeze review passed / bounded proof passed / full build not executed | 否 | full build 另需新卡 |
 | 5 | Portfolio Plan | `docs/02-modules/portfolio_plan/` | frozen six-doc set / freeze review passed / bounded proof passed / full build not executed | 否 | full build 另需新卡 |
-| 6 | Trade | `docs/02-modules/trade/` | frozen six-doc set / freeze review passed / bounded proof passed | 否 | Trade bounded proof 已通过；`fill_ledger` retained gap；当前进入 System Readout freeze review |
-| 7 | System Readout | `docs/02-modules/system_readout/` | freeze review prepared / not frozen | 是，仅限 `system_readout_freeze_review` | 等 Trade release 后审阅并冻结 |
+| 6 | Trade | `docs/02-modules/trade/` | frozen six-doc set / freeze review passed / bounded proof passed | 否 | Trade bounded proof 已通过；`fill_ledger` retained gap；full build 另需新卡 |
+| 7 | System Readout | `docs/02-modules/system_readout/` | frozen six-doc set / freeze review passed / bounded proof passed / full build not executed | 是，仅限 `pipeline_freeze_review` | bounded proof 已通过；`system.duckdb` 与 runner 已创建为 day bounded surface |
 | 8 | Pipeline | `docs/02-modules/pipeline/` | pre-gate six-doc draft | 否 | MALF gate 已过但当前不占主线卡位；不得建立全链路 |
 
 ## 4. 主线顺序
@@ -134,18 +136,19 @@ Signal freeze review
 Signal bounded proof
 Trade freeze review
 Trade bounded proof build
+System Readout freeze review
 ```
 
 当前已打开执行卡：
 
 ```text
-system readout freeze review
+system readout bounded proof build card
 ```
 
 当前只允许施工对象：
 
 ```text
-System Readout freeze review / prepared / not executed
+Pipeline freeze review / prepared / review-only
 ```
 
 除 MALF day proof、Alpha freeze review、Alpha bounded proof passed、Signal freeze
@@ -153,10 +156,6 @@ review passed、Signal bounded proof passed、Trade freeze review passed 和 Tra
 foundation draft 或 pre-gate draft，不冻结：
 
 ```text
-Position
-Portfolio Plan
-Trade
-System Readout
 Pipeline
 ```
 
@@ -168,8 +167,8 @@ Signal construction、Pipeline 或任何下游施工。Signal freeze review pass
 只允许 Signal bounded proof build card。Signal bounded proof passed 后，Position freeze review
 reentry 已通过；随后上游完整性总控卡裁定在最终完整目标标准下暂停 Position bounded proof
 施工。Data reference target maintenance scope 已通过并冻结下一张 Data closeout 范围；
-Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review 与 Trade bounded proof build 已通过；当前只准备
-`system_readout_freeze_review`，不允许 Trade full build、Position full build 或 System/Pipeline 下游施工。
+Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review 与 System Readout bounded proof build 已通过；当前只准备
+`pipeline_freeze_review`，不允许 Trade full build、Position full build、System full build 或 System/Pipeline 下游扩权。
 
 ## 6. 硬边界
 

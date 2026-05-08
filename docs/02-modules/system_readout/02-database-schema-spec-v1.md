@@ -2,11 +2,12 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / bounded proof passed / full build not executed
 
 ## 1. 规格范围
 
-本规格为 System Readout pre-gate draft。正式 schema 冻结必须等待：
+本规格已在 `system-readout-freeze-review-20260507-01` 中完成 review-only 冻结。当前 schema
+合同已可作为 bounded proof build card 的权威输入，但正式表创建仍必须等待：
 
 ```text
 Trade released
@@ -18,7 +19,8 @@ Trade released
 H:\Asteria-data\system.duckdb
 ```
 
-该库在 System Readout 设计冻结前不得创建。
+该库已在 `system-readout-bounded-proof-build-card-20260508-01` 中按 bounded proof 范围创建。
+当前放行的是 day bounded readout 表面，不等于 System full build。
 
 ## 2. 上游关系
 
@@ -183,7 +185,7 @@ erDiagram
 | 同库多写 | 禁止 |
 | 旧数据替换 | staging 审计通过后 promote |
 | `run_id` | 审计字段，不作为业务自然键 |
-| formal DB create | System Readout design freeze 后才允许 |
+| formal DB create | 仅限 `system_readout_bounded_proof_build_card` 执行期间允许 |
 
 ## 13. 不允许的 schema
 

@@ -2,13 +2,15 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / bounded proof passed / full build not executed
 
 ## 1. Runner 目标
 
 System Readout runner 负责在 Trade released 之后，只读全链路正式账本，构建 source manifest、module status snapshot、chain readout、summary snapshot 和 audit snapshot。
 
-在 System Readout 设计冻结前，本文件只冻结草案方向，不要求创建代码文件。
+`system-readout-freeze-review-20260507-01` 已将本合同冻结为文档表面；
+`system-readout-bounded-proof-build-card-20260508-01` 已把 `scripts/system_readout/*.py`
+和最小 runtime 落地。当前仍只放行 bounded / resume / audit-only。
 
 ## 2. 前置门槛
 
@@ -28,7 +30,8 @@ Trade released
 | `scripts/system_readout/run_system_readout_audit.py` | 执行只读边界、source trace、状态边界审计 |
 | `scripts/system_readout/run_system_readout_bounded_proof.py` | 编排 System Readout bounded proof |
 
-这些 runner 在 pre-gate draft 阶段不创建代码文件。
+这些 runner 已在 `system-readout-bounded-proof-build-card-20260508-01` 中落地；但
+segmented / full 仍保持合同占位，不在本轮开放。
 
 ## 4. 构建顺序
 
@@ -49,8 +52,8 @@ flowchart TD
 | 模式 | 要求 |
 |---|---|
 | `bounded` | 必须传 `start_dt / end_dt` 或 `symbol_limit` |
-| `segmented` | 必须传 symbol range、batch id 或 timeframe |
-| `full` | 只能在 bounded proof 通过后开启 |
+| `segmented` | 本轮不开放，只保留合同 |
+| `full` | 本轮不开放，只保留合同 |
 | `resume` | 必须读取 checkpoint |
 | `audit-only` | 不写业务表，只写 audit 或报告 |
 
@@ -59,7 +62,7 @@ flowchart TD
 | 参数 | 要求 |
 |---|---|
 | `--timeframe` | 第一阶段固定为 `day` |
-| `--mode` | `bounded / segmented / full / resume / audit-only` |
+| `--mode` | `bounded / resume / audit-only` |
 | `--run-id` | 可传入；未传入时由 runner 生成 |
 | `--source-chain-manifest` | 全链路 source manifest |
 | `--target-system-db` | System Readout 目标 DB 路径 |

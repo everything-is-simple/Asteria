@@ -25,11 +25,12 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-portfolio-plan-bounded-proof-build-card-20260507-01.zip",
     "H:/Asteria-Validated/Asteria-trade-freeze-review-20260507-01.zip",
     "H:/Asteria-Validated/Asteria-trade-bounded-proof-build-card-20260507-01.zip",
+    "H:/Asteria-Validated/Asteria-system-readout-freeze-review-20260507-01.zip",
 ]
 latest_governance_run_id = "validated-historical-evidence-rehydration-20260502-01"
-latest_mainline_release_run_id = "trade-bounded-proof-build-card-20260507-01"
+latest_mainline_release_run_id = "system-readout-bounded-proof-build-card-20260508-01"
 latest_authority_sync_run_id = "malf-v1-4-core-operational-boundary-authority-sync-20260503-01"
-current_allowed_next_card = "system_readout_freeze_review"
+current_allowed_next_card = "pipeline_freeze_review"
 pre_position_repair_sequence = [
     "data_reference_target_maintenance_scope",
     "data_reference_target_maintenance_closeout",
@@ -196,18 +197,24 @@ next_allowed_action = "system_readout_freeze_review"
 module_id = "system_readout"
 display_name = "System Readout"
 mainline = true
-status = "freeze_review_prepared"
-doc_status = "pre-gate six-doc draft / freeze review prepared"
-allow_build = false
-allow_review = true
+status = "released"
+doc_status = "frozen six-doc set / freeze review passed / bounded proof passed / full build not executed"
+allow_build = true
+allow_review = false
 doc_path = "docs/02-modules/system_readout"
 db_name = "system.duckdb"
 waits_for = "trade_released"
-next_card = "system_readout_freeze_review"
-active_card = "docs/04-execution/records/system_readout/system-readout-freeze-review-20260507-01.card.md"
-formal_db_permission = "not_allowed"
-input_boundary = "read_only_released_trade_bounded_proof_surface"
-next_allowed_action = "system_readout_freeze_review"
+next_card = "pipeline_freeze_review"
+active_card = "docs/04-execution/records/pipeline/pipeline-freeze-review-20260508-01.card.md"
+freeze_review_status = "passed"
+freeze_review_run_id = "system-readout-freeze-review-20260507-01"
+proof_status = "bounded_proof_passed; full_build_not_executed"
+proof_run_id = "system-readout-bounded-proof-build-card-20260508-01"
+release_conclusion = "docs/04-execution/records/system_readout/system-readout-bounded-proof-build-card-20260508-01.conclusion.md"
+evidence_index = "docs/04-execution/records/system_readout/system-readout-bounded-proof-build-card-20260508-01.evidence-index.md"
+formal_db_permission = "released_day_bounded_system_readout_only; system_full_build_requires_new_card"
+input_boundary = "read_only_released_full_chain_day_bounded_surfaces"
+next_allowed_action = "pipeline_freeze_review"
 
 [[modules]]
 module_id = "pipeline"

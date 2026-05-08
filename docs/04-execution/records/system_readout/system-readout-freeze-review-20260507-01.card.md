@@ -2,12 +2,12 @@
 
 日期：2026-05-07
 
-状态：`prepared / not executed`
+状态：`passed`
 
 ## 1. 背景
 
-`trade-bounded-proof-build-card-20260507-01` 已通过。System Readout 现在只允许准备
-freeze review，用于只读审阅 Trade 输出边界；本文件仅登记下一卡，不代表已执行 review。
+`trade-bounded-proof-build-card-20260507-01` 已通过，Trade day bounded proof surface 已放行。
+本卡已执行 review-only System Readout freeze review，不执行 System Readout build。
 
 ## 2. 基本信息
 
@@ -15,7 +15,7 @@ freeze review，用于只读审阅 Trade 输出边界；本文件仅登记下一
 |---|---|
 | module | `system_readout` |
 | run_id | `system-readout-freeze-review-20260507-01` |
-| stage | `freeze-review / prepared / not executed` |
+| stage | `freeze-review / passed` |
 | owner | `codex` |
 
 ## 3. 输入范围
@@ -30,9 +30,9 @@ freeze review，用于只读审阅 Trade 输出边界；本文件仅登记下一
 
 ## 4. 允许动作
 
-- 后续执行 turn 可 review-only 审阅 System Readout 六件套。
-- 后续执行 turn 可冻结 System Readout design / schema / runner / audit 合同表面。
-- 后续执行 turn 必须生成 System Readout freeze review 的 record、evidence-index、conclusion。
+- review-only 审阅 System Readout 六件套。
+- 冻结 System Readout design / schema / runner / audit 合同表面。
+- 生成 System Readout freeze review 的 record、evidence-index、conclusion。
 
 ## 5. 当前仍禁止
 
@@ -44,4 +44,4 @@ freeze review，用于只读审阅 Trade 输出边界；本文件仅登记下一
 
 ## 6. 验收与后续门禁
 
-System Readout freeze review 通过后，才允许准备 System Readout bounded proof build card。
+System Readout freeze review 通过后，只允许准备 System Readout bounded proof build card。

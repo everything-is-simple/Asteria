@@ -2,23 +2,25 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / bounded proof passed / full build not executed
 
 ## 1. 本卡目标
 
-补齐 System Readout pre-gate 六件套 draft，为 Trade released 之后的 System Readout 设计冻结做准备。
+本文件记录 System Readout 六件套在 freeze review 与 bounded proof 通过后的当前卡位：
+设计、schema、runner、audit 合同已冻结，并已完成 day bounded proof。
 
-本卡不允许代码施工，不允许创建正式 DuckDB，不允许冻结 System Readout。
+当前已允许的事实是 day bounded proof passed / full build not executed；不代表 System full build
+或 Pipeline runtime 已打开。
 
 ## 2. 当前卡位
 
 | 项 | 值 |
 |---|---|
 | active_module | `system_readout` |
-| card_type | pre-gate documentation draft |
-| implementation_allowed | no |
-| formal_db_write_allowed | no |
-| freeze_allowed | no |
+| card_type | frozen documentation contract after bounded proof |
+| implementation_allowed | bounded proof surface only |
+| formal_db_write_allowed | bounded proof surface only |
+| freeze_allowed | already passed via `system-readout-freeze-review-20260507-01` |
 
 ## 3. 前置门槛
 
@@ -32,33 +34,33 @@ Trade released
 
 | 项 | 裁决 |
 |---|---|
-| 创建 System Readout 六件套 draft | 允许 |
-| 明确 System Readout 只读消费全链路正式账本 | 允许 |
-| 定义 System Readout 不写回任何业务模块的硬边界 | 允许 |
-| 定义 `system.duckdb` 的 draft schema | 允许 |
-| 定义 runner / audit draft contract | 允许 |
-| 更新模块文档索引和门禁账本中的 draft 状态 | 允许 |
+| 创建 System Readout bounded proof 最小 runtime | 已完成 |
+| 明确 System Readout 只读消费全链路正式账本 | 已完成 |
+| 定义 System Readout 不写回任何业务模块的硬边界 | 已完成 |
+| 创建 `system.duckdb` 的 bounded proof schema surface | 已完成 |
+| 落地 runner / audit 最小合同实现 | 已完成 |
+| 更新模块文档索引和门禁账本中的 passed 状态 | 本卡要求 |
 
 ## 5. 本轮不允许
 
 | 项 | 裁决 |
 |---|---|
-| 冻结 System Readout 设计 | 禁止 |
+| 绕过 bounded proof build card 直接 full build | 禁止 |
 | 迁移旧 System engine | 禁止 |
-| 创建正式 System DuckDB | 禁止 |
+| 扩展为 System full build 或 segmented production build | 禁止 |
 | 修改 MALF / Alpha / Signal / Position / Portfolio Plan / Trade 代码 | 禁止 |
 | 触发上游业务重算 | 禁止 |
 | 把 Trade pre-gate draft 直接当作 released 上游 | 禁止 |
 
 ## 6. 下一步入口
 
-Trade released 后，System Readout 才能进入：
+System Readout bounded proof 通过后，System 下一步只能进入：
 
 ```text
-System Readout design freeze review
+Pipeline freeze review
 ```
 
-该 review 必须重新审阅：
+后续 bounded proof build card 必须以以下已冻结文档为权威输入：
 
 ```text
 docs/02-modules/system_readout/00-authority-design-v1.md

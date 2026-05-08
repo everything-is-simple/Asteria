@@ -1,30 +1,150 @@
 module_id = "system_readout"
 display_name = "System Readout"
 contract_version = "v1"
-status = "freeze_review_prepared"
+status = "released"
 authority_assets = [
-    "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
+    "H:/Asteria-Validated/Asteria-docs-code-20260502-104932.zip",
+    "H:/Asteria-Validated/Asteria-system-readout-freeze-review-20260507-01.zip",
+    "H:/Asteria-Validated/Asteria-system-readout-bounded-proof-build-card-20260508-01.zip",
 ]
-gate_state = "freeze_review_prepared; trade_released"
-formal_db_permission = "not_allowed"
+gate_state = "freeze_review_passed; bounded_proof_passed; full_build_not_executed; trade_released"
+formal_db_permission = "released_day_bounded_system_readout_only; system_full_build_requires_new_card"
 writeback_boundary = "readout only; never trigger business mutation"
-run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
-resume_behavior = "resume from readout manifest after Trade release"
+run_modes = ["bounded", "resume", "audit-only"]
+resume_behavior = "resume from checkpoint after full-chain released day sources are locked"
 source_manifest_fields = ["source_db", "source_run_id", "source_release_version", "source_audit_status"]
 forbidden_inputs = ["mock_formal_data", "unreleased_business_table"]
 forbidden_outputs = ["business_mutation", "strategy_redefinition"]
+release_conclusion = "docs/04-execution/records/system_readout/system-readout-bounded-proof-build-card-20260508-01.conclusion.md"
+evidence_index = "docs/04-execution/records/system_readout/system-readout-bounded-proof-build-card-20260508-01.evidence-index.md"
+next_allowed_action = "pipeline_freeze_review"
+input_boundary = "read_only_released_full_chain_day_bounded_surfaces"
+
+[[official_inputs]]
+input_type = "database"
+db_name = "malf_service_day.duckdb"
+table = "malf_wave_position"
+source_role = "official"
+natural_key = ["symbol", "timeframe", "trade_dt", "wave_sequence_id"]
+required_fields = ["symbol", "timeframe", "trade_dt", "system_state", "wave_core_state"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "alpha_bof.duckdb"
+table = "alpha_signal_candidate"
+source_role = "official"
+natural_key = ["family_name", "symbol", "timeframe", "trade_dt", "candidate_id"]
+required_fields = ["family_name", "symbol", "timeframe", "trade_dt", "candidate_id"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "alpha_tst.duckdb"
+table = "alpha_signal_candidate"
+source_role = "official"
+natural_key = ["family_name", "symbol", "timeframe", "trade_dt", "candidate_id"]
+required_fields = ["family_name", "symbol", "timeframe", "trade_dt", "candidate_id"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "alpha_pb.duckdb"
+table = "alpha_signal_candidate"
+source_role = "official"
+natural_key = ["family_name", "symbol", "timeframe", "trade_dt", "candidate_id"]
+required_fields = ["family_name", "symbol", "timeframe", "trade_dt", "candidate_id"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "alpha_cpb.duckdb"
+table = "alpha_signal_candidate"
+source_role = "official"
+natural_key = ["family_name", "symbol", "timeframe", "trade_dt", "candidate_id"]
+required_fields = ["family_name", "symbol", "timeframe", "trade_dt", "candidate_id"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "alpha_bpb.duckdb"
+table = "alpha_signal_candidate"
+source_role = "official"
+natural_key = ["family_name", "symbol", "timeframe", "trade_dt", "candidate_id"]
+required_fields = ["family_name", "symbol", "timeframe", "trade_dt", "candidate_id"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "signal.duckdb"
+table = "formal_signal_ledger"
+source_role = "official"
+natural_key = ["signal_id"]
+required_fields = ["signal_id", "symbol", "timeframe", "trade_dt", "signal_state"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "position.duckdb"
+table = "position_candidate_ledger"
+source_role = "official"
+natural_key = ["position_candidate_id"]
+required_fields = ["position_candidate_id", "symbol", "timeframe", "trade_dt"]
+
+[[official_inputs]]
+input_type = "database"
+db_name = "portfolio_plan.duckdb"
+table = "portfolio_admission_ledger"
+source_role = "official"
+natural_key = ["portfolio_admission_id"]
+required_fields = ["portfolio_admission_id", "symbol", "timeframe", "trade_dt"]
 
 [[official_inputs]]
 input_type = "database"
 db_name = "trade.duckdb"
-table = "fill_ledger"
+table = "order_intent_ledger"
 source_role = "official"
-natural_key = ["order_intent_id", "execution_dt", "fill_seq", "trade_rule_version"]
-required_fields = ["order_intent_id", "execution_dt", "fill_qty", "fill_px"]
+natural_key = ["order_intent_id"]
+required_fields = ["order_intent_id", "symbol", "timeframe", "trade_dt", "intent_status"]
+
+[[official_outputs]]
+db_name = "system.duckdb"
+table = "system_readout_run"
+natural_key = ["run_id"]
+public_fields = ["run_id", "timeframe", "mode", "status", "source_chain_release_version"]
+version_fields = ["run_id", "schema_version", "system_readout_version"]
+
+[[official_outputs]]
+db_name = "system.duckdb"
+table = "system_source_manifest"
+natural_key = ["source_manifest_id"]
+public_fields = ["source_manifest_id", "module_name", "source_db", "source_run_id", "source_release_version"]
+version_fields = ["run_id", "schema_version", "system_readout_version"]
+
+[[official_outputs]]
+db_name = "system.duckdb"
+table = "system_module_status_snapshot"
+natural_key = ["module_status_snapshot_id"]
+public_fields = ["module_status_snapshot_id", "module_name", "module_status", "module_release_version", "module_audit_status"]
+version_fields = ["run_id", "schema_version", "system_readout_version"]
 
 [[official_outputs]]
 db_name = "system.duckdb"
 table = "system_chain_readout"
-natural_key = ["system_readout_run_id", "readout_scope", "readout_dt"]
-public_fields = ["system_readout_run_id", "readout_scope", "readout_status", "source_manifest_id"]
+natural_key = ["system_readout_id"]
+public_fields = ["system_readout_id", "symbol", "timeframe", "readout_dt", "readout_status", "source_manifest_id"]
+version_fields = ["run_id", "schema_version", "system_readout_version"]
+
+[[official_outputs]]
+db_name = "system.duckdb"
+table = "system_summary_snapshot"
+natural_key = ["summary_id"]
+public_fields = ["summary_id", "summary_scope", "summary_dt", "readout_status", "summary_payload"]
+version_fields = ["run_id", "schema_version", "system_readout_version"]
+
+[[official_outputs]]
+db_name = "system.duckdb"
+table = "system_audit_snapshot"
+natural_key = ["system_audit_snapshot_id"]
+public_fields = ["system_audit_snapshot_id", "audit_scope", "audit_dt", "module_name", "source_audit_status"]
+version_fields = ["run_id", "schema_version", "system_readout_version"]
+
+[[official_outputs]]
+db_name = "system.duckdb"
+table = "system_readout_audit"
+natural_key = ["audit_id"]
+public_fields = ["audit_id", "check_name", "severity", "status", "failed_count", "sample_payload"]
 version_fields = ["run_id", "schema_version", "source_chain_release_version"]

@@ -139,7 +139,7 @@ def _check_module_docs(
 
 
 def _current_next_card_file_exists(repo_root: Path, module_id: str, next_card: str) -> bool:
-    record_dir = repo_root / "docs" / "04-execution" / "records" / module_id
+    record_dir = _next_card_record_dir(repo_root, module_id, next_card)
     if not record_dir.exists():
         return False
     card_prefix = next_card.replace("_", "-")
@@ -153,7 +153,7 @@ def _current_next_card_file_exists(repo_root: Path, module_id: str, next_card: s
 def _current_next_card_has_blocked_conclusion(
     repo_root: Path, module_id: str, next_card: str
 ) -> bool:
-    record_dir = repo_root / "docs" / "04-execution" / "records" / module_id
+    record_dir = _next_card_record_dir(repo_root, module_id, next_card)
     if not record_dir.exists():
         return False
     card_prefix = next_card.replace("_", "-")
@@ -165,3 +165,8 @@ def _current_next_card_has_blocked_conclusion(
         if re.search(r"状态：`blocked`", text):
             return True
     return False
+
+
+def _next_card_record_dir(repo_root: Path, module_id: str, next_card: str) -> Path:
+    record_module = "pipeline" if next_card.startswith("pipeline_") else module_id
+    return repo_root / "docs" / "04-execution" / "records" / record_module

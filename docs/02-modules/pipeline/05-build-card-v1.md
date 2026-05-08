@@ -57,7 +57,7 @@ active card explicitly authorizes Pipeline freeze review
 MALF bounded proof gate 已通过后，Pipeline 仍必须等待明确 Pipeline 卡，才可进入：
 
 ```text
-Pipeline design freeze review
+Pipeline freeze review
 ```
 
 该 review 必须重新审阅：

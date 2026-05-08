@@ -2,13 +2,17 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / bounded proof passed / full build not executed
 
 ## 1. 模块定义
 
 System Readout 是 Asteria 主线中位于 Trade 之后的只读全链路读出模块。
 
 System Readout 只负责读取已放行的正式账本，生成全链路 readout、summary 和 audit snapshot。System Readout 不定义业务语义，不触发业务重算，不修改 MALF、Alpha、Signal、Position、Portfolio Plan 或 Trade 的历史事实。
+
+`system-readout-freeze-review-20260507-01` 已完成 review-only 审阅；
+`system-readout-bounded-proof-build-card-20260508-01` 已通过。本文件当前作为已冻结并已完成
+day bounded proof 的 authority design 合同表面；这仍不等于 System full build 已打开。
 
 ## 2. 前置门槛
 
@@ -27,7 +31,8 @@ Trade released
 | Upstream Chain | MALF -> Alpha -> Signal -> Position -> Portfolio Plan -> Trade 均有 release evidence |
 | Readout Contract | 全链路正式账本可被 System Readout 只读消费 |
 
-在上述条件满足前，本文件只作为 pre-gate draft，不允许施工。
+在上述条件满足前，本文件只作为 pre-gate draft，不允许施工。Trade released 后，本文件已进入
+freeze review passed 状态，并已由 bounded proof build card 闭环 day bounded proof。
 
 ## 3. 权威来源
 
@@ -108,7 +113,8 @@ H:\Asteria-data\system.duckdb
 | `system_audit_snapshot` | 全链路审计快照 |
 | `system_readout_audit` | System Readout 自身审计 |
 
-该 DB 只能在 System Readout 设计冻结且 Trade released 后创建。
+该 DB 已在 System Readout day bounded proof 中创建，但当前只放行 bounded proof 表面；
+System full build 仍需新卡。
 
 ## 8. 数据流
 
@@ -197,6 +203,6 @@ System Readout 未来冻结必须满足：
 | Chain Release | 上游模块 release evidence 完整 |
 | Design | System Readout 六件套从 pre-gate draft 升级并审阅 |
 | Schema | `system.duckdb` 表族、自然键、版本字段冻结 |
-| Runner | bounded / segmented / full / resume 语义冻结 |
+| Runner | bounded / resume / audit-only 已落地；segmented / full 仍保留合同，不在本卡打开 |
 | Audit | 只读全链路、无业务 mutation、状态边界不混淆等硬审计冻结 |
 | Evidence | System Readout bounded proof 证据落入 `H:\Asteria-report` 或 `H:\Asteria-Validated` |

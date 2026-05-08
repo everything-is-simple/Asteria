@@ -2,11 +2,16 @@
 
 日期：2026-04-27
 
-状态：draft / pre-gate / not frozen
+状态：frozen / freeze review passed / bounded proof passed / full build not executed
 
 ## 1. 合同目的
 
 本合同定义 System Readout 在 Asteria 主线中的语义边界。System Readout 只能只读汇总已放行的正式账本，生成全链路 readout、summary 和 audit snapshot，不得重定义业务字段，不得触发业务重算，不得写回任何上游模块。
+
+`system-readout-freeze-review-20260507-01` 已通过后，本合同已冻结为文档表面；
+`system-readout-bounded-proof-build-card-20260508-01` 已把 day bounded proof 闭环。
+当前允许宣称的是 `System Readout bounded proof passed / full build not executed`，
+不允许直接宣称 System full build opened。
 
 ## 2. 前置门槛
 
