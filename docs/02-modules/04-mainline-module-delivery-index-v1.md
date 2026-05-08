@@ -103,7 +103,7 @@ H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4\
 | 5 | Portfolio Plan | `docs/02-modules/portfolio_plan/` | frozen six-doc set / freeze review passed / bounded proof passed / full build not executed | 否 | full build 另需新卡 |
 | 6 | Trade | `docs/02-modules/trade/` | frozen six-doc set / freeze review passed / bounded proof passed | 否 | Trade bounded proof 已通过；`fill_ledger` retained gap；full build 另需新卡 |
 | 7 | System Readout | `docs/02-modules/system_readout/` | frozen six-doc set / freeze review passed / bounded proof passed / full build not executed | 否 | bounded proof 已通过；`system.duckdb` 与 runner 已创建为 day bounded surface |
-| 8 | Pipeline | `docs/02-modules/pipeline/` | frozen six-doc set / freeze review passed / single-module orchestration build passed / full-chain dry-run prepared | 否 | freeze review、两张 scope freeze 与 single-module orchestration build 已通过；`pipeline.duckdb` 已创建，当前下一张卡只准备 full-chain dry-run |
+| 8 | Pipeline | `docs/02-modules/pipeline/` | frozen six-doc set / freeze review passed / single-module orchestration build passed / full-chain dry-run passed | 否 | freeze review、两张 scope freeze、single-module orchestration build 与 full-chain dry-run 已通过；`pipeline.duckdb` 已创建，full-chain bounded proof 仍需新卡 |
 
 ## 4. 主线顺序
 
@@ -142,13 +142,13 @@ System Readout freeze review
 当前已打开执行卡：
 
 ```text
-pipeline-full-chain-dry-run-card-20260508-01
+none
 ```
 
 当前只允许施工对象：
 
 ```text
-pipeline-full-chain-dry-run-card-20260508-01 prepared only; full-chain bounded proof 仍需未来显式 Pipeline card
+none
 ```
 
 除 MALF day proof、Alpha freeze review、Alpha bounded proof passed、Signal freeze
@@ -167,7 +167,7 @@ Signal construction、Pipeline 或任何下游施工。Signal freeze review pass
 只允许 Signal bounded proof build card。Signal bounded proof passed 后，Position freeze review
 reentry 已通过；随后上游完整性总控卡裁定在最终完整目标标准下暂停 Position bounded proof
 施工。Data reference target maintenance scope 已通过并冻结下一张 Data closeout 范围；
-Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review、Pipeline build/runtime authorization scope freeze、Pipeline single-module orchestration build 与 Pipeline full-chain dry-run authorization scope freeze 已通过；当前只准备 `pipeline-full-chain-dry-run-card-20260508-01`，不允许 Trade full build、Position full build、System full build 或 full-chain bounded proof 扩权。
+Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review、Pipeline build/runtime authorization scope freeze、Pipeline single-module orchestration build、Pipeline full-chain dry-run authorization scope freeze 与 Pipeline full-chain dry-run 已通过；当前不允许 Trade full build、Position full build、System full build 或 full-chain bounded proof 扩权。
 
 ## 6. 硬边界
 

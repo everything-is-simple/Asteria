@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run prepared
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed
 
 ## 1. 规格范围
 
@@ -12,7 +12,7 @@
 H:\Asteria-data\pipeline.duckdb
 ```
 
-当前只覆盖 `system_readout` 单模块编排元数据，不覆盖 full-chain 运行面。
+当前覆盖 `system_readout` 单模块编排元数据与 full-chain day dry-run 编排元数据。
 
 ## 2. 表族
 
@@ -30,8 +30,8 @@ H:\Asteria-data\pipeline.duckdb
 |---|---|
 | `pipeline_run_id` | 主体 id |
 | `runner_name` | runner 标识 |
-| `module_scope` | 当前只允许 `system_readout` |
-| `run_mode` | 当前只允许 `bounded / resume / audit-only` |
+| `module_scope` | 当前允许 `system_readout` 或 `full_chain_day` |
+| `run_mode` | 当前允许 `bounded / dry-run / resume / audit-only`，并受 scope 约束 |
 | `run_status` | `staged / completed / failed` |
 | `source_module` | 当前为 `system_readout` |
 | `source_release_version` | 来源 release run id |
@@ -51,9 +51,9 @@ H:\Asteria-data\pipeline.duckdb
 |---|---|
 | `pipeline_step_run_id` | 主体 id |
 | `pipeline_run_id` | run id |
-| `step_seq` | 当前固定为 `1` |
-| `module_name` | 当前固定为 `system_readout` |
-| `step_name` | 当前固定为 `single_module_orchestration` |
+| `step_seq` | 单模块为 `1`；full-chain dry-run 为 `1..7` |
+| `module_name` | 单模块为 `system_readout`；full-chain 为主线模块顺序名 |
+| `step_name` | 单模块为 `single_module_orchestration`；full-chain 为 `full_chain_dry_run` |
 | `step_status` | `staged / promoted` |
 | `source_db` | 来源 DB |
 | `source_run_id` | 来源 system run id |
@@ -68,7 +68,7 @@ H:\Asteria-data\pipeline.duckdb
 |---|---|
 | `gate_snapshot_id` | 主体 id |
 | `pipeline_run_id` | run id |
-| `module_name` | `registry / pipeline / system_readout` |
+| `module_name` | `registry / pipeline / released chain modules` |
 | `gate_name` | 快照字段名 |
 | `gate_value` | 快照字段值 |
 | `source_registry_version` | registry 版本 |
@@ -108,5 +108,5 @@ H:\Asteria-data\pipeline.duckdb
 | 正式 DB 路径 | `H:\Asteria-data` |
 | working DB 路径 | `H:\Asteria-temp\pipeline\<run_id>\` |
 | promote | staging 审计通过后执行 |
-| current released scope | `system_readout` only |
-| full-chain 扩权 | 仍需新卡 |
+| current released scope | `system_readout` single-module orchestration + `full_chain_day` dry-run |
+| full-chain bounded proof 扩权 | 仍需新卡 |

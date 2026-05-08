@@ -5,7 +5,7 @@ from pathlib import Path
 
 import duckdb
 
-from asteria.pipeline.contracts import PipelineBuildRequest
+from asteria.pipeline.contracts import FULL_CHAIN_DAY_MODULES, PipelineBuildRequest
 from asteria.pipeline.schema import PIPELINE_TABLES
 
 
@@ -24,14 +24,18 @@ def build_pipeline_audit_rows(
             """,
             [request.run_id],
         ).fetchone()
-        step_modules = con.execute(
-            """
-            select distinct module_name
-            from pipeline_step_run
-            where pipeline_run_id = ?
-            """,
-            [request.run_id],
-        ).fetchall()
+        step_modules = [
+            str(row[0])
+            for row in con.execute(
+                """
+                select module_name
+                from pipeline_step_run
+                where pipeline_run_id = ?
+                order by step_seq
+                """,
+                [request.run_id],
+            ).fetchall()
+        ]
         step_rows = con.execute(
             """
             select count(*)
@@ -40,11 +44,11 @@ def build_pipeline_audit_rows(
             """,
             [request.run_id],
         ).fetchone()
-        gate_names = {
-            str(row[0])
+        gate_pairs = {
+            (str(row[0]), str(row[1]))
             for row in con.execute(
                 """
-                select gate_name
+                select module_name, gate_name
                 from module_gate_snapshot
                 where pipeline_run_id = ?
                 """,
@@ -76,19 +80,17 @@ def build_pipeline_audit_rows(
             request,
             created_at,
             "pipeline_run_mode_authorized",
-            run_row[1] in {"bounded", "resume", "audit-only"},
-            {"run_mode": run_row[1]},
+            _run_mode_authorized(str(run_row[0]), str(run_row[1])),
+            {"module_scope": run_row[0], "run_mode": run_row[1]},
         ),
         _hard_check(
             request,
             created_at,
-            "pipeline_single_module_scope_only",
-            run_row[0] == "system_readout"
-            and [str(row[0]) for row in step_modules] == ["system_readout"]
-            and int(step_rows[0]) == 1,
+            "pipeline_scope_shape_authorized",
+            _scope_shape_authorized(str(run_row[0]), step_modules, int(step_rows[0])),
             {
                 "module_scope": run_row[0],
-                "step_modules": [str(row[0]) for row in step_modules],
+                "step_modules": step_modules,
                 "step_count": int(step_rows[0]),
             },
         ),
@@ -96,14 +98,8 @@ def build_pipeline_audit_rows(
             request,
             created_at,
             "pipeline_gate_snapshot_traceability",
-            {
-                "active_mainline_module",
-                "current_allowed_next_card",
-                "status",
-                "next_card",
-                "proof_status",
-            }.issubset(gate_names),
-            {"gate_names": sorted(gate_names)},
+            _gate_snapshot_traceability_ok(str(run_row[0]), gate_pairs),
+            {"gate_pairs": sorted(f"{name}:{gate}" for name, gate in gate_pairs)},
         ),
         _hard_check(
             request,
@@ -122,10 +118,10 @@ def build_pipeline_audit_rows(
             request,
             created_at,
             "pipeline_required_checkpoint_present",
-            request.step_checkpoint_path(1).exists() and request.runtime_manifest_path.exists(),
+            _required_checkpoints_present(request, str(run_row[0])),
             {
-                "step_checkpoint": str(request.step_checkpoint_path(1)),
                 "runtime_manifest": str(request.runtime_manifest_path),
+                "module_scope": str(run_row[0]),
             },
         ),
         _hard_check(
@@ -160,6 +156,55 @@ def build_pipeline_audit_rows(
         "checks": [_row_to_payload(row) for row in checks],
     }
     return checks, payload
+
+
+def _run_mode_authorized(module_scope: str, run_mode: str) -> bool:
+    if module_scope == "system_readout":
+        return run_mode in {"bounded", "resume", "audit-only"}
+    if module_scope == "full_chain_day":
+        return run_mode in {"dry-run", "resume", "audit-only"}
+    return False
+
+
+def _scope_shape_authorized(
+    module_scope: str,
+    step_modules: list[str],
+    step_count: int,
+) -> bool:
+    if module_scope == "system_readout":
+        return step_modules == ["system_readout"] and step_count == 1
+    if module_scope == "full_chain_day":
+        return step_modules == list(FULL_CHAIN_DAY_MODULES) and step_count == len(
+            FULL_CHAIN_DAY_MODULES
+        )
+    return False
+
+
+def _gate_snapshot_traceability_ok(
+    module_scope: str,
+    gate_pairs: set[tuple[str, str]],
+) -> bool:
+    required = {
+        ("registry", "active_mainline_module"),
+        ("registry", "current_allowed_next_card"),
+        ("pipeline", "status"),
+        ("pipeline", "next_card"),
+    }
+    if module_scope == "system_readout":
+        required |= {
+            ("system_readout", "proof_status"),
+            ("system_readout", "next_card"),
+        }
+    elif module_scope == "full_chain_day":
+        required |= {(module_name, "proof_status") for module_name in FULL_CHAIN_DAY_MODULES}
+    return required.issubset(gate_pairs)
+
+
+def _required_checkpoints_present(request: PipelineBuildRequest, module_scope: str) -> bool:
+    step_count = 1 if module_scope == "system_readout" else len(FULL_CHAIN_DAY_MODULES)
+    return request.runtime_manifest_path.exists() and all(
+        request.step_checkpoint_path(step_seq).exists() for step_seq in range(1, step_count + 1)
+    )
 
 
 def _hard_check(

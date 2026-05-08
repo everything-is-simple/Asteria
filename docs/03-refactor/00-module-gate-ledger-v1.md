@@ -67,6 +67,7 @@ System Readout bounded proof 已通过
 Pipeline freeze review 已通过
 Pipeline single-module orchestration build 已通过
 Pipeline full-chain dry-run authorization scope freeze 已通过
+Pipeline full-chain dry-run 已通过
 ```
 
 当前已交付主线模块文档索引：
@@ -90,7 +91,7 @@ System Readout
 当前最新通过门禁：
 
 ```text
-Pipeline full-chain dry-run authorization scope freeze
+Pipeline full-chain dry-run
 ```
 
 当前最新语义升级资产：
@@ -107,13 +108,13 @@ rules；当前 runtime passed evidence 已升级为 MALF v1.4 day runtime sync i
 当前已准备的下一张执行卡：
 
 ```text
-pipeline-full-chain-dry-run-card-20260508-01
+none
 ```
 
 当前只允许施工对象：
 
 ```text
-pipeline-full-chain-dry-run-card-20260508-01 prepared only; full-chain bounded proof 仍需未来显式授权卡
+none
 ```
 
 当前已通过 bounded proof 的主线模块：
@@ -147,12 +148,11 @@ v1.3 day bounded formal-data evidence；Position freeze review reentry 已通过
 `portfolio-plan-bounded-proof-build-card-20260507-01`、`trade-freeze-review-20260507-01`、
 `trade-bounded-proof-build-card-20260507-01`、`system-readout-freeze-review-20260507-01`、
 `system-readout-bounded-proof-build-card-20260508-01`、`pipeline-freeze-review-20260508-01` 与
-`pipeline-build-runtime-authorization-scope-freeze-20260508-01` 与
-`pipeline-single-module-orchestration-build-card-20260508-01` 与
-`pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01` 均已通过。当前已准备
-`pipeline-full-chain-dry-run-card-20260508-01`；
-仍不得扩展为 Position full build、Portfolio Plan full build、Trade full build、System full build、
-full-chain dry-run 或 full-chain bounded proof。
+`pipeline-build-runtime-authorization-scope-freeze-20260508-01`、
+`pipeline-single-module-orchestration-build-card-20260508-01`、
+`pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01` 与
+`pipeline-full-chain-dry-run-card-20260508-01` 均已通过。当前仍不得扩展为 Position full build、
+Portfolio Plan full build、Trade full build、System full build或 full-chain bounded proof。
 
 ## 1.1 Pre-Position 上游修补队列
 
@@ -169,9 +169,9 @@ full-chain dry-run 或 full-chain bounded proof。
 七张上游修补卡已全部形成结论，Position bounded proof、Portfolio Plan freeze review、
 Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review、
 System Readout bounded proof build、Pipeline freeze review、Pipeline build/runtime authorization
-scope freeze、Pipeline single-module orchestration build 与 Pipeline full-chain dry-run authorization
-scope freeze 也已通过。当前已准备 `pipeline-full-chain-dry-run-card-20260508-01`；
-`pipeline.duckdb` 已创建，但 dry-run 仍未执行。
+scope freeze、Pipeline single-module orchestration build、Pipeline full-chain dry-run authorization
+scope freeze 与 Pipeline full-chain dry-run 也已通过。`pipeline.duckdb` 已创建，并已落下
+single-module orchestration 与 full-chain day dry-run 两条正式 run ledger。
 
 ## 2. 模块状态表
 
@@ -185,7 +185,7 @@ scope freeze 也已通过。当前已准备 `pipeline-full-chain-dry-run-card-20
 | 5 | Portfolio Plan | 六件套 freeze review passed / bounded proof passed / full build not executed | released / full build not executed | 否 | `docs/02-modules/portfolio_plan/` | day bounded proof 已通过；Portfolio Plan full build 仍需另开卡 |
 | 6 | Trade | 六件套 freeze review passed / bounded proof passed / full build not executed | released / bounded proof passed | 否 | `docs/02-modules/trade/` | Trade bounded proof 已通过；`trade.duckdb` 已形成 day bounded order intent / execution plan surface，`fill_ledger` 保留 retained gap |
 | 7 | System Readout | frozen six-doc set / freeze review passed / bounded proof passed / full build not executed | released / bounded proof passed | 否 | `docs/02-modules/system_readout/` | System Readout bounded proof 已通过；当前只承接 Pipeline single-module orchestration build handoff，不等于 System full build |
-| 8 | Pipeline | frozen six-doc set / freeze review passed / single-module orchestration build passed / full-chain dry-run prepared | released / single-module orchestration build passed / full-chain dry-run prepared | 否 | `docs/02-modules/pipeline/` | 只编排和记录，不抢业务施工位；`pipeline.duckdb` 已创建，当前下一张卡只准备 full-chain dry-run |
+| 8 | Pipeline | frozen six-doc set / freeze review passed / single-module orchestration build passed / full-chain dry-run passed | released / single-module orchestration build passed / full-chain dry-run passed | 否 | `docs/02-modules/pipeline/` | 只编排和记录，不抢业务施工位；`pipeline.duckdb` 已创建，并已落下 full-chain day dry-run ledger；bounded proof 仍需新卡 |
 
 ## 3. 文档交付清单
 
@@ -307,6 +307,7 @@ Trade bounded proof build 当前执行结论：
 | `pipeline-build-runtime-authorization-scope-freeze-20260508-01` | `passed / scope frozen` | `pipeline_single_module_orchestration_build_card` |
 | `pipeline-single-module-orchestration-build-card-20260508-01` | `passed` | `none` |
 | `pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01` | `passed / scope frozen` | `pipeline_full_chain_dry_run_card` |
+| `pipeline-full-chain-dry-run-card-20260508-01` | `passed` | `none` |
 
 MALF 冻结文档与当前 proof 状态：
 
@@ -362,12 +363,12 @@ MALF 冻结文档与当前 proof 状态：
 | System Readout | `docs/02-modules/system_readout/03-runner-contract-v1.md` | frozen / freeze review passed / bounded proof passed / full build not executed |
 | System Readout | `docs/02-modules/system_readout/04-audit-spec-v1.md` | frozen / freeze review passed / bounded proof passed / full build not executed |
 | System Readout | `docs/02-modules/system_readout/05-build-card-v1.md` | frozen / freeze review passed / bounded proof passed / full build not executed |
-| Pipeline | `docs/02-modules/pipeline/00-authority-design-v1.md` | frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run prepared |
-| Pipeline | `docs/02-modules/pipeline/01-semantic-contract-v1.md` | frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run prepared |
-| Pipeline | `docs/02-modules/pipeline/02-database-schema-spec-v1.md` | frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run prepared |
-| Pipeline | `docs/02-modules/pipeline/03-runner-contract-v1.md` | frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run prepared |
-| Pipeline | `docs/02-modules/pipeline/04-audit-spec-v1.md` | frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run prepared |
-| Pipeline | `docs/02-modules/pipeline/05-build-card-v1.md` | frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run prepared |
+| Pipeline | `docs/02-modules/pipeline/00-authority-design-v1.md` | frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed |
+| Pipeline | `docs/02-modules/pipeline/01-semantic-contract-v1.md` | frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed |
+| Pipeline | `docs/02-modules/pipeline/02-database-schema-spec-v1.md` | frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed |
+| Pipeline | `docs/02-modules/pipeline/03-runner-contract-v1.md` | frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed |
+| Pipeline | `docs/02-modules/pipeline/04-audit-spec-v1.md` | frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed |
+| Pipeline | `docs/02-modules/pipeline/05-build-card-v1.md` | frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed |
 
 ## 4. 交付资产
 

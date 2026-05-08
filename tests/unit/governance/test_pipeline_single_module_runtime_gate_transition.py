@@ -7,7 +7,6 @@ from tests.unit.pipeline.support import (
     PIPELINE_DRY_RUN_CARD_ACTION,
     PIPELINE_DRY_RUN_CARD_RUN_ID,
     PIPELINE_DRY_RUN_SCOPE_FREEZE_RUN_ID,
-    PIPELINE_PREPARED_DOC_STATUS,
     PIPELINE_RUN_ID,
 )
 
@@ -33,7 +32,7 @@ def _messages(repo_root: Path) -> list[str]:
     return [finding.message for finding in run_checks(repo_root)]
 
 
-def test_pipeline_dry_run_scope_freeze_prepares_next_card_after_single_module_pass() -> None:
+def test_pipeline_history_preserves_single_module_pass_scope_freeze_and_dry_run_release() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     with registry_path.open("rb") as handle:
@@ -59,19 +58,19 @@ def test_pipeline_dry_run_scope_freeze_prepares_next_card_after_single_module_pa
     ).read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == "system_readout"
-    assert registry["current_allowed_next_card"] == PIPELINE_DRY_RUN_CARD_ACTION
+    assert registry["current_allowed_next_card"] == ""
     assert modules["pipeline"]["status"] == "released"
     assert modules["pipeline"]["doc_status"] == PIPELINE_CURRENT_DOC_STATUS
-    assert modules["pipeline"]["next_card"] == PIPELINE_DRY_RUN_CARD_ACTION
-    assert modules["pipeline"]["proof_run_id"] == PIPELINE_RUN_ID
+    assert modules["pipeline"]["next_card"] == "none"
+    assert modules["pipeline"]["proof_run_id"] == PIPELINE_DRY_RUN_CARD_RUN_ID
     assert PIPELINE_RUN_ID in conclusion_index
     assert PIPELINE_DRY_RUN_SCOPE_FREEZE_RUN_ID in conclusion_index
+    assert PIPELINE_DRY_RUN_CARD_RUN_ID in conclusion_index
     assert f"| Pipeline | `{PIPELINE_RUN_ID}` | `passed` |" in conclusion_index
     assert f"| Pipeline | `{PIPELINE_DRY_RUN_SCOPE_FREEZE_RUN_ID}` | `passed / scope frozen` |" in (
         conclusion_index
     )
-    assert f"| Pipeline | `{PIPELINE_DRY_RUN_CARD_RUN_ID}` |" not in conclusion_index
-    assert PIPELINE_DRY_RUN_CARD_RUN_ID in conclusion_index
+    assert f"| Pipeline | `{PIPELINE_DRY_RUN_CARD_RUN_ID}` | `passed` |" in conclusion_index
     assert "状态：`passed`" in pipeline_runtime_conclusion
     assert "| allowed next action | `none` |" in pipeline_runtime_conclusion
     assert "状态：`passed`" in pipeline_scope_conclusion
@@ -81,10 +80,10 @@ def test_pipeline_dry_run_scope_freeze_prepares_next_card_after_single_module_pa
     assert (
         f"[next prepared card]({PIPELINE_DRY_RUN_CARD_RUN_ID}.card.md)" in pipeline_scope_conclusion
     )
-    assert "状态：`prepared / not executed`" in pipeline_dry_run_card
+    assert "状态：`passed`" in pipeline_dry_run_card
 
 
-def test_project_governance_rejects_pipeline_scripts_when_single_module_runtime_not_authorized(
+def test_project_governance_rejects_reopening_closed_single_module_runtime_card(
     tmp_path: Path,
 ) -> None:
     repo_root = _copy_governance_repo(tmp_path)
@@ -92,16 +91,11 @@ def test_project_governance_rejects_pipeline_scripts_when_single_module_runtime_
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'current_allowed_next_card = "pipeline_single_module_orchestration_build_card"',
             'current_allowed_next_card = ""',
-        )
-        .replace(
-            f'status = "released"\ndoc_status = "{PIPELINE_CURRENT_DOC_STATUS}"',
-            f'status = "freeze_review_passed"\ndoc_status = "{PIPELINE_PREPARED_DOC_STATUS}"',
+            'current_allowed_next_card = "pipeline_single_module_orchestration_build_card"',
             1,
-        )
-        .replace(
-            f'next_card = "{PIPELINE_DRY_RUN_CARD_ACTION}"',
+        ).replace(
+            'next_card = "none"',
             'next_card = "pipeline_single_module_orchestration_build_card"',
             1,
         ),
@@ -109,5 +103,6 @@ def test_project_governance_rejects_pipeline_scripts_when_single_module_runtime_
     )
 
     assert any(
-        "pre-gate module has forbidden formal runner" in message for message in _messages(repo_root)
+        "current allowed next card must not point to a closed execution conclusion" in message
+        for message in _messages(repo_root)
     )

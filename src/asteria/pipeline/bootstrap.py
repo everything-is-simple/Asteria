@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 import duckdb
 
@@ -17,12 +18,12 @@ from asteria.pipeline.artifacts import (
     report_path,
     save_checkpoint,
     utc_now,
-    write_bounded_proof_evidence,
+    write_pipeline_evidence,
 )
 from asteria.pipeline.audit_engine import build_pipeline_audit_rows
 from asteria.pipeline.contracts import PipelineBuildRequest, PipelineBuildSummary
 from asteria.pipeline.runtime_io import load_runtime_inputs
-from asteria.pipeline.schema import bootstrap_pipeline_database
+from asteria.pipeline.schema import PIPELINE_TABLES, bootstrap_pipeline_database
 
 
 def run_pipeline_build(request: PipelineBuildRequest) -> PipelineBuildSummary:
@@ -40,15 +41,7 @@ def run_pipeline_build(request: PipelineBuildRequest) -> PipelineBuildSummary:
     if staging_db.exists():
         staging_db.unlink()
     write_manifest(request.runtime_manifest_path, runtime_inputs.manifest)
-    append_batch_ledger(
-        request.batch_ledger_path,
-        BatchLedgerEntry(
-            run_id=request.run_id,
-            batch_id="step-1-system_readout",
-            status="started",
-            started_at=utc_now_iso(),
-        ),
-    )
+    _append_step_batch_entries(request, runtime_inputs, status="started")
     bootstrap_pipeline_database(staging_db)
     with duckdb.connect(str(staging_db)) as con:
         con.execute("begin transaction")
@@ -65,9 +58,9 @@ def run_pipeline_build(request: PipelineBuildRequest) -> PipelineBuildSummary:
                     request.module_scope,
                     request.mode,
                     "staged",
-                    request.module_scope,
+                    runtime_inputs.steps[-1].module_name,
                     request.source_chain_release_version,
-                    str(request.source_system_db),
+                    runtime_inputs.steps[-1].source_db,
                     len(runtime_inputs.step_rows),
                     len(runtime_inputs.gate_rows),
                     len(runtime_inputs.manifest_rows),
@@ -101,33 +94,31 @@ def run_pipeline_build(request: PipelineBuildRequest) -> PipelineBuildSummary:
             runtime_inputs.manifest_rows,
         )
         con.execute("commit")
-    write_checkpoint(
-        request.step_checkpoint_path(1),
-        {
-            "run_id": request.run_id,
-            "module_scope": request.module_scope,
-            "step_seq": 1,
-            "step_name": "single_module_orchestration",
-            "step_status": "staged",
-        },
-    )
+    for step in runtime_inputs.steps:
+        write_checkpoint(
+            request.step_checkpoint_path(step.step_seq),
+            {
+                "run_id": request.run_id,
+                "module_scope": request.module_scope,
+                "step_seq": step.step_seq,
+                "step_name": step.step_name,
+                "step_status": "staged",
+                "module_name": step.module_name,
+            },
+        )
 
     audit = _run_pipeline_audit_on_db(request, staging_db)
     status = "completed" if audit.hard_fail_count == 0 else "failed"
     if audit.hard_fail_count == 0:
         _promote_staging_db(request, staging_db)
-        _mark_step_promoted(request)
+        _mark_steps_promoted(request, runtime_inputs)
     else:
-        append_batch_ledger(
-            request.batch_ledger_path,
-            BatchLedgerEntry(
-                run_id=request.run_id,
-                batch_id="step-1-system_readout",
-                status="failed",
-                completed_at=utc_now_iso(),
-                audit_summary_path=audit.report_path,
-                error="pipeline audit failed",
-            ),
+        _append_step_batch_entries(
+            request,
+            runtime_inputs,
+            status="failed",
+            audit_summary_path=audit.report_path,
+            error="pipeline audit failed",
         )
     summary = PipelineBuildSummary(
         run_id=request.run_id,
@@ -175,7 +166,36 @@ def run_pipeline_bounded_proof(
         module_scope=module_scope,
     )
     summary = run_pipeline_build(request)
-    evidence = write_bounded_proof_evidence(request, summary)
+    evidence = write_pipeline_evidence(request, summary)
+    return PipelineBuildSummary(**{**summary.as_dict(), **evidence})
+
+
+def run_pipeline_full_chain_dry_run(
+    *,
+    repo_root: Path,
+    source_system_db: Path,
+    target_pipeline_db: Path,
+    report_root: Path,
+    validated_root: Path,
+    temp_root: Path,
+    run_id: str,
+    source_chain_release_version: str,
+    mode: str = "dry-run",
+) -> PipelineBuildSummary:
+    request = PipelineBuildRequest(
+        repo_root=repo_root,
+        source_system_db=source_system_db,
+        target_pipeline_db=target_pipeline_db,
+        report_root=report_root,
+        validated_root=validated_root,
+        temp_root=temp_root,
+        run_id=run_id,
+        mode=mode,
+        source_chain_release_version=source_chain_release_version,
+        module_scope="full_chain_day",
+    )
+    summary = run_pipeline_build(request)
+    evidence = write_pipeline_evidence(request, summary)
     return PipelineBuildSummary(**{**summary.as_dict(), **evidence})
 
 
@@ -238,37 +258,37 @@ def _delete_run(con: duckdb.DuckDBPyConnection, request: PipelineBuildRequest) -
     con.execute("delete from pipeline_run where pipeline_run_id = ?", [request.run_id])
 
 
-def _mark_step_promoted(request: PipelineBuildRequest) -> None:
-    append_batch_ledger(
-        request.batch_ledger_path,
-        BatchLedgerEntry(
-            run_id=request.run_id,
-            batch_id="step-1-system_readout",
-            status="promoted",
-            completed_at=utc_now_iso(),
-            promoted_at=utc_now_iso(),
-            row_counts={
-                "pipeline_step_run": 1,
-                "module_gate_snapshot": 6,
-            },
-        ),
-    )
-    write_checkpoint(
-        request.step_checkpoint_path(1),
-        {
-            "run_id": request.run_id,
-            "module_scope": request.module_scope,
-            "step_seq": 1,
-            "step_name": "single_module_orchestration",
-            "step_status": "promoted",
+def _mark_steps_promoted(
+    request: PipelineBuildRequest,
+    runtime_inputs: Any,
+) -> None:
+    _append_step_batch_entries(
+        request,
+        runtime_inputs,
+        status="promoted",
+        row_counts={
+            "pipeline_step_run": len(runtime_inputs.steps),
+            "module_gate_snapshot": len(runtime_inputs.gate_rows),
         },
     )
+    for step in runtime_inputs.steps:
+        write_checkpoint(
+            request.step_checkpoint_path(step.step_seq),
+            {
+                "run_id": request.run_id,
+                "module_scope": request.module_scope,
+                "step_seq": step.step_seq,
+                "step_name": step.step_name,
+                "step_status": "promoted",
+                "module_name": step.module_name,
+            },
+        )
     with duckdb.connect(str(request.target_pipeline_db)) as con:
         con.execute(
             """
             update pipeline_step_run
             set step_status = ?, completed_at = ?
-            where pipeline_run_id = ? and step_seq = 1
+            where pipeline_run_id = ?
             """,
             ["promoted", utc_now(), request.run_id],
         )
@@ -279,9 +299,41 @@ def _promote_staging_db(request: PipelineBuildRequest, staging_db: Path) -> None
         raise ValueError(f"target pipeline.duckdb already contains run_id: {request.run_id}")
     request.target_pipeline_db.parent.mkdir(parents=True, exist_ok=True)
     if request.target_pipeline_db.exists():
-        staging_db.replace(request.target_pipeline_db)
+        bootstrap_pipeline_database(request.target_pipeline_db)
+        with duckdb.connect(str(request.target_pipeline_db)) as con:
+            con.execute(f"attach '{staging_db.as_posix()}' as staging_db")
+            for table_name in PIPELINE_TABLES:
+                con.execute(f"insert into {table_name} select * from staging_db.{table_name}")
+            con.execute("detach staging_db")
+        staging_db.unlink()
         return
     staging_db.rename(request.target_pipeline_db)
+
+
+def _append_step_batch_entries(
+    request: PipelineBuildRequest,
+    runtime_inputs: Any,
+    *,
+    status: str,
+    audit_summary_path: str | None = None,
+    error: str | None = None,
+    row_counts: dict[str, int] | None = None,
+) -> None:
+    for step in runtime_inputs.steps:
+        append_batch_ledger(
+            request.batch_ledger_path,
+            BatchLedgerEntry(
+                run_id=request.run_id,
+                batch_id=step.batch_id,
+                status=status,
+                started_at=utc_now_iso() if status == "started" else None,
+                completed_at=utc_now_iso() if status != "started" else None,
+                promoted_at=utc_now_iso() if status == "promoted" else None,
+                audit_summary_path=audit_summary_path,
+                error=error,
+                row_counts=row_counts if status == "promoted" else None,
+            ),
+        )
 
 
 def _payload_int(payload: dict[str, object], key: str) -> int:

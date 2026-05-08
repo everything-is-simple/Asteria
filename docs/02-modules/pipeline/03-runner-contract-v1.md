@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run prepared
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed
 
 ## 1. 当前 runner 面
 
@@ -10,26 +10,27 @@
 
 | Runner | 职责 |
 |---|---|
-| `scripts/pipeline/run_pipeline_record.py` | 写入 `pipeline_run / pipeline_step_run / module_gate_snapshot / build_manifest` |
+| `scripts/pipeline/run_pipeline_record.py` | 写入 `pipeline_run / pipeline_step_run / module_gate_snapshot / build_manifest`，并支持 `audit-only` 复审 |
 | `scripts/pipeline/run_pipeline_audit.py` | 独立执行 Pipeline 审计 |
-| `scripts/pipeline/run_pipeline_bounded_proof.py` | 执行本卡 bounded proof 并产出 closeout / manifest / validated zip |
+| `scripts/pipeline/run_pipeline_bounded_proof.py` | 执行单模块 orchestration bounded proof 并产出 closeout / manifest / validated zip |
+| `scripts/pipeline/run_pipeline_full_chain_dry_run.py` | 执行 full-chain day dry-run，并产出 closeout / manifest / validated zip |
 
 ## 2. 当前门禁
 
 当前 release 面只允许：
 
 ```text
-module_scope = system_readout
-run_mode = bounded / resume / audit-only
+module_scope = system_readout with run_mode = bounded / resume / audit-only
+module_scope = full_chain_day with run_mode = dry-run / resume / audit-only
 ```
 
-任何 full / segmented / daily_incremental 行为都未授权；full-chain dry-run 仅 prepared、尚未执行。
+任何 full / segmented / daily_incremental 行为都未授权；full-chain bounded proof 仍未执行。
 
 ## 3. 构建顺序
 
 ```mermaid
 flowchart TD
-    A[Validate current gate authorization] --> B[Load source system_readout release]
+    A[Validate current gate authorization] --> B[Load source release metadata]
     B --> C[Write gate snapshot]
     C --> D[Write pipeline step record]
     D --> E[Write manifest and checkpoint]
@@ -48,8 +49,8 @@ flowchart TD
 | `--report-root` | 报告根目录 |
 | `--validated-root` | validated 根目录 |
 | `--temp-root` | 临时根目录 |
-| `--module-scope` | 当前固定 `system_readout` |
-| `--mode` | `bounded / resume / audit-only` |
+| `--module-scope` | `system_readout` 或 `full_chain_day` |
+| `--mode` | `bounded / dry-run / resume / audit-only` |
 | `--run-id` | 必填 |
 | `--source-chain-release-version` | 必填 |
 
@@ -82,4 +83,4 @@ flowchart TD
 | 修改任何业务模块输出 | 禁止 |
 | 在 Pipeline 中定义业务字段 | 禁止 |
 | 让一个 run 同时施工多个主线模块 | 禁止 |
-| 以当前 released surface 宣称 full-chain 已放行 | 禁止 |
+| 以当前 released surface 宣称 full-chain bounded proof 已放行 | 禁止 |

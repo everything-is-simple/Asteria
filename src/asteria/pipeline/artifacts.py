@@ -8,16 +8,26 @@ from pathlib import Path
 from asteria.pipeline.contracts import PipelineBuildRequest, PipelineBuildSummary
 
 
-def write_bounded_proof_evidence(
+def write_pipeline_evidence(
     request: PipelineBuildRequest,
     summary: PipelineBuildSummary,
 ) -> dict[str, str]:
     report_dir = request.report_root / "pipeline" / utc_now().date().isoformat() / request.run_id
     report_dir.mkdir(parents=True, exist_ok=True)
+    stage_name = (
+        "full_chain_dry_run"
+        if request.module_scope == "full_chain_day"
+        else "single_module_orchestration_build"
+    )
+    title = (
+        "# Pipeline Full-Chain Dry-Run Closeout"
+        if request.module_scope == "full_chain_day"
+        else "# Pipeline Single-Module Orchestration Build Closeout"
+    )
     manifest = {
         "run_id": request.run_id,
         "module": "pipeline",
-        "stage": "single_module_orchestration_build",
+        "stage": stage_name,
         "status": "passed" if summary.hard_fail_count == 0 else "failed",
         "module_scope": request.module_scope,
         "hard_fail_count": summary.hard_fail_count,
@@ -35,7 +45,7 @@ def write_bounded_proof_evidence(
     closeout_path.write_text(
         "\n".join(
             [
-                "# Pipeline Single-Module Orchestration Build Closeout",
+                title,
                 "",
                 f"- run_id: `{request.run_id}`",
                 f"- status: `{manifest['status']}`",

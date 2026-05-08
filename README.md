@@ -87,11 +87,11 @@ Trade freeze review 与 Trade bounded proof build 已通过，Trade 六件套已
 与 System Readout bounded proof build 也已通过，System Readout 六件套已落为只读 bounded proof 表面；
 Pipeline build/runtime authorization scope freeze、
 `pipeline-single-module-orchestration-build-card-20260508-01` 与
-`pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01` 已通过；`pipeline.duckdb`、
-`src\asteria\pipeline` 与 `scripts\pipeline` 已创建，但当前只放行 `system_readout` 单模块 orchestration
-surface，并且只把 `pipeline-full-chain-dry-run-card-20260508-01` 准备为下一张卡；不授权 Trade full build、
-Portfolio Plan full build、Position full build、System full build、full-chain dry-run executed 或
-full-chain bounded proof。
+`pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01` 与
+`pipeline-full-chain-dry-run-card-20260508-01` 已通过；`pipeline.duckdb`、
+`src\asteria\pipeline` 与 `scripts\pipeline` 已创建，并已记录 `system_readout` 单模块 orchestration
+surface 与 full-chain day dry-run orchestration ledger；但这仍不授权 Trade full build、
+Portfolio Plan full build、Position full build、System full build 或 full-chain bounded proof。
 MALF month bounded proof 只放行 month Core/Lifespan/Service 三个 bounded runtime proof 正式库，不等于 MALF full build。
 Signal production builder hardening 只放行 day/week/month formal signal ledger 的 production builder 表面。
 Position bounded proof 只放行 day bounded position candidate / entry plan / exit plan 表面。
@@ -102,9 +102,9 @@ execution / fill source。System Readout freeze review 与 System Readout bounde
 System Readout design / schema / runner / audit / bounded proof 表面，`system.duckdb`、
 `src\asteria\system_readout` 与 `scripts\system_readout` 已创建；但这仍只覆盖 day bounded proof，
 不等于 System full build。Pipeline freeze review 只冻结了文档合同面；随后
-`pipeline-single-module-orchestration-build-card-20260508-01` 已补齐最小 runtime 证据，但它只覆盖
-`system_readout` 单模块 orchestration。当前 `pipeline-full-chain-dry-run-card-20260508-01`
-只是 prepared next card，不等于 full-chain pipeline 已执行。
+`pipeline-single-module-orchestration-build-card-20260508-01` 已补齐最小 runtime 证据，
+`pipeline-full-chain-dry-run-card-20260508-01` 也已补齐 full-chain day dry-run runtime 证据；
+但当前仍不能把这解释成 full-chain bounded proof 或下游扩权。
 仍不能宣称全主线数据已经齐全或完整证券主数据已齐。
 
 ## 阅读入口

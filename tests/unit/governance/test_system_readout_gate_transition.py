@@ -2,7 +2,6 @@ from pathlib import Path
 from shutil import copy2, copytree
 
 from scripts.governance.check_project_governance import run_checks
-from tests.unit.pipeline.support import PIPELINE_DRY_RUN_CARD_ACTION
 
 
 def _copy_governance_repo(tmp_path: Path) -> Path:
@@ -116,11 +115,13 @@ def test_project_governance_rejects_stale_reopened_pipeline_handoff(tmp_path: Pa
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            f'current_allowed_next_card = "{PIPELINE_DRY_RUN_CARD_ACTION}"',
+            'current_allowed_next_card = ""',
             'current_allowed_next_card = "pipeline_build_runtime_authorization_scope_freeze"',
+            1,
         ).replace(
-            f'next_card = "{PIPELINE_DRY_RUN_CARD_ACTION}"',
+            'next_card = "none"',
             'next_card = "pipeline_build_runtime_authorization_scope_freeze"',
+            1,
         ),
         encoding="utf-8",
     )

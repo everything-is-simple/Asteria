@@ -6,8 +6,19 @@ from typing import Any
 
 PIPELINE_SCHEMA_VERSION = "pipeline-single-module-orchestration-v1"
 PIPELINE_VERSION = "pipeline-system-readout-single-module-v1"
-VALID_PIPELINE_RUN_MODES = {"audit-only", "bounded", "resume"}
-VALID_PIPELINE_MODULE_SCOPES = {"system_readout"}
+PIPELINE_FULL_CHAIN_SCHEMA_VERSION = "pipeline-full-chain-dry-run-v1"
+PIPELINE_FULL_CHAIN_VERSION = "pipeline-full-chain-day-dry-run-v1"
+VALID_PIPELINE_RUN_MODES = {"audit-only", "bounded", "dry-run", "resume"}
+VALID_PIPELINE_MODULE_SCOPES = {"system_readout", "full_chain_day"}
+FULL_CHAIN_DAY_MODULES = (
+    "malf",
+    "alpha",
+    "signal",
+    "position",
+    "portfolio_plan",
+    "trade",
+    "system_readout",
+)
 
 
 @dataclass(frozen=True)
@@ -32,6 +43,14 @@ class PipelineBuildRequest:
             raise ValueError(f"Unsupported Pipeline module_scope: {self.module_scope}")
         if not self.source_chain_release_version:
             raise ValueError("source_chain_release_version is required")
+        if self.module_scope == "system_readout" and self.mode == "dry-run":
+            raise ValueError("system_readout single-module pipeline does not support dry-run mode")
+        if self.module_scope == "full_chain_day" and self.mode == "bounded":
+            raise ValueError("full-chain day pipeline requires dry-run/resume/audit-only mode")
+        if self.module_scope == "full_chain_day" and self.schema_version == PIPELINE_SCHEMA_VERSION:
+            object.__setattr__(self, "schema_version", PIPELINE_FULL_CHAIN_SCHEMA_VERSION)
+        if self.module_scope == "full_chain_day" and self.pipeline_version == PIPELINE_VERSION:
+            object.__setattr__(self, "pipeline_version", PIPELINE_FULL_CHAIN_VERSION)
 
     @property
     def gate_registry_path(self) -> Path:

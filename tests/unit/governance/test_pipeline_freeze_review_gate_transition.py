@@ -4,7 +4,8 @@ from shutil import copy2, copytree
 from scripts.governance.check_project_governance import run_checks
 from tests.unit.pipeline.support import (
     PIPELINE_CURRENT_DOC_STATUS,
-    PIPELINE_DRY_RUN_CARD_ACTION,
+    PIPELINE_DRY_RUN_CARD_RUN_ID,
+    PIPELINE_DRY_RUN_FORMAL_DB_PERMISSION,
 )
 
 try:
@@ -67,7 +68,7 @@ def test_pipeline_scope_freeze_preserves_historical_scope_after_runtime_pass() -
 
     assert registry["active_mainline_module"] == "system_readout"
     assert registry["active_foundation_card"] == "none"
-    assert registry["current_allowed_next_card"] == PIPELINE_DRY_RUN_CARD_ACTION
+    assert registry["current_allowed_next_card"] == ""
     assert registry["latest_mainline_release_run_id"] == (
         "system-readout-bounded-proof-build-card-20260508-01"
     )
@@ -80,17 +81,15 @@ def test_pipeline_scope_freeze_preserves_historical_scope_after_runtime_pass() -
     assert modules["system_readout"]["next_card"] == "pipeline_freeze_review"
     assert modules["pipeline"]["status"] == "released"
     assert modules["pipeline"]["doc_status"] == PIPELINE_CURRENT_DOC_STATUS
-    assert modules["pipeline"]["formal_db_permission"] == (
-        "released_single_module_orchestration_ledger_only; "
-        "full_chain_dry_run_prepared_not_executed; bounded_proof_requires_new_card"
-    )
-    assert modules["pipeline"]["next_card"] == PIPELINE_DRY_RUN_CARD_ACTION
+    assert modules["pipeline"]["formal_db_permission"] == PIPELINE_DRY_RUN_FORMAL_DB_PERMISSION
+    assert modules["pipeline"]["next_card"] == "none"
     assert "pipeline-build-runtime-authorization-scope-freeze-20260508-01" in conclusion_index
     assert (
         "| Pipeline | `pipeline-build-runtime-authorization-scope-freeze-20260508-01` | "
         "`passed / scope frozen` |" in conclusion_index
     )
     assert "pipeline-single-module-orchestration-build-card-20260508-01" in conclusion_index
+    assert f"| Pipeline | `{PIPELINE_DRY_RUN_CARD_RUN_ID}` | `passed` |" in conclusion_index
     assert "状态：`passed`" in pipeline_scope_conclusion
     assert "single-module orchestration build prepared" in pipeline_scope_conclusion
     assert (
@@ -114,11 +113,13 @@ def test_project_governance_rejects_pipeline_current_next_without_pipeline_match
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            f'current_allowed_next_card = "{PIPELINE_DRY_RUN_CARD_ACTION}"',
+            'current_allowed_next_card = ""',
             'current_allowed_next_card = "pipeline_build_runtime_authorization_scope_freeze"',
+            1,
         ).replace(
-            f'next_card = "{PIPELINE_DRY_RUN_CARD_ACTION}"',
+            'next_card = "none"',
             'next_card = "pipeline_build_runtime_authorization_scope_freeze"',
+            1,
         ),
         encoding="utf-8",
     )

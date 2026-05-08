@@ -30,9 +30,9 @@ flowchart LR
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal`; `Position`; `Portfolio Plan`; `Trade`; `System Readout` |
 | 当前已通过 bounded proof | `MALF day`; `MALF week`; `MALF month`; `Alpha day`; `Signal day`; `Position day`; `Portfolio Plan day`; `Trade bounded proof`; `System Readout day bounded proof`; `MALF v1.4 day runtime sync implementation` |
-| 当前已准备执行卡 | `pipeline-full-chain-dry-run-card-20260508-01` |
-| 当前只允许施工 | `pipeline full-chain dry-run prepared only; bounded proof 仍需新卡` |
-| 当前仍禁止 | Position full build、Portfolio Plan full build、Trade full build、System full build、full-chain dry-run、full-chain bounded proof |
+| 当前已准备执行卡 | `none` |
+| 当前只允许施工 | `none` |
+| 当前仍禁止 | Position full build、Portfolio Plan full build、Trade full build、System full build、full-chain bounded proof |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Data Foundation
 已补齐正式 `market_meta.duckdb` 的最小事实，并部分释放可匹配正式 Data 标的的申万
@@ -51,8 +51,9 @@ System Readout freeze review 与 System Readout bounded proof build 已通过；
 `pipeline-freeze-review-20260508-01`、
 `pipeline-build-runtime-authorization-scope-freeze-20260508-01`、
 `pipeline-single-module-orchestration-build-card-20260508-01` 与
-`pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01` 也已闭环。Pipeline 当前已执行最小
-`system_readout` 单模块 runtime，并已准备 full-chain dry-run 下一张卡，但 full-chain 仍未执行。
+`pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01` 与
+`pipeline-full-chain-dry-run-card-20260508-01` 也已闭环。Pipeline 当前已执行最小
+`system_readout` 单模块 runtime 与 full-chain day dry-run，但 full-chain bounded proof 仍未执行。
 
 ## 2. 主线模块
 

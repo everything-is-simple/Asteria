@@ -7,10 +7,11 @@
 ## 1. 当前裁决
 
 Pipeline 是编排层，不是业务语义模块。本说明记录的是 freeze review 之前的 pre-gate 裁决，
-现已由 `pipeline-freeze-review-20260508-01` supersede。当前真实状态是 Pipeline freeze review 与
-`pipeline-build-runtime-authorization-scope-freeze-20260508-01` 已通过；随后
-`pipeline-single-module-orchestration-build-card-20260508-01` 也已通过。当前已进入
-`pipeline-full-chain-dry-run-card-20260508-01` prepared / not executed 状态，但仍不允许直接跳 bounded proof。
+现已由 `pipeline-freeze-review-20260508-01` supersede。当前真实状态是 Pipeline freeze review、
+`pipeline-build-runtime-authorization-scope-freeze-20260508-01`、
+`pipeline-single-module-orchestration-build-card-20260508-01`、
+`pipeline-full-chain-dry-run-authorization-scope-freeze-20260508-01` 与
+`pipeline-full-chain-dry-run-card-20260508-01` 已通过；但仍不允许直接跳 bounded proof。
 
 ## 2. 等待条件
 

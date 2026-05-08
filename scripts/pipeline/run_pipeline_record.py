@@ -9,15 +9,23 @@ from asteria.pipeline.contracts import PipelineBuildRequest
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Run Pipeline single-module orchestration record.")
+    parser = argparse.ArgumentParser(description="Run Pipeline orchestration record.")
     parser.add_argument("--repo-root", default="H:/Asteria")
     parser.add_argument("--source-system-db", default="H:/Asteria-data/system.duckdb")
     parser.add_argument("--target-pipeline-db", default="H:/Asteria-data/pipeline.duckdb")
     parser.add_argument("--report-root", default="H:/Asteria-report")
     parser.add_argument("--validated-root", default="H:/Asteria-Validated")
     parser.add_argument("--temp-root", default="H:/Asteria-temp")
-    parser.add_argument("--mode", choices=["bounded", "resume", "audit-only"], default="bounded")
-    parser.add_argument("--module-scope", choices=["system_readout"], default="system_readout")
+    parser.add_argument(
+        "--mode",
+        choices=["bounded", "dry-run", "resume", "audit-only"],
+        default="bounded",
+    )
+    parser.add_argument(
+        "--module-scope",
+        choices=["system_readout", "full_chain_day"],
+        default="system_readout",
+    )
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--source-chain-release-version", required=True)
     args = parser.parse_args()

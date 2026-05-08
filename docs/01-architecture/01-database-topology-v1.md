@@ -69,7 +69,7 @@ Asteria 采用 DuckDB 多库拓扑，以空间换时间。
 | `portfolio_plan.duckdb` | Portfolio Plan bounded proof passed | `docs/04-execution/records/portfolio_plan/portfolio-plan-bounded-proof-build-card-20260507-01.evidence-index.md` |
 | `trade.duckdb` | Trade bounded proof passed | `docs/04-execution/records/trade/trade-bounded-proof-build-card-20260507-01.evidence-index.md` |
 | `system.duckdb` | System Readout bounded proof passed | `docs/04-execution/records/system_readout/system-readout-bounded-proof-build-card-20260508-01.evidence-index.md` |
-| `pipeline.duckdb` | Pipeline single-module orchestration build passed | `docs/04-execution/records/pipeline/pipeline-single-module-orchestration-build-card-20260508-01.evidence-index.md` |
+| `pipeline.duckdb` | Pipeline full-chain dry-run passed | `docs/04-execution/records/pipeline/pipeline-full-chain-dry-run-card-20260508-01.evidence-index.md` |
 
 其他目标库仍是 schema / topology 裁决，不得在对应模块 gate 前创建为正式库。
 
@@ -260,8 +260,8 @@ week/month supplemental/full build。
 | MALF day 三库 | 已通过 complete alignment closeout 并重建到 `H:\Asteria-data` |
 | `market_meta.duckdb` | 已按可证事实优先口径最小正式化；申万 2021 当前行业快照部分释放；Data baseline sealed；Data reference maintenance closeout passed；其他 reference gaps retained |
 | `market_base_day.duckdb` 正式化 | 已通过 Data formal promotion、production closeout 与 execution line materialization |
-| `pipeline.duckdb` runtime | Pipeline single-module orchestration build 已通过；当前只放行 `system_readout` 单模块 orchestration，不得先于业务模块定义语义，也未放行 full-chain |
-| week / month MALF | week 与 month bounded proof build 已通过；Alpha 与 Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review、Pipeline build/runtime authorization scope freeze、Pipeline single-module orchestration build 与 Pipeline full-chain dry-run authorization scope freeze 已通过；当前已准备 `pipeline-full-chain-dry-run-card-20260508-01` |
+| `pipeline.duckdb` runtime | Pipeline single-module orchestration build 与 full-chain dry-run 已通过；当前正式账本同时保留 `system_readout` 单模块 run 与 full-chain day dry-run run，不得先于业务模块定义语义，也未放行 full-chain bounded proof |
+| week / month MALF | week 与 month bounded proof build 已通过；Alpha 与 Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review、Pipeline build/runtime authorization scope freeze、Pipeline single-module orchestration build、Pipeline full-chain dry-run authorization scope freeze 与 Pipeline full-chain dry-run 已通过 |
 
 Alpha bounded proof 与 production builder hardening 已通过，五个 Alpha family DB 已在
 day/week/month released MALF Service 表面补齐 production-builder rows。
@@ -272,4 +272,4 @@ Portfolio Plan bounded proof 已通过，`portfolio_plan.duckdb` 已形成 day b
 admission / target exposure / trim surface。Trade freeze review 与 Trade bounded proof build 已通过，
 `trade.duckdb` 已形成 day bounded order intent / execution plan surface，并保留 `fill_ledger`
 retained gap。System Readout bounded proof 已通过，`system.duckdb` 已创建为 day bounded readout
-surface。不得因此提前打开 Position full build、Portfolio Plan full build、Trade full build、System full build 或 full-chain Pipeline。
+surface。不得因此提前打开 Position full build、Portfolio Plan full build、Trade full build、System full build 或 full-chain bounded proof。
