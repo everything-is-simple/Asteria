@@ -18,7 +18,7 @@ def main() -> int:
     parser.add_argument("--mode", choices=["bounded", "resume"], default="bounded")
     parser.add_argument(
         "--module-scope",
-        choices=["system_readout", "full_chain_day", "year_replay"],
+        choices=["system_readout", "full_chain_day", "year_replay", "year_replay_rerun"],
         default="system_readout",
     )
     parser.add_argument("--run-id", required=True)

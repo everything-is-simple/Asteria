@@ -106,6 +106,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Pipeline | `pipeline-one-year-strategy-behavior-replay-build-card-20260508-01` | `blocked` | [conclusion](records/pipeline/pipeline-one-year-strategy-behavior-replay-build-card-20260508-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-one-year-strategy-behavior-replay-build-card-20260508-01.evidence-index.md) |
 | Pipeline | `pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01` | `passed` | [conclusion](records/pipeline/pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01.evidence-index.md) |
 | Pipeline | `pipeline-one-year-strategy-behavior-replay-rerun-handoff-20260509-01` | `passed` | [conclusion](records/pipeline/pipeline-one-year-strategy-behavior-replay-rerun-handoff-20260509-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-one-year-strategy-behavior-replay-rerun-handoff-20260509-01.evidence-index.md) |
+| Pipeline | `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` | `blocked` | [conclusion](records/pipeline/pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01.evidence-index.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
@@ -169,7 +170,9 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   不是完整自然年覆盖而 `blocked`；随后
   `pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01` 已正式执行，并把唯一 live
   prepared next card 切到 `malf-2024-natural-year-coverage-repair-card-20260509-01`；该 MALF 卡现已通过最小 released-surface repair，
-  并把当前唯一 prepared next card 继续切到 `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01`。
+  随后 `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` 也已真实执行，但继续 `blocked`：
+  released observation chain 仍从 `2024-01-08` 起步，且 rerun source lock 未消费 repaired MALF run。当前唯一 prepared next card
+  已切到 `alpha-signal-2024-coverage-repair-card-20260509-01`。
   后半场 repair phase roadmap 已收敛回 `docs/03-refactor/04-asteria-full-system-roadmap-v1.md` 单点维护；旧第二张
   repair roadmap 已删除，不再承载独立状态机。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
@@ -179,7 +182,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 以下只登记尚未执行的 prepared card 队列，不作为 passed conclusion：
 
 ```text
-pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01
+alpha-signal-2024-coverage-repair-card-20260509-01
 ```
 
 ## 3.1 Newly Passed Pre-Position Repair Card

@@ -8,10 +8,13 @@ import pytest
 from tests.unit.pipeline.support import (
     PIPELINE_BOUNDED_PROOF_CARD_RUN_ID,
     PIPELINE_DRY_RUN_CARD_RUN_ID,
+    PIPELINE_YEAR_REPLAY_RERUN_CARD_RUN_ID,
+    PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID,
     SYSTEM_SOURCE_RUN_ID,
     build_bounded_proof_authorized_repo,
     build_full_chain_dry_run_prepared_repo,
     build_year_replay_authorized_repo,
+    build_year_replay_rerun_authorized_repo,
     seed_system_source,
 )
 
@@ -134,6 +137,64 @@ def test_request_allows_full_chain_bounded_and_year_replay_scope(tmp_path: Path)
     assert bounded_request.pipeline_version == "pipeline-full-chain-day-bounded-proof-v1"
     assert year_replay_request.schema_version == "pipeline-one-year-strategy-behavior-replay-v1"
     assert year_replay_request.pipeline_version == "pipeline-one-year-strategy-behavior-replay-v1"
+
+
+def test_year_replay_rerun_requires_target_year_and_uses_distinct_scope(
+    tmp_path: Path,
+) -> None:
+    rerun_request = PipelineBuildRequest(
+        repo_root=Path(__file__).resolve().parents[3],
+        source_system_db=tmp_path / "data" / "system.duckdb",
+        target_pipeline_db=tmp_path / "data" / "pipeline.duckdb",
+        report_root=tmp_path / "report",
+        validated_root=tmp_path / "validated",
+        temp_root=tmp_path / "temp",
+        run_id=PIPELINE_YEAR_REPLAY_RERUN_CARD_RUN_ID,
+        mode="bounded",
+        module_scope="year_replay_rerun",
+        source_chain_release_version=SYSTEM_SOURCE_RUN_ID,
+        target_year=2024,
+    )
+
+    assert rerun_request.module_scope == "year_replay_rerun"
+    assert rerun_request.schema_version == "pipeline-one-year-strategy-behavior-replay-rerun-v1"
+    assert rerun_request.pipeline_version == "pipeline-one-year-strategy-behavior-replay-rerun-v1"
+
+
+def test_year_replay_rerun_flags_unlocked_malf_repair_source(
+    tmp_path: Path,
+) -> None:
+    seed_system_source(tmp_path)
+    repo_root = build_year_replay_rerun_authorized_repo(tmp_path)
+
+    summary = run_pipeline_bounded_proof(
+        repo_root=repo_root,
+        source_system_db=tmp_path / "data" / "system.duckdb",
+        target_pipeline_db=tmp_path / "data" / "pipeline.duckdb",
+        report_root=tmp_path / "report",
+        validated_root=tmp_path / "validated",
+        temp_root=tmp_path / "temp",
+        run_id=PIPELINE_YEAR_REPLAY_RERUN_CARD_RUN_ID,
+        source_chain_release_version=SYSTEM_SOURCE_RUN_ID,
+        module_scope="year_replay_rerun",
+        target_year=2024,
+    )
+
+    assert summary.status == "failed"
+    assert summary.module_scope == "year_replay_rerun"
+    assert summary.hard_fail_count > 0
+    behavior_summary = (
+        tmp_path
+        / "report"
+        / "pipeline"
+        / date.today().isoformat()
+        / PIPELINE_YEAR_REPLAY_RERUN_CARD_RUN_ID
+        / "behavior-summary.json"
+    )
+    assert behavior_summary.exists()
+    assert PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID in behavior_summary.read_text(
+        encoding="utf-8"
+    )
 
 
 def test_full_chain_bounded_proof_build_records_released_day_chain_steps(tmp_path: Path) -> None:

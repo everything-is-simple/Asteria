@@ -12,8 +12,15 @@ PIPELINE_FULL_CHAIN_BOUNDED_SCHEMA_VERSION = "pipeline-full-chain-bounded-proof-
 PIPELINE_FULL_CHAIN_BOUNDED_VERSION = "pipeline-full-chain-day-bounded-proof-v1"
 PIPELINE_YEAR_REPLAY_SCHEMA_VERSION = "pipeline-one-year-strategy-behavior-replay-v1"
 PIPELINE_YEAR_REPLAY_VERSION = "pipeline-one-year-strategy-behavior-replay-v1"
+PIPELINE_YEAR_REPLAY_RERUN_SCHEMA_VERSION = "pipeline-one-year-strategy-behavior-replay-rerun-v1"
+PIPELINE_YEAR_REPLAY_RERUN_VERSION = "pipeline-one-year-strategy-behavior-replay-rerun-v1"
+PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID = (
+    "malf-2024-natural-year-coverage-repair-card-20260509-01-batch-0001"
+)
 VALID_PIPELINE_RUN_MODES = {"audit-only", "bounded", "dry-run", "resume"}
-VALID_PIPELINE_MODULE_SCOPES = {"system_readout", "full_chain_day", "year_replay"}
+YEAR_REPLAY_MODULE_SCOPES = {"year_replay", "year_replay_rerun"}
+FULL_CHAIN_RUNTIME_MODULE_SCOPES = {"full_chain_day", *YEAR_REPLAY_MODULE_SCOPES}
+VALID_PIPELINE_MODULE_SCOPES = {"system_readout", *FULL_CHAIN_RUNTIME_MODULE_SCOPES}
 FULL_CHAIN_DAY_MODULES = (
     "malf",
     "alpha",
@@ -50,10 +57,10 @@ class PipelineBuildRequest:
             raise ValueError("source_chain_release_version is required")
         if self.module_scope == "system_readout" and self.mode == "dry-run":
             raise ValueError("system_readout single-module pipeline does not support dry-run mode")
-        if self.module_scope == "year_replay" and self.target_year is None:
-            raise ValueError("year_replay pipeline requires target_year")
-        if self.module_scope == "year_replay" and self.mode == "dry-run":
-            raise ValueError("year_replay pipeline does not support dry-run mode")
+        if self.module_scope in YEAR_REPLAY_MODULE_SCOPES and self.target_year is None:
+            raise ValueError(f"{self.module_scope} pipeline requires target_year")
+        if self.module_scope in YEAR_REPLAY_MODULE_SCOPES and self.mode == "dry-run":
+            raise ValueError(f"{self.module_scope} pipeline does not support dry-run mode")
         if self.module_scope == "full_chain_day":
             if self.schema_version == PIPELINE_SCHEMA_VERSION:
                 object.__setattr__(
@@ -80,6 +87,19 @@ class PipelineBuildRequest:
                 object.__setattr__(self, "schema_version", PIPELINE_YEAR_REPLAY_SCHEMA_VERSION)
             if self.pipeline_version == PIPELINE_VERSION:
                 object.__setattr__(self, "pipeline_version", PIPELINE_YEAR_REPLAY_VERSION)
+        if self.module_scope == "year_replay_rerun":
+            if self.schema_version == PIPELINE_SCHEMA_VERSION:
+                object.__setattr__(
+                    self,
+                    "schema_version",
+                    PIPELINE_YEAR_REPLAY_RERUN_SCHEMA_VERSION,
+                )
+            if self.pipeline_version == PIPELINE_VERSION:
+                object.__setattr__(
+                    self,
+                    "pipeline_version",
+                    PIPELINE_YEAR_REPLAY_RERUN_VERSION,
+                )
 
     @property
     def gate_registry_path(self) -> Path:

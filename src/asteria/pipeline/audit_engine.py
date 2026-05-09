@@ -5,7 +5,13 @@ from pathlib import Path
 
 import duckdb
 
-from asteria.pipeline.contracts import FULL_CHAIN_DAY_MODULES, PipelineBuildRequest
+from asteria.pipeline.contracts import (
+    FULL_CHAIN_DAY_MODULES,
+    FULL_CHAIN_RUNTIME_MODULE_SCOPES,
+    PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID,
+    YEAR_REPLAY_MODULE_SCOPES,
+    PipelineBuildRequest,
+)
 from asteria.pipeline.schema import PIPELINE_TABLES
 
 
@@ -142,7 +148,7 @@ def build_pipeline_audit_rows(
             },
         ),
     ]
-    if request.module_scope == "year_replay":
+    if request.module_scope in YEAR_REPLAY_MODULE_SCOPES:
         checks.append(
             _hard_check(
                 request,
@@ -153,6 +159,21 @@ def build_pipeline_audit_rows(
                     "target_year": request.target_year,
                     "required_start": f"{request.target_year}-01-01",
                     "required_end": f"{request.target_year}-12-31",
+                },
+            )
+        )
+    if request.module_scope == "year_replay_rerun":
+        checks.append(
+            _hard_check(
+                request,
+                created_at,
+                "pipeline_year_replay_rerun_malf_source_locked",
+                _year_replay_rerun_malf_source_locked(request),
+                {
+                    "expected_malf_source_run_id": (
+                        PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID
+                    ),
+                    "source_system_run_id": request.source_chain_release_version,
                 },
             )
         )
@@ -177,7 +198,7 @@ def _run_mode_authorized(module_scope: str, run_mode: str) -> bool:
         return run_mode in {"bounded", "resume", "audit-only"}
     if module_scope == "full_chain_day":
         return run_mode in {"bounded", "dry-run", "resume", "audit-only"}
-    if module_scope == "year_replay":
+    if module_scope in YEAR_REPLAY_MODULE_SCOPES:
         return run_mode in {"bounded", "resume", "audit-only"}
     return False
 
@@ -189,7 +210,7 @@ def _scope_shape_authorized(
 ) -> bool:
     if module_scope == "system_readout":
         return step_modules == ["system_readout"] and step_count == 1
-    if module_scope in {"full_chain_day", "year_replay"}:
+    if module_scope in FULL_CHAIN_RUNTIME_MODULE_SCOPES:
         return step_modules == list(FULL_CHAIN_DAY_MODULES) and step_count == len(
             FULL_CHAIN_DAY_MODULES
         )
@@ -211,7 +232,7 @@ def _gate_snapshot_traceability_ok(
             ("system_readout", "proof_status"),
             ("system_readout", "next_card"),
         }
-    elif module_scope in {"full_chain_day", "year_replay"}:
+    elif module_scope in FULL_CHAIN_RUNTIME_MODULE_SCOPES:
         required |= {(module_name, "proof_status") for module_name in FULL_CHAIN_DAY_MODULES}
     return required.issubset(gate_pairs)
 
@@ -247,6 +268,22 @@ def _year_replay_full_year_coverage_ok(request: PipelineBuildRequest) -> bool:
         str(row[0]) == f"{request.target_year}-01-01"
         and str(row[1]) == f"{request.target_year}-12-31"
     )
+
+
+def _year_replay_rerun_malf_source_locked(request: PipelineBuildRequest) -> bool:
+    with duckdb.connect(str(request.source_system_db), read_only=True) as con:
+        row = con.execute(
+            """
+            select source_run_id
+            from system_source_manifest
+            where system_readout_run_id = ?
+              and module_name = 'malf'
+            """,
+            [request.source_chain_release_version],
+        ).fetchone()
+    if row is None or row[0] is None:
+        return False
+    return str(row[0]) == PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID
 
 
 def _hard_check(

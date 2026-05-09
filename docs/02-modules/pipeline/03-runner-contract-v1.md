@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / year replay rerun blocked
 
 ## 1. 当前 runner 面
 
@@ -12,7 +12,7 @@
 |---|---|
 | `scripts/pipeline/run_pipeline_record.py` | 写入 `pipeline_run / pipeline_step_run / module_gate_snapshot / build_manifest`，并支持 `audit-only` 复审 |
 | `scripts/pipeline/run_pipeline_audit.py` | 独立执行 Pipeline 审计 |
-| `scripts/pipeline/run_pipeline_bounded_proof.py` | 执行 `system_readout` / `full_chain_day` / `year_replay` 的 bounded proof 或 behavior replay，并产出 closeout / manifest / validated zip |
+| `scripts/pipeline/run_pipeline_bounded_proof.py` | 执行 `system_readout` / `full_chain_day` / `year_replay` / `year_replay_rerun` 的 bounded proof 或 behavior replay，并产出 closeout / manifest / validated zip |
 | `scripts/pipeline/run_pipeline_full_chain_dry_run.py` | 执行 full-chain day dry-run，并产出 closeout / manifest / validated zip |
 
 ## 2. 当前门禁
@@ -23,6 +23,7 @@
 module_scope = system_readout with run_mode = bounded / resume / audit-only
 module_scope = full_chain_day with run_mode = bounded / dry-run / resume / audit-only
 module_scope = year_replay with run_mode = bounded / resume / audit-only
+module_scope = year_replay_rerun with run_mode = bounded / resume / audit-only
 ```
 
 任何 full / segmented / daily_incremental 行为都未授权；year replay 在完整自然年不足时必须 `blocked`。
@@ -50,11 +51,11 @@ flowchart TD
 | `--report-root` | 报告根目录 |
 | `--validated-root` | validated 根目录 |
 | `--temp-root` | 临时根目录 |
-| `--module-scope` | `system_readout`、`full_chain_day` 或 `year_replay` |
+| `--module-scope` | `system_readout`、`full_chain_day`、`year_replay` 或 `year_replay_rerun` |
 | `--mode` | `bounded / dry-run / resume / audit-only` |
 | `--run-id` | 必填 |
 | `--source-chain-release-version` | 必填 |
-| `--target-year` | `year_replay` 必填 |
+| `--target-year` | `year_replay / year_replay_rerun` 必填 |
 
 ## 5. 幂等与断点
 

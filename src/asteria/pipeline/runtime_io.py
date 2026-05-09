@@ -7,7 +7,11 @@ from typing import Any
 import duckdb
 
 from asteria.build_orchestration import BuildManifest, BuildScope
-from asteria.pipeline.contracts import PipelineBuildRequest
+from asteria.pipeline.contracts import (
+    FULL_CHAIN_RUNTIME_MODULE_SCOPES,
+    YEAR_REPLAY_MODULE_SCOPES,
+    PipelineBuildRequest,
+)
 from asteria.pipeline.runtime_records import (
     FullChainSourceEntry,
     PipelineStep,
@@ -25,6 +29,9 @@ AUTHORIZED_SINGLE_MODULE_NEXT_CARD = "pipeline_single_module_orchestration_build
 AUTHORIZED_FULL_CHAIN_NEXT_CARD = "pipeline_full_chain_dry_run_card"
 AUTHORIZED_FULL_CHAIN_BOUNDED_NEXT_CARD = "pipeline_full_chain_bounded_proof_build_card"
 AUTHORIZED_YEAR_REPLAY_NEXT_CARD = "pipeline_one_year_strategy_behavior_replay_build_card"
+AUTHORIZED_YEAR_REPLAY_RERUN_NEXT_CARD = (
+    "pipeline_one_year_strategy_behavior_replay_rerun_build_card"
+)
 AUTHORIZED_FULL_CHAIN_BOUNDED_RUN_ID = "pipeline-full-chain-bounded-proof-build-card-20260508-01"
 ALPHA_SOURCE_MODULES = ("alpha_bof", "alpha_tst", "alpha_pb", "alpha_cpb", "alpha_bpb")
 
@@ -65,7 +72,7 @@ def load_runtime_inputs(
     target_start_dt, target_end_dt = _resolve_target_window(request, source_run)
     full_chain_sources = (
         _load_full_chain_sources(request, source_run.run_id)
-        if request.module_scope in {"full_chain_day", "year_replay"}
+        if request.module_scope in FULL_CHAIN_RUNTIME_MODULE_SCOPES
         else []
     )
     steps = _build_steps(request, created_at, source_run, full_chain_sources)
@@ -186,15 +193,22 @@ def _load_gate_registry(request: PipelineBuildRequest) -> dict[str, Any]:
                 else "full-chain dry-run requires single-module orchestration proof first"
             )
             raise ValueError(message)
-    else:
-        if registry.get("current_allowed_next_card") != AUTHORIZED_YEAR_REPLAY_NEXT_CARD:
+    elif request.module_scope in YEAR_REPLAY_MODULE_SCOPES:
+        expected_next_card = (
+            AUTHORIZED_YEAR_REPLAY_RERUN_NEXT_CARD
+            if request.module_scope == "year_replay_rerun"
+            else AUTHORIZED_YEAR_REPLAY_NEXT_CARD
+        )
+        if registry.get("current_allowed_next_card") != expected_next_card:
             raise ValueError("one-year strategy behavior replay is not currently authorized")
         if pipeline_module.get("status") != "released":
             raise ValueError("pipeline status must remain released before year replay")
-        if pipeline_module.get("next_card") != AUTHORIZED_YEAR_REPLAY_NEXT_CARD:
+        if pipeline_module.get("next_card") != expected_next_card:
             raise ValueError("pipeline next_card does not match year replay card")
         if pipeline_module.get("proof_run_id") != AUTHORIZED_FULL_CHAIN_BOUNDED_RUN_ID:
             raise ValueError("year replay requires full-chain bounded proof first")
+    else:
+        raise ValueError(f"unsupported pipeline module_scope: {request.module_scope}")
 
     if registry.get("active_mainline_module") != "system_readout":
         raise ValueError("pipeline orchestration requires active mainline system_readout")
@@ -304,7 +318,9 @@ def _build_steps(
     alpha_run_id = alpha_entries[0].source_run_id
     alpha_release_version = alpha_entries[0].source_release_version
     step_name = (
-        "year_strategy_behavior_replay"
+        "year_strategy_behavior_rerun"
+        if request.module_scope == "year_replay_rerun"
+        else "year_strategy_behavior_replay"
         if request.module_scope == "year_replay"
         else ("full_chain_bounded_proof" if request.mode == "bounded" else "full_chain_dry_run")
     )
@@ -371,7 +387,7 @@ def _build_steps(
 def _resolve_target_window(
     request: PipelineBuildRequest, source_run: SourceSystemRun
 ) -> tuple[date, date]:
-    if request.module_scope != "year_replay" or request.target_year is None:
+    if request.module_scope not in YEAR_REPLAY_MODULE_SCOPES or request.target_year is None:
         return source_run.min_readout_dt, source_run.max_readout_dt
     return date(request.target_year, 1, 1), date(request.target_year, 12, 31)
 

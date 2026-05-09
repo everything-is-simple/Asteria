@@ -8,7 +8,12 @@ from typing import Any
 
 import duckdb
 
-from asteria.pipeline.contracts import PipelineBuildRequest, PipelineBuildSummary
+from asteria.pipeline.contracts import (
+    PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID,
+    YEAR_REPLAY_MODULE_SCOPES,
+    PipelineBuildRequest,
+    PipelineBuildSummary,
+)
 
 
 def write_pipeline_evidence(
@@ -83,13 +88,18 @@ def _stage_metadata(request: PipelineBuildRequest) -> tuple[str, str]:
             "one_year_strategy_behavior_replay",
             "# Pipeline One-Year Strategy Behavior Replay Closeout",
         )
+    if request.module_scope == "year_replay_rerun":
+        return (
+            "one_year_strategy_behavior_replay_rerun",
+            "# Pipeline One-Year Strategy Behavior Replay Rerun Closeout",
+        )
     if request.mode == "bounded":
         return "full_chain_bounded_proof", "# Pipeline Full-Chain Bounded Proof Closeout"
     return "full_chain_dry_run", "# Pipeline Full-Chain Dry-Run Closeout"
 
 
 def _write_behavior_summary(report_dir: Path, request: PipelineBuildRequest) -> Path | None:
-    if request.module_scope != "year_replay" or request.target_year is None:
+    if request.module_scope not in YEAR_REPLAY_MODULE_SCOPES or request.target_year is None:
         return None
 
     summary_path = report_dir / "behavior-summary.json"
@@ -128,6 +138,11 @@ def _write_behavior_summary(report_dir: Path, request: PipelineBuildRequest) -> 
         ).fetchall()
 
     source_map = {str(row[0]): (str(row[1]), str(row[2])) for row in manifest_rows}
+    source_manifest = {
+        str(row[0]): {"source_db": str(row[1]), "source_run_id": str(row[2])}
+        for row in manifest_rows
+    }
+    malf_source_run_id = source_manifest.get("malf", {}).get("source_run_id")
     observed_start: str | None = None
     observed_end: str | None = None
     readout_count = 0
@@ -152,6 +167,16 @@ def _write_behavior_summary(report_dir: Path, request: PipelineBuildRequest) -> 
         "system_readout": {
             "status_counts": {str(status): int(count) for status, count in readout_status_rows},
         },
+        "source_manifest": source_manifest,
+        "rerun_source_lock": (
+            {
+                "expected_malf_source_run_id": (PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID),
+                "observed_malf_source_run_id": malf_source_run_id,
+                "locked": malf_source_run_id == PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID,
+            }
+            if request.module_scope == "year_replay_rerun"
+            else None
+        ),
         "behavior": _load_behavior_counts(source_map, request.target_year),
     }
     summary_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")

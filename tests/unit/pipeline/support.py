@@ -3,7 +3,10 @@ from __future__ import annotations
 from pathlib import Path
 from shutil import copy2, copytree
 
+from tests.unit.pipeline import constants as pipeline_constants
 from tests.unit.pipeline.constants import (
+    CURRENT_PIPELINE_ACTIVE_CARD,
+    PIPELINE_ALPHA_SIGNAL_REPAIR_ACTION,
     PIPELINE_BOUNDED_INPUT_BOUNDARY,
     PIPELINE_BOUNDED_PROOF_CARD_ACTION,
     PIPELINE_BOUNDED_PROOF_CARD_RUN_ID,
@@ -13,8 +16,6 @@ from tests.unit.pipeline.constants import (
     PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_CONCLUSION,
     PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_EVIDENCE_INDEX,
     PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID,
-    PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION,
-    PIPELINE_COVERAGE_GAP_DIAGNOSIS_RUN_ID,
     PIPELINE_CURRENT_DOC_STATUS,
     PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
     PIPELINE_CURRENT_GATE_STATE,
@@ -23,12 +24,13 @@ from tests.unit.pipeline.constants import (
     PIPELINE_DRY_RUN_FORMAL_DB_PERMISSION,
     PIPELINE_DRY_RUN_GATE_STATE,
     PIPELINE_DRY_RUN_INPUT_BOUNDARY,
-    PIPELINE_DRY_RUN_RELEASE_EVIDENCE_INDEX,
     PIPELINE_DRY_RUN_SCOPE_FREEZE_RUN_ID,
-    PIPELINE_FULL_CHAIN_PASSED_DOC_STATUS,
     PIPELINE_FULL_CHAIN_PREPARED_DOC_STATUS,
     PIPELINE_MALF_REPAIR_ACTION,
-    PIPELINE_MALF_REPAIR_RUN_ID,
+    PIPELINE_MALF_REPAIR_ACTIVE_CARD,
+    PIPELINE_MALF_REPAIR_PREPARED_DOC_STATUS,
+    PIPELINE_MALF_REPAIR_PREPARED_FORMAL_DB_PERMISSION,
+    PIPELINE_MALF_REPAIR_PREPARED_GATE_STATE,
     PIPELINE_PREPARED_DOC_STATUS,
     PIPELINE_PREPARED_FORMAL_DB_PERMISSION,
     PIPELINE_PREPARED_GATE_STATE,
@@ -39,10 +41,10 @@ from tests.unit.pipeline.constants import (
     PIPELINE_SCOPE_FREEZE_EVIDENCE_INDEX,
     PIPELINE_SCOPE_FREEZE_RUN_ID,
     PIPELINE_YEAR_REPLAY_CARD_ACTION,
-    PIPELINE_YEAR_REPLAY_CARD_RUN_ID,
     PIPELINE_YEAR_REPLAY_PREPARED_DOC_STATUS,
+    PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION,
+    PIPELINE_YEAR_REPLAY_RERUN_CARD_RUN_ID,
     PIPELINE_YEAR_REPLAY_SCOPE_FREEZE_RUN_ID,
-    SYSTEM_SOURCE_RUN_ID,
 )
 from tests.unit.pipeline.support_state import rewind_current_malf_repair_state
 from tests.unit.system_readout.support import build_request as build_system_request
@@ -50,53 +52,14 @@ from tests.unit.system_readout.support import seed_chain
 
 from asteria.system_readout.bootstrap import run_system_readout_build
 
-__all__ = (
-    "PIPELINE_BOUNDED_INPUT_BOUNDARY",
-    "PIPELINE_BOUNDED_PROOF_CARD_ACTION",
-    "PIPELINE_BOUNDED_PROOF_CARD_RUN_ID",
-    "PIPELINE_BOUNDED_PROOF_CLOSEOUT_RUN_ID",
-    "PIPELINE_BOUNDED_PROOF_FORMAL_DB_PERMISSION",
-    "PIPELINE_BOUNDED_PROOF_GATE_STATE",
-    "PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_CONCLUSION",
-    "PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_EVIDENCE_INDEX",
-    "PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID",
-    "PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION",
-    "PIPELINE_COVERAGE_GAP_DIAGNOSIS_RUN_ID",
-    "PIPELINE_CURRENT_DOC_STATUS",
-    "PIPELINE_CURRENT_FORMAL_DB_PERMISSION",
-    "PIPELINE_CURRENT_GATE_STATE",
-    "PIPELINE_MALF_REPAIR_ACTION",
-    "PIPELINE_MALF_REPAIR_RUN_ID",
-    "PIPELINE_DRY_RUN_CARD_ACTION",
-    "PIPELINE_DRY_RUN_CARD_RUN_ID",
-    "PIPELINE_DRY_RUN_FORMAL_DB_PERMISSION",
-    "PIPELINE_DRY_RUN_GATE_STATE",
-    "PIPELINE_DRY_RUN_INPUT_BOUNDARY",
-    "PIPELINE_DRY_RUN_RELEASE_EVIDENCE_INDEX",
-    "PIPELINE_DRY_RUN_SCOPE_FREEZE_RUN_ID",
-    "PIPELINE_FULL_CHAIN_PASSED_DOC_STATUS",
-    "PIPELINE_FULL_CHAIN_PREPARED_DOC_STATUS",
-    "PIPELINE_PREPARED_DOC_STATUS",
-    "PIPELINE_PREPARED_FORMAL_DB_PERMISSION",
-    "PIPELINE_PREPARED_GATE_STATE",
-    "PIPELINE_RELEASE_CONCLUSION",
-    "PIPELINE_RELEASE_EVIDENCE_INDEX",
-    "PIPELINE_RUN_ID",
-    "PIPELINE_SCOPE_FREEZE_CONCLUSION",
-    "PIPELINE_SCOPE_FREEZE_EVIDENCE_INDEX",
-    "PIPELINE_SCOPE_FREEZE_RUN_ID",
-    "PIPELINE_YEAR_REPLAY_CARD_ACTION",
-    "PIPELINE_YEAR_REPLAY_CARD_RUN_ID",
-    "PIPELINE_YEAR_REPLAY_PREPARED_DOC_STATUS",
-    "PIPELINE_YEAR_REPLAY_SCOPE_FREEZE_RUN_ID",
-    "SYSTEM_SOURCE_RUN_ID",
-    "build_bounded_proof_authorized_repo",
-    "build_full_chain_dry_run_prepared_repo",
-    "build_governance_repo",
-    "build_prepared_pipeline_repo",
-    "build_year_replay_authorized_repo",
-    "seed_system_source",
+CURRENT_ACTIVE_MAINLINE_MODULE = pipeline_constants.CURRENT_ACTIVE_MAINLINE_MODULE
+PIPELINE_FULL_CHAIN_PASSED_DOC_STATUS = pipeline_constants.PIPELINE_FULL_CHAIN_PASSED_DOC_STATUS
+PIPELINE_ALPHA_SIGNAL_REPAIR_RUN_ID = pipeline_constants.PIPELINE_ALPHA_SIGNAL_REPAIR_RUN_ID
+PIPELINE_YEAR_REPLAY_CARD_RUN_ID = pipeline_constants.PIPELINE_YEAR_REPLAY_CARD_RUN_ID
+PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID = (
+    pipeline_constants.PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID
 )
+SYSTEM_SOURCE_RUN_ID = pipeline_constants.SYSTEM_SOURCE_RUN_ID
 
 
 def _active_card_line(run_id: str) -> str:
@@ -176,7 +139,7 @@ def build_full_chain_dry_run_prepared_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'doc_status = "{PIPELINE_CURRENT_DOC_STATUS}"',
+            f'doc_status = "{PIPELINE_MALF_REPAIR_PREPARED_DOC_STATUS}"',
             f'doc_status = "{PIPELINE_FULL_CHAIN_PREPARED_DOC_STATUS}"',
             1,
         )
@@ -186,7 +149,7 @@ def build_full_chain_dry_run_prepared_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            _active_card_line(PIPELINE_MALF_REPAIR_RUN_ID),
+            PIPELINE_MALF_REPAIR_ACTIVE_CARD,
             _active_card_line(PIPELINE_DRY_RUN_SCOPE_FREEZE_RUN_ID),
             1,
         )
@@ -212,12 +175,12 @@ def build_full_chain_dry_run_prepared_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            PIPELINE_CURRENT_GATE_STATE,
+            PIPELINE_MALF_REPAIR_PREPARED_GATE_STATE,
             PIPELINE_PREPARED_GATE_STATE,
             1,
         )
         .replace(
-            PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
+            PIPELINE_MALF_REPAIR_PREPARED_FORMAL_DB_PERMISSION,
             PIPELINE_PREPARED_FORMAL_DB_PERMISSION,
             1,
         )
@@ -279,7 +242,7 @@ def build_bounded_proof_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'doc_status = "{PIPELINE_CURRENT_DOC_STATUS}"',
+            f'doc_status = "{PIPELINE_MALF_REPAIR_PREPARED_DOC_STATUS}"',
             (
                 "doc_status = "
                 '"frozen six-doc set / freeze review passed / single-module orchestration '
@@ -294,7 +257,7 @@ def build_bounded_proof_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            _active_card_line(PIPELINE_MALF_REPAIR_RUN_ID),
+            PIPELINE_MALF_REPAIR_ACTIVE_CARD,
             _active_card_line(PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID),
             1,
         )
@@ -315,7 +278,7 @@ def build_bounded_proof_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'proof_status = "{PIPELINE_CURRENT_GATE_STATE}"',
+            f'proof_status = "{PIPELINE_MALF_REPAIR_PREPARED_GATE_STATE}"',
             f'proof_status = "{PIPELINE_DRY_RUN_GATE_STATE}"',
             1,
         )
@@ -325,7 +288,7 @@ def build_bounded_proof_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
+            PIPELINE_MALF_REPAIR_PREPARED_FORMAL_DB_PERMISSION,
             PIPELINE_DRY_RUN_FORMAL_DB_PERMISSION,
             1,
         )
@@ -387,7 +350,7 @@ def build_year_replay_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'doc_status = "{PIPELINE_CURRENT_DOC_STATUS}"',
+            f'doc_status = "{PIPELINE_MALF_REPAIR_PREPARED_DOC_STATUS}"',
             f'doc_status = "{PIPELINE_YEAR_REPLAY_PREPARED_DOC_STATUS}"',
             1,
         )
@@ -397,7 +360,7 @@ def build_year_replay_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            _active_card_line(PIPELINE_MALF_REPAIR_RUN_ID),
+            PIPELINE_MALF_REPAIR_ACTIVE_CARD,
             _active_card_line(PIPELINE_YEAR_REPLAY_SCOPE_FREEZE_RUN_ID),
             1,
         )
@@ -412,12 +375,12 @@ def build_year_replay_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'proof_status = "{PIPELINE_CURRENT_GATE_STATE}"',
+            f'proof_status = "{PIPELINE_MALF_REPAIR_PREPARED_GATE_STATE}"',
             f'proof_status = "{PIPELINE_BOUNDED_PROOF_GATE_STATE}"',
             1,
         )
         .replace(
-            PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
+            PIPELINE_MALF_REPAIR_PREPARED_FORMAL_DB_PERMISSION,
             PIPELINE_BOUNDED_PROOF_FORMAL_DB_PERMISSION,
             1,
         )
@@ -470,6 +433,44 @@ def build_year_replay_authorized_repo(tmp_path: Path) -> Path:
         encoding="utf-8",
     )
 
+    return repo_root
+
+
+def build_year_replay_rerun_authorized_repo(tmp_path: Path) -> Path:
+    repo_root = build_governance_repo(tmp_path)
+    registry_path = repo_root / "governance" / "module_gate_registry.toml"
+    registry_text = registry_path.read_text(encoding="utf-8")
+    if f'current_allowed_next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"' in registry_text:
+        return repo_root
+    registry_path.write_text(
+        registry_text.replace(
+            f'current_allowed_next_card = "{PIPELINE_ALPHA_SIGNAL_REPAIR_ACTION}"',
+            f'current_allowed_next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
+            1,
+        )
+        .replace(
+            f'next_card = "{PIPELINE_ALPHA_SIGNAL_REPAIR_ACTION}"',
+            f'next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
+            1,
+        )
+        .replace(
+            f'doc_status = "{PIPELINE_CURRENT_DOC_STATUS}"',
+            (
+                'doc_status = "frozen six-doc set / freeze review passed / single-module '
+                "orchestration build passed / full-chain dry-run passed / full-chain day "
+                "bounded proof passed / one-year strategy behavior replay blocked / coverage "
+                "gap diagnosis executed / MALF natural-year coverage repair passed / year replay "
+                'rerun prepared"'
+            ),
+            1,
+        )
+        .replace(
+            CURRENT_PIPELINE_ACTIVE_CARD,
+            _active_card_line(PIPELINE_YEAR_REPLAY_RERUN_CARD_RUN_ID),
+            1,
+        ),
+        encoding="utf-8",
+    )
     return repo_root
 
 

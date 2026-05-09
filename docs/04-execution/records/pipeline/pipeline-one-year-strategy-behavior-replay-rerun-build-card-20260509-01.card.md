@@ -2,7 +2,7 @@
 
 日期：2026-05-09
 
-状态：`prepared / not executed`
+状态：`blocked`
 
 ## 1. 目标
 
@@ -40,3 +40,14 @@
 - rerun 明确锁到 `malf-2024-natural-year-coverage-repair-card-20260509-01-batch-0001`。
 - 输出新的 year replay 观察窗口与行为摘要。
 - truthful 给出 `passed` 或 `blocked`，不得跳过 rerun 直接宣称 coverage 全修完。
+
+## 6. 当前结果
+
+本卡已真实执行，但当前必须记为 `blocked`：
+
+- released `system_source_manifest` 里的 MALF source 仍是
+  `malf-v1-4-core-runtime-sync-implementation-20260505-01`，没有锁到
+  `malf-2024-natural-year-coverage-repair-card-20260509-01-batch-0001`
+- released `system_chain_readout` 观察窗口仍从 `2024-01-08` 开始，不满足完整自然年要求
+- 结合 diagnosis 卡的判定矩阵，当前最小下一卡应切到
+  `alpha-signal-2024-coverage-repair-card-20260509-01`

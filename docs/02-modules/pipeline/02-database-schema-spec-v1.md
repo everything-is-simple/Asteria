@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / year replay rerun blocked
 
 ## 1. 规格范围
 
@@ -12,7 +12,7 @@
 H:\Asteria-data\pipeline.duckdb
 ```
 
-当前覆盖 `system_readout` 单模块编排元数据、`full_chain_day` dry-run / bounded proof 编排元数据，以及 `year_replay` 的 blocked behavior-observation 元数据。
+当前覆盖 `system_readout` 单模块编排元数据、`full_chain_day` dry-run / bounded proof 编排元数据，以及 `year_replay` / `year_replay_rerun` 的 blocked behavior-observation 元数据。
 
 ## 2. 表族
 
@@ -30,7 +30,7 @@ H:\Asteria-data\pipeline.duckdb
 |---|---|
 | `pipeline_run_id` | 主体 id |
 | `runner_name` | runner 标识 |
-| `module_scope` | 当前允许 `system_readout`、`full_chain_day` 或 `year_replay` |
+| `module_scope` | 当前允许 `system_readout`、`full_chain_day`、`year_replay` 或 `year_replay_rerun` |
 | `run_mode` | 当前允许 `bounded / dry-run / resume / audit-only`，并受 scope 约束 |
 | `run_status` | `staged / completed / failed` |
 | `source_module` | 当前为 `system_readout` |
@@ -51,9 +51,9 @@ H:\Asteria-data\pipeline.duckdb
 |---|---|
 | `pipeline_step_run_id` | 主体 id |
 | `pipeline_run_id` | run id |
-| `step_seq` | 单模块为 `1`；full-chain / year replay 为 `1..7` |
-| `module_name` | 单模块为 `system_readout`；full-chain / year replay 为主线模块顺序名 |
-| `step_name` | 单模块为 `single_module_orchestration`；full-chain 为 `full_chain_dry_run` 或 `full_chain_bounded_proof`；year replay 为 `year_strategy_behavior_replay` |
+| `step_seq` | 单模块为 `1`；full-chain / year replay / rerun 为 `1..7` |
+| `module_name` | 单模块为 `system_readout`；full-chain / year replay / rerun 为主线模块顺序名 |
+| `step_name` | 单模块为 `single_module_orchestration`；full-chain 为 `full_chain_dry_run` 或 `full_chain_bounded_proof`；year replay 为 `year_strategy_behavior_replay`；rerun 为 `year_strategy_behavior_rerun` |
 | `step_status` | `staged / promoted` |
 | `source_db` | 来源 DB |
 | `source_run_id` | 来源 system run id |
@@ -109,4 +109,4 @@ H:\Asteria-data\pipeline.duckdb
 | working DB 路径 | `H:\Asteria-temp\pipeline\<run_id>\` |
 | promote | staging 审计通过后执行 |
 | current released scope | `system_readout` single-module orchestration + `full_chain_day` dry-run + `full_chain_day` bounded proof |
-| year replay | 已执行但 blocked；不得当作新 released business surface |
+| year replay / rerun | 已执行但 blocked；不得当作新 released business surface |

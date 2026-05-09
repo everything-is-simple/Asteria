@@ -12,9 +12,10 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-pipeline-full-chain-bounded-proof-closeout-20260508-01.zip",
     "H:/Asteria-Validated/Asteria-pipeline-one-year-strategy-behavior-replay-authorization-scope-freeze-20260508-01.zip",
     "H:/Asteria-Validated/Asteria-pipeline-one-year-strategy-behavior-replay-build-card-20260508-01.zip",
+    "H:/Asteria-Validated/Asteria-pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01.zip",
 ]
-gate_state = "single_module_orchestration_build_passed; full_chain_dry_run_passed; full_chain_day_bounded_proof_passed; one_year_strategy_behavior_replay_blocked; coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_prepared"
-formal_db_permission = "released_full_chain_bounded_proof_ledger_only; one_year_strategy_behavior_replay_blocked_incomplete_natural_year_coverage; coverage_gap_diagnosis_executed_malf_repair_prepared; full_rebuild_requires_new_card"
+gate_state = "single_module_orchestration_build_passed; full_chain_dry_run_passed; full_chain_day_bounded_proof_passed; one_year_strategy_behavior_replay_blocked; coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_passed; year_replay_rerun_blocked; alpha_signal_2024_coverage_repair_prepared"
+formal_db_permission = "released_full_chain_bounded_proof_ledger_only; one_year_strategy_behavior_replay_blocked_incomplete_natural_year_coverage; coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_passed; year_replay_rerun_blocked; alpha_signal_2024_coverage_repair_prepared; full_rebuild_requires_new_card"
 business_boundary = "orchestrate and record only; never define module semantics"
 run_modes = ["bounded", "dry-run", "resume", "audit-only"]
 resume_behavior = "resume from pipeline step checkpoint after module gate validation"
@@ -23,7 +24,7 @@ forbidden_inputs = ["business_internal_table", "mock_formal_data"]
 forbidden_outputs = ["business_field", "business_mutation"]
 release_conclusion = "docs/04-execution/records/pipeline/pipeline-full-chain-bounded-proof-closeout-20260508-01.conclusion.md"
 evidence_index = "docs/04-execution/records/pipeline/pipeline-full-chain-bounded-proof-closeout-20260508-01.evidence-index.md"
-next_allowed_action = "malf_2024_natural_year_coverage_repair_card"
+next_allowed_action = "alpha_signal_2024_coverage_repair_card"
 input_boundary = "orchestration_metadata_only; released_full_chain_day_bounded_surfaces; year_replay_behavior_observation_without_fill_pnl; coverage_gap_diagnosis_read_only"
 
 [[official_inputs]]

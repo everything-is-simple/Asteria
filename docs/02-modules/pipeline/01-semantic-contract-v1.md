@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / year replay rerun blocked / alpha-signal repair prepared
 
 ## 1. 合同目的
 
@@ -16,9 +16,10 @@
 module_scope = system_readout with run_mode in {bounded, resume, audit-only}
 module_scope = full_chain_day with run_mode in {bounded, dry-run, resume, audit-only}
 module_scope = year_replay with run_mode in {bounded, resume, audit-only}
+module_scope = year_replay_rerun with run_mode in {bounded, resume, audit-only}
 ```
 
-full / segmented / daily_incremental 仍未放行；full-chain dry-run 与 full-chain bounded proof 已通过；year replay 已执行但 blocked。
+full / segmented / daily_incremental 仍未放行；full-chain dry-run 与 full-chain bounded proof 已通过；year replay 与 year replay rerun 都已执行，但当前都保持 blocked。
 
 ## 3. 输入语义
 

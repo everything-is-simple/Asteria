@@ -24,14 +24,14 @@ flowchart LR
 
 ## 1.1 当前门禁状态
 
-截至 `malf-2024-natural-year-coverage-repair-card-20260509-01` passed：
+截至 `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` blocked：
 
 | 项 | 当前状态 |
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal`; `Position`; `Portfolio Plan`; `Trade`; `System Readout` |
 | 当前已通过 bounded proof | `MALF day`; `MALF week`; `MALF month`; `Alpha day`; `Signal day`; `Position day`; `Portfolio Plan day`; `Trade bounded proof`; `System Readout day bounded proof`; `MALF v1.4 day runtime sync implementation` |
-| 当前已准备执行卡 | `pipeline_one_year_strategy_behavior_replay_rerun_build_card` |
-| 当前只允许施工 | Pipeline one-year strategy behavior replay rerun |
+| 当前已准备执行卡 | `alpha_signal_2024_coverage_repair_card` |
+| 当前只允许施工 | Alpha / Signal 2024 coverage repair |
 | 当前仍禁止 | Position full build、Portfolio Plan full build、Trade full build、System full build、full rebuild、daily incremental、resume/idempotence、v1 complete |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Data Foundation
@@ -62,9 +62,12 @@ one-year strategy behavior replay；该 replay 因 `2024-01-01..2024-01-07` cove
 Data `2024-01-02..2024-01-05` 已覆盖，而 `malf-2024-natural-year-coverage-repair-card-20260509-01`
 随后已对 `000020.SZ` 完成最小 coherent released-run repair，正式生成
 `malf-2024-natural-year-coverage-repair-card-20260509-01-batch-0001`，并使 focus trading dates
-`2024-01-02..2024-01-05` 在 repaired MALF released run 上可见。当前唯一 prepared next card 已切到
-`pipeline_one_year_strategy_behavior_replay_rerun_build_card`。当前只允许 year replay rerun，不允许扩成
-Data / Alpha / Signal / System / Pipeline semantic repair，或打开 full rebuild / v1 complete。
+`2024-01-02..2024-01-05` 在 repaired MALF released run 上可见。随后
+`pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` 已真实执行，但
+released observation chain 仍从 `2024-01-08` 起步，且 `system_source_manifest` 仍锁到旧的
+`malf-v1-4-core-runtime-sync-implementation-20260505-01`。当前唯一 prepared next card 已切到
+`alpha_signal_2024_coverage_repair_card`。当前只允许 Alpha / Signal 2024 coverage repair，不允许扩成
+Data / System / Pipeline semantic repair，或打开 full rebuild / v1 complete。
 
 ## 2. 主线模块
 
