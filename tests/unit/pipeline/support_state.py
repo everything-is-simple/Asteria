@@ -7,7 +7,7 @@ from tests.unit.pipeline.constants import (
     MALF_BASELINE_PROOF_STATUS,
     MALF_CURRENT_DOC_STATUS,
     MALF_CURRENT_PROOF_STATUS,
-    PIPELINE_ALPHA_SIGNAL_REPAIR_ACTION,
+    PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION,
     PIPELINE_CURRENT_DOC_STATUS,
     PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
     PIPELINE_CURRENT_GATE_STATE,
@@ -33,7 +33,10 @@ def rewind_current_malf_repair_state(registry_text: str) -> str:
             1,
         )
         .replace(
-            f'current_allowed_next_card = "{PIPELINE_ALPHA_SIGNAL_REPAIR_ACTION}"',
+            (
+                "current_allowed_next_card = "
+                f'"{PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION}"'
+            ),
             f'current_allowed_next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
             1,
         )
@@ -60,7 +63,7 @@ def rewind_current_malf_repair_state(registry_text: str) -> str:
             1,
         )
         .replace(
-            f'next_card = "{PIPELINE_ALPHA_SIGNAL_REPAIR_ACTION}"',
+            f'next_card = "{PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION}"',
             f'next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
             1,
         )
@@ -75,7 +78,7 @@ def rewind_current_malf_repair_state(registry_text: str) -> str:
             1,
         )
         .replace(
-            f'next_allowed_action = "{PIPELINE_ALPHA_SIGNAL_REPAIR_ACTION}"',
+            f'next_allowed_action = "{PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION}"',
             'next_allowed_action = "malf_2024_natural_year_coverage_repair_card"',
             1,
         )

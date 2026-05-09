@@ -6,7 +6,6 @@ from shutil import copy2, copytree
 from tests.unit.pipeline import constants as pipeline_constants
 from tests.unit.pipeline.constants import (
     CURRENT_PIPELINE_ACTIVE_CARD,
-    PIPELINE_ALPHA_SIGNAL_REPAIR_ACTION,
     PIPELINE_BOUNDED_INPUT_BOUNDARY,
     PIPELINE_BOUNDED_PROOF_CARD_ACTION,
     PIPELINE_BOUNDED_PROOF_CARD_RUN_ID,
@@ -16,6 +15,7 @@ from tests.unit.pipeline.constants import (
     PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_CONCLUSION,
     PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_EVIDENCE_INDEX,
     PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID,
+    PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION,
     PIPELINE_CURRENT_DOC_STATUS,
     PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
     PIPELINE_CURRENT_GATE_STATE,
@@ -55,6 +55,9 @@ from asteria.system_readout.bootstrap import run_system_readout_build
 CURRENT_ACTIVE_MAINLINE_MODULE = pipeline_constants.CURRENT_ACTIVE_MAINLINE_MODULE
 PIPELINE_FULL_CHAIN_PASSED_DOC_STATUS = pipeline_constants.PIPELINE_FULL_CHAIN_PASSED_DOC_STATUS
 PIPELINE_ALPHA_SIGNAL_REPAIR_RUN_ID = pipeline_constants.PIPELINE_ALPHA_SIGNAL_REPAIR_RUN_ID
+PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_RUN_ID = (
+    pipeline_constants.PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_RUN_ID
+)
 PIPELINE_YEAR_REPLAY_CARD_RUN_ID = pipeline_constants.PIPELINE_YEAR_REPLAY_CARD_RUN_ID
 PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID = (
     pipeline_constants.PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID
@@ -444,12 +447,15 @@ def build_year_replay_rerun_authorized_repo(tmp_path: Path) -> Path:
         return repo_root
     registry_path.write_text(
         registry_text.replace(
-            f'current_allowed_next_card = "{PIPELINE_ALPHA_SIGNAL_REPAIR_ACTION}"',
+            (
+                "current_allowed_next_card = "
+                f'"{PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION}"'
+            ),
             f'current_allowed_next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
             1,
         )
         .replace(
-            f'next_card = "{PIPELINE_ALPHA_SIGNAL_REPAIR_ACTION}"',
+            f'next_card = "{PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION}"',
             f'next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
             1,
         )

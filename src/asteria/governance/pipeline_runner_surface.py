@@ -11,6 +11,7 @@ def allowed_pipeline_runner_names() -> set[str]:
         "run_pipeline_bounded_proof.py",
         "run_pipeline_full_chain_dry_run.py",
         "run_year_replay_coverage_gap_diagnosis.py",
+        "run_alpha_signal_2024_coverage_repair.py",
     }
 
 
