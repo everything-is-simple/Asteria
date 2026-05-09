@@ -340,6 +340,7 @@ def _check_forbidden_repo_artifacts(repo_root: Path) -> list[Finding]:
         ".pytest_cache",
         ".mypy_cache",
         ".ruff_cache",
+        ".codex-tmp",
         "reports",
         "artifacts",
         "tmp",

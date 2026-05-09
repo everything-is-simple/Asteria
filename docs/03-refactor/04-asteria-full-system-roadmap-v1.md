@@ -192,13 +192,12 @@ Pipeline 只调度和记录
 - [x] 冻结 `pipeline-one-year-strategy-behavior-replay-authorization-scope-freeze-20260508-01`，把 observation scope 限定为 `signal -> position -> portfolio_plan -> trade(order_intent / execution_plan / rejection) -> system_readout`。
 - [x] 接住 year replay scope freeze 的 allowed next action `pipeline_one_year_strategy_behavior_replay_build_card`，只执行一年行为回放，不偷换成 full rebuild。
 - [x] 执行 `pipeline-one-year-strategy-behavior-replay-build-card-20260508-01`，并 truthful 记录 `2024` 完整自然年覆盖不足导致的 `blocked`。
-- [x] 将原主干模块施工 roadmap 交接到 [System Validation and Repair Roadmap](05-system-validation-repair-roadmap-v1.md)，并已由 diagnosis 结论把唯一 prepared card 切到 `malf_2024_natural_year_coverage_repair_card`。
+- [x] 将原主干模块施工 roadmap 收束到当前总路线图的“系统验证与修补阶段”，并已由 diagnosis 结论把唯一 prepared card 切到 `malf_2024_natural_year_coverage_repair_card`。
 
 ## 12. 阶段 9：系统验证与修补 Roadmap
 
 卡 4 的 truthful blocked 说明 Asteria 已从“主干模块施工”进入“系统级验证 + 数据补洞 + 综合调试”阶段。
-本阶段不继续批量预开 full rebuild、daily incremental、resume/idempotence 或 `v1 complete` 卡，而是转入
-[05-system-validation-repair-roadmap-v1.md](05-system-validation-repair-roadmap-v1.md)。
+本阶段继续留在本路线图内维护，不再并行维护第二张独立 roadmap。
 
 当前唯一 prepared next card：
 
@@ -206,7 +205,37 @@ Pipeline 只调度和记录
 malf-2024-natural-year-coverage-repair-card-20260509-01
 ```
 
-该卡只允许 read-only coverage diagnosis，裁定 `2024-01-01..2024-01-07` 缺口归属，并只授权一张最小 repair card。
+当前已知 live truth：
+
+- `pipeline-one-year-strategy-behavior-replay-build-card-20260508-01` 已真实执行，但因 `2024` 完整自然年覆盖不足而 `blocked`
+- `pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01` 已完成 formal read-only diagnosis
+- diagnosis 结论已锁定最早 released surface break 在 MALF
+- 当前唯一 prepared next card 只允许最小 MALF released day surface repair，不得扩成 Alpha / Signal / System / Pipeline repair
+
+本阶段固定节奏：
+
+```text
+诊断归因 -> 最小 repair -> year replay rerun -> rerun closeout -> behavior quality review
+```
+
+候选 repair queue 只作为 backlog 顺序参考，不得压过“当前唯一下一卡”：
+
+| 优先级 | 候选卡 | 说明 |
+|---|---|---|
+| P0 | `malf-2024-natural-year-coverage-repair-card-20260509-01` | 当前唯一 prepared next card |
+| P1 | `alpha-signal-2024-coverage-repair-card-20260509-01` | 仅在 MALF repair 后仍发现上游 released surface 断点时才可进入 live authority |
+| P1 | `system-readout-2024-coverage-repair-card-20260509-01` | 仅在 MALF/Alpha/Signal 均齐而 System 缺口仍在时才可进入 live authority |
+| P1 | `pipeline-year-replay-source-selection-repair-card-20260509-01` | 仅在 released surface 已齐但 Pipeline 取数语义仍错时才可进入 live authority |
+| P2 | `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` | 仅在 coverage repair passed 后准备 |
+
+仍然禁止把当前阶段解释成：
+
+```text
+full rebuild passed
+daily incremental passed
+production release
+v1 complete
+```
 
 ## 13. 阶段 10：Timeframe 扩展
 

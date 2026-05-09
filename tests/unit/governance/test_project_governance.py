@@ -85,7 +85,7 @@ def test_project_governance_rejects_multiple_build_allowed_mainline_modules(
     )
 
     assert any(
-        "pipeline orchestration next card must not reopen any mainline build/review flag" in message
+        "pipeline diagnosis handoff must not reopen any mainline build/review flag" in message
         for message in _messages(repo_root)
     )
 
@@ -170,6 +170,18 @@ def test_project_governance_rejects_repo_root_duckdb(tmp_path: Path) -> None:
 
     assert any(
         "generated database artifact is inside repo" in message for message in _messages(repo_root)
+    )
+
+
+def test_project_governance_rejects_repo_root_codex_tmp(tmp_path: Path) -> None:
+    repo_root = _copy_governance_repo(tmp_path)
+    codex_tmp = repo_root / ".codex-tmp"
+    codex_tmp.mkdir()
+    (codex_tmp / "scratch.txt").write_text("temporary\n", encoding="utf-8")
+
+    assert any(
+        "generated cache/report artifact is inside repo root" in message
+        for message in _messages(repo_root)
     )
 
 

@@ -169,11 +169,12 @@ surface break 锁定在 MALF。当前 live prepared next card 已切换为
 `malf_2024_natural_year_coverage_repair_card`，且仍不得扩展为 Position full build、Portfolio Plan full build、
 Trade full build、System full build、full rebuild、daily incremental 或 `v1 complete`。
 
-2026-05-09：`docs/03-refactor/05-system-validation-repair-roadmap-v1.md` 已新增为后半场系统验证与修补
-roadmap。`pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01`
+2026-05-09：`pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01`
 已完成 formal read-only diagnosis，并把当前唯一 prepared next card 切到
-`malf-2024-natural-year-coverage-repair-card-20260509-01`。该卡只允许最小 MALF released day surface repair；
-不允许扩成 Alpha / Signal / System / Pipeline repair，不允许重跑 year replay，也不允许开启 full rebuild、
+`malf-2024-natural-year-coverage-repair-card-20260509-01`。后半场 system validation / repair
+阶段已收敛回 `docs/03-refactor/04-asteria-full-system-roadmap-v1.md` 单点维护；`05-system-validation-repair-roadmap-v1.md`
+已退役为 redirect/tombstone。该卡只允许最小 MALF released day surface repair；不允许扩成
+Alpha / Signal / System / Pipeline repair，不允许重跑 year replay，也不允许开启 full rebuild、
 daily incremental、resume/idempotence 或 `v1 complete`。
 
 ## 1.1 Pre-Position 上游修补队列

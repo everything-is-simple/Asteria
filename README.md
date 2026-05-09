@@ -18,6 +18,9 @@ MALF = Market Lifespan Framework
 | `H:\Asteria-Validated` | 已验证设计、历史快照、正式证据资产 |
 | `H:\Asteria-temp` | working DB、pytest、缓存、临时重建产物 |
 
+`H:\Asteria-temp` 也是 Codex / 本地治理检查 / 临时 scratch 的唯一落位；repo 根目录不得新增
+`.codex-tmp/`、`tmp/`、`temp/`、`reports/`、`artifacts/` 这类临时目录。
+
 ## 当前重构原则
 
 1. 先有权威设计，再有实现。
@@ -107,9 +110,10 @@ System Readout design / schema / runner / audit / bounded proof 表面，`system
 `pipeline-full-chain-dry-run-card-20260508-01` 也已补齐 full-chain day dry-run runtime 证据；
 `pipeline-full-chain-bounded-proof-build-card-20260508-01` 与其 closeout 已证明 full-chain day bounded proof passed；
 `pipeline-one-year-strategy-behavior-replay-build-card-20260508-01` 已真实执行但因 `2024` 完整自然年覆盖不足
-truthful blocked。当前唯一 prepared next card 是
-`pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze`，只允许 read-only coverage gap diagnosis，
-不得解释成修库、重跑 year replay、full rebuild、daily incremental 或 `v1 complete` 授权。
+truthful blocked。随后 `pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01`
+已完成 formal read-only diagnosis，确认最早 released surface break 在 MALF；当前唯一 prepared next card 是
+`malf-2024-natural-year-coverage-repair-card-20260509-01`，只允许最小 MALF released day surface repair，
+不得解释成 year replay rerun、full rebuild、daily incremental、resume/idempotence 或 `v1 complete` 授权。
 仍不能宣称全主线数据已经齐全或完整证券主数据已齐。
 
 ## 阅读入口
@@ -124,7 +128,7 @@ truthful blocked。当前唯一 prepared next card 是
 8. [数据库拓扑](docs/01-architecture/01-database-topology-v1.md)
 9. [模块设计文档标准](docs/02-modules/00-module-design-document-standard-v1.md)
 10. [模块门禁账本](docs/03-refactor/00-module-gate-ledger-v1.md)
-11. [系统验证与修补 Roadmap](docs/03-refactor/05-system-validation-repair-roadmap-v1.md)
+11. [全系统路线图 / 后半场修补阶段](docs/03-refactor/04-asteria-full-system-roadmap-v1.md)
 12. [执行卡记录区](docs/04-execution/README.md)
 
 ## Python 环境

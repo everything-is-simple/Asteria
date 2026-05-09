@@ -72,6 +72,7 @@ card -> evidence-index -> record -> conclusion
 | 文件名 | 使用 `<run_id>.<doc-kind>.md` |
 | 样板 | 后续卡优先复用 `templates/` |
 | 资产归属 | 大资产留在仓库外；repo 内只放索引和摘要 |
+| 临时 scratch | Codex / pytest / ruff / mypy / 审计 scratch 一律落 `H:\\Asteria-temp`，不得在 repo 根创建 `.codex-tmp/`、`tmp/`、`temp/` |
 
 ## 5. 内容边界
 

@@ -29,3 +29,4 @@ temp/
 # Agent local state
 .claude/
 .codex/config.toml
+.codex-tmp/
