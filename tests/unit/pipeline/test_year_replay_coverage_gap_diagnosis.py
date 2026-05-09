@@ -52,6 +52,38 @@ def test_recommends_malf_repair_when_data_covers_trading_start_but_malf_starts_l
     ]
 
 
+def test_manifest_locked_malf_run_ignores_older_rows_from_other_runs_when_attributing_gap(
+    tmp_path: Path,
+) -> None:
+    request = _seed_scenario(
+        tmp_path,
+        data_dates=_trading_dates(),
+        malf_dates=_trading_dates(start="2024-01-08"),
+        alpha_dates=_trading_dates(start="2024-01-08"),
+        signal_dates=_trading_dates(start="2024-01-08"),
+        position_dates=_trading_dates(start="2024-01-08"),
+        portfolio_dates=_trading_dates(start="2024-01-08"),
+        trade_dates=_trading_dates(start="2024-01-08"),
+        system_dates=_trading_dates(start="2024-01-08"),
+    )
+    with duckdb.connect(str(tmp_path / "data" / "malf_service_day.duckdb")) as con:
+        con.executemany(
+            "insert into malf_wave_position values (?, ?)",
+            [
+                [bar_dt, "malf-complete-alignment-closeout-20260430-01"]
+                for bar_dt in _trading_dates()
+            ],
+        )
+
+    summary = run_year_replay_coverage_gap_diagnosis(request)
+
+    assert (
+        summary.recommended_next_card == "malf-2024-natural-year-coverage-repair-card-20260509-01"
+    )
+    attribution = Path(summary.coverage_attribution_path).read_text(encoding="utf-8")
+    assert "trading-day surface gap status: `break_at_malf`" in attribution
+
+
 def test_recommends_pipeline_semantic_repair_when_released_surfaces_cover_all_trading_dates(
     tmp_path: Path,
 ) -> None:

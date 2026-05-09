@@ -202,7 +202,7 @@ Pipeline 只调度和记录
 当前唯一 prepared next card：
 
 ```text
-malf-2024-natural-year-coverage-repair-card-20260509-01
+pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01
 ```
 
 当前已知 live truth：
@@ -210,7 +210,8 @@ malf-2024-natural-year-coverage-repair-card-20260509-01
 - `pipeline-one-year-strategy-behavior-replay-build-card-20260508-01` 已真实执行，但因 `2024` 完整自然年覆盖不足而 `blocked`
 - `pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01` 已完成 formal read-only diagnosis
 - diagnosis 结论已锁定最早 released surface break 在 MALF
-- 当前唯一 prepared next card 只允许最小 MALF released day surface repair，不得扩成 Alpha / Signal / System / Pipeline repair
+- `malf-2024-natural-year-coverage-repair-card-20260509-01` 已通过最小 MALF released day surface repair，并生成 `malf-2024-natural-year-coverage-repair-card-20260509-01-batch-0001`
+- 当前唯一 prepared next card 只允许 year replay rerun，不得扩成 Data / Alpha / Signal / System / Pipeline repair
 
 本阶段固定节奏：
 
@@ -222,11 +223,11 @@ malf-2024-natural-year-coverage-repair-card-20260509-01
 
 | 优先级 | 候选卡 | 说明 |
 |---|---|---|
-| P0 | `malf-2024-natural-year-coverage-repair-card-20260509-01` | 当前唯一 prepared next card |
-| P1 | `alpha-signal-2024-coverage-repair-card-20260509-01` | 仅在 MALF repair 后仍发现上游 released surface 断点时才可进入 live authority |
+| P0 | `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` | 当前唯一 prepared next card |
+| P1 | `alpha-signal-2024-coverage-repair-card-20260509-01` | 仅在 rerun 后仍发现上游 released surface 断点时才可进入 live authority |
 | P1 | `system-readout-2024-coverage-repair-card-20260509-01` | 仅在 MALF/Alpha/Signal 均齐而 System 缺口仍在时才可进入 live authority |
 | P1 | `pipeline-year-replay-source-selection-repair-card-20260509-01` | 仅在 released surface 已齐但 Pipeline 取数语义仍错时才可进入 live authority |
-| P2 | `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` | 仅在 coverage repair passed 后准备 |
+| P2 | `malf-2024-natural-year-coverage-repair-card-20260509-01` | 已 passed，不再是 prepared next card |
 
 仍然禁止把当前阶段解释成：
 
@@ -276,10 +277,11 @@ v1 complete
 - 当前事实基线以 `Data foundation production baseline sealed`、`MALF v1.3 day formal-data bounded closeout 已通过`、
   `Alpha bounded proof 已通过` 和 `Signal bounded proof 已通过` 为准。
 - MALF v1.4 是当前语义与操作边界权威包；day runtime sync 与 week/month proof 已通过，full build 仍需另开卡。
-- 当前 live `current_allowed_next_card` 是 `malf_2024_natural_year_coverage_repair_card`；Pipeline 已通过
+- 当前 live `current_allowed_next_card` 是 `pipeline_one_year_strategy_behavior_replay_rerun_build_card`；Pipeline 已通过
   `system_readout` 单模块 orchestration、full-chain dry-run 与 full-chain day bounded proof，并已执行过一次 one-year strategy
-  behavior replay。随后 coverage gap diagnosis 已正式执行，并确认最早 released surface break 在 MALF。下一步只允许最小
-  MALF repair；这仍不是 System full build、full rebuild、daily incremental 或 `v1 complete` 授权。
+  behavior replay。随后 coverage gap diagnosis 已正式执行并确认最早 released surface break 在 MALF；`malf-2024-natural-year-coverage-repair-card-20260509-01`
+  也已通过最小 MALF repair。下一步只允许 year replay rerun；这仍不是 System full build、full rebuild、daily incremental 或
+  `v1 complete` 授权。
 - Data Foundation 是地基轨道，不进入策略主线排序。
 - Pipeline 是编排与记录轨道，不进入业务主线排序。
 - 不同时施工两个策略主线模块。

@@ -14,19 +14,34 @@ from asteria.malf.supplemental import (
 )
 
 
-def _seed_market_base_day(path: Path, symbols: tuple[str, ...]) -> None:
+def _seed_market_base_day(
+    path: Path,
+    symbols: tuple[str, ...],
+    *,
+    base_dt: date = date(2024, 1, 1),
+) -> None:
     bootstrap_market_base_day_database(path)
     with duckdb.connect(str(path)) as con:
         for symbol in symbols:
             placeholders = ", ".join(["?"] * 20)
             con.executemany(
                 f"insert into market_base_bar values ({placeholders})",
-                [_bar(symbol, offset, high, low) for offset, (high, low) in enumerate(_prices())],
+                [
+                    _bar(symbol, offset, high, low, base_dt=base_dt)
+                    for offset, (high, low) in enumerate(_prices())
+                ],
             )
 
 
-def _bar(symbol: str, offset: int, high: float, low: float) -> tuple[object, ...]:
-    bar_dt = date(2024, 1, 1) + timedelta(days=offset)
+def _bar(
+    symbol: str,
+    offset: int,
+    high: float,
+    low: float,
+    *,
+    base_dt: date = date(2024, 1, 1),
+) -> tuple[object, ...]:
+    bar_dt = base_dt + timedelta(days=offset)
     close = round((high + low) / 2, 2)
     return (
         symbol,
@@ -163,3 +178,55 @@ def test_supplemental_failed_batch_does_not_promote(
         run_malf_day_supplemental_build(_request(tmp_path, "malf-supp-run-003"))
 
     assert not (tmp_path / "asteria-data" / "malf_service_day.duckdb").exists()
+
+
+def test_full_year_symbol_scoped_repair_can_publish_early_trading_dates_from_prehistory(
+    tmp_path: Path,
+) -> None:
+    source_db = tmp_path / "asteria-data" / "market_base_day.duckdb"
+    _seed_market_base_day(source_db, ("AAA.SZ",), base_dt=date(2023, 12, 25))
+
+    request = MalfSupplementalBuildRequest(
+        source_db=source_db,
+        core_db=tmp_path / "asteria-data" / "malf_core_day.duckdb",
+        lifespan_db=tmp_path / "asteria-data" / "malf_lifespan_day.duckdb",
+        service_db=tmp_path / "asteria-data" / "malf_service_day.duckdb",
+        report_root=tmp_path / "asteria-report",
+        validated_root=tmp_path / "asteria-validated",
+        temp_root=tmp_path / "asteria-temp",
+        run_id="malf-supp-run-004",
+        mode="segmented",
+        scope=make_scope(year=2024),
+        batch_size=1,
+        symbols=("AAA.SZ",),
+        sample_version="sample-v1",
+        service_version="service-v1",
+    )
+
+    run_malf_day_supplemental_build(request)
+
+    with duckdb.connect(str(tmp_path / "asteria-data" / "malf_service_day.duckdb")) as con:
+        assert con.execute(
+            """
+            select list(bar_dt order by bar_dt)
+            from malf_wave_position
+            where symbol = 'AAA.SZ'
+              and bar_dt between date '2024-01-02' and date '2024-01-05'
+            """
+        ).fetchone()[0] == [
+            date(2024, 1, 2),
+            date(2024, 1, 3),
+            date(2024, 1, 4),
+            date(2024, 1, 5),
+        ]
+        assert (
+            con.execute(
+                """
+                select count(*)
+                from malf_wave_position
+                where symbol = 'AAA.SZ'
+                  and bar_dt < date '2024-01-02'
+                """
+            ).fetchone()[0]
+            > 0
+        )

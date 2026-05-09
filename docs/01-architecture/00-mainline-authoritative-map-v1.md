@@ -24,14 +24,14 @@ flowchart LR
 
 ## 1.1 当前门禁状态
 
-截至 `pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01` prepared：
+截至 `malf-2024-natural-year-coverage-repair-card-20260509-01` passed：
 
 | 项 | 当前状态 |
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal`; `Position`; `Portfolio Plan`; `Trade`; `System Readout` |
 | 当前已通过 bounded proof | `MALF day`; `MALF week`; `MALF month`; `Alpha day`; `Signal day`; `Position day`; `Portfolio Plan day`; `Trade bounded proof`; `System Readout day bounded proof`; `MALF v1.4 day runtime sync implementation` |
-| 当前已准备执行卡 | `malf_2024_natural_year_coverage_repair_card` |
-| 当前只允许施工 | MALF released day surface 2024 natural-year coverage repair |
+| 当前已准备执行卡 | `pipeline_one_year_strategy_behavior_replay_rerun_build_card` |
+| 当前只允许施工 | Pipeline one-year strategy behavior replay rerun |
 | 当前仍禁止 | Position full build、Portfolio Plan full build、Trade full build、System full build、full rebuild、daily incremental、resume/idempotence、v1 complete |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Data Foundation
@@ -59,9 +59,12 @@ System Readout freeze review 与 System Readout bounded proof build 已通过；
 `system_readout` 单模块 runtime、full-chain day dry-run、full-chain day bounded proof，并真实执行过一次
 one-year strategy behavior replay；该 replay 因 `2024-01-01..2024-01-07` coverage gap 被 truthful blocked。
 `pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01` 已执行并形成正式诊断结论：
-Data `2024-01-02..2024-01-05` 已覆盖，但 released MALF day surface 仍从 `2024-01-08` 才开始，因此当前唯一
-prepared next card 已切到 `malf_2024_natural_year_coverage_repair_card`。当前只允许修补 MALF released day surface，
-不允许重跑 year replay、扩成 Alpha/Signal/System/Pipeline 语义修补，或打开 full rebuild / v1 complete。
+Data `2024-01-02..2024-01-05` 已覆盖，而 `malf-2024-natural-year-coverage-repair-card-20260509-01`
+随后已对 `000020.SZ` 完成最小 coherent released-run repair，正式生成
+`malf-2024-natural-year-coverage-repair-card-20260509-01-batch-0001`，并使 focus trading dates
+`2024-01-02..2024-01-05` 在 repaired MALF released run 上可见。当前唯一 prepared next card 已切到
+`pipeline_one_year_strategy_behavior_replay_rerun_build_card`。当前只允许 year replay rerun，不允许扩成
+Data / Alpha / Signal / System / Pipeline semantic repair，或打开 full rebuild / v1 complete。
 
 ## 2. 主线模块
 

@@ -111,9 +111,12 @@ System Readout design / schema / runner / audit / bounded proof 表面，`system
 `pipeline-full-chain-bounded-proof-build-card-20260508-01` 与其 closeout 已证明 full-chain day bounded proof passed；
 `pipeline-one-year-strategy-behavior-replay-build-card-20260508-01` 已真实执行但因 `2024` 完整自然年覆盖不足
 truthful blocked。随后 `pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01`
-已完成 formal read-only diagnosis，确认最早 released surface break 在 MALF；当前唯一 prepared next card 是
-`malf-2024-natural-year-coverage-repair-card-20260509-01`，只允许最小 MALF released day surface repair，
-不得解释成 year replay rerun、full rebuild、daily incremental、resume/idempotence 或 `v1 complete` 授权。
+已完成 formal read-only diagnosis，确认最早 released surface break 在 MALF；`malf-2024-natural-year-coverage-repair-card-20260509-01`
+也已通过最小 MALF released day surface repair，并为 `000020.SZ` 正式生成
+`malf-2024-natural-year-coverage-repair-card-20260509-01-batch-0001`，使 `2024-01-02..2024-01-05`
+四个 focus trading dates 在 repaired MALF released run 上可见，且 `hard_fail_count = 0`。当前唯一 prepared next card
+已切到 `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01`；本轮仍不得解释成 full rebuild、
+daily incremental、resume/idempotence 或 `v1 complete` 授权。
 仍不能宣称全主线数据已经齐全或完整证券主数据已齐。
 
 ## 阅读入口
