@@ -163,7 +163,9 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   Pipeline full-chain dry-run authorization scope freeze、Pipeline full-chain dry-run、Pipeline full-chain bounded proof
   build 与其 closeout，以及 Pipeline one-year strategy behavior replay authorization scope freeze 已通过。
   `pipeline-one-year-strategy-behavior-replay-build-card-20260508-01` 已真实执行，但因 `2024`
-  不是完整自然年覆盖而 `blocked`；当前没有 live prepared next card。
+  不是完整自然年覆盖而 `blocked`；当前唯一 live prepared next card 是
+  `pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01`，只允许 read-only coverage
+  gap diagnosis 与 repair scope freeze。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
 
 ## 3. 当前已准备但未执行的下一卡
@@ -171,7 +173,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 以下只登记尚未执行的 prepared card 队列，不作为 passed conclusion：
 
 ```text
-none
+pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01
 ```
 
 ## 3.1 Newly Passed Pre-Position Repair Card

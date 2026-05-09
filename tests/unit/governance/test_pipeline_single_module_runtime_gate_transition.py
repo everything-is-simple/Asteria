@@ -5,6 +5,8 @@ from scripts.governance.check_project_governance import run_checks
 from tests.unit.pipeline.support import (
     PIPELINE_BOUNDED_PROOF_CARD_RUN_ID,
     PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID,
+    PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION,
+    PIPELINE_COVERAGE_GAP_DIAGNOSIS_RUN_ID,
     PIPELINE_CURRENT_DOC_STATUS,
     PIPELINE_DRY_RUN_CARD_ACTION,
     PIPELINE_DRY_RUN_CARD_RUN_ID,
@@ -62,10 +64,10 @@ def test_pipeline_history_preserves_single_module_pass_scope_freeze_and_dry_run_
     ).read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == "system_readout"
-    assert registry["current_allowed_next_card"] == ""
+    assert registry["current_allowed_next_card"] == PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION
     assert modules["pipeline"]["status"] == "released"
     assert modules["pipeline"]["doc_status"] == PIPELINE_CURRENT_DOC_STATUS
-    assert modules["pipeline"]["next_card"] == "none"
+    assert modules["pipeline"]["next_card"] == PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION
     assert modules["pipeline"]["proof_run_id"] == PIPELINE_BOUNDED_PROOF_CARD_RUN_ID
     assert PIPELINE_RUN_ID in conclusion_index
     assert PIPELINE_DRY_RUN_SCOPE_FREEZE_RUN_ID in conclusion_index
@@ -96,7 +98,7 @@ def test_pipeline_history_preserves_single_module_pass_scope_freeze_and_dry_run_
     )
     assert "状态：`passed`" in pipeline_dry_run_card
     prepared_queue = conclusion_index.split("## 3. 当前已准备但未执行的下一卡", 1)[1]
-    assert "none" in prepared_queue
+    assert PIPELINE_COVERAGE_GAP_DIAGNOSIS_RUN_ID in prepared_queue
 
 
 def test_project_governance_rejects_reopening_closed_single_module_runtime_card(
@@ -107,11 +109,11 @@ def test_project_governance_rejects_reopening_closed_single_module_runtime_card(
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'current_allowed_next_card = ""',
+            f'current_allowed_next_card = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
             'current_allowed_next_card = "pipeline_single_module_orchestration_build_card"',
             1,
         ).replace(
-            'next_card = "none"',
+            f'next_card = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
             'next_card = "pipeline_single_module_orchestration_build_card"',
             1,
         ),

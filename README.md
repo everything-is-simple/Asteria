@@ -105,9 +105,11 @@ System Readout design / schema / runner / audit / bounded proof 表面，`system
 不等于 System full build。Pipeline freeze review 只冻结了文档合同面；随后
 `pipeline-single-module-orchestration-build-card-20260508-01` 已补齐最小 runtime 证据，
 `pipeline-full-chain-dry-run-card-20260508-01` 也已补齐 full-chain day dry-run runtime 证据；
-`pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01` 已把当前唯一 prepared next card
-恢复为 `pipeline_full_chain_bounded_proof_build_card`；但当前仍不能把这解释成 full-chain bounded proof passed
-或下游扩权。
+`pipeline-full-chain-bounded-proof-build-card-20260508-01` 与其 closeout 已证明 full-chain day bounded proof passed；
+`pipeline-one-year-strategy-behavior-replay-build-card-20260508-01` 已真实执行但因 `2024` 完整自然年覆盖不足
+truthful blocked。当前唯一 prepared next card 是
+`pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze`，只允许 read-only coverage gap diagnosis，
+不得解释成修库、重跑 year replay、full rebuild、daily incremental 或 `v1 complete` 授权。
 仍不能宣称全主线数据已经齐全或完整证券主数据已齐。
 
 ## 阅读入口
@@ -122,7 +124,8 @@ System Readout design / schema / runner / audit / bounded proof 表面，`system
 8. [数据库拓扑](docs/01-architecture/01-database-topology-v1.md)
 9. [模块设计文档标准](docs/02-modules/00-module-design-document-standard-v1.md)
 10. [模块门禁账本](docs/03-refactor/00-module-gate-ledger-v1.md)
-11. [执行卡记录区](docs/04-execution/README.md)
+11. [系统验证与修补 Roadmap](docs/03-refactor/05-system-validation-repair-roadmap-v1.md)
+12. [执行卡记录区](docs/04-execution/README.md)
 
 ## Python 环境
 

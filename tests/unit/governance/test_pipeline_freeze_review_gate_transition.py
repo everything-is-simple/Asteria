@@ -4,6 +4,7 @@ from shutil import copy2, copytree
 from scripts.governance.check_project_governance import run_checks
 from tests.unit.pipeline.support import (
     PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID,
+    PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION,
     PIPELINE_CURRENT_DOC_STATUS,
     PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
     PIPELINE_DRY_RUN_CARD_RUN_ID,
@@ -71,7 +72,7 @@ def test_pipeline_scope_freeze_preserves_historical_scope_after_runtime_pass() -
 
     assert registry["active_mainline_module"] == "system_readout"
     assert registry["active_foundation_card"] == "none"
-    assert registry["current_allowed_next_card"] == ""
+    assert registry["current_allowed_next_card"] == PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION
     assert registry["latest_mainline_release_run_id"] == (
         "system-readout-bounded-proof-build-card-20260508-01"
     )
@@ -85,7 +86,7 @@ def test_pipeline_scope_freeze_preserves_historical_scope_after_runtime_pass() -
     assert modules["pipeline"]["status"] == "released"
     assert modules["pipeline"]["doc_status"] == PIPELINE_CURRENT_DOC_STATUS
     assert modules["pipeline"]["formal_db_permission"] == PIPELINE_CURRENT_FORMAL_DB_PERMISSION
-    assert modules["pipeline"]["next_card"] == "none"
+    assert modules["pipeline"]["next_card"] == PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION
     assert "pipeline-build-runtime-authorization-scope-freeze-20260508-01" in conclusion_index
     assert PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID in conclusion_index
     assert PIPELINE_YEAR_REPLAY_SCOPE_FREEZE_RUN_ID in conclusion_index
@@ -120,11 +121,11 @@ def test_project_governance_rejects_pipeline_current_next_without_pipeline_match
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            'current_allowed_next_card = ""',
+            f'current_allowed_next_card = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
             'current_allowed_next_card = "pipeline_build_runtime_authorization_scope_freeze"',
             1,
         ).replace(
-            'next_card = "none"',
+            f'next_card = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
             'next_card = "pipeline_build_runtime_authorization_scope_freeze"',
             1,
         ),

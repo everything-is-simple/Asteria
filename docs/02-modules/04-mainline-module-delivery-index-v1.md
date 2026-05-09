@@ -142,13 +142,13 @@ System Readout freeze review
 当前已打开执行卡：
 
 ```text
-pipeline_full_chain_bounded_proof_build_card
+pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze
 ```
 
 当前只允许施工对象：
 
 ```text
-pipeline_full_chain_bounded_proof_build_card
+read-only coverage gap diagnosis
 ```
 
 除 MALF day proof、Alpha freeze review、Alpha bounded proof passed、Signal freeze
@@ -167,7 +167,7 @@ Signal construction、Pipeline 或任何下游施工。Signal freeze review pass
 只允许 Signal bounded proof build card。Signal bounded proof passed 后，Position freeze review
 reentry 已通过；随后上游完整性总控卡裁定在最终完整目标标准下暂停 Position bounded proof
 施工。Data reference target maintenance scope 已通过并冻结下一张 Data closeout 范围；
-Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review、Pipeline build/runtime authorization scope freeze、Pipeline single-module orchestration build、Pipeline full-chain dry-run authorization scope freeze、Pipeline full-chain dry-run 与 Pipeline full-chain bounded proof authorization scope freeze 已通过；当前唯一已恢复的下一张卡是 `pipeline_full_chain_bounded_proof_build_card`，但仍不允许 Trade full build、Position full build、System full build 或 full-chain bounded proof passed 扩权。
+Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review、Pipeline build/runtime authorization scope freeze、Pipeline single-module orchestration build、Pipeline full-chain dry-run authorization scope freeze、Pipeline full-chain dry-run、Pipeline full-chain bounded proof authorization scope freeze、Pipeline full-chain bounded proof build、Pipeline full-chain bounded proof closeout 与 Pipeline one-year strategy behavior replay 已执行；当前唯一下一卡是 `pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze`，只允许 read-only coverage gap diagnosis，仍不允许 Trade full build、Position full build、System full build、full rebuild、daily incremental 或 `v1 complete` 扩权。
 
 ## 6. 硬边界
 

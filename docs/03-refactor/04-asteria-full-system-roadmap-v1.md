@@ -16,7 +16,8 @@ Pipeline build/runtime authorization scope freeze、`pipeline-single-module-orch
 `pipeline-full-chain-dry-run-card-20260508-01` 与
 `pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01` 已通过。当前 allowed next action 为
 Pipeline full-chain bounded proof build 与 closeout 已通过；one-year strategy behavior replay authorization scope freeze 已通过；
-year replay build 已执行但因完整自然年覆盖不足而 blocked；当前没有 live `current_allowed_next_card`。
+year replay build 已执行但因完整自然年覆盖不足而 blocked；当前 live `current_allowed_next_card`
+已切换为 `pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze`。
 
 地基轨道 `data-formal-promotion-evidence-20260502-01` 的 allowed next action
 `MALF v1.3 formal rebuild closeout` 已由当前 MALF v1.3 closeout 闭环。
@@ -191,8 +192,23 @@ Pipeline 只调度和记录
 - [x] 冻结 `pipeline-one-year-strategy-behavior-replay-authorization-scope-freeze-20260508-01`，把 observation scope 限定为 `signal -> position -> portfolio_plan -> trade(order_intent / execution_plan / rejection) -> system_readout`。
 - [x] 接住 year replay scope freeze 的 allowed next action `pipeline_one_year_strategy_behavior_replay_build_card`，只执行一年行为回放，不偷换成 full rebuild。
 - [x] 执行 `pipeline-one-year-strategy-behavior-replay-build-card-20260508-01`，并 truthful 记录 `2024` 完整自然年覆盖不足导致的 `blocked`。
+- [x] 将原主干模块施工 roadmap 交接到 [System Validation and Repair Roadmap](05-system-validation-repair-roadmap-v1.md)，下一张唯一 prepared card 为 `pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze`。
 
-## 12. 阶段 9：Timeframe 扩展
+## 12. 阶段 9：系统验证与修补 Roadmap
+
+卡 4 的 truthful blocked 说明 Asteria 已从“主干模块施工”进入“系统级验证 + 数据补洞 + 综合调试”阶段。
+本阶段不继续批量预开 full rebuild、daily incremental、resume/idempotence 或 `v1 complete` 卡，而是转入
+[05-system-validation-repair-roadmap-v1.md](05-system-validation-repair-roadmap-v1.md)。
+
+当前唯一 prepared next card：
+
+```text
+pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01
+```
+
+该卡只允许 read-only coverage diagnosis，裁定 `2024-01-01..2024-01-07` 缺口归属，并只授权一张最小 repair card。
+
+## 13. 阶段 10：Timeframe 扩展
 
 - [ ] 在 day 主链稳定后，复制 MALF 到 week/month：core、lifespan、service 三库各自 proof。
 - [ ] 扩展 Alpha/Signal 对 timeframe 字段的正式支持。
@@ -200,7 +216,7 @@ Pipeline 只调度和记录
 - [ ] 产出 week/month evidence 包。
 - [ ] 更新 topology registry 与 module contracts。
 
-## 13. 阶段 10：全系统放行
+## 14. 阶段 11：全系统放行
 
 - [ ] 建立 full rebuild card：从 Data Foundation official facts 输入 MALF，再沿策略主线跑到 System Readout。
 - [ ] 建立 daily incremental card：source manifest、dirty queue/replay scope、checkpoint、audit summary。
@@ -210,7 +226,7 @@ Pipeline 只调度和记录
 - [ ] 生成 final release evidence：DB manifest、schema versions、rule versions、row counts、audit summaries、known limits。
 - [ ] 标记系统达到 `v1 complete`。
 
-## 14. 公开合同
+## 15. 公开合同
 
 - 每个模块必须有六件套：authority design（权威设计）、semantic contract（语义合同）、database schema spec（数据库 schema 规范）、runner contract（runner 合同）、audit spec（审计规范）、build card（构建卡）。
 - 每个正式 DB 必须有：run ledger、schema version、checkpoint/replay scope、audit summary。
@@ -218,7 +234,7 @@ Pipeline 只调度和记录
 - 每个 release 必须落档：`card.md`、`record.md`、`evidence-index.md`、`conclusion.md`、report manifest、validated zip。
 - 下游只读上游正式 ledgers；禁止回写、禁止重定义上游字段语义。
 
-## 15. 测试计划
+## 16. 测试计划
 
 - 每个 phase 必跑：`check_project_governance.py`、`ruff check`、`ruff format --check`、`mypy src`、`pytest`。
 - 每个模块新增 contract tests：输入表、输出表、自然键、版本字段、禁止输出项。
@@ -226,14 +242,15 @@ Pipeline 只调度和记录
 - 每个 release gate 新增 evidence audit：证明包存在、manifest 可读、conclusion 与 registry 状态一致。
 - Pipeline phase 增加端到端测试：单模块失败不污染下游，resume 不重复写入，full-chain 只按 gate 顺序运行。
 
-## 16. 前提假设
+## 17. 前提假设
 
 - 当前事实基线以 `Data foundation production baseline sealed`、`MALF v1.3 day formal-data bounded closeout 已通过`、
   `Alpha bounded proof 已通过` 和 `Signal bounded proof 已通过` 为准。
 - MALF v1.4 是当前语义与操作边界权威包；day runtime sync 与 week/month proof 已通过，full build 仍需另开卡。
-- 当前没有 live `current_allowed_next_card`；Pipeline 已通过 `system_readout` 单模块 orchestration、full-chain dry-run 与 full-chain day bounded proof，
-  并已执行过一次 one-year strategy behavior replay，但因为 `2024` 不是完整自然年覆盖而 blocked。这仍不是 System full build、
-  full rebuild、daily incremental 或 `v1 complete` 授权。
+- 当前 live `current_allowed_next_card` 是 `pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze`；Pipeline 已通过
+  `system_readout` 单模块 orchestration、full-chain dry-run 与 full-chain day bounded proof，并已执行过一次 one-year strategy
+  behavior replay，但因为 `2024` 不是完整自然年覆盖而 blocked。下一步只允许 read-only coverage gap diagnosis；这仍不是
+  System full build、full rebuild、daily incremental 或 `v1 complete` 授权。
 - Data Foundation 是地基轨道，不进入策略主线排序。
 - Pipeline 是编排与记录轨道，不进入业务主线排序。
 - 不同时施工两个策略主线模块。
