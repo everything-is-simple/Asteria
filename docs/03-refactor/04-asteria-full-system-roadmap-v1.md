@@ -246,10 +246,74 @@ v1 complete
 - [ ] 产出 week/month evidence 包。
 - [ ] 更新 topology registry 与 module contracts。
 
-## 14. 阶段 11：全系统放行
+## 14. 阶段 11：25 库历史大帐本化与全系统放行
 
-- [ ] 建立 full rebuild card：从 Data Foundation official facts 输入 MALF，再沿策略主线跑到 System Readout。
-- [ ] 建立 daily incremental card：source manifest、dirty queue/replay scope、checkpoint、audit summary。
+阶段 11 的目标不是增加新的业务 DuckDB 数量，而是在现有 25 库目标拓扑内，把正式库升级为
+可长期运行的分账本体系：
+
+```text
+每日增量更新
+每日断点续传
+source manifest / dirty scope / checkpoint / audit summary
+Pipeline 全链路 manifest
+```
+
+25 个 DuckDB 仍是完整目标拓扑。后续施工优先在现有 DB 内补充增量控制表、impact
+map、checkpoint 与 runner 能力；只有当现有 `pipeline.duckdb` 无法承载跨模块编排、
+writer lease 或全链路 checkpoint 时，才允许另开治理卡评估是否需要新增控制库。
+
+历史大帐本化的分层裁决：
+
+| 层 | DB 范围 | 增量口径 | 裁决 |
+|---|---|---|---|
+| Data 行情账本 | `raw_market`; `market_base_day/week/month` | `source manifest -> symbol + date dirty scope` | 作为 Data/MALF 样板优先硬化 |
+| Data reference 账本 | `market_meta` | `effective_date / reference_batch_id / source_version` | 不伪装成每日 bar 账本；只通过 maintenance card 扩展 |
+| MALF | `malf_core/lifespan/service` x `day/week/month` | `market_base dirty scope -> symbol + bar_dt/week_dt/month_dt` | 复用 segmented/resume 样板补 daily incremental |
+| Alpha / Signal | `alpha_*`; `signal` | `source MALF/Alpha run -> symbol + bar_dt/signal_dt` | 可接入每日脏域，但必须锁定 source run |
+| Downstream | `position`; `portfolio_plan`; `trade`; `system` | `daily impact scope + 业务自然键映射` | 不把业务自然键硬改为 `trade_date + symbol` |
+| Pipeline | `pipeline` | `pipeline_run + step checkpoint + module dirty manifest` | 只编排和记录，不定义业务语义 |
+
+全链路 daily incremental 的统一原则：
+
+```text
+调度入口统一为 trade_date + symbol + timeframe。
+业务表自然键保持模块原语义。
+每个模块新增或复用 daily_dirty_scope / daily_impact_scope / incremental_checkpoint。
+每个模块必须记录 source_run_id -> target_run_id 映射。
+每次 promote 必须先 hard audit，再更新正式 surface 与 manifest。
+```
+
+不得把该目标误读为：
+
+```text
+把 Trade fill ledger 改成 trade_date + symbol 主键
+把 Portfolio Plan 的组合裁决降级成单标的日线事实
+让 System Readout 触发上游重算
+让 Pipeline 定义业务字段语义
+```
+
+阶段 11 施工队列初稿如下，必须在当前 year replay rerun 及其 closeout 之后，逐卡进入 live authority：
+
+| 顺序 | 候选卡 | 目标 |
+|---:|---|---|
+| 1 | `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` | 当前唯一 prepared next card；先完成现有系统验证闭环 |
+| 2 | `system-wide-daily-dirty-scope-protocol-card` | 冻结跨模块 dirty scope、daily impact scope、checkpoint、source_run lineage、writer/read-only 规则 |
+| 3 | `data-ledger-daily-incremental-hardening-card` | 将 Data 4 个行情账本的 daily incremental / resume / audit evidence 做成生产级样板 |
+| 4 | `malf-daily-incremental-ledger-build-card` | 让 MALF 正式消费 Data dirty scope，并生成 MALF 自身 daily impact scope |
+| 5 | `alpha-signal-daily-incremental-ledger-build-card` | 将 Alpha/Signal 接入 `symbol + date + source_run_id` 脏域传播 |
+| 6 | `downstream-daily-impact-ledger-schema-card` | 为 Position/Portfolio Plan/Trade/System 冻结 impact map 与必要日期维字段 |
+| 7 | `downstream-daily-incremental-runner-build-card` | 实现下游按 daily impact scope 重算、断点续传、幂等 promote |
+| 8 | `pipeline-full-daily-incremental-chain-build-card` | Pipeline 编排 Data -> MALF -> Alpha -> Signal -> Position -> Portfolio Plan -> Trade -> System |
+| 9 | `full-rebuild-and-daily-incremental-release-closeout-card` | 运行 full rebuild proof、daily incremental proof、resume/idempotence proof，并生成 final release evidence |
+
+阶段 11 的完成标准：
+
+- [ ] 25 库 topology 保持不扩张；若确需新增控制库，必须先有独立治理卡裁决。
+- [ ] 每个正式 DB 都具备 run ledger、schema version、source lineage、checkpoint/replay scope 与 audit summary。
+- [ ] Data/MALF 样板证明每日 dirty scope 可重跑、可 resume、可幂等 promote。
+- [ ] Alpha/Signal 证明 `source_run_id + symbol + date` 脏域传播不重定义 MALF 语义。
+- [ ] Position/Portfolio Plan/Trade/System 证明 daily impact map 不破坏业务自然键。
+- [ ] Pipeline 证明 full daily chain 可以从中断点恢复，且不会重复 promote 或跨库假装原子事务。
 - [ ] 运行 full rebuild proof。
 - [ ] 运行 daily incremental proof。
 - [ ] 运行恢复测试：中断后 resume，重复运行幂等。
