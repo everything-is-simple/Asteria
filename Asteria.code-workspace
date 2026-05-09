@@ -19,10 +19,6 @@
 		{
 			"name": "Asteria-temp",
 			"path": "../Asteria-temp"
-		},
-		{
-			"name": "tdx_offline_Data",
-			"path": "../tdx_offline_Data"
 		}
 	],
 	"settings": {
