@@ -46,7 +46,12 @@ def check_gate_registry(repo_root: Path, gate_registry: dict[str, Any]) -> list[
 
     if current_next:
         orchestration_module = _pipeline_next_card_module(gate_registry, modules, str(current_next))
+        handoff_module = None
         if orchestration_module is None:
+            handoff_module = _pipeline_handoff_next_card_module(
+                repo_root, gate_registry, modules, str(current_next)
+            )
+        if orchestration_module is None and handoff_module is None:
             if len(action_allowed) != 1:
                 findings.append(Finding(path, "only one mainline module may allow build or review"))
             if active not in action_allowed:
@@ -59,7 +64,7 @@ def check_gate_registry(repo_root: Path, gate_registry: dict[str, Any]) -> list[
             _check_current_next_card(
                 repo_root, path, findings, gate_registry, modules, str(active), str(current_next)
             )
-        else:
+        elif orchestration_module is not None:
             if action_allowed:
                 findings.append(
                     Finding(
@@ -89,6 +94,37 @@ def check_gate_registry(repo_root: Path, gate_registry: dict[str, Any]) -> list[
                 str(active),
                 str(current_next),
                 forced_module=orchestration_module,
+            )
+        else:
+            if action_allowed:
+                findings.append(
+                    Finding(
+                        path,
+                        (
+                            "pipeline diagnosis handoff must not reopen any "
+                            "mainline build/review flag"
+                        ),
+                    )
+                )
+            if active != "system_readout":
+                findings.append(
+                    Finding(
+                        path,
+                        (
+                            "pipeline diagnosis handoff requires "
+                            "active_mainline_module to remain system_readout"
+                        ),
+                    )
+                )
+            _check_current_next_card(
+                repo_root,
+                path,
+                findings,
+                gate_registry,
+                modules,
+                str(active),
+                str(current_next),
+                forced_module=handoff_module,
             )
     elif action_allowed:
         findings.append(
@@ -174,6 +210,32 @@ def _pipeline_next_card_module(
     if pipeline_module.get("next_card") != current_next:
         return None
     return "pipeline"
+
+
+def _pipeline_handoff_next_card_module(
+    repo_root: Path,
+    gate_registry: dict[str, Any],
+    modules: dict[str, dict[str, Any]],
+    current_next: str,
+) -> str | None:
+    if current_next.startswith("pipeline_"):
+        return None
+    if gate_registry.get("active_mainline_module") != "system_readout":
+        return None
+    pipeline_module = modules.get("pipeline", {})
+    if pipeline_module.get("orchestration") is not True:
+        return None
+    if pipeline_module.get("next_card") != current_next:
+        return None
+
+    matched_modules: list[str] = []
+    for module_id in ["data", *sorted(MAINLINE_MODULES), "pipeline"]:
+        if _current_next_card_file_exists(repo_root, module_id, current_next):
+            matched_modules.append(module_id)
+    unique_matches = sorted(set(matched_modules))
+    if len(unique_matches) == 1:
+        return unique_matches[0]
+    return None
 
 
 def _check_module_docs(

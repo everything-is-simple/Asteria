@@ -2,7 +2,7 @@
 
 日期：2026-05-09
 
-状态：`prepared / not executed`
+状态：`passed`
 
 ## 1. 目标
 
@@ -57,3 +57,13 @@
 | 上游都有、System Readout 缺 | `system-readout-2024-coverage-repair-card-20260509-01` |
 | System 有、Pipeline 取数错 | `pipeline-year-replay-source-selection-repair-card-20260509-01` |
 | 证据不足无法归因 | `coverage-gap-evidence-incomplete-closeout-card-20260509-01` |
+
+## 6. 实际结果
+
+本卡已正式执行，当前实际结论为：
+
+```text
+Data 2024-01-02..2024-01-05 covered
+released MALF day surface starts at 2024-01-08
+recommended next card = malf-2024-natural-year-coverage-repair-card-20260509-01
+```

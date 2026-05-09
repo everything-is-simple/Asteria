@@ -30,8 +30,8 @@ flowchart LR
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal`; `Position`; `Portfolio Plan`; `Trade`; `System Readout` |
 | 当前已通过 bounded proof | `MALF day`; `MALF week`; `MALF month`; `Alpha day`; `Signal day`; `Position day`; `Portfolio Plan day`; `Trade bounded proof`; `System Readout day bounded proof`; `MALF v1.4 day runtime sync implementation` |
-| 当前已准备执行卡 | `pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze` |
-| 当前只允许施工 | read-only coverage gap diagnosis |
+| 当前已准备执行卡 | `malf_2024_natural_year_coverage_repair_card` |
+| 当前只允许施工 | MALF released day surface 2024 natural-year coverage repair |
 | 当前仍禁止 | Position full build、Portfolio Plan full build、Trade full build、System full build、full rebuild、daily incremental、resume/idempotence、v1 complete |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Data Foundation
@@ -58,8 +58,10 @@ System Readout freeze review 与 System Readout bounded proof build 已通过；
 与 `pipeline-one-year-strategy-behavior-replay-build-card-20260508-01` 也已闭环。Pipeline 当前已执行最小
 `system_readout` 单模块 runtime、full-chain day dry-run、full-chain day bounded proof，并真实执行过一次
 one-year strategy behavior replay；该 replay 因 `2024-01-01..2024-01-07` coverage gap 被 truthful blocked。
-当前唯一 prepared next card 是 `pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze`，只允许 read-only
-coverage gap diagnosis，不允许修库、重跑 year replay 或打开 full rebuild / v1 complete。
+`pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01` 已执行并形成正式诊断结论：
+Data `2024-01-02..2024-01-05` 已覆盖，但 released MALF day surface 仍从 `2024-01-08` 才开始，因此当前唯一
+prepared next card 已切到 `malf_2024_natural_year_coverage_repair_card`。当前只允许修补 MALF released day surface，
+不允许重跑 year replay、扩成 Alpha/Signal/System/Pipeline 语义修补，或打开 full rebuild / v1 complete。
 
 ## 2. 主线模块
 
@@ -234,7 +236,8 @@ design freeze
 MALF day 已通过 -> Alpha freeze review 已通过 -> Alpha bounded proof 已通过 -> Signal freeze review 已通过 -> Signal bounded proof 已通过 -> Position freeze review 已阻塞 -> Data formal promotion 已通过 -> MALF v1.4 day runtime sync implementation 已通过 -> Position freeze review reentry 已通过 -> upstream pre-position completeness synthesis 已完成 -> data reference target maintenance scope 已通过 -> data reference target maintenance closeout 已通过 -> malf week bounded proof build 已通过 -> malf month bounded proof build 已通过 -> alpha production builder hardening 已通过 -> signal production builder hardening 已通过 -> upstream pre-position release decision 已通过 -> position bounded proof 已通过 -> portfolio plan freeze review 已通过 -> portfolio plan bounded proof 已通过 -> trade freeze review 已通过 -> trade bounded proof build 已通过 -> system readout freeze review 已通过 -> system readout bounded proof build 已通过 -> pipeline freeze review 已准备
 ```
 
-任何下游实现都必须等前置模块完成 freeze / proof / release evidence。
+任何下游实现都必须等前置模块完成 freeze / proof / release evidence。当前 diagnosis 已经把唯一下一卡
+切到 MALF repair，但这仍然是 Pipeline diagnosis 交接出来的 live handoff，不等于 MALF 新 release 已通过。
 
 MALF v1.4 authority package 已形成，并已落实到 day runtime sync implementation；
 当前 day runtime 证据由 MALF v1.4 runtime sync closeout 承接，week/month bounded proof 已通过。MALF full build 仍需另开执行卡；Trade freeze review、Trade bounded proof build、System Readout freeze review 与 System Readout bounded proof build 已通过，但仍不授权 Trade full build、System full build 或 Pipeline runtime 扩权。

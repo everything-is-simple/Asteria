@@ -27,6 +27,8 @@ from tests.unit.pipeline.constants import (
     PIPELINE_DRY_RUN_SCOPE_FREEZE_RUN_ID,
     PIPELINE_FULL_CHAIN_PASSED_DOC_STATUS,
     PIPELINE_FULL_CHAIN_PREPARED_DOC_STATUS,
+    PIPELINE_MALF_REPAIR_ACTION,
+    PIPELINE_MALF_REPAIR_RUN_ID,
     PIPELINE_PREPARED_DOC_STATUS,
     PIPELINE_PREPARED_FORMAL_DB_PERMISSION,
     PIPELINE_PREPARED_GATE_STATE,
@@ -42,6 +44,7 @@ from tests.unit.pipeline.constants import (
     PIPELINE_YEAR_REPLAY_SCOPE_FREEZE_RUN_ID,
     SYSTEM_SOURCE_RUN_ID,
 )
+from tests.unit.pipeline.support_state import rewind_current_malf_repair_state
 from tests.unit.system_readout.support import build_request as build_system_request
 from tests.unit.system_readout.support import seed_chain
 
@@ -62,6 +65,8 @@ __all__ = (
     "PIPELINE_CURRENT_DOC_STATUS",
     "PIPELINE_CURRENT_FORMAL_DB_PERMISSION",
     "PIPELINE_CURRENT_GATE_STATE",
+    "PIPELINE_MALF_REPAIR_ACTION",
+    "PIPELINE_MALF_REPAIR_RUN_ID",
     "PIPELINE_DRY_RUN_CARD_ACTION",
     "PIPELINE_DRY_RUN_CARD_RUN_ID",
     "PIPELINE_DRY_RUN_FORMAL_DB_PERMISSION",
@@ -163,10 +168,10 @@ def build_prepared_pipeline_repo(tmp_path: Path) -> Path:
 def build_full_chain_dry_run_prepared_repo(tmp_path: Path) -> Path:
     repo_root = build_governance_repo(tmp_path)
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
-    registry_text = registry_path.read_text(encoding="utf-8")
+    registry_text = rewind_current_malf_repair_state(registry_path.read_text(encoding="utf-8"))
     registry_path.write_text(
         registry_text.replace(
-            f'current_allowed_next_card = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
+            f'current_allowed_next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
             f'current_allowed_next_card = "{PIPELINE_DRY_RUN_CARD_ACTION}"',
             1,
         )
@@ -176,12 +181,12 @@ def build_full_chain_dry_run_prepared_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'next_card = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
+            f'next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
             f'next_card = "{PIPELINE_DRY_RUN_CARD_ACTION}"',
             1,
         )
         .replace(
-            _active_card_line(PIPELINE_COVERAGE_GAP_DIAGNOSIS_RUN_ID),
+            _active_card_line(PIPELINE_MALF_REPAIR_RUN_ID),
             _active_card_line(PIPELINE_DRY_RUN_SCOPE_FREEZE_RUN_ID),
             1,
         )
@@ -217,7 +222,7 @@ def build_full_chain_dry_run_prepared_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'next_allowed_action = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
+            f'next_allowed_action = "{PIPELINE_MALF_REPAIR_ACTION}"',
             f'next_allowed_action = "{PIPELINE_DRY_RUN_CARD_ACTION}"',
             1,
         ),
@@ -243,7 +248,7 @@ def build_full_chain_dry_run_prepared_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'next_allowed_action = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
+            f'next_allowed_action = "{PIPELINE_MALF_REPAIR_ACTION}"',
             f'next_allowed_action = "{PIPELINE_DRY_RUN_CARD_ACTION}"',
             1,
         )
@@ -266,10 +271,10 @@ def build_full_chain_dry_run_prepared_repo(tmp_path: Path) -> Path:
 def build_bounded_proof_authorized_repo(tmp_path: Path) -> Path:
     repo_root = build_governance_repo(tmp_path)
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
-    registry_text = registry_path.read_text(encoding="utf-8")
+    registry_text = rewind_current_malf_repair_state(registry_path.read_text(encoding="utf-8"))
     registry_path.write_text(
         registry_text.replace(
-            f'current_allowed_next_card = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
+            f'current_allowed_next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
             f'current_allowed_next_card = "{PIPELINE_BOUNDED_PROOF_CARD_ACTION}"',
             1,
         )
@@ -284,12 +289,12 @@ def build_bounded_proof_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'next_card = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
+            f'next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
             f'next_card = "{PIPELINE_BOUNDED_PROOF_CARD_ACTION}"',
             1,
         )
         .replace(
-            _active_card_line(PIPELINE_COVERAGE_GAP_DIAGNOSIS_RUN_ID),
+            _active_card_line(PIPELINE_MALF_REPAIR_RUN_ID),
             _active_card_line(PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID),
             1,
         )
@@ -325,7 +330,7 @@ def build_bounded_proof_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'next_allowed_action = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
+            f'next_allowed_action = "{PIPELINE_MALF_REPAIR_ACTION}"',
             f'next_allowed_action = "{PIPELINE_BOUNDED_PROOF_CARD_ACTION}"',
             1,
         ),
@@ -351,7 +356,7 @@ def build_bounded_proof_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'next_allowed_action = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
+            f'next_allowed_action = "{PIPELINE_MALF_REPAIR_ACTION}"',
             f'next_allowed_action = "{PIPELINE_BOUNDED_PROOF_CARD_ACTION}"',
             1,
         )
@@ -374,10 +379,10 @@ def build_bounded_proof_authorized_repo(tmp_path: Path) -> Path:
 def build_year_replay_authorized_repo(tmp_path: Path) -> Path:
     repo_root = build_governance_repo(tmp_path)
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
-    registry_text = registry_path.read_text(encoding="utf-8")
+    registry_text = rewind_current_malf_repair_state(registry_path.read_text(encoding="utf-8"))
     registry_path.write_text(
         registry_text.replace(
-            f'current_allowed_next_card = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
+            f'current_allowed_next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
             f'current_allowed_next_card = "{PIPELINE_YEAR_REPLAY_CARD_ACTION}"',
             1,
         )
@@ -387,12 +392,12 @@ def build_year_replay_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'next_card = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
+            f'next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
             f'next_card = "{PIPELINE_YEAR_REPLAY_CARD_ACTION}"',
             1,
         )
         .replace(
-            _active_card_line(PIPELINE_COVERAGE_GAP_DIAGNOSIS_RUN_ID),
+            _active_card_line(PIPELINE_MALF_REPAIR_RUN_ID),
             _active_card_line(PIPELINE_YEAR_REPLAY_SCOPE_FREEZE_RUN_ID),
             1,
         )
@@ -417,7 +422,7 @@ def build_year_replay_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'next_allowed_action = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
+            f'next_allowed_action = "{PIPELINE_MALF_REPAIR_ACTION}"',
             f'next_allowed_action = "{PIPELINE_YEAR_REPLAY_CARD_ACTION}"',
             1,
         ),
@@ -443,7 +448,7 @@ def build_year_replay_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'next_allowed_action = "{PIPELINE_COVERAGE_GAP_DIAGNOSIS_ACTION}"',
+            f'next_allowed_action = "{PIPELINE_MALF_REPAIR_ACTION}"',
             f'next_allowed_action = "{PIPELINE_YEAR_REPLAY_CARD_ACTION}"',
             1,
         )

@@ -1,7 +1,7 @@
 registry_version = "2026-05-02.v1"
 active_mainline_module = "system_readout"
 active_foundation_card = "none"
-current_allowed_next_card = "pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze"
+current_allowed_next_card = "malf_2024_natural_year_coverage_repair_card"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
     "H:/Asteria-Validated/2.backups/Asteria-docs-code-20260428-214427.zip",
@@ -226,19 +226,19 @@ display_name = "Pipeline"
 mainline = false
 orchestration = true
 status = "released"
-doc_status = "frozen six-doc set / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / coverage gap diagnosis prepared"
+doc_status = "frozen six-doc set / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / coverage gap diagnosis executed / MALF natural-year coverage repair prepared"
 allow_build = false
 allow_review = false
 doc_path = "docs/02-modules/pipeline"
 waits_for = "malf_bounded_proof_gate"
-next_card = "pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze"
-active_card = "docs/04-execution/records/pipeline/pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01.card.md"
+next_card = "malf_2024_natural_year_coverage_repair_card"
+active_card = "docs/04-execution/records/malf/malf-2024-natural-year-coverage-repair-card-20260509-01.card.md"
 freeze_review_status = "passed"
 freeze_review_run_id = "pipeline-freeze-review-20260508-01"
 release_conclusion = "docs/04-execution/records/pipeline/pipeline-full-chain-bounded-proof-closeout-20260508-01.conclusion.md"
 evidence_index = "docs/04-execution/records/pipeline/pipeline-full-chain-bounded-proof-closeout-20260508-01.evidence-index.md"
-formal_db_permission = "released_full_chain_bounded_proof_ledger_only; one_year_strategy_behavior_replay_blocked_incomplete_natural_year_coverage; coverage_gap_diagnosis_read_only_prepared; full_rebuild_requires_new_card"
+formal_db_permission = "released_full_chain_bounded_proof_ledger_only; one_year_strategy_behavior_replay_blocked_incomplete_natural_year_coverage; coverage_gap_diagnosis_executed_malf_repair_prepared; full_rebuild_requires_new_card"
 input_boundary = "orchestration_metadata_only; released_full_chain_day_bounded_surfaces; year_replay_behavior_observation_without_fill_pnl; coverage_gap_diagnosis_read_only"
-proof_status = "single_module_orchestration_build_passed; full_chain_dry_run_passed; full_chain_day_bounded_proof_passed; one_year_strategy_behavior_replay_blocked; coverage_gap_diagnosis_prepared"
+proof_status = "single_module_orchestration_build_passed; full_chain_dry_run_passed; full_chain_day_bounded_proof_passed; one_year_strategy_behavior_replay_blocked; coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_prepared"
 proof_run_id = "pipeline-full-chain-bounded-proof-build-card-20260508-01"
-next_allowed_action = "pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze"
+next_allowed_action = "malf_2024_natural_year_coverage_repair_card"

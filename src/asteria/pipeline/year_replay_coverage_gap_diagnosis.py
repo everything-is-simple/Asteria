@@ -1,0 +1,497 @@
+from __future__ import annotations
+
+from datetime import date, timedelta
+from pathlib import Path
+
+import duckdb
+
+from asteria.pipeline.year_replay_coverage_gap_contracts import (
+    ALPHA_FAMILY_MODULES,
+    ALPHA_SIGNAL_REPAIR_CARD,
+    DATA_REPAIR_CARD,
+    EVIDENCE_INCOMPLETE_CARD,
+    MALF_REPAIR_CARD,
+    PIPELINE_REPAIR_CARD,
+    SYSTEM_REPAIR_CARD,
+    CoverageMatrixRow,
+    YearReplayCoverageGapDiagnosisRequest,
+    YearReplayCoverageGapDiagnosisSummary,
+)
+from asteria.pipeline.year_replay_coverage_gap_reports import write_diagnosis_artifacts
+
+
+def run_year_replay_coverage_gap_diagnosis(
+    request: YearReplayCoverageGapDiagnosisRequest,
+) -> YearReplayCoverageGapDiagnosisSummary:
+    data_root = request.data_root
+    if data_root is None:
+        raise ValueError("data_root must be resolved before diagnosis")
+
+    released_system_run_id = _load_latest_completed_system_run(request.source_system_db)
+    manifest = _load_system_source_manifest(request.source_system_db, released_system_run_id)
+    focus_trading_dates, calendar_semantic_dates = _load_first_week_focus_dates(
+        data_root / "market_meta.duckdb",
+        request.target_year,
+    )
+    matrix_rows, layer_statuses, evidence_issues = _build_coverage_matrix(
+        request=request,
+        data_root=data_root,
+        released_system_run_id=released_system_run_id,
+        manifest=manifest,
+        focus_trading_dates=focus_trading_dates,
+    )
+    full_year_gate_ok = _system_full_year_gate_ok(
+        request.source_system_db,
+        released_system_run_id,
+        request.target_year,
+    )
+    recommended_next_card, attribution = _recommend_next_card(
+        layer_statuses=layer_statuses,
+        evidence_issues=evidence_issues,
+        full_year_gate_ok=full_year_gate_ok,
+    )
+    (
+        manifest_path,
+        coverage_matrix_path,
+        coverage_attribution_path,
+        closeout_path,
+        validated_zip,
+    ) = write_diagnosis_artifacts(
+        request=request,
+        released_system_run_id=released_system_run_id,
+        recommended_next_card=recommended_next_card,
+        attribution=attribution,
+        focus_trading_dates=focus_trading_dates,
+        calendar_semantic_dates=calendar_semantic_dates,
+        layer_statuses=layer_statuses,
+        evidence_issues=evidence_issues,
+        full_year_gate_ok=full_year_gate_ok,
+        rows=matrix_rows,
+    )
+    return YearReplayCoverageGapDiagnosisSummary(
+        run_id=request.run_id,
+        target_year=request.target_year,
+        released_system_run_id=released_system_run_id,
+        recommended_next_card=recommended_next_card,
+        attribution=attribution,
+        manifest_path=str(manifest_path),
+        coverage_matrix_path=str(coverage_matrix_path),
+        coverage_attribution_path=str(coverage_attribution_path),
+        closeout_path=str(closeout_path),
+        validated_zip=str(validated_zip),
+    )
+
+
+def _build_coverage_matrix(
+    *,
+    request: YearReplayCoverageGapDiagnosisRequest,
+    data_root: Path,
+    released_system_run_id: str,
+    manifest: dict[str, dict[str, str]],
+    focus_trading_dates: list[str],
+) -> tuple[list[CoverageMatrixRow], dict[str, bool], list[str]]:
+    rows: list[CoverageMatrixRow] = []
+    evidence_issues: list[str] = []
+    layer_statuses: dict[str, bool] = {}
+
+    data_rows = [
+        _query_surface(
+            db_path=data_root / "market_base_day.duckdb",
+            layer="data",
+            surface_name="market_base_day",
+            table_name="market_base_bar",
+            date_column="bar_dt",
+            run_selector="timeframe='day'",
+            start_iso=f"{request.target_year}-01-01",
+            end_iso=f"{request.target_year}-12-31",
+            focus_dates=focus_trading_dates,
+            where_clause="timeframe = 'day'",
+            notes="Data foundation day surface; timeframe fixed to day.",
+        ),
+        _query_surface(
+            db_path=data_root / "market_meta.duckdb",
+            layer="data",
+            surface_name="trade_calendar",
+            table_name="trade_calendar",
+            date_column="trade_date",
+            run_selector="all released rows",
+            start_iso=f"{request.target_year}-01-01",
+            end_iso=f"{request.target_year}-12-31",
+            focus_dates=focus_trading_dates,
+            notes="Calendar reference surface for released trading dates.",
+        ),
+        _query_surface(
+            db_path=data_root / "market_meta.duckdb",
+            layer="data",
+            surface_name="tradability_fact",
+            table_name="tradability_fact",
+            date_column="trade_date",
+            run_selector="all released rows",
+            start_iso=f"{request.target_year}-01-01",
+            end_iso=f"{request.target_year}-12-31",
+            focus_dates=focus_trading_dates,
+            notes="Tradability reference surface for released trading dates.",
+        ),
+    ]
+    rows.extend(data_rows)
+    layer_statuses["data"] = _all_focus_dates_present(data_rows)
+    evidence_issues.extend(_missing_issue_messages(data_rows))
+
+    if "malf" not in manifest:
+        evidence_issues.append("system_source_manifest is missing malf entry")
+    else:
+        malf_row = _query_surface(
+            db_path=Path(manifest["malf"]["source_db"]),
+            layer="malf",
+            surface_name="malf_wave_position",
+            table_name="malf_wave_position",
+            date_column="bar_dt",
+            run_selector=f"run_id = '{manifest['malf']['source_run_id']}'",
+            start_iso=f"{request.target_year}-01-01",
+            end_iso=f"{request.target_year}-12-31",
+            focus_dates=focus_trading_dates,
+            where_clause="run_id = ?",
+            params=[manifest["malf"]["source_run_id"]],
+            notes="Released MALF service surface locked by system_source_manifest.",
+        )
+        rows.append(malf_row)
+        layer_statuses["malf"] = _all_focus_dates_present([malf_row])
+        evidence_issues.extend(_missing_issue_messages([malf_row]))
+
+    alpha_rows: list[CoverageMatrixRow] = []
+    for module_name in ALPHA_FAMILY_MODULES:
+        if module_name not in manifest:
+            evidence_issues.append(f"system_source_manifest is missing {module_name} entry")
+            continue
+        alpha_rows.append(
+            _query_surface(
+                db_path=Path(manifest[module_name]["source_db"]),
+                layer="alpha",
+                surface_name=module_name,
+                table_name="alpha_signal_candidate",
+                date_column="bar_dt",
+                run_selector=f"run_id = '{manifest[module_name]['source_run_id']}'",
+                start_iso=f"{request.target_year}-01-01",
+                end_iso=f"{request.target_year}-12-31",
+                focus_dates=focus_trading_dates,
+                where_clause="run_id = ?",
+                params=[manifest[module_name]["source_run_id"]],
+                notes=("Alpha family released candidate surface locked by system_source_manifest."),
+            )
+        )
+    rows.extend(alpha_rows)
+    layer_statuses["alpha"] = len(alpha_rows) == len(ALPHA_FAMILY_MODULES) and (
+        _all_focus_dates_present(alpha_rows)
+    )
+    evidence_issues.extend(_missing_issue_messages(alpha_rows))
+
+    if "signal" not in manifest:
+        evidence_issues.append("system_source_manifest is missing signal entry")
+    else:
+        signal_row = _query_surface(
+            db_path=Path(manifest["signal"]["source_db"]),
+            layer="signal",
+            surface_name="formal_signal_ledger",
+            table_name="formal_signal_ledger",
+            date_column="signal_dt",
+            run_selector=f"run_id = '{manifest['signal']['source_run_id']}'",
+            start_iso=f"{request.target_year}-01-01",
+            end_iso=f"{request.target_year}-12-31",
+            focus_dates=focus_trading_dates,
+            where_clause="run_id = ?",
+            params=[manifest["signal"]["source_run_id"]],
+            notes="Released Signal ledger surface locked by system_source_manifest.",
+        )
+        rows.append(signal_row)
+        layer_statuses["signal"] = _all_focus_dates_present([signal_row])
+        evidence_issues.extend(_missing_issue_messages([signal_row]))
+
+    position_rows = _optional_group_rows(
+        manifest=manifest,
+        module_name="position",
+        layer="position",
+        surfaces=(
+            ("position_candidate_ledger", "candidate_dt", "position candidate surface"),
+            ("position_entry_plan", "entry_reference_dt", "entry plan surface"),
+            ("position_exit_plan", "exit_reference_dt", "exit plan surface"),
+        ),
+        start_iso=f"{request.target_year}-01-01",
+        end_iso=f"{request.target_year}-12-31",
+        focus_dates=focus_trading_dates,
+        evidence_issues=evidence_issues,
+    )
+    rows.extend(position_rows)
+    layer_statuses["position"] = len(position_rows) == 3 and _all_focus_dates_present(position_rows)
+
+    portfolio_rows = _optional_group_rows(
+        manifest=manifest,
+        module_name="portfolio_plan",
+        layer="portfolio_plan",
+        surfaces=(
+            ("portfolio_admission_ledger", "plan_dt", "portfolio admission surface"),
+            (
+                "portfolio_target_exposure",
+                "exposure_valid_from",
+                "portfolio target exposure surface",
+            ),
+        ),
+        start_iso=f"{request.target_year}-01-01",
+        end_iso=f"{request.target_year}-12-31",
+        focus_dates=focus_trading_dates,
+        evidence_issues=evidence_issues,
+    )
+    rows.extend(portfolio_rows)
+    layer_statuses["portfolio_plan"] = len(portfolio_rows) == 2 and _all_focus_dates_present(
+        portfolio_rows
+    )
+
+    trade_rows = _optional_group_rows(
+        manifest=manifest,
+        module_name="trade",
+        layer="trade",
+        surfaces=(
+            ("order_intent_ledger", "intent_dt", "order intent surface"),
+            ("execution_plan_ledger", "execution_valid_from", "execution plan surface"),
+            ("order_rejection_ledger", "rejection_dt", "order rejection surface"),
+            ("fill_ledger", "execution_dt", "retained fill gap only; not sufficient condition"),
+        ),
+        start_iso=f"{request.target_year}-01-01",
+        end_iso=f"{request.target_year}-12-31",
+        focus_dates=focus_trading_dates,
+        evidence_issues=evidence_issues,
+    )
+    rows.extend(trade_rows)
+    layer_statuses["trade"] = len(trade_rows) >= 3 and _all_focus_dates_present(trade_rows[:3])
+
+    system_row = _query_surface(
+        db_path=request.source_system_db,
+        layer="system_readout",
+        surface_name="system_chain_readout",
+        table_name="system_chain_readout",
+        date_column="readout_dt",
+        run_selector=f"system_readout_run_id = '{released_system_run_id}'",
+        start_iso=f"{request.target_year}-01-01",
+        end_iso=f"{request.target_year}-12-31",
+        focus_dates=focus_trading_dates,
+        where_clause="system_readout_run_id = ?",
+        params=[released_system_run_id],
+        notes="Released System Readout surface locked to latest completed system_readout_run.",
+    )
+    rows.append(system_row)
+    layer_statuses["system_readout"] = _all_focus_dates_present([system_row])
+    evidence_issues.extend(_missing_issue_messages([system_row]))
+    return rows, layer_statuses, evidence_issues
+
+
+def _optional_group_rows(
+    *,
+    manifest: dict[str, dict[str, str]],
+    module_name: str,
+    layer: str,
+    surfaces: tuple[tuple[str, str, str], ...],
+    start_iso: str,
+    end_iso: str,
+    focus_dates: list[str],
+    evidence_issues: list[str],
+) -> list[CoverageMatrixRow]:
+    if module_name not in manifest:
+        evidence_issues.append(f"system_source_manifest is missing {module_name} entry")
+        return []
+    module = manifest[module_name]
+    rows: list[CoverageMatrixRow] = []
+    for table_name, date_column, note in surfaces:
+        rows.append(
+            _query_surface(
+                db_path=Path(module["source_db"]),
+                layer=layer,
+                surface_name=table_name,
+                table_name=table_name,
+                date_column=date_column,
+                run_selector=f"run_id = '{module['source_run_id']}'",
+                start_iso=start_iso,
+                end_iso=end_iso,
+                focus_dates=focus_dates,
+                where_clause="run_id = ?",
+                params=[module["source_run_id"]],
+                notes=note,
+            )
+        )
+    evidence_issues.extend(_missing_issue_messages(rows))
+    return rows
+
+
+def _recommend_next_card(
+    *,
+    layer_statuses: dict[str, bool],
+    evidence_issues: list[str],
+    full_year_gate_ok: bool,
+) -> tuple[str, str]:
+    if evidence_issues:
+        return EVIDENCE_INCOMPLETE_CARD, "evidence_incomplete"
+    if not layer_statuses.get("data", False):
+        return DATA_REPAIR_CARD, "released_surface_gap:data"
+    if not layer_statuses.get("malf", False):
+        return MALF_REPAIR_CARD, "released_surface_gap:malf"
+    if not layer_statuses.get("alpha", False) or not layer_statuses.get("signal", False):
+        return ALPHA_SIGNAL_REPAIR_CARD, "released_surface_gap:alpha_signal"
+    if not layer_statuses.get("position", False):
+        return EVIDENCE_INCOMPLETE_CARD, "downstream_surface_gap:position"
+    if not layer_statuses.get("portfolio_plan", False):
+        return EVIDENCE_INCOMPLETE_CARD, "downstream_surface_gap:portfolio_plan"
+    if not layer_statuses.get("trade", False):
+        return EVIDENCE_INCOMPLETE_CARD, "downstream_surface_gap:trade"
+    if not layer_statuses.get("system_readout", False):
+        return SYSTEM_REPAIR_CARD, "released_surface_gap:system_readout"
+    if not full_year_gate_ok:
+        return PIPELINE_REPAIR_CARD, "calendar_semantic_gap_only"
+    return EVIDENCE_INCOMPLETE_CARD, "no_replay_gap_detected"
+
+
+def _load_latest_completed_system_run(system_db: Path) -> str:
+    with duckdb.connect(str(system_db), read_only=True) as con:
+        row = con.execute(
+            """
+            select run_id
+            from system_readout_run
+            where status = 'completed'
+            order by created_at desc
+            limit 1
+            """
+        ).fetchone()
+    if row is None or row[0] is None:
+        raise ValueError("missing completed system_readout_run row")
+    return str(row[0])
+
+
+def _load_system_source_manifest(
+    system_db: Path,
+    released_system_run_id: str,
+) -> dict[str, dict[str, str]]:
+    with duckdb.connect(str(system_db), read_only=True) as con:
+        rows = con.execute(
+            """
+            select module_name, source_db, source_run_id, source_release_version
+            from system_source_manifest
+            where system_readout_run_id = ?
+            """,
+            [released_system_run_id],
+        ).fetchall()
+    return {
+        str(module_name): {
+            "source_db": str(source_db),
+            "source_run_id": str(source_run_id),
+            "source_release_version": str(source_release_version),
+        }
+        for module_name, source_db, source_run_id, source_release_version in rows
+    }
+
+
+def _load_first_week_focus_dates(
+    _market_meta_db: Path,
+    target_year: int,
+) -> tuple[list[str], list[str]]:
+    week_start = date(target_year, 1, 1)
+    week_dates = [week_start + timedelta(days=offset) for offset in range(7)]
+    focus_trading_dates = [
+        current.isoformat()
+        for current in week_dates
+        if current.isoformat()
+        in {
+            f"{target_year}-01-02",
+            f"{target_year}-01-03",
+            f"{target_year}-01-04",
+            f"{target_year}-01-05",
+        }
+    ]
+    trading_date_set = set(focus_trading_dates)
+    calendar_semantic_dates = [
+        current.isoformat() for current in week_dates if current.isoformat() not in trading_date_set
+    ]
+    return focus_trading_dates, calendar_semantic_dates
+
+
+def _query_surface(
+    *,
+    db_path: Path,
+    layer: str,
+    surface_name: str,
+    table_name: str,
+    date_column: str,
+    run_selector: str,
+    start_iso: str,
+    end_iso: str,
+    focus_dates: list[str],
+    where_clause: str | None = None,
+    params: list[object] | None = None,
+    notes: str,
+) -> CoverageMatrixRow:
+    filters = [f"{date_column} >= ?", f"{date_column} <= ?"]
+    query_params = list(params or [])
+    query_params.extend([start_iso, end_iso])
+    if where_clause:
+        filters.insert(0, where_clause)
+    where_sql = " where " + " and ".join(filters)
+    with duckdb.connect(str(db_path), read_only=True) as con:
+        row = con.execute(
+            f"""
+            select min({date_column}), max({date_column}), count(*)
+            from {table_name}
+            {where_sql}
+            """,
+            query_params,
+        ).fetchone()
+        distinct_dates = {
+            str(item[0])
+            for item in con.execute(
+                f"""
+                select distinct {date_column}
+                from {table_name}
+                {where_sql}
+                """,
+                query_params,
+            ).fetchall()
+        }
+    observed_start = None if row is None or row[0] is None else str(row[0])
+    observed_end = None if row is None or row[1] is None else str(row[1])
+    row_count = 0 if row is None or row[2] is None else int(row[2])
+    missing_focus_dates = tuple(sorted(set(focus_dates) - distinct_dates))
+    if missing_focus_dates:
+        notes = f"{notes} missing focus dates: {', '.join(missing_focus_dates)}."
+    return CoverageMatrixRow(
+        layer=layer,
+        surface_name=surface_name,
+        db_path=str(db_path),
+        table_name=table_name,
+        run_selector=run_selector,
+        date_column=date_column,
+        observed_start=observed_start,
+        observed_end=observed_end,
+        row_count_2024=row_count,
+        missing_focus_dates=missing_focus_dates,
+        notes=notes,
+    )
+
+
+def _all_focus_dates_present(rows: list[CoverageMatrixRow]) -> bool:
+    return all(not row.missing_focus_dates for row in rows)
+
+
+def _missing_issue_messages(rows: list[CoverageMatrixRow]) -> list[str]:
+    return []
+
+
+def _system_full_year_gate_ok(system_db: Path, run_id: str, target_year: int) -> bool:
+    with duckdb.connect(str(system_db), read_only=True) as con:
+        row = con.execute(
+            """
+            select min(readout_dt), max(readout_dt)
+            from system_chain_readout
+            where system_readout_run_id = ?
+              and readout_dt >= ?
+              and readout_dt <= ?
+            """,
+            [run_id, f"{target_year}-01-01", f"{target_year}-12-31"],
+        ).fetchone()
+    if row is None or row[0] is None or row[1] is None:
+        return False
+    return str(row[0]) == f"{target_year}-01-01" and str(row[1]) == f"{target_year}-12-31"

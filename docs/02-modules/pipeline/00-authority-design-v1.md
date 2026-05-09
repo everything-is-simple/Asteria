@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / coverage gap diagnosis prepared
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / coverage gap diagnosis executed / MALF natural-year coverage repair prepared
 
 ## 1. 模块定义
 
@@ -22,7 +22,8 @@ pipeline-full-chain-bounded-proof-build-card-20260508-01 passed
 pipeline-full-chain-bounded-proof-closeout-20260508-01 passed
 pipeline-one-year-strategy-behavior-replay-authorization-scope-freeze-20260508-01 passed
 pipeline-one-year-strategy-behavior-replay-build-card-20260508-01 blocked
-pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01 prepared / not executed
+pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01 passed
+malf-2024-natural-year-coverage-repair-card-20260509-01 prepared / not executed
 ```
 
 当前 Pipeline 已证明：
@@ -32,7 +33,7 @@ pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01 
 | formal DB | `H:\Asteria-data\pipeline.duckdb` 已创建 |
 | released module scope | `system_readout` single-module orchestration + `full_chain_day` dry-run + `full_chain_day` bounded proof |
 | released run modes | `bounded / dry-run / resume / audit-only` |
-| current next card | `pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze` |
+| current next card | `malf_2024_natural_year_coverage_repair_card` |
 | full-chain dry-run | 已执行 / 已通过 |
 | full-chain bounded proof | 已执行 / 已通过 |
 | one-year strategy behavior replay | 已执行 / `blocked`（完整自然年覆盖不足） |
@@ -103,7 +104,8 @@ flowchart LR
 
 ## 8. 下一步
 
-当前 live `current_allowed_next_card` 是
-`pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze`。year replay 已执行过一次，
-但因为 `2024-01-01..2024-12-31` 未被完整覆盖，只能保持 `blocked`；下一卡只允许 read-only
-coverage gap diagnosis，不允许修库、重跑 year replay、开启 full rebuild、daily incremental 或 `v1 complete`。
+当前 live `current_allowed_next_card` 是 `malf_2024_natural_year_coverage_repair_card`。
+`pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01` 已证明：
+Data `2024-01-02..2024-01-05` 已覆盖，但 released MALF / Alpha / Signal / downstream surfaces 都从 `2024-01-08`
+才开始，最早 released surface break 锁定在 MALF。所以下一卡只允许最小 MALF repair，不允许重跑 year replay、
+开启 Alpha/Signal/System/Pipeline 语义修补、full rebuild、daily incremental 或 `v1 complete`。

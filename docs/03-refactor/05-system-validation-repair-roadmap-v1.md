@@ -51,8 +51,8 @@ one-year strategy behavior replay executed but blocked
 | card 2 | `pipeline-full-chain-bounded-proof-closeout-20260508-01` passed |
 | card 3 | `pipeline-one-year-strategy-behavior-replay-authorization-scope-freeze-20260508-01` passed |
 | card 4 | `pipeline-one-year-strategy-behavior-replay-build-card-20260508-01` blocked |
-| current allowed next card | `pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze` |
-| Pipeline next card | `pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze` |
+| current allowed next card | `malf_2024_natural_year_coverage_repair_card` |
+| Pipeline next card | `malf_2024_natural_year_coverage_repair_card` |
 | blocked reason | `2024-01-01..2024-01-07` coverage gap |
 | full rebuild | not authorized |
 | daily incremental | not authorized |
@@ -93,23 +93,23 @@ year replay runner 能产出行为观察证据，
 当前唯一 live candidate：
 
 ```text
-pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01
+malf-2024-natural-year-coverage-repair-card-20260509-01
 ```
 
 性质：
 
 ```text
-diagnosis / repair scope freeze
+minimal repair / prepared not executed
 ```
 
 目标：
 
 ```text
-判定 2024-01-01..2024-01-07 缺口到底断在哪一层，
-并只授权一张最小 repair card。
+只修 released MALF day surface 对 2024-01-02..2024-01-05 的覆盖缺口，
+不扩成 Alpha / Signal / System / Pipeline repair。
 ```
 
-本卡只允许 read-only audit，不允许：
+本卡当前是 diagnosis 之后的 prepared repair，不允许：
 
 | 禁止项 | 裁决 |
 |---|---|
@@ -152,7 +152,7 @@ diagnosis / repair scope freeze
 
 | 优先级 | 候选卡 | 目的 |
 |---|---|---|
-| P0 | `pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01` | 判定 coverage gap 归属 |
+| P0 | `malf-2024-natural-year-coverage-repair-card-20260509-01` | 修 MALF released day surface `2024-01-02..2024-01-05` 覆盖 |
 | P1 | `data-2024-natural-year-coverage-maintenance-card-20260509-01` | 修 Data 层 2024 自然年覆盖 |
 | P1 | `malf-2024-natural-year-coverage-repair-card-20260509-01` | 修 MALF released day surface 覆盖 |
 | P1 | `alpha-signal-2024-coverage-repair-card-20260509-01` | 修 Alpha/Signal released surface 覆盖 |
@@ -184,9 +184,9 @@ coverage-gap diagnosis
 
 | 顺序 | 卡 | 状态 |
 |---|---|---|
-| 1 | `pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01` | 立即准备 |
-| 2 | repair card | 由第 1 张 conclusion 决定 |
-| 3 | `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` | repair passed 后准备 |
+| 1 | `pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01` | diagnosis executed / passed |
+| 2 | `malf-2024-natural-year-coverage-repair-card-20260509-01` | prepared / not executed |
+| 3 | `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` | MALF repair passed 后准备 |
 | 4 | `pipeline-one-year-strategy-behavior-replay-rerun-closeout-20260509-01` | rerun 有结论后准备 |
 | 5 | `pipeline-one-year-strategy-behavior-quality-review-card-20260509-01` | replay passed 后准备 |
 
@@ -290,7 +290,7 @@ real PnL validated
 第一张 diagnosis card 准备完成后，允许的 live authority 应变为：
 
 ```text
-current_allowed_next_card = "pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze"
+current_allowed_next_card = "malf_2024_natural_year_coverage_repair_card"
 ```
 
 Pipeline module 应保持：
@@ -298,8 +298,8 @@ Pipeline module 应保持：
 ```text
 status = "released"
 allow_build = false
-next_card = "pipeline_year_replay_coverage_gap_diagnosis_and_repair_scope_freeze"
-proof_status includes "one_year_strategy_behavior_replay_blocked"
+next_card = "malf_2024_natural_year_coverage_repair_card"
+proof_status includes "coverage_gap_diagnosis_executed"
 ```
 
 ## 11. Evidence 要求
@@ -358,5 +358,5 @@ Asteria 当前不是“快结束”，而是进入后半场：
 当前最稳的下一步：
 
 ```text
-pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01
+malf-2024-natural-year-coverage-repair-card-20260509-01
 ```
