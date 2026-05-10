@@ -34,6 +34,7 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-malf-2024-natural-year-coverage-repair-card-20260509-01.zip",
     "H:/Asteria-Validated/Asteria-pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01.zip",
     "H:/Asteria-Validated/Asteria-alpha-signal-2024-coverage-repair-card-20260509-01.zip",
+    "H:/Asteria-Validated/Asteria-position-2024-coverage-repair-card-20260509-01.zip",
 ]
 latest_governance_run_id = "validated-historical-evidence-rehydration-20260502-01"
 latest_mainline_release_run_id = "system-readout-bounded-proof-build-card-20260508-01"
@@ -137,7 +138,7 @@ module_id = "position"
 display_name = "Position"
 mainline = true
 status = "released"
-doc_status = "freeze review passed / release decision passed / bounded proof passed / 2024 coverage repair prepared / full build not executed"
+doc_status = "freeze review passed / release decision passed / bounded proof passed / 2024 coverage repair executed_failed / downstream gap persists at position / full build not executed"
 allow_build = false
 allow_review = false
 doc_path = "docs/02-modules/position"
@@ -150,9 +151,9 @@ release_conclusion = "docs/04-execution/records/position/position-bounded-proof-
 evidence_index = "docs/04-execution/records/position/position-bounded-proof-build-card-20260506-01.evidence-index.md"
 formal_db_permission = "released_day_bounded_position_candidate_entry_exit_only; position_full_build_requires_new_card"
 input_boundary = "read_only_released_signal_day_production_surface"
-position_construction_pause = "bounded_proof_passed; 2024_coverage_repair_prepared; full_build_requires_new_card"
-pre_position_repair_queue = "data_reference_target_maintenance_scope -> data_reference_target_maintenance_closeout -> malf_week_bounded_proof_build -> malf_month_bounded_proof_build -> alpha_production_builder_hardening -> signal_production_builder_hardening -> upstream_pre_position_release_decision; closed=position_bounded_proof_build_card; current=position_2024_coverage_repair_card"
-proof_status = "bounded_proof_passed; 2024_coverage_repair_prepared; full_build_not_executed"
+position_construction_pause = "bounded_proof_passed; 2024_coverage_repair_executed_failed; downstream_gap_persists_at_position; full_build_requires_new_card"
+pre_position_repair_queue = "data_reference_target_maintenance_scope -> data_reference_target_maintenance_closeout -> malf_week_bounded_proof_build -> malf_month_bounded_proof_build -> alpha_production_builder_hardening -> signal_production_builder_hardening -> upstream_pre_position_release_decision; closed=position_bounded_proof_build_card; current=position_2024_coverage_repair_card; latest_execution=position_2024_coverage_repair_card_failed"
+proof_status = "bounded_proof_passed; 2024_coverage_repair_executed_failed; downstream_gap_persists_at_position; full_build_not_executed"
 proof_run_id = "position-bounded-proof-build-card-20260506-01"
 next_allowed_action = "position_2024_coverage_repair_card"
 
@@ -239,9 +240,9 @@ freeze_review_status = "passed"
 freeze_review_run_id = "pipeline-freeze-review-20260508-01"
 release_conclusion = "docs/04-execution/records/pipeline/coverage-gap-evidence-incomplete-closeout-card-20260509-01.conclusion.md"
 evidence_index = "docs/04-execution/records/pipeline/coverage-gap-evidence-incomplete-closeout-card-20260509-01.evidence-index.md"
-doc_status = "frozen six-doc set / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / coverage gap diagnosis executed / MALF natural-year coverage repair passed / year replay rerun blocked / alpha-signal coverage repair passed / downstream coverage gap evidence closeout passed / position 2024 coverage repair prepared"
-formal_db_permission = "released_full_chain_bounded_proof_ledger_only; one_year_strategy_behavior_replay_blocked_incomplete_natural_year_coverage; coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_passed; year_replay_rerun_blocked; alpha_signal_2024_coverage_repair_passed; coverage_gap_evidence_incomplete_closeout_passed; position_2024_coverage_repair_prepared; full_rebuild_requires_new_card"
+doc_status = "frozen six-doc set / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / coverage gap diagnosis executed / MALF natural-year coverage repair passed / year replay rerun blocked / alpha-signal coverage repair passed / downstream coverage gap evidence closeout passed / position 2024 coverage repair executed_failed"
+formal_db_permission = "released_full_chain_bounded_proof_ledger_only; one_year_strategy_behavior_replay_blocked_incomplete_natural_year_coverage; coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_passed; year_replay_rerun_blocked; alpha_signal_2024_coverage_repair_passed; coverage_gap_evidence_incomplete_closeout_passed; position_2024_coverage_repair_executed_failed; full_rebuild_requires_new_card"
 input_boundary = "orchestration_metadata_only; released_full_chain_day_bounded_surfaces; year_replay_behavior_observation_without_fill_pnl; coverage_gap_diagnosis_read_only"
-proof_status = "single_module_orchestration_build_passed; full_chain_dry_run_passed; full_chain_day_bounded_proof_passed; one_year_strategy_behavior_replay_blocked; coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_passed; year_replay_rerun_blocked; alpha_signal_2024_coverage_repair_passed; coverage_gap_evidence_incomplete_closeout_passed; position_2024_coverage_repair_prepared"
+proof_status = "single_module_orchestration_build_passed; full_chain_dry_run_passed; full_chain_day_bounded_proof_passed; one_year_strategy_behavior_replay_blocked; coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_passed; year_replay_rerun_blocked; alpha_signal_2024_coverage_repair_passed; coverage_gap_evidence_incomplete_closeout_passed; position_2024_coverage_repair_executed_failed"
 proof_run_id = "pipeline-full-chain-bounded-proof-build-card-20260508-01"
 next_allowed_action = "position_2024_coverage_repair_card"
