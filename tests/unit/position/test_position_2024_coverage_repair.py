@@ -29,6 +29,7 @@ from tests.unit.position.position_2024_coverage_repair_target_fixtures import (
 
 from asteria.pipeline.year_replay_coverage_gap_contracts import (
     PORTFOLIO_PLAN_REPAIR_CARD,
+    POSITION_REPAIR_CARD,
 )
 from asteria.position.coverage_repair import run_position_2024_coverage_repair
 
@@ -128,6 +129,83 @@ def test_repair_followup_truthfully_moves_next_break_to_portfolio_plan(tmp_path:
     assert summary.status == "completed"
     assert summary.followup_next_card == PORTFOLIO_PLAN_REPAIR_CARD
     assert summary.followup_attribution == "downstream_surface_gap:portfolio_plan"
+
+
+def test_repair_keeps_live_next_card_at_position_when_focus_window_still_lacks_entry_exit(
+    tmp_path: Path,
+) -> None:
+    repo_root = seed_repo_root(tmp_path)
+    data_root = tmp_path / "data"
+    dates = trading_dates()
+    seed_data_foundation(data_root, dates)
+    seed_malf_db(data_root / "malf_service_day.duckdb", dates)
+    seed_alpha_family_dbs(data_root, dates)
+    seed_signal_db(data_root / "signal.duckdb", dates)
+    with duckdb.connect(str(data_root / "signal.duckdb")) as con:
+        con.execute(
+            """
+            update formal_signal_ledger
+            set signal_state = 'rejected',
+                signal_type = 'conflict_or_weak_signal',
+                signal_bias = 'neutral',
+                reason_code = 'no_active_alpha_candidate'
+            where run_id = ?
+              and signal_dt in ('2024-01-02', '2024-01-03')
+            """,
+            [SIGNAL_RUN_ID],
+        )
+    seed_position_release_db(
+        data_root / "position.duckdb",
+        released_dates=[date(2024, 1, 9), date(2024, 1, 10)],
+        released_run_id=POSITION_RUN_ID,
+        signal_run_id=SIGNAL_RUN_ID,
+        include_week_row=False,
+    )
+    late_dates = trading_dates(start="2024-01-09")
+    seed_portfolio_plan_db(data_root / "portfolio_plan.duckdb", late_dates)
+    seed_trade_db(data_root / "trade.duckdb", late_dates)
+    seed_system_db(data_root / "system.duckdb", data_root)
+
+    registry_before = (repo_root / "governance" / "module_gate_registry.toml").read_text(
+        encoding="utf-8"
+    )
+    summary = run_position_2024_coverage_repair(request(tmp_path, repo_root=repo_root))
+
+    assert summary.status == "failed"
+    assert summary.followup_next_card == POSITION_REPAIR_CARD
+    assert summary.followup_attribution == "downstream_surface_gap:position"
+    with duckdb.connect(str(data_root / "position.duckdb"), read_only=True) as con:
+        candidate_earliest = con.execute(
+            """
+            select min(candidate_dt)
+            from position_candidate_ledger
+            where run_id = ? and timeframe = 'day'
+            """,
+            [POSITION_RUN_ID],
+        ).fetchone()[0]
+        entry_earliest = con.execute(
+            """
+            select min(entry_reference_dt)
+            from position_entry_plan
+            where run_id = ?
+            """,
+            [POSITION_RUN_ID],
+        ).fetchone()[0]
+        exit_earliest = con.execute(
+            """
+            select min(exit_reference_dt)
+            from position_exit_plan
+            where run_id = ?
+            """,
+            [POSITION_RUN_ID],
+        ).fetchone()[0]
+
+    assert candidate_earliest == date(2024, 1, 2)
+    assert entry_earliest == date(2024, 1, 4)
+    assert exit_earliest == date(2024, 1, 4)
+    assert (repo_root / "governance" / "module_gate_registry.toml").read_text(
+        encoding="utf-8"
+    ) == registry_before
 
 
 def test_repair_rejects_missing_position_manifest_entry(tmp_path: Path) -> None:

@@ -236,6 +236,14 @@ position-2024-coverage-repair-card-20260509-01
 | P2 | `malf-2024-natural-year-coverage-repair-card-20260509-01` | 已 passed，不再是 prepared next card |
 | P2 | `alpha-signal-2024-coverage-repair-card-20260509-01` | 已 passed，不再是 prepared next card |
 
+三层优先级总表：
+
+| 层级 | 作用 | 当前内容 |
+|---|---|---|
+| 层 1 | 当前 live next card | `position-2024-coverage-repair-card-20260509-01` |
+| 层 2 | 近程 backlog candidates | `portfolio-plan-2024-coverage-repair-card-20260509-01`，`trade-2024-coverage-repair-card-20260509-01`，`pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` |
+| 层 3 | 长期阶段 11 队列 | `system-wide-daily-dirty-scope-protocol-card`，`data-ledger-daily-incremental-hardening-card`，`malf-daily-incremental-ledger-build-card`，`alpha-signal-daily-incremental-ledger-build-card`，`downstream-daily-impact-ledger-schema-card`，`downstream-daily-incremental-runner-build-card`，`pipeline-full-daily-incremental-chain-build-card`，`full-rebuild-and-daily-incremental-release-closeout-card` |
+
 仍然禁止把当前阶段解释成：
 
 ```text
