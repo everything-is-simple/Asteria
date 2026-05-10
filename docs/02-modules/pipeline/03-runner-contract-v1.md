@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / year replay rerun blocked
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / year replay rerun blocked / year replay source-selection repair passed
 
 ## 1. 当前 runner 面
 
@@ -14,6 +14,7 @@
 | `scripts/pipeline/run_pipeline_audit.py` | 独立执行 Pipeline 审计 |
 | `scripts/pipeline/run_pipeline_bounded_proof.py` | 执行 `system_readout` / `full_chain_day` / `year_replay` / `year_replay_rerun` 的 bounded proof 或 behavior replay，并产出 closeout / manifest / validated zip |
 | `scripts/pipeline/run_pipeline_full_chain_dry_run.py` | 执行 full-chain day dry-run，并产出 closeout / manifest / validated zip |
+| `scripts/pipeline/run_pipeline_year_replay_source_selection_repair.py` | 执行只读 source-selection repair，解析 released System truth 并产出 closeout / manifest / validated zip，不写 `pipeline.duckdb` runtime ledger |
 
 ## 2. 当前门禁
 
@@ -24,6 +25,7 @@ module_scope = system_readout with run_mode = bounded / resume / audit-only
 module_scope = full_chain_day with run_mode = bounded / dry-run / resume / audit-only
 module_scope = year_replay with run_mode = bounded / resume / audit-only
 module_scope = year_replay_rerun with run_mode = bounded / resume / audit-only
+read-only source-selection repair via `run_pipeline_year_replay_source_selection_repair.py`
 ```
 
 任何 full / segmented / daily_incremental 行为都未授权；year replay 在完整自然年不足时必须 `blocked`。
@@ -55,7 +57,7 @@ flowchart TD
 | `--mode` | `bounded / dry-run / resume / audit-only` |
 | `--run-id` | 必填 |
 | `--source-chain-release-version` | 必填 |
-| `--target-year` | `year_replay / year_replay_rerun` 必填 |
+| `--target-year` | `year_replay / year_replay_rerun / source-selection repair` 必填 |
 
 ## 5. 幂等与断点
 
@@ -69,11 +71,11 @@ flowchart TD
 
 ## 6. 输出证据
 
-每个 bounded proof 运行必须产出：
+每个 bounded proof 或只读 repair 运行必须产出：
 
 | 证据 | 位置 |
 |---|---|
-| run ledger | `H:\Asteria-data\pipeline.duckdb` |
+| run ledger | bounded / dry-run 运行写 `H:\Asteria-data\pipeline.duckdb`；source-selection repair 不写 ledger |
 | audit report | `H:\Asteria-report\pipeline\<date>\` |
 | closeout / manifest | `H:\Asteria-report\pipeline\<date>\<run_id>\` |
 | validated zip | `H:\Asteria-Validated\` |

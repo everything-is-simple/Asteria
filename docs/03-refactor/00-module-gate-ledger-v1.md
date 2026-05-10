@@ -92,7 +92,7 @@ System Readout
 当前最新形成结论：
 
 ```text
-System Readout 2024 coverage repair completed / follow-up moved to pipeline source selection repair
+Pipeline year replay source-selection repair completed / follow-up moved to pipeline disposition decision
 ```
 
 当前最新语义升级资产：
@@ -109,25 +109,25 @@ rules；当前 runtime passed evidence 已升级为 MALF v1.4 day runtime sync i
 当前 live 下一张执行卡：
 
 ```text
-pipeline-year-replay-source-selection-repair-card-20260509-01
+pipeline-year-replay-disposition-decision-card-20260510-01
 ```
 
 对应 symbolic allowed next action：
 
 ```text
-pipeline_year_replay_source_selection_repair_card
+pipeline_year_replay_disposition_decision_card
 ```
 
-当前 handoff 结论锚点：
+当前 repair 结论锚点：
 
 ```text
-system-readout-2024-coverage-repair-card-20260509-01
+pipeline-year-replay-source-selection-repair-card-20260509-01
 ```
 
-对应 handoff allowed next action：
+对应下一步 allowed next action：
 
 ```text
-pipeline_year_replay_source_selection_repair_card
+pipeline_year_replay_disposition_decision_card
 ```
 
 历史已放行动作锚点：
@@ -139,7 +139,7 @@ pipeline_one_year_strategy_behavior_replay_rerun_build_card
 当前只允许施工对象：
 
 ```text
-Pipeline year replay source selection repair
+Pipeline year replay disposition decision
 ```
 
 当前已通过 bounded proof 的主线模块：
@@ -248,6 +248,14 @@ day surface 已覆盖 `2024-01-02..2024-01-05`；follow-up attribution 只剩 `c
 其 allowed next action 是 `pipeline_year_replay_source_selection_repair_card`。该 handoff 只更新 Pipeline live
 next-card truth，不直接执行 Pipeline source-selection repair，也不打开 System full build、Pipeline semantic repair、
 full rebuild、daily incremental 或 `v1 complete`。
+
+2026-05-10：`pipeline-year-replay-source-selection-repair-card-20260509-01` 已真实执行并完成。该只读 repair
+确认 Pipeline year replay 读取路径现已统一消费当前 released `System Readout` truth：released
+`system_readout_run` 仍是 `system-readout-bounded-proof-build-card-20260508-01`，但 current
+`system_source_manifest` 已正确指向 repaired MALF / downstream released run，released observed
+window 已覆盖 `2024-01-02..2024-12-31`，follow-up attribution 仍是 `calendar_semantic_gap_only`。
+因此当前唯一 live allowed next action 已切到 `pipeline_year_replay_disposition_decision_card`。本卡不直接执行 rerun、
+closeout 或 Stage 11 runtime。
 
 ## 1.1 Pre-Position 上游修补队列
 

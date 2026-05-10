@@ -14,6 +14,9 @@ from asteria.pipeline.contracts import (
     PipelineBuildRequest,
     PipelineBuildSummary,
 )
+from asteria.pipeline.released_source_selection import (
+    resolve_released_year_replay_source_selection,
+)
 
 
 def write_pipeline_evidence(
@@ -105,10 +108,14 @@ def _write_behavior_summary(report_dir: Path, request: PipelineBuildRequest) -> 
     summary_path = report_dir / "behavior-summary.json"
     year_start = f"{request.target_year}-01-01"
     year_end = f"{request.target_year}-12-31"
+    selection = resolve_released_year_replay_source_selection(
+        request.source_system_db,
+        target_year=request.target_year,
+    )
     with duckdb.connect(str(request.source_system_db), read_only=True) as con:
         coverage_row = con.execute(
             """
-            select min(readout_dt), max(readout_dt), count(*)
+            select count(*)
             from system_chain_readout
             where system_readout_run_id = ?
               and readout_dt >= ?
@@ -128,30 +135,23 @@ def _write_behavior_summary(report_dir: Path, request: PipelineBuildRequest) -> 
             """,
             [request.source_chain_release_version, year_start, year_end],
         ).fetchall()
-        manifest_rows = con.execute(
-            """
-            select module_name, source_db, source_run_id
-            from system_source_manifest
-            where system_readout_run_id = ?
-            """,
-            [request.source_chain_release_version],
-        ).fetchall()
 
-    source_map = {str(row[0]): (str(row[1]), str(row[2])) for row in manifest_rows}
+    source_map = {
+        module_name: (entry.source_db, entry.source_run_id)
+        for module_name, entry in selection.manifest.items()
+    }
     source_manifest = {
-        str(row[0]): {"source_db": str(row[1]), "source_run_id": str(row[2])}
-        for row in manifest_rows
+        module_name: {
+            "source_db": entry.source_db,
+            "source_run_id": entry.source_run_id,
+        }
+        for module_name, entry in selection.manifest.items()
     }
     malf_source_run_id = source_manifest.get("malf", {}).get("source_run_id")
-    observed_start: str | None = None
-    observed_end: str | None = None
-    readout_count = 0
-    full_year_covered = False
-    if coverage_row is not None:
-        observed_start = None if coverage_row[0] is None else str(coverage_row[0])
-        observed_end = None if coverage_row[1] is None else str(coverage_row[1])
-        readout_count = 0 if coverage_row[2] is None else int(coverage_row[2])
-        full_year_covered = observed_start == year_start and observed_end == year_end
+    readout_count = 0 if coverage_row is None or coverage_row[0] is None else int(coverage_row[0])
+    observed_start = selection.year_observed_start
+    observed_end = selection.year_observed_end
+    full_year_covered = observed_start == year_start and observed_end == year_end
 
     payload = {
         "run_id": request.run_id,
@@ -172,7 +172,7 @@ def _write_behavior_summary(report_dir: Path, request: PipelineBuildRequest) -> 
             {
                 "expected_malf_source_run_id": (PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID),
                 "observed_malf_source_run_id": malf_source_run_id,
-                "locked": malf_source_run_id == PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID,
+                "locked": selection.source_lock_clean,
             }
             if request.module_scope == "year_replay_rerun"
             else None

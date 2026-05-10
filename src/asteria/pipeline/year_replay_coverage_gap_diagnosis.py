@@ -4,6 +4,9 @@ from pathlib import Path
 
 import duckdb
 
+from asteria.pipeline.released_source_selection import (
+    resolve_released_year_replay_source_selection,
+)
 from asteria.pipeline.year_replay_coverage_gap_contracts import (
     ALPHA_FAMILY_MODULES,
     ALPHA_SIGNAL_REPAIR_CARD,
@@ -30,7 +33,6 @@ from asteria.pipeline.year_replay_position_semantics import (
 from asteria.pipeline.year_replay_support import (
     all_focus_dates_present,
     load_first_week_focus_dates,
-    system_full_year_gate_ok,
 )
 from asteria.pipeline.year_replay_trade_semantics import evaluate_trade_focus_window
 
@@ -42,8 +44,19 @@ def run_year_replay_coverage_gap_diagnosis(
     if data_root is None:
         raise ValueError("data_root must be resolved before diagnosis")
 
-    released_system_run_id = _load_latest_completed_system_run(request.source_system_db)
-    manifest = _load_system_source_manifest(request.source_system_db, released_system_run_id)
+    released_selection = resolve_released_year_replay_source_selection(
+        request.source_system_db,
+        target_year=request.target_year,
+    )
+    released_system_run_id = released_selection.released_system_run_id
+    manifest = {
+        module_name: {
+            "source_db": entry.source_db,
+            "source_run_id": entry.source_run_id,
+            "source_release_version": entry.source_release_version,
+        }
+        for module_name, entry in released_selection.manifest.items()
+    }
     focus_trading_dates, calendar_semantic_dates = load_first_week_focus_dates(request.target_year)
     matrix_rows, layer_statuses, evidence_issues = _build_coverage_matrix(
         request=request,
@@ -52,8 +65,9 @@ def run_year_replay_coverage_gap_diagnosis(
         manifest=manifest,
         focus_trading_dates=focus_trading_dates,
     )
-    full_year_gate_ok = system_full_year_gate_ok(
-        request.source_system_db, released_system_run_id, request.target_year
+    full_year_gate_ok = (
+        released_selection.year_observed_start == f"{request.target_year}-01-01"
+        and released_selection.year_observed_end == f"{request.target_year}-12-31"
     )
     recommended_next_card, attribution = _recommend_next_card(
         layer_statuses=layer_statuses,
@@ -374,45 +388,6 @@ def _recommend_next_card(
     if not full_year_gate_ok:
         return PIPELINE_REPAIR_CARD, "calendar_semantic_gap_only"
     return EVIDENCE_INCOMPLETE_CARD, "no_replay_gap_detected"
-
-
-def _load_latest_completed_system_run(system_db: Path) -> str:
-    with duckdb.connect(str(system_db), read_only=True) as con:
-        row = con.execute(
-            """
-            select run_id
-            from system_readout_run
-            where status = 'completed'
-            order by created_at desc
-            limit 1
-            """
-        ).fetchone()
-    if row is None or row[0] is None:
-        raise ValueError("missing completed system_readout_run row")
-    return str(row[0])
-
-
-def _load_system_source_manifest(
-    system_db: Path,
-    released_system_run_id: str,
-) -> dict[str, dict[str, str]]:
-    with duckdb.connect(str(system_db), read_only=True) as con:
-        rows = con.execute(
-            """
-            select module_name, source_db, source_run_id, source_release_version
-            from system_source_manifest
-            where system_readout_run_id = ?
-            """,
-            [released_system_run_id],
-        ).fetchall()
-    return {
-        str(module_name): {
-            "source_db": str(source_db),
-            "source_run_id": str(source_run_id),
-            "source_release_version": str(source_release_version),
-        }
-        for module_name, source_db, source_run_id, source_release_version in rows
-    }
 
 
 def _query_surface(

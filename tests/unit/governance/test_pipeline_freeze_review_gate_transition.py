@@ -76,15 +76,15 @@ def test_pipeline_scope_freeze_preserves_historical_scope_after_runtime_pass() -
     assert registry["active_foundation_card"] == "none"
     assert registry["current_allowed_next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert registry["latest_mainline_release_run_id"] == (
-        "system-readout-bounded-proof-build-card-20260508-01"
+        "system-readout-2024-coverage-repair-card-20260509-01"
     )
     assert modules["system_readout"]["allow_build"] is False
     assert modules["system_readout"]["allow_review"] is False
     assert modules["system_readout"]["status"] == "released"
     assert modules["system_readout"]["proof_status"] == (
-        "bounded_proof_passed; full_build_not_executed"
+        "bounded_proof_passed; 2024_coverage_repair_passed; full_build_not_executed"
     )
-    assert modules["system_readout"]["next_card"] == "pipeline_freeze_review"
+    assert modules["system_readout"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["pipeline"]["status"] == "released"
     assert modules["pipeline"]["doc_status"] == PIPELINE_CURRENT_DOC_STATUS
     assert modules["pipeline"]["formal_db_permission"] == PIPELINE_CURRENT_FORMAL_DB_PERMISSION

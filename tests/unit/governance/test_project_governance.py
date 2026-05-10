@@ -85,7 +85,7 @@ def test_project_governance_rejects_multiple_build_allowed_mainline_modules(
     )
 
     assert any(
-        "pipeline diagnosis handoff must not reopen any mainline build/review flag" in message
+        "pipeline orchestration next card must not reopen any mainline build/review flag" in message
         for message in _messages(repo_root)
     )
 

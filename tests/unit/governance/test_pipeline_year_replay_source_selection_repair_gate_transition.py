@@ -5,15 +5,11 @@ from scripts.governance.check_project_governance import run_checks
 from tests.unit.pipeline.support import (
     CURRENT_ACTIVE_MAINLINE_MODULE,
     CURRENT_ALLOWED_NEXT_CARD_ACTION,
-    PIPELINE_BOUNDED_PROOF_CARD_ACTION,
-    PIPELINE_BOUNDED_PROOF_CARD_RUN_ID,
-    PIPELINE_BOUNDED_PROOF_CLOSEOUT_RUN_ID,
-    PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID,
     PIPELINE_CURRENT_DOC_STATUS,
-    PIPELINE_DRY_RUN_CARD_RUN_ID,
+    PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
+    PIPELINE_DISPOSITION_DECISION_RUN_ID,
+    PIPELINE_SOURCE_SELECTION_REPAIR_ACTION,
     PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID,
-    PIPELINE_YEAR_REPLAY_CARD_RUN_ID,
-    PIPELINE_YEAR_REPLAY_SCOPE_FREEZE_RUN_ID,
 )
 
 try:
@@ -44,7 +40,7 @@ def _messages(repo_root: Path) -> list[str]:
     return [finding.message for finding in run_checks(repo_root)]
 
 
-def test_pipeline_bounded_proof_scope_freeze_restores_prepared_next_card() -> None:
+def test_pipeline_source_selection_repair_advances_live_next_card() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     with registry_path.open("rb") as handle:
@@ -53,64 +49,43 @@ def test_pipeline_bounded_proof_scope_freeze_restores_prepared_next_card() -> No
     conclusion_index = (
         repo_root / "docs" / "04-execution" / "00-conclusion-index-v1.md"
     ).read_text(encoding="utf-8")
-    scope_freeze_conclusion = (
+    repair_conclusion = (
         repo_root
         / "docs/04-execution/records/pipeline/"
-        / f"{PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID}.conclusion.md"
+        / f"{PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID}.conclusion.md"
+    ).read_text(encoding="utf-8")
+    repair_evidence = (
+        repo_root
+        / "docs/04-execution/records/pipeline/"
+        / f"{PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID}.evidence-index.md"
     ).read_text(encoding="utf-8")
     prepared_card = (
         repo_root
         / "docs/04-execution/records/pipeline/"
-        / f"{PIPELINE_BOUNDED_PROOF_CARD_RUN_ID}.card.md"
-    ).read_text(encoding="utf-8")
-    prepared_conclusion = (
-        repo_root
-        / "docs/04-execution/records/pipeline/"
-        / f"{PIPELINE_BOUNDED_PROOF_CARD_RUN_ID}.conclusion.md"
-    )
-    dry_run_conclusion = (
-        repo_root
-        / "docs/04-execution/records/pipeline/"
-        / f"{PIPELINE_DRY_RUN_CARD_RUN_ID}.conclusion.md"
+        / f"{PIPELINE_DISPOSITION_DECISION_RUN_ID}.card.md"
     ).read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == CURRENT_ACTIVE_MAINLINE_MODULE
     assert registry["current_allowed_next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["pipeline"]["status"] == "released"
     assert modules["pipeline"]["doc_status"] == PIPELINE_CURRENT_DOC_STATUS
+    assert modules["pipeline"]["formal_db_permission"] == PIPELINE_CURRENT_FORMAL_DB_PERMISSION
     assert modules["pipeline"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["pipeline"]["proof_run_id"] == PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID
+    assert modules["system_readout"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
+    assert modules["system_readout"]["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert (
-        f"| Pipeline | `{PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID}` | `passed / scope frozen` |"
-        in conclusion_index
+        f"| Pipeline | `{PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID}` | `passed` |" in conclusion_index
     )
-    assert (
-        f"| Pipeline | `{PIPELINE_BOUNDED_PROOF_CLOSEOUT_RUN_ID}` | `passed` |" in conclusion_index
+    assert "状态：`passed`" in repair_conclusion
+    assert "| allowed next action | `pipeline_year_replay_disposition_decision_card` |" in (
+        repair_conclusion
     )
-    assert (
-        f"| Pipeline | `{PIPELINE_YEAR_REPLAY_SCOPE_FREEZE_RUN_ID}` | `passed / scope frozen` |"
-        in conclusion_index
-    )
-    assert f"| Pipeline | `{PIPELINE_YEAR_REPLAY_CARD_RUN_ID}` | `blocked` |" in conclusion_index
-    assert (
-        "当前唯一 prepared next card 已切到 `position-2024-coverage-repair-card-20260509-01`"
-        in (conclusion_index)
-    )
-    assert "system-readout-2024-coverage-repair-card-20260509-01" in conclusion_index
-    assert "状态：`passed`" in scope_freeze_conclusion
-    assert (
-        f"| allowed next action | `{PIPELINE_BOUNDED_PROOF_CARD_ACTION}` |"
-        in scope_freeze_conclusion
-    )
-    assert f"[next prepared card]({PIPELINE_BOUNDED_PROOF_CARD_RUN_ID}.card.md)" in (
-        scope_freeze_conclusion
-    )
-    assert "状态：`passed`" in prepared_card
-    assert prepared_conclusion.exists() is True
-    assert "| allowed next action | `none` |" in dry_run_conclusion
+    assert "pipeline-year-replay-disposition-decision-card-20260510-01" in repair_evidence
+    assert "状态：`prepared / not executed`" in prepared_card
 
 
-def test_project_governance_rejects_reopening_closed_full_chain_dry_run_card(
+def test_project_governance_rejects_reopening_closed_source_selection_repair_card(
     tmp_path: Path,
 ) -> None:
     repo_root = _copy_governance_repo(tmp_path)
@@ -119,11 +94,11 @@ def test_project_governance_rejects_reopening_closed_full_chain_dry_run_card(
     registry_path.write_text(
         registry_text.replace(
             (f'current_allowed_next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"'),
-            'current_allowed_next_card = "pipeline_full_chain_dry_run_card"',
+            f'current_allowed_next_card = "{PIPELINE_SOURCE_SELECTION_REPAIR_ACTION}"',
             1,
         ).replace(
             f'next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"',
-            'next_card = "pipeline_full_chain_dry_run_card"',
+            f'next_card = "{PIPELINE_SOURCE_SELECTION_REPAIR_ACTION}"',
             1,
         ),
         encoding="utf-8",

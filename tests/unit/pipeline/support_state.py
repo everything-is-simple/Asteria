@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from tests.unit.pipeline.constants import (
     CURRENT_ACTIVE_MAINLINE_MODULE,
+    CURRENT_ALLOWED_NEXT_CARD_ACTION,
     CURRENT_PIPELINE_ACTIVE_CARD,
     MALF_BASELINE_DOC_STATUS,
     MALF_BASELINE_PROOF_STATUS,
@@ -10,13 +11,14 @@ from tests.unit.pipeline.constants import (
     PIPELINE_CURRENT_DOC_STATUS,
     PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
     PIPELINE_CURRENT_GATE_STATE,
+    PIPELINE_DISPOSITION_DECISION_ACTION,
     PIPELINE_MALF_REPAIR_ACTION,
     PIPELINE_MALF_REPAIR_ACTIVE_CARD,
     PIPELINE_MALF_REPAIR_PREPARED_DOC_STATUS,
     PIPELINE_MALF_REPAIR_PREPARED_FORMAL_DB_PERMISSION,
     PIPELINE_MALF_REPAIR_PREPARED_GATE_STATE,
     PIPELINE_MALF_REPAIR_RUN_ID,
-    PIPELINE_POSITION_REPAIR_ACTION,
+    PIPELINE_SOURCE_SELECTION_REPAIR_ACTION,
 )
 
 POSITION_CURRENT_DOC_STATUS = (
@@ -75,7 +77,7 @@ def rewind_current_malf_repair_state(registry_text: str) -> str:
             1,
         )
         .replace(
-            (f'current_allowed_next_card = "{PIPELINE_POSITION_REPAIR_ACTION}"'),
+            (f'current_allowed_next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"'),
             f'current_allowed_next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
             1,
         )
@@ -102,7 +104,12 @@ def rewind_current_malf_repair_state(registry_text: str) -> str:
             1,
         )
         .replace(
-            f'next_card = "{PIPELINE_POSITION_REPAIR_ACTION}"',
+            f'next_card = "{PIPELINE_SOURCE_SELECTION_REPAIR_ACTION}"',
+            f'next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
+            1,
+        )
+        .replace(
+            f'next_card = "{PIPELINE_DISPOSITION_DECISION_ACTION}"',
             f'next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
             1,
         )
@@ -117,7 +124,12 @@ def rewind_current_malf_repair_state(registry_text: str) -> str:
             1,
         )
         .replace(
-            f'next_allowed_action = "{PIPELINE_POSITION_REPAIR_ACTION}"',
+            f'next_allowed_action = "{PIPELINE_SOURCE_SELECTION_REPAIR_ACTION}"',
+            'next_allowed_action = "malf_2024_natural_year_coverage_repair_card"',
+            1,
+        )
+        .replace(
+            f'next_allowed_action = "{PIPELINE_DISPOSITION_DECISION_ACTION}"',
             'next_allowed_action = "malf_2024_natural_year_coverage_repair_card"',
             1,
         )

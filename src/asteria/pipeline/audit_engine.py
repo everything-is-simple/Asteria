@@ -12,6 +12,9 @@ from asteria.pipeline.contracts import (
     YEAR_REPLAY_MODULE_SCOPES,
     PipelineBuildRequest,
 )
+from asteria.pipeline.released_source_selection import (
+    resolve_released_year_replay_source_selection,
+)
 from asteria.pipeline.schema import PIPELINE_TABLES
 
 
@@ -247,43 +250,25 @@ def _required_checkpoints_present(request: PipelineBuildRequest, module_scope: s
 def _year_replay_full_year_coverage_ok(request: PipelineBuildRequest) -> bool:
     if request.target_year is None:
         return False
-    with duckdb.connect(str(request.source_system_db), read_only=True) as con:
-        row = con.execute(
-            """
-            select min(readout_dt), max(readout_dt)
-            from system_chain_readout
-            where system_readout_run_id = ?
-              and readout_dt >= ?
-              and readout_dt <= ?
-            """,
-            [
-                request.source_chain_release_version,
-                f"{request.target_year}-01-01",
-                f"{request.target_year}-12-31",
-            ],
-        ).fetchone()
-    if row is None or row[0] is None or row[1] is None:
-        return False
+    selection = resolve_released_year_replay_source_selection(
+        request.source_system_db,
+        target_year=request.target_year,
+    )
     return (
-        str(row[0]) == f"{request.target_year}-01-01"
-        and str(row[1]) == f"{request.target_year}-12-31"
+        selection.year_observed_start == f"{request.target_year}-01-01"
+        and selection.year_observed_end == f"{request.target_year}-12-31"
     )
 
 
 def _year_replay_rerun_malf_source_locked(request: PipelineBuildRequest) -> bool:
-    with duckdb.connect(str(request.source_system_db), read_only=True) as con:
-        row = con.execute(
-            """
-            select source_run_id
-            from system_source_manifest
-            where system_readout_run_id = ?
-              and module_name = 'malf'
-            """,
-            [request.source_chain_release_version],
-        ).fetchone()
-    if row is None or row[0] is None:
-        return False
-    return str(row[0]) == PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID
+    selection = resolve_released_year_replay_source_selection(
+        request.source_system_db,
+        target_year=request.target_year,
+    )
+    return (
+        selection.released_system_run_id == request.source_chain_release_version
+        and selection.source_lock_clean
+    )
 
 
 def _hard_check(
