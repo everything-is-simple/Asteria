@@ -20,6 +20,9 @@ from asteria.pipeline.year_replay_coverage_gap_contracts import (
     YearReplayCoverageGapDiagnosisSummary,
 )
 from asteria.pipeline.year_replay_coverage_gap_reports import write_diagnosis_artifacts
+from asteria.pipeline.year_replay_portfolio_plan_semantics import (
+    evaluate_portfolio_plan_focus_window,
+)
 from asteria.pipeline.year_replay_position_semantics import (
     evaluate_position_focus_window,
     load_planned_signal_focus_dates,
@@ -254,8 +257,15 @@ def _build_coverage_matrix(
         evidence_issues=evidence_issues,
     )
     rows.extend(portfolio_rows)
-    layer_statuses["portfolio_plan"] = len(portfolio_rows) == 2 and all_focus_dates_present(
-        portfolio_rows
+    layer_statuses["portfolio_plan"] = evaluate_portfolio_plan_focus_window(
+        portfolio_rows=portfolio_rows,
+        portfolio_db=Path(manifest["portfolio_plan"]["source_db"])
+        if "portfolio_plan" in manifest
+        else data_root / "portfolio_plan.duckdb",
+        portfolio_run_id=manifest["portfolio_plan"]["source_run_id"]
+        if "portfolio_plan" in manifest
+        else "",
+        focus_dates=focus_trading_dates,
     )
 
     trade_rows = _optional_group_rows(
