@@ -24,15 +24,15 @@ flowchart LR
 
 ## 1.1 当前门禁状态
 
-截至 `coverage-gap-evidence-incomplete-closeout-card-20260509-01` passed：
+截至 `position-2024-coverage-repair-card-20260509-01` completed：
 
 | 项 | 当前状态 |
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal`; `Position`; `Portfolio Plan`; `Trade`; `System Readout` |
 | 当前已通过 bounded proof | `MALF day`; `MALF week`; `MALF month`; `Alpha day`; `Signal day`; `Position day`; `Portfolio Plan day`; `Trade bounded proof`; `System Readout day bounded proof`; `MALF v1.4 day runtime sync implementation` |
-| 当前已准备执行卡 | `position_2024_coverage_repair_card` |
-| 当前只允许施工 | Position 2024 released day surface repair |
-| 当前仍禁止 | Position full build、Portfolio Plan full build、Trade full build、System full build、full rebuild、daily incremental、resume/idempotence、v1 complete |
+| 当前已准备执行卡 | `portfolio_plan_2024_coverage_repair_card` |
+| 当前只允许施工 | Portfolio Plan 2024 released day surface repair |
+| 当前仍禁止 | Portfolio Plan full build、Trade full build、System full build、full rebuild、daily incremental、resume/idempotence、v1 complete |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Data Foundation
 已补齐正式 `market_meta.duckdb` 的最小事实，并部分释放可匹配正式 Data 标的的申万
@@ -69,8 +69,12 @@ released observation chain 仍从 `2024-01-08` 起步。随后
 surface 前移到 `2024-01-02`；随后
 `coverage-gap-evidence-incomplete-closeout-card-20260509-01` 已真实执行并通过，确认 released
 Position / Portfolio Plan / Trade 的最早 day surface 都从 `2024-01-09` 起步，因此 live authority
-已切到 `position_2024_coverage_repair_card`。当前只允许 Position 2024 released day surface
-repair，不允许扩成 Portfolio Plan / Trade / System / Pipeline semantic repair，或打开 full rebuild / v1 complete。
+先切到 `position_2024_coverage_repair_card`。随后
+`position-2024-coverage-repair-card-20260509-01` 已真实执行并完成：released Position candidate day surface
+已前移到 `2024-01-02`，而 `2024-01-02` 与 `2024-01-03` 的 released Signal 状态是
+`rejected / no_active_alpha_candidate`，因此 entry / exit 从 `2024-01-04` 起步不再构成 Position 语义缺口。
+当前 live authority 已切到 `portfolio_plan_2024_coverage_repair_card`。当前只允许 Portfolio Plan 2024
+released day surface repair，不允许扩成 Trade / System / Pipeline semantic repair，或打开 full rebuild / v1 complete。
 
 ## 2. 主线模块
 

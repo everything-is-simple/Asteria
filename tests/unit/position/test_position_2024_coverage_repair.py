@@ -27,10 +27,7 @@ from tests.unit.position.position_2024_coverage_repair_target_fixtures import (
     seed_trade_db,
 )
 
-from asteria.pipeline.year_replay_coverage_gap_contracts import (
-    PORTFOLIO_PLAN_REPAIR_CARD,
-    POSITION_REPAIR_CARD,
-)
+from asteria.pipeline.year_replay_coverage_gap_contracts import PORTFOLIO_PLAN_REPAIR_CARD
 from asteria.position.coverage_repair import run_position_2024_coverage_repair
 
 
@@ -131,7 +128,7 @@ def test_repair_followup_truthfully_moves_next_break_to_portfolio_plan(tmp_path:
     assert summary.followup_attribution == "downstream_surface_gap:portfolio_plan"
 
 
-def test_repair_keeps_live_next_card_at_position_when_focus_window_still_lacks_entry_exit(
+def test_repair_moves_next_break_to_portfolio_plan_when_only_rejected_signals_lack_entry_exit(
     tmp_path: Path,
 ) -> None:
     repo_root = seed_repo_root(tmp_path)
@@ -171,9 +168,9 @@ def test_repair_keeps_live_next_card_at_position_when_focus_window_still_lacks_e
     )
     summary = run_position_2024_coverage_repair(request(tmp_path, repo_root=repo_root))
 
-    assert summary.status == "failed"
-    assert summary.followup_next_card == POSITION_REPAIR_CARD
-    assert summary.followup_attribution == "downstream_surface_gap:position"
+    assert summary.status == "completed"
+    assert summary.followup_next_card == PORTFOLIO_PLAN_REPAIR_CARD
+    assert summary.followup_attribution == "downstream_surface_gap:portfolio_plan"
     with duckdb.connect(str(data_root / "position.duckdb"), read_only=True) as con:
         candidate_earliest = con.execute(
             """

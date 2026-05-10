@@ -8,19 +8,20 @@
 
 `coverage-gap-evidence-incomplete-closeout-card-20260509-01` 已真实执行并通过。
 
-本卡把 downstream released day surface 的当前首断点正式锁定到 `position`，因此 live authority
-不再停留在 generic `coverage_gap_evidence_incomplete_closeout_card`，而是切到唯一下一张 repair card：
+本卡把 downstream released day surface 的首断点正式锁定到 `position`，并完成从 generic
+`coverage_gap_evidence_incomplete_closeout_card` 向具体 repair card 的首次 handoff。随后
+`position-2024-coverage-repair-card-20260509-01` 已真实执行并完成，因此当前 live authority 已继续切到：
 
 ```text
-position-2024-coverage-repair-card-20260509-01
+portfolio-plan-2024-coverage-repair-card-20260509-01
 ```
 
 ## 2. Gate Result
 
 | item | result |
 |---|---|
-| allowed next action | `position_2024_coverage_repair_card` |
-| prepared next card | `position-2024-coverage-repair-card-20260509-01` |
+| allowed next action | `portfolio_plan_2024_coverage_repair_card` |
+| prepared next card | `portfolio-plan-2024-coverage-repair-card-20260509-01` |
 | full rebuild opened | `no` |
 | daily incremental opened | `no` |
 | v1 complete opened | `no` |
@@ -33,6 +34,7 @@ position-2024-coverage-repair-card-20260509-01
 - released Portfolio Plan earliest day 仍是 `2024-01-09`
 - released Trade earliest day 仍是 `2024-01-09`
 - truthful attribution = `downstream_surface_gap:position`
+- downstream handoff 已被后续 Position repair 消费，当前 live next card 已下移到 Portfolio Plan
 
 ## 4. Boundary
 

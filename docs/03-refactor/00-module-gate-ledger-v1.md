@@ -109,19 +109,19 @@ rules；当前 runtime passed evidence 已升级为 MALF v1.4 day runtime sync i
 当前 live 下一张执行卡：
 
 ```text
-position-2024-coverage-repair-card-20260509-01
+portfolio-plan-2024-coverage-repair-card-20260509-01
 ```
 
 对应 symbolic allowed next action：
 
 ```text
-position_2024_coverage_repair_card
+portfolio_plan_2024_coverage_repair_card
 ```
 
 当前 handoff 结论锚点：
 
 ```text
-position-2024-coverage-repair-card-20260509-01
+portfolio-plan-2024-coverage-repair-card-20260509-01
 ```
 
 对应 handoff allowed next action：
@@ -139,7 +139,7 @@ pipeline_one_year_strategy_behavior_replay_rerun_build_card
 当前只允许施工对象：
 
 ```text
-Position 2024 released day surface repair
+Portfolio Plan 2024 released day surface repair
 ```
 
 当前已通过 bounded proof 的主线模块：
@@ -211,16 +211,16 @@ blocked：`observed_start` 仍是 `2024-01-08`，且 rerun source lock 未指向
 Position / Portfolio Plan / Trade day surface 的最早日期都落在 `2024-01-09`，因此当前唯一 prepared
 next card 已切到 `position-2024-coverage-repair-card-20260509-01`。后半场 system validation / repair
 阶段继续收敛回 `docs/03-refactor/04-asteria-full-system-roadmap-v1.md` 单点维护；旧第二张 repair roadmap
-已删除，不再作为 roadmap 权威入口。当前只允许 Position 2024 released day surface repair；不允许扩成
+已删除，不再作为 roadmap 权威入口。当时只允许 Position 2024 released day surface repair；不允许扩成
 Portfolio Plan / Trade / System / Pipeline repair，也不允许开启 full rebuild、daily incremental、
 resume/idempotence 或 `v1 complete`。
 
-2026-05-10：`position-2024-coverage-repair-card-20260509-01` 已真实执行，但结果是
-`failed / downstream gap persists at position`。released Position candidate day surface 已前移到
-`2024-01-02`，但 released entry / exit 仍从 `2024-01-04` 起步；进一步核对 live released Signal 可见，
-`2024-01-02` 与 `2024-01-03` 仍是 `rejected / no_active_alpha_candidate`，因此 Position 在这两天只能产生
-`rejected` candidate，不能自然产生 entry / exit plan。故当前 live allowed next action 保持
-`position_2024_coverage_repair_card`，不得伪装成已下移到 Portfolio Plan / Trade repair。
+2026-05-10：`position-2024-coverage-repair-card-20260509-01` 已真实执行并完成。released Position candidate day
+surface 已前移到 `2024-01-02`，released entry / exit 仍从 `2024-01-04` 起步；进一步核对 live released
+Signal 可见，`2024-01-02` 与 `2024-01-03` 仍是 `rejected / no_active_alpha_candidate`，因此 Position 在
+这两天只需产生 `rejected` candidate，不需自然产生 entry / exit plan。故 Position 语义断点已真实下移到
+Portfolio Plan，当前 live allowed next action 已切到 `portfolio_plan_2024_coverage_repair_card`；Trade
+repair 和 stage 11 队列仍不得抢跑。
 
 ## 1.1 Pre-Position 上游修补队列
 

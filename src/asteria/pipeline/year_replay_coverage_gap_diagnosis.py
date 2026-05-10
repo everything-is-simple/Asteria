@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from datetime import date, timedelta
 from pathlib import Path
 
 import duckdb
@@ -12,12 +11,24 @@ from asteria.pipeline.year_replay_coverage_gap_contracts import (
     EVIDENCE_INCOMPLETE_CARD,
     MALF_REPAIR_CARD,
     PIPELINE_REPAIR_CARD,
+    PORTFOLIO_PLAN_REPAIR_CARD,
+    POSITION_REPAIR_CARD,
     SYSTEM_REPAIR_CARD,
+    TRADE_REPAIR_CARD,
     CoverageMatrixRow,
     YearReplayCoverageGapDiagnosisRequest,
     YearReplayCoverageGapDiagnosisSummary,
 )
 from asteria.pipeline.year_replay_coverage_gap_reports import write_diagnosis_artifacts
+from asteria.pipeline.year_replay_position_semantics import (
+    evaluate_position_focus_window,
+    load_planned_signal_focus_dates,
+)
+from asteria.pipeline.year_replay_support import (
+    all_focus_dates_present,
+    load_first_week_focus_dates,
+    system_full_year_gate_ok,
+)
 
 
 def run_year_replay_coverage_gap_diagnosis(
@@ -29,10 +40,7 @@ def run_year_replay_coverage_gap_diagnosis(
 
     released_system_run_id = _load_latest_completed_system_run(request.source_system_db)
     manifest = _load_system_source_manifest(request.source_system_db, released_system_run_id)
-    focus_trading_dates, calendar_semantic_dates = _load_first_week_focus_dates(
-        data_root / "market_meta.duckdb",
-        request.target_year,
-    )
+    focus_trading_dates, calendar_semantic_dates = load_first_week_focus_dates(request.target_year)
     matrix_rows, layer_statuses, evidence_issues = _build_coverage_matrix(
         request=request,
         data_root=data_root,
@@ -40,10 +48,8 @@ def run_year_replay_coverage_gap_diagnosis(
         manifest=manifest,
         focus_trading_dates=focus_trading_dates,
     )
-    full_year_gate_ok = _system_full_year_gate_ok(
-        request.source_system_db,
-        released_system_run_id,
-        request.target_year,
+    full_year_gate_ok = system_full_year_gate_ok(
+        request.source_system_db, released_system_run_id, request.target_year
     )
     recommended_next_card, attribution = _recommend_next_card(
         layer_statuses=layer_statuses,
@@ -134,8 +140,7 @@ def _build_coverage_matrix(
         ),
     ]
     rows.extend(data_rows)
-    layer_statuses["data"] = _all_focus_dates_present(data_rows)
-    evidence_issues.extend(_missing_issue_messages(data_rows))
+    layer_statuses["data"] = all_focus_dates_present(data_rows)
 
     if "malf" not in manifest:
         evidence_issues.append("system_source_manifest is missing malf entry")
@@ -155,8 +160,7 @@ def _build_coverage_matrix(
             notes="Released MALF service surface locked by system_source_manifest.",
         )
         rows.append(malf_row)
-        layer_statuses["malf"] = _all_focus_dates_present([malf_row])
-        evidence_issues.extend(_missing_issue_messages([malf_row]))
+        layer_statuses["malf"] = all_focus_dates_present([malf_row])
 
     alpha_rows: list[CoverageMatrixRow] = []
     for module_name in ALPHA_FAMILY_MODULES:
@@ -181,12 +185,12 @@ def _build_coverage_matrix(
         )
     rows.extend(alpha_rows)
     layer_statuses["alpha"] = len(alpha_rows) == len(ALPHA_FAMILY_MODULES) and (
-        _all_focus_dates_present(alpha_rows)
+        all_focus_dates_present(alpha_rows)
     )
-    evidence_issues.extend(_missing_issue_messages(alpha_rows))
 
     if "signal" not in manifest:
         evidence_issues.append("system_source_manifest is missing signal entry")
+        planned_signal_focus_dates = list(focus_trading_dates)
     else:
         signal_row = _query_surface(
             db_path=Path(manifest["signal"]["source_db"]),
@@ -203,8 +207,12 @@ def _build_coverage_matrix(
             notes="Released Signal ledger surface locked by system_source_manifest.",
         )
         rows.append(signal_row)
-        layer_statuses["signal"] = _all_focus_dates_present([signal_row])
-        evidence_issues.extend(_missing_issue_messages([signal_row]))
+        layer_statuses["signal"] = all_focus_dates_present([signal_row])
+        planned_signal_focus_dates = load_planned_signal_focus_dates(
+            signal_db=Path(manifest["signal"]["source_db"]),
+            signal_run_id=manifest["signal"]["source_run_id"],
+            focus_dates=focus_trading_dates,
+        )
 
     position_rows = _optional_group_rows(
         manifest=manifest,
@@ -221,7 +229,12 @@ def _build_coverage_matrix(
         evidence_issues=evidence_issues,
     )
     rows.extend(position_rows)
-    layer_statuses["position"] = len(position_rows) == 3 and _all_focus_dates_present(position_rows)
+    position_ok = evaluate_position_focus_window(
+        position_rows=position_rows,
+        focus_dates=focus_trading_dates,
+        planned_signal_focus_dates=planned_signal_focus_dates,
+    )
+    layer_statuses["position"] = position_ok
 
     portfolio_rows = _optional_group_rows(
         manifest=manifest,
@@ -241,7 +254,7 @@ def _build_coverage_matrix(
         evidence_issues=evidence_issues,
     )
     rows.extend(portfolio_rows)
-    layer_statuses["portfolio_plan"] = len(portfolio_rows) == 2 and _all_focus_dates_present(
+    layer_statuses["portfolio_plan"] = len(portfolio_rows) == 2 and all_focus_dates_present(
         portfolio_rows
     )
 
@@ -261,7 +274,7 @@ def _build_coverage_matrix(
         evidence_issues=evidence_issues,
     )
     rows.extend(trade_rows)
-    layer_statuses["trade"] = len(trade_rows) >= 3 and _all_focus_dates_present(trade_rows[:3])
+    layer_statuses["trade"] = len(trade_rows) >= 3 and all_focus_dates_present(trade_rows[:3])
 
     system_row = _query_surface(
         db_path=request.source_system_db,
@@ -278,8 +291,7 @@ def _build_coverage_matrix(
         notes="Released System Readout surface locked to latest completed system_readout_run.",
     )
     rows.append(system_row)
-    layer_statuses["system_readout"] = _all_focus_dates_present([system_row])
-    evidence_issues.extend(_missing_issue_messages([system_row]))
+    layer_statuses["system_readout"] = all_focus_dates_present([system_row])
     return rows, layer_statuses, evidence_issues
 
 
@@ -316,7 +328,6 @@ def _optional_group_rows(
                 notes=note,
             )
         )
-    evidence_issues.extend(_missing_issue_messages(rows))
     return rows
 
 
@@ -335,11 +346,11 @@ def _recommend_next_card(
     if not layer_statuses.get("alpha", False) or not layer_statuses.get("signal", False):
         return ALPHA_SIGNAL_REPAIR_CARD, "released_surface_gap:alpha_signal"
     if not layer_statuses.get("position", False):
-        return EVIDENCE_INCOMPLETE_CARD, "downstream_surface_gap:position"
+        return POSITION_REPAIR_CARD, "downstream_surface_gap:position"
     if not layer_statuses.get("portfolio_plan", False):
-        return EVIDENCE_INCOMPLETE_CARD, "downstream_surface_gap:portfolio_plan"
+        return PORTFOLIO_PLAN_REPAIR_CARD, "downstream_surface_gap:portfolio_plan"
     if not layer_statuses.get("trade", False):
-        return EVIDENCE_INCOMPLETE_CARD, "downstream_surface_gap:trade"
+        return TRADE_REPAIR_CARD, "downstream_surface_gap:trade"
     if not layer_statuses.get("system_readout", False):
         return SYSTEM_REPAIR_CARD, "released_surface_gap:system_readout"
     if not full_year_gate_ok:
@@ -384,30 +395,6 @@ def _load_system_source_manifest(
         }
         for module_name, source_db, source_run_id, source_release_version in rows
     }
-
-
-def _load_first_week_focus_dates(
-    _market_meta_db: Path,
-    target_year: int,
-) -> tuple[list[str], list[str]]:
-    week_start = date(target_year, 1, 1)
-    week_dates = [week_start + timedelta(days=offset) for offset in range(7)]
-    focus_trading_dates = [
-        current.isoformat()
-        for current in week_dates
-        if current.isoformat()
-        in {
-            f"{target_year}-01-02",
-            f"{target_year}-01-03",
-            f"{target_year}-01-04",
-            f"{target_year}-01-05",
-        }
-    ]
-    trading_date_set = set(focus_trading_dates)
-    calendar_semantic_dates = [
-        current.isoformat() for current in week_dates if current.isoformat() not in trading_date_set
-    ]
-    return focus_trading_dates, calendar_semantic_dates
 
 
 def _query_surface(
@@ -470,28 +457,3 @@ def _query_surface(
         missing_focus_dates=missing_focus_dates,
         notes=notes,
     )
-
-
-def _all_focus_dates_present(rows: list[CoverageMatrixRow]) -> bool:
-    return all(not row.missing_focus_dates for row in rows)
-
-
-def _missing_issue_messages(rows: list[CoverageMatrixRow]) -> list[str]:
-    return []
-
-
-def _system_full_year_gate_ok(system_db: Path, run_id: str, target_year: int) -> bool:
-    with duckdb.connect(str(system_db), read_only=True) as con:
-        row = con.execute(
-            """
-            select min(readout_dt), max(readout_dt)
-            from system_chain_readout
-            where system_readout_run_id = ?
-              and readout_dt >= ?
-              and readout_dt <= ?
-            """,
-            [run_id, f"{target_year}-01-01", f"{target_year}-12-31"],
-        ).fetchone()
-    if row is None or row[0] is None or row[1] is None:
-        return False
-    return str(row[0]) == f"{target_year}-01-01" and str(row[1]) == f"{target_year}-12-31"

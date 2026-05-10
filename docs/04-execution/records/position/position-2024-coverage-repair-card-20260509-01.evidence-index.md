@@ -39,12 +39,12 @@ run_id：`position-2024-coverage-repair-card-20260509-01`
 | entry earliest day | `2024-01-04` |
 | exit earliest day | `2024-01-04` |
 | hard_fail_count | `0` |
-| follow-up attribution | `downstream_surface_gap:position` |
-| allowed next action | `position_2024_coverage_repair_card` |
+| follow-up attribution | `downstream_surface_gap:portfolio_plan` |
+| allowed next action | `portfolio_plan_2024_coverage_repair_card` |
 
 ## 4. Boundary
 
 本证据只证明 released Position day surface 的最小 focus-window repair 已真实执行，并证明
-Position candidate surface 已前移到 `2024-01-02`。它不宣称 Position full build、
-Portfolio Plan repair passed、Trade repair passed、System / Pipeline semantic repair、full rebuild、
-daily incremental、resume/idempotence 或 `v1 complete`。
+Position candidate surface 已前移到 `2024-01-02`，且 Position 语义断点已下移到 Portfolio Plan。
+它不宣称 Portfolio Plan repair passed、Trade repair passed、Position full build、
+System / Pipeline semantic repair、full rebuild、daily incremental、resume/idempotence 或 `v1 complete`。

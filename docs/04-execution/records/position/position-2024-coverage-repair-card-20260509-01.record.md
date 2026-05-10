@@ -46,15 +46,15 @@ run_id：`position-2024-coverage-repair-card-20260509-01`
 
 - `hard_fail_count = 0`
 - released Position candidate earliest day 已前移到 `2024-01-02`
-- released Position entry earliest day 仍是 `2024-01-04`
-- released Position exit earliest day 仍是 `2024-01-04`
-- follow-up next card 仍是 `position-2024-coverage-repair-card-20260509-01`
-- truthful attribution 仍是 `downstream_surface_gap:position`
+- released Position entry earliest day 是 `2024-01-04`
+- released Position exit earliest day 是 `2024-01-04`
+- follow-up next card 已真实下移到 `portfolio-plan-2024-coverage-repair-card-20260509-01`
+- truthful attribution 已变为 `downstream_surface_gap:portfolio_plan`
 
-## 6. Root Cause
+## 6. Semantic Finding
 
 - released Signal 在 `2024-01-02` 与 `2024-01-03` 的 live 状态是
   `rejected / no_active_alpha_candidate`。
-- 因此 Position 在这两天只能产出 `rejected` candidate，不能自然生成 entry / exit plan。
-- 这意味着本卡虽然补齐了 Position candidate surface，但没有把 downstream 首断点下移到
-  Portfolio Plan / Trade。
+- 因此 Position 在这两天只需要产出 `rejected` candidate，不需要自然产出 entry / exit plan。
+- 在该语义下，Position focus-window released day surface 已经 truthfully 收口；新的首断点是
+  Portfolio Plan / Trade 中更靠前的 Portfolio Plan。

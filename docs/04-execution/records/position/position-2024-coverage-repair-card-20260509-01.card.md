@@ -2,7 +2,7 @@
 
 日期：2026-05-09
 
-状态：`failed / downstream gap persists at position`
+状态：`completed / downstream breakpoint moved to portfolio plan`
 
 ## 1. 目标
 
@@ -45,10 +45,10 @@ coverage repair。
 
 ## 6. 实际结果
 
-- 本卡已于 `2026-05-10` 真实执行。
+- 本卡已于 `2026-05-10` 真实执行并完成最小 Position released day surface repair。
 - released Position candidate day surface 已前移到 `2024-01-02`。
-- released Position entry / exit day surface 仍从 `2024-01-04` 起步。
-- released Signal 在 `2024-01-02` 与 `2024-01-03` 的 live 状态为 `rejected / no_active_alpha_candidate`，
-  因此 Position 在这两天只能生成 `rejected` candidate，不能生成 entry / exit plan。
-- follow-up closeout 结果仍为 `downstream_surface_gap:position`，所以当前 live allowed next action
-  保持 `position_2024_coverage_repair_card` 不变。
+- released Position entry / exit day surface 仍从 `2024-01-04` 起步，但这与 released Signal 在
+  `2024-01-02` 与 `2024-01-03` 的 live 状态
+  `rejected / no_active_alpha_candidate` 一致，因此不再构成 Position 语义缺口。
+- follow-up closeout 已把 downstream 首断点真实下移到
+  `portfolio-plan-2024-coverage-repair-card-20260509-01`。

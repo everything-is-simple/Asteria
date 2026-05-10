@@ -88,7 +88,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Position | `upstream-pre-position-completeness-synthesis-20260506-01` | `review-only / position construction suspended` | [conclusion](records/position/upstream-pre-position-completeness-synthesis-20260506-01.conclusion.md) | [evidence-index](records/position/upstream-pre-position-completeness-synthesis-20260506-01.evidence-index.md) |
 | Position | `upstream-pre-position-release-decision-20260506-01` | `passed / review-only release decision closed` | [conclusion](records/position/upstream-pre-position-release-decision-20260506-01.conclusion.md) | [evidence-index](records/position/upstream-pre-position-release-decision-20260506-01.evidence-index.md) |
 | Position | `position-bounded-proof-build-card-20260506-01` | `passed` | [conclusion](records/position/position-bounded-proof-build-card-20260506-01.conclusion.md) | [evidence-index](records/position/position-bounded-proof-build-card-20260506-01.evidence-index.md) |
-| Position | `position-2024-coverage-repair-card-20260509-01` | `failed / downstream gap persists at position` | [conclusion](records/position/position-2024-coverage-repair-card-20260509-01.conclusion.md) | [evidence-index](records/position/position-2024-coverage-repair-card-20260509-01.evidence-index.md) |
+| Position | `position-2024-coverage-repair-card-20260509-01` | `completed / downstream breakpoint moved to portfolio plan` | [conclusion](records/position/position-2024-coverage-repair-card-20260509-01.conclusion.md) | [evidence-index](records/position/position-2024-coverage-repair-card-20260509-01.evidence-index.md) |
 | Portfolio Plan | `portfolio-plan-freeze-review-20260507-01` | `passed` | [conclusion](records/portfolio_plan/portfolio-plan-freeze-review-20260507-01.conclusion.md) | [evidence-index](records/portfolio_plan/portfolio-plan-freeze-review-20260507-01.evidence-index.md) |
 | Portfolio Plan | `portfolio-plan-bounded-proof-build-card-20260507-01` | `passed` | [conclusion](records/portfolio_plan/portfolio-plan-bounded-proof-build-card-20260507-01.conclusion.md) | [evidence-index](records/portfolio_plan/portfolio-plan-bounded-proof-build-card-20260507-01.evidence-index.md) |
 | Trade | `trade-freeze-review-20260507-01` | `passed` | [conclusion](records/trade/trade-freeze-review-20260507-01.conclusion.md) | [evidence-index](records/trade/trade-freeze-review-20260507-01.evidence-index.md) |
@@ -177,19 +177,21 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   released observation chain 仍从 `2024-01-08` 起步，且 rerun source lock 未消费 repaired MALF run。`alpha-signal-2024-coverage-repair-card-20260509-01`
   现已通过，并把 released Alpha / Signal day surface 前移到 `2024-01-02`；但新的首断点已下移到 downstream `position`，
   随后 `coverage-gap-evidence-incomplete-closeout-card-20260509-01` 已真实执行并通过，当前唯一 prepared next card 已切到 `position-2024-coverage-repair-card-20260509-01`。
-  `position-2024-coverage-repair-card-20260509-01` 已于 `2026-05-10` 真实执行：released Position candidate day
-  surface 已前移到 `2024-01-02`，但 entry / exit 仍从 `2024-01-04` 起步，因此 follow-up attribution 仍是
-  `downstream_surface_gap:position`，当前 live next card 保持不变。
+  `position-2024-coverage-repair-card-20260509-01` 已于 `2026-05-10` 真实执行并完成：released Position candidate
+  day surface 已前移到 `2024-01-02`，entry / exit 仍从 `2024-01-04` 起步，但这与 `2024-01-02` 与
+  `2024-01-03` 的 released Signal 状态 `rejected / no_active_alpha_candidate` 一致，因此 Position 语义断点
+  已真实下移到 Portfolio Plan。当前 live next card 已切到
+  `portfolio-plan-2024-coverage-repair-card-20260509-01`。
   后半场 repair phase roadmap 已收敛回 `docs/03-refactor/04-asteria-full-system-roadmap-v1.md` 单点维护；旧第二张
   repair roadmap 已删除，不再承载独立状态机。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
 
 ## 3. 当前 live 下一卡
 
-以下登记当前仍然有效的 live next card。该卡已经执行过一次，但尚未把断点下移：
+以下登记当前仍然有效的 live next card：
 
 ```text
-position-2024-coverage-repair-card-20260509-01
+portfolio-plan-2024-coverage-repair-card-20260509-01
 ```
 
 ## 3.1 Newly Passed Pre-Position Repair Card
