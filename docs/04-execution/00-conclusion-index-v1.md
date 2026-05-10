@@ -94,6 +94,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Portfolio Plan | `portfolio-plan-2024-coverage-repair-card-20260509-01` | `completed / downstream breakpoint moved to trade` | [conclusion](records/portfolio_plan/portfolio-plan-2024-coverage-repair-card-20260509-01.conclusion.md) | [evidence-index](records/portfolio_plan/portfolio-plan-2024-coverage-repair-card-20260509-01.evidence-index.md) |
 | Trade | `trade-freeze-review-20260507-01` | `passed` | [conclusion](records/trade/trade-freeze-review-20260507-01.conclusion.md) | [evidence-index](records/trade/trade-freeze-review-20260507-01.evidence-index.md) |
 | Trade | `trade-bounded-proof-build-card-20260507-01` | `passed` | [conclusion](records/trade/trade-bounded-proof-build-card-20260507-01.conclusion.md) | [evidence-index](records/trade/trade-bounded-proof-build-card-20260507-01.evidence-index.md) |
+| Trade | `trade-2024-coverage-repair-card-20260509-01` | `completed / downstream breakpoint moved to system_readout` | [conclusion](records/trade/trade-2024-coverage-repair-card-20260509-01.conclusion.md) | [evidence-index](records/trade/trade-2024-coverage-repair-card-20260509-01.evidence-index.md) |
 | System Readout | `system-readout-freeze-review-20260507-01` | `passed` | [conclusion](records/system_readout/system-readout-freeze-review-20260507-01.conclusion.md) | [evidence-index](records/system_readout/system-readout-freeze-review-20260507-01.evidence-index.md) |
 | System Readout | `system-readout-bounded-proof-build-card-20260508-01` | `passed` | [conclusion](records/system_readout/system-readout-bounded-proof-build-card-20260508-01.conclusion.md) | [evidence-index](records/system_readout/system-readout-bounded-proof-build-card-20260508-01.evidence-index.md) |
 | Pipeline | `pipeline-freeze-review-20260508-01` | `passed` | [conclusion](records/pipeline/pipeline-freeze-review-20260508-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-freeze-review-20260508-01.evidence-index.md) |
@@ -112,6 +113,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Pipeline | `alpha-signal-2024-coverage-repair-card-20260509-01` | `passed` | [conclusion](records/pipeline/alpha-signal-2024-coverage-repair-card-20260509-01.conclusion.md) | [evidence-index](records/pipeline/alpha-signal-2024-coverage-repair-card-20260509-01.evidence-index.md) |
 | Pipeline | `coverage-gap-evidence-incomplete-closeout-card-20260509-01` | `passed` | [conclusion](records/pipeline/coverage-gap-evidence-incomplete-closeout-card-20260509-01.conclusion.md) | [evidence-index](records/pipeline/coverage-gap-evidence-incomplete-closeout-card-20260509-01.evidence-index.md) |
 | Pipeline | `pipeline-portfolio-plan-2024-coverage-repair-handoff-20260510-01` | `passed` | [conclusion](records/pipeline/pipeline-portfolio-plan-2024-coverage-repair-handoff-20260510-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-portfolio-plan-2024-coverage-repair-handoff-20260510-01.evidence-index.md) |
+| Pipeline | `pipeline-trade-2024-coverage-repair-handoff-20260510-01` | `passed` | [conclusion](records/pipeline/pipeline-trade-2024-coverage-repair-handoff-20260510-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-trade-2024-coverage-repair-handoff-20260510-01.evidence-index.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
@@ -185,7 +187,13 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   已真实下移到 Portfolio Plan。随后 `portfolio-plan-2024-coverage-repair-card-20260509-01` 也已于 `2026-05-10`
   真实执行并完成：released Portfolio Plan admission surface 已前移覆盖 `2024-01-02..2024-01-05`，而 target exposure
   只在真实 admitted day `2024-01-05` 存在，因此当前 live next card 已切到
-  `trade-2024-coverage-repair-card-20260509-01`。
+  `trade-2024-coverage-repair-card-20260509-01`。随后
+  `trade-2024-coverage-repair-card-20260509-01` 也已于 `2026-05-10` 真实执行并完成：released Trade
+  rejection surface 已前移到 `2024-01-02`，released `order_intent` / `execution_plan` 已在真实 admitted day
+  `2024-01-05` materialize，因此新的 live next card 已继续下移到
+  `system-readout-2024-coverage-repair-card-20260509-01`。随后
+  `pipeline-trade-2024-coverage-repair-handoff-20260510-01` 也已通过，把 Pipeline live handoff truth
+  同步到 `system_readout_2024_coverage_repair_card`。
   后半场 repair phase roadmap 已收敛回 `docs/03-refactor/04-asteria-full-system-roadmap-v1.md` 单点维护；旧第二张
   repair roadmap 已删除，不再承载独立状态机。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
@@ -195,7 +203,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 以下登记当前仍然有效的 live next card：
 
 ```text
-trade-2024-coverage-repair-card-20260509-01
+system-readout-2024-coverage-repair-card-20260509-01
 ```
 
 ## 3.1 Newly Passed Pre-Position Repair Card

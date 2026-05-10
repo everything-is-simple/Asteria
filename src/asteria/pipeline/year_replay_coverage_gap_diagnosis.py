@@ -32,6 +32,7 @@ from asteria.pipeline.year_replay_support import (
     load_first_week_focus_dates,
     system_full_year_gate_ok,
 )
+from asteria.pipeline.year_replay_trade_semantics import evaluate_trade_focus_window
 
 
 def run_year_replay_coverage_gap_diagnosis(
@@ -284,7 +285,14 @@ def _build_coverage_matrix(
         evidence_issues=evidence_issues,
     )
     rows.extend(trade_rows)
-    layer_statuses["trade"] = len(trade_rows) >= 3 and all_focus_dates_present(trade_rows[:3])
+    layer_statuses["trade"] = evaluate_trade_focus_window(
+        trade_rows=trade_rows,
+        trade_db=Path(manifest["trade"]["source_db"])
+        if "trade" in manifest
+        else data_root / "trade.duckdb",
+        trade_run_id=manifest["trade"]["source_run_id"] if "trade" in manifest else "",
+        focus_dates=focus_trading_dates,
+    )
 
     system_row = _query_surface(
         db_path=request.source_system_db,

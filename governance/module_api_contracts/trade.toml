@@ -6,8 +6,9 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-docs-code-20260502-104932.zip",
     "H:/Asteria-Validated/Asteria-trade-freeze-review-20260507-01.zip",
     "H:/Asteria-Validated/Asteria-trade-bounded-proof-build-card-20260507-01.zip",
+    "H:/Asteria-Validated/Asteria-trade-2024-coverage-repair-card-20260509-01.zip",
 ]
-gate_state = "freeze_review_passed; bounded_proof_passed; full_build_not_executed"
+gate_state = "freeze_review_passed; bounded_proof_passed; 2024_coverage_repair_passed; full_build_not_executed"
 formal_db_permission = "released_day_bounded_trade_order_intent_execution_plan_only; fill_ledger_retained_gap_without_evidence_source; full_build_requires_new_card"
 writeback_boundary = "consume released Portfolio Plan only; never write back upstream"
 run_modes = ["bounded", "resume", "audit-only"]
@@ -22,10 +23,10 @@ forbidden_outputs = [
     "system_readout_id",
     "strategy_score",
 ]
-release_conclusion = "docs/04-execution/records/trade/trade-bounded-proof-build-card-20260507-01.conclusion.md"
-evidence_index = "docs/04-execution/records/trade/trade-bounded-proof-build-card-20260507-01.evidence-index.md"
-next_allowed_action = "system_readout_freeze_review"
-proof_status = "bounded_proof_passed; full_build_not_executed"
+release_conclusion = "docs/04-execution/records/trade/trade-2024-coverage-repair-card-20260509-01.conclusion.md"
+evidence_index = "docs/04-execution/records/trade/trade-2024-coverage-repair-card-20260509-01.evidence-index.md"
+next_allowed_action = "system_readout_2024_coverage_repair_card"
+proof_status = "bounded_proof_passed; 2024_coverage_repair_passed; full_build_not_executed"
 input_boundary = "read_only_released_portfolio_plan_bounded_proof_surface"
 
 [[official_inputs]]

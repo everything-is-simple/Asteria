@@ -2,7 +2,7 @@
 
 日期：2026-05-10
 
-状态：`prepared / not executed`
+状态：`completed / downstream breakpoint moved to system_readout`
 
 ## 1. 目标
 
@@ -16,9 +16,10 @@ Trade day surface 做最小 `2024-01-02..2024-01-05` focus-window coverage repai
 |---|---|
 | released Portfolio Plan admission earliest day | `2024-01-02` |
 | released Portfolio Plan target exposure earliest day | `2024-01-05` |
-| released Trade order intent earliest day | `2024-12-31` |
-| released Trade execution plan earliest day | `2024-12-31` |
-| handoff conclusion | `downstream_surface_gap:trade` |
+| released Trade rejection earliest day | `2024-01-02` |
+| released Trade order intent earliest day | `2024-01-05` |
+| released Trade execution plan earliest day | `2024-01-05` |
+| follow-up conclusion | `released_surface_gap:system_readout` |
 
 ## 3. 允许动作
 
@@ -38,6 +39,6 @@ Trade day surface 做最小 `2024-01-02..2024-01-05` focus-window coverage repai
 
 ## 5. 完成标准
 
-- Trade released day surface 对四个 focus trading dates 给出可复核的最小 repair 结果。
-- 若 Trade repair 后首断点下移，则把 live authority truthful 切到下一层 System Readout repair card。
-- 若 Trade repair 后仍不能单点归因，则不得伪装成 Trade 已 ready。
+- Trade released day surface 已对四个 focus trading dates 给出可复核的最小 repair 结果。
+- live authority 已 truthful 切到下一层 `system_readout_2024_coverage_repair_card`。
+- 本卡未把当前状态误报为 Trade full build、System repair passed、full rebuild、daily incremental 或 `v1 complete`。
