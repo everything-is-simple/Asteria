@@ -14,7 +14,11 @@ from asteria.system_readout.coverage_repair_contracts import (
     FOCUS_START,
     SystemReadout2024CoverageRepairRequest,
 )
-from asteria.system_readout.coverage_repair_shared import system_readout_report_dir
+from asteria.system_readout.coverage_repair_shared import (
+    count_rows,
+    key_in_focus_window,
+    system_readout_report_dir,
+)
 from asteria.system_readout.rules import (
     ModuleStatusInput,
     SourceManifestInput,
@@ -186,7 +190,7 @@ def load_released_chain_inputs(
             Path(alpha_row["source_db"]),
             alpha_row["source_run_id"],
         ).items():
-            if not _key_in_focus_window(key, build_request):
+            if not key_in_focus_window(key, build_request.start_date, build_request.end_date):
                 continue
             alpha_candidates.setdefault(key, []).extend(candidate_ids)
     readouts = _build_readout_inputs(
@@ -414,43 +418,20 @@ def _delete_focus_window_rows(con: duckdb.DuckDBPyConnection, run_id: str) -> No
 
 def _system_counts(con: duckdb.DuckDBPyConnection, run_id: str) -> dict[str, int]:
     return {
-        "source_manifest_count": _count_rows(
+        "source_manifest_count": count_rows(
             con, "system_source_manifest", "system_readout_run_id", run_id
         ),
-        "module_status_count": _count_rows(
+        "module_status_count": count_rows(
             con, "system_module_status_snapshot", "system_readout_run_id", run_id
         ),
-        "readout_count": _count_rows(con, "system_chain_readout", "system_readout_run_id", run_id),
-        "summary_count": _count_rows(
+        "readout_count": count_rows(con, "system_chain_readout", "system_readout_run_id", run_id),
+        "summary_count": count_rows(
             con, "system_summary_snapshot", "system_readout_run_id", run_id
         ),
-        "audit_snapshot_count": _count_rows(
+        "audit_snapshot_count": count_rows(
             con, "system_audit_snapshot", "system_readout_run_id", run_id
         ),
     }
-
-
-def _count_rows(
-    con: duckdb.DuckDBPyConnection,
-    table_name: str,
-    key_name: str,
-    run_id: str,
-) -> int:
-    row = con.execute(
-        f"select count(*) from {table_name} where {key_name} = ?",
-        [run_id],
-    ).fetchone()
-    return 0 if row is None or row[0] is None else int(row[0])
-
-
-def _key_in_focus_window(
-    key: tuple[str, date],
-    build_request: SystemReadoutBuildRequest,
-) -> bool:
-    _, row_date = key
-    if build_request.start_date and row_date < build_request.start_date:
-        return False
-    return not (build_request.end_date and row_date > build_request.end_date)
 
 
 def _resolve_latest_manifest_map(
