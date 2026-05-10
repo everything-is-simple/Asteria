@@ -45,6 +45,7 @@ PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION = (
     "coverage_gap_evidence_incomplete_closeout_card"
 )
 PIPELINE_POSITION_REPAIR_ACTION = "position_2024_coverage_repair_card"
+CURRENT_ALLOWED_NEXT_CARD_ACTION = "system_readout_2024_coverage_repair_card"
 CURRENT_ACTIVE_MAINLINE_MODULE = "system_readout"
 CURRENT_PIPELINE_ACTIVE_CARD = (
     'active_card = "docs/04-execution/records/pipeline/'
@@ -92,7 +93,8 @@ PIPELINE_CURRENT_DOC_STATUS = (
     "behavior replay blocked / coverage gap diagnosis executed / MALF natural-year coverage "
     "repair passed / year replay rerun blocked / alpha-signal coverage repair passed / "
     "downstream coverage gap evidence closeout passed / position 2024 coverage repair "
-    "prepared"
+    "passed / portfolio_plan 2024 coverage repair passed / trade 2024 coverage repair "
+    "passed / live next card moved to system_readout repair"
 )
 PIPELINE_FULL_CHAIN_PREPARED_DOC_STATUS = (
     "frozen six-doc set / freeze review passed / single-module orchestration build passed / "
@@ -175,7 +177,8 @@ PIPELINE_CURRENT_FORMAL_DB_PERMISSION = (
     "coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_passed; "
     "year_replay_rerun_blocked; alpha_signal_2024_coverage_repair_passed; "
     "coverage_gap_evidence_incomplete_closeout_passed; "
-    "position_2024_coverage_repair_prepared; full_rebuild_requires_new_card"
+    "position_2024_coverage_repair_passed; portfolio_plan_2024_coverage_repair_passed; "
+    "trade_2024_coverage_repair_passed; full_rebuild_requires_new_card"
 )
 PIPELINE_PREPARED_FORMAL_DB_PERMISSION = (
     "released_single_module_orchestration_ledger_only; "

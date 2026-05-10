@@ -4,10 +4,9 @@ from shutil import copy2, copytree
 from scripts.governance.check_project_governance import run_checks
 from tests.unit.pipeline.support import (
     CURRENT_ACTIVE_MAINLINE_MODULE,
+    CURRENT_ALLOWED_NEXT_CARD_ACTION,
     PIPELINE_BOUNDED_PROOF_CARD_RUN_ID,
     PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID,
-    PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION,
-    PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_RUN_ID,
     PIPELINE_CURRENT_DOC_STATUS,
     PIPELINE_DRY_RUN_CARD_ACTION,
     PIPELINE_DRY_RUN_CARD_RUN_ID,
@@ -65,14 +64,10 @@ def test_pipeline_history_preserves_single_module_pass_scope_freeze_and_dry_run_
     ).read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == CURRENT_ACTIVE_MAINLINE_MODULE
-    assert registry["current_allowed_next_card"] == (
-        PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION
-    )
+    assert registry["current_allowed_next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["pipeline"]["status"] == "released"
     assert modules["pipeline"]["doc_status"] == PIPELINE_CURRENT_DOC_STATUS
-    assert modules["pipeline"]["next_card"] == (
-        PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION
-    )
+    assert modules["pipeline"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["pipeline"]["proof_run_id"] == PIPELINE_BOUNDED_PROOF_CARD_RUN_ID
     assert PIPELINE_RUN_ID in conclusion_index
     assert PIPELINE_DRY_RUN_SCOPE_FREEZE_RUN_ID in conclusion_index
@@ -102,8 +97,11 @@ def test_pipeline_history_preserves_single_module_pass_scope_freeze_and_dry_run_
         f"[next prepared card]({PIPELINE_DRY_RUN_CARD_RUN_ID}.card.md)" in pipeline_scope_conclusion
     )
     assert "状态：`passed`" in pipeline_dry_run_card
-    prepared_queue = conclusion_index.split("## 3. 当前已准备但未执行的下一卡", 1)[1]
-    assert PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_RUN_ID in prepared_queue
+    assert (
+        "当前唯一 prepared next card 已切到 `position-2024-coverage-repair-card-20260509-01`"
+        in (conclusion_index)
+    )
+    assert "system-readout-2024-coverage-repair-card-20260509-01" in conclusion_index
 
 
 def test_project_governance_rejects_reopening_closed_single_module_runtime_card(
@@ -114,14 +112,11 @@ def test_project_governance_rejects_reopening_closed_single_module_runtime_card(
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            (
-                "current_allowed_next_card = "
-                f'"{PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION}"'
-            ),
+            (f'current_allowed_next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"'),
             'current_allowed_next_card = "pipeline_single_module_orchestration_build_card"',
             1,
         ).replace(
-            f'next_card = "{PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION}"',
+            f'next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"',
             'next_card = "pipeline_single_module_orchestration_build_card"',
             1,
         ),
