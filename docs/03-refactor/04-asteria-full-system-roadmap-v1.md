@@ -205,7 +205,7 @@ Pipeline 只调度和记录
 当前唯一 live next card：
 
 ```text
-system-readout-2024-coverage-repair-card-20260509-01
+pipeline-year-replay-source-selection-repair-card-20260509-01
 ```
 
 当前已知 live truth：
@@ -237,7 +237,7 @@ system-readout-2024-coverage-repair-card-20260509-01
 
 | 优先级 | 候选卡 | 说明 |
 |---|---|---|
-| P0 | `system-readout-2024-coverage-repair-card-20260509-01` | Trade repair 已真实收口后，下一个唯一 live next card |
+| P0 | `pipeline-year-replay-source-selection-repair-card-20260509-01` | System Readout repair 已真实收口后，当前唯一 live next card |
 | P1 | `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` | 仅作近程 blocked backlog 参考，不得压过当前唯一下一卡 |
 | P2 | `trade-2024-coverage-repair-card-20260509-01` | 已 completed；不再是 live next card |
 | P2 | `portfolio-plan-2024-coverage-repair-card-20260509-01` | 已 completed；不再是 live next card |
@@ -249,7 +249,7 @@ system-readout-2024-coverage-repair-card-20260509-01
 
 | 层级 | 作用 | 当前内容 |
 |---|---|---|
-| 层 1 | 当前 live next card | `system-readout-2024-coverage-repair-card-20260509-01` |
+| 层 1 | 当前 live next card | `pipeline-year-replay-source-selection-repair-card-20260509-01` |
 | 层 2 | 近程 backlog candidates | `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` |
 | 层 3 | 长期阶段 11 队列 | `system-wide-daily-dirty-scope-protocol-card`，`data-ledger-daily-incremental-hardening-card`，`malf-daily-incremental-ledger-build-card`，`alpha-signal-daily-incremental-ledger-build-card`，`downstream-daily-impact-ledger-schema-card`，`downstream-daily-incremental-runner-build-card`，`pipeline-full-daily-incremental-chain-build-card`，`full-rebuild-and-daily-incremental-release-closeout-card` |
 
