@@ -44,6 +44,7 @@ PIPELINE_ALPHA_SIGNAL_REPAIR_ACTION = "alpha_signal_2024_coverage_repair_card"
 PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION = (
     "coverage_gap_evidence_incomplete_closeout_card"
 )
+PIPELINE_POSITION_REPAIR_ACTION = "position_2024_coverage_repair_card"
 CURRENT_ACTIVE_MAINLINE_MODULE = "system_readout"
 CURRENT_PIPELINE_ACTIVE_CARD = (
     'active_card = "docs/04-execution/records/pipeline/'
@@ -90,7 +91,8 @@ PIPELINE_CURRENT_DOC_STATUS = (
     "full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy "
     "behavior replay blocked / coverage gap diagnosis executed / MALF natural-year coverage "
     "repair passed / year replay rerun blocked / alpha-signal coverage repair passed / "
-    "downstream coverage gap evidence closeout prepared"
+    "downstream coverage gap evidence closeout passed / position 2024 coverage repair "
+    "prepared"
 )
 PIPELINE_FULL_CHAIN_PREPARED_DOC_STATUS = (
     "frozen six-doc set / freeze review passed / single-module orchestration build passed / "
@@ -149,7 +151,7 @@ PIPELINE_CURRENT_GATE_STATE = (
     "full_chain_day_bounded_proof_passed; one_year_strategy_behavior_replay_blocked; "
     "coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_passed; "
     "year_replay_rerun_blocked; alpha_signal_2024_coverage_repair_passed; "
-    "coverage_gap_evidence_incomplete_closeout_prepared"
+    "coverage_gap_evidence_incomplete_closeout_passed; position_2024_coverage_repair_prepared"
 )
 PIPELINE_PREPARED_GATE_STATE = (
     "single_module_orchestration_build_passed; full_chain_dry_run_prepared; full_chain_not_executed"
@@ -172,7 +174,8 @@ PIPELINE_CURRENT_FORMAL_DB_PERMISSION = (
     "one_year_strategy_behavior_replay_blocked_incomplete_natural_year_coverage; "
     "coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_passed; "
     "year_replay_rerun_blocked; alpha_signal_2024_coverage_repair_passed; "
-    "coverage_gap_evidence_incomplete_closeout_prepared; full_rebuild_requires_new_card"
+    "coverage_gap_evidence_incomplete_closeout_passed; "
+    "position_2024_coverage_repair_prepared; full_rebuild_requires_new_card"
 )
 PIPELINE_PREPARED_FORMAL_DB_PERMISSION = (
     "released_single_module_orchestration_ledger_only; "

@@ -142,13 +142,13 @@ System Readout freeze review
 当前已打开执行卡：
 
 ```text
-coverage_gap_evidence_incomplete_closeout_card
+position_2024_coverage_repair_card
 ```
 
 当前只允许施工对象：
 
 ```text
-downstream coverage gap evidence closeout
+Position 2024 released day surface repair
 ```
 
 除 MALF day proof、Alpha freeze review、Alpha bounded proof passed、Signal freeze
@@ -167,7 +167,7 @@ Signal construction、Pipeline 或任何下游施工。Signal freeze review pass
 只允许 Signal bounded proof build card。Signal bounded proof passed 后，Position freeze review
 reentry 已通过；随后上游完整性总控卡裁定在最终完整目标标准下暂停 Position bounded proof
 施工。Data reference target maintenance scope 已通过并冻结下一张 Data closeout 范围；
-Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review、Pipeline build/runtime authorization scope freeze、Pipeline single-module orchestration build、Pipeline full-chain dry-run authorization scope freeze、Pipeline full-chain dry-run、Pipeline full-chain bounded proof authorization scope freeze、Pipeline full-chain bounded proof build、Pipeline full-chain bounded proof closeout、Pipeline one-year strategy behavior replay、year replay coverage gap diagnosis、MALF natural-year coverage repair、year replay rerun 与 Alpha/Signal 2024 coverage repair 已执行；当前唯一下一卡是 `coverage_gap_evidence_incomplete_closeout_card`，只允许 downstream coverage gap evidence closeout，仍不允许 Trade full build、Position full build、System full build、full rebuild、daily incremental 或 `v1 complete` 扩权。
+Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade freeze review、Trade bounded proof build、System Readout freeze review、System Readout bounded proof build、Pipeline freeze review、Pipeline build/runtime authorization scope freeze、Pipeline single-module orchestration build、Pipeline full-chain dry-run authorization scope freeze、Pipeline full-chain dry-run、Pipeline full-chain bounded proof authorization scope freeze、Pipeline full-chain bounded proof build、Pipeline full-chain bounded proof closeout、Pipeline one-year strategy behavior replay、year replay coverage gap diagnosis、MALF natural-year coverage repair、year replay rerun、Alpha/Signal 2024 coverage repair 与 downstream coverage gap evidence closeout 都已执行；当前唯一下一卡是 `position_2024_coverage_repair_card`，只允许 Position 2024 released day surface repair，仍不允许 Portfolio Plan full build、Trade full build、System full build、full rebuild、daily incremental 或 `v1 complete` 扩权。
 
 ## 6. 硬边界
 

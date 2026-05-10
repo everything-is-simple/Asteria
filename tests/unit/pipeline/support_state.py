@@ -7,7 +7,6 @@ from tests.unit.pipeline.constants import (
     MALF_BASELINE_PROOF_STATUS,
     MALF_CURRENT_DOC_STATUS,
     MALF_CURRENT_PROOF_STATUS,
-    PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION,
     PIPELINE_CURRENT_DOC_STATUS,
     PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
     PIPELINE_CURRENT_GATE_STATE,
@@ -17,7 +16,50 @@ from tests.unit.pipeline.constants import (
     PIPELINE_MALF_REPAIR_PREPARED_FORMAL_DB_PERMISSION,
     PIPELINE_MALF_REPAIR_PREPARED_GATE_STATE,
     PIPELINE_MALF_REPAIR_RUN_ID,
+    PIPELINE_POSITION_REPAIR_ACTION,
 )
+
+POSITION_CURRENT_DOC_STATUS = (
+    'doc_status = "freeze review passed / release decision passed / bounded proof passed / '
+    '2024 coverage repair prepared / full build not executed"'
+)
+POSITION_BASELINE_DOC_STATUS = (
+    'doc_status = "freeze review passed / release decision passed / bounded proof passed / '
+    'full build not executed"'
+)
+POSITION_CURRENT_ACTIVE_CARD = (
+    'active_card = "docs/04-execution/records/position/'
+    'position-2024-coverage-repair-card-20260509-01.card.md"'
+)
+POSITION_BASELINE_ACTIVE_CARD = (
+    'active_card = "docs/04-execution/records/position/'
+    'position-bounded-proof-build-card-20260506-01.card.md"'
+)
+POSITION_CURRENT_PAUSE = (
+    'position_construction_pause = "bounded_proof_passed; '
+    '2024_coverage_repair_prepared; full_build_requires_new_card"'
+)
+POSITION_BASELINE_PAUSE = (
+    'position_construction_pause = "bounded_proof_passed; full_build_requires_new_card"'
+)
+POSITION_CURRENT_QUEUE = (
+    'pre_position_repair_queue = "data_reference_target_maintenance_scope -> '
+    "data_reference_target_maintenance_closeout -> malf_week_bounded_proof_build -> "
+    "malf_month_bounded_proof_build -> alpha_production_builder_hardening -> "
+    "signal_production_builder_hardening -> upstream_pre_position_release_decision; "
+    'closed=position_bounded_proof_build_card; current=position_2024_coverage_repair_card"'
+)
+POSITION_BASELINE_QUEUE = (
+    'pre_position_repair_queue = "data_reference_target_maintenance_scope -> '
+    "data_reference_target_maintenance_closeout -> malf_week_bounded_proof_build -> "
+    "malf_month_bounded_proof_build -> alpha_production_builder_hardening -> "
+    "signal_production_builder_hardening -> upstream_pre_position_release_decision; "
+    'closed=position_bounded_proof_build_card; current=portfolio_plan_freeze_review"'
+)
+POSITION_CURRENT_PROOF_STATUS = (
+    'proof_status = "bounded_proof_passed; 2024_coverage_repair_prepared; full_build_not_executed"'
+)
+POSITION_BASELINE_PROOF_STATUS = 'proof_status = "bounded_proof_passed; full_build_not_executed"'
 
 
 def rewind_current_malf_repair_state(registry_text: str) -> str:
@@ -33,10 +75,7 @@ def rewind_current_malf_repair_state(registry_text: str) -> str:
             1,
         )
         .replace(
-            (
-                "current_allowed_next_card = "
-                f'"{PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION}"'
-            ),
+            (f'current_allowed_next_card = "{PIPELINE_POSITION_REPAIR_ACTION}"'),
             f'current_allowed_next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
             1,
         )
@@ -63,7 +102,7 @@ def rewind_current_malf_repair_state(registry_text: str) -> str:
             1,
         )
         .replace(
-            f'next_card = "{PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION}"',
+            f'next_card = "{PIPELINE_POSITION_REPAIR_ACTION}"',
             f'next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
             1,
         )
@@ -78,13 +117,48 @@ def rewind_current_malf_repair_state(registry_text: str) -> str:
             1,
         )
         .replace(
-            f'next_allowed_action = "{PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION}"',
+            f'next_allowed_action = "{PIPELINE_POSITION_REPAIR_ACTION}"',
             'next_allowed_action = "malf_2024_natural_year_coverage_repair_card"',
             1,
         )
         .replace(
             CURRENT_PIPELINE_ACTIVE_CARD,
             PIPELINE_MALF_REPAIR_ACTIVE_CARD,
+            1,
+        )
+        .replace(
+            POSITION_CURRENT_DOC_STATUS,
+            POSITION_BASELINE_DOC_STATUS,
+            1,
+        )
+        .replace(
+            'next_card = "position_2024_coverage_repair_card"',
+            'next_card = "portfolio_plan_freeze_review"',
+            1,
+        )
+        .replace(
+            POSITION_CURRENT_ACTIVE_CARD,
+            POSITION_BASELINE_ACTIVE_CARD,
+            1,
+        )
+        .replace(
+            POSITION_CURRENT_PAUSE,
+            POSITION_BASELINE_PAUSE,
+            1,
+        )
+        .replace(
+            POSITION_CURRENT_QUEUE,
+            POSITION_BASELINE_QUEUE,
+            1,
+        )
+        .replace(
+            POSITION_CURRENT_PROOF_STATUS,
+            POSITION_BASELINE_PROOF_STATUS,
+            1,
+        )
+        .replace(
+            'next_allowed_action = "position_2024_coverage_repair_card"',
+            'next_allowed_action = "portfolio_plan_freeze_review"',
             1,
         )
     )

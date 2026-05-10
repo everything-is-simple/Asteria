@@ -24,14 +24,14 @@ flowchart LR
 
 ## 1.1 当前门禁状态
 
-截至 `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` blocked：
+截至 `coverage-gap-evidence-incomplete-closeout-card-20260509-01` passed：
 
 | 项 | 当前状态 |
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal`; `Position`; `Portfolio Plan`; `Trade`; `System Readout` |
 | 当前已通过 bounded proof | `MALF day`; `MALF week`; `MALF month`; `Alpha day`; `Signal day`; `Position day`; `Portfolio Plan day`; `Trade bounded proof`; `System Readout day bounded proof`; `MALF v1.4 day runtime sync implementation` |
-| 当前已准备执行卡 | `coverage_gap_evidence_incomplete_closeout_card` |
-| 当前只允许施工 | downstream coverage gap evidence closeout |
+| 当前已准备执行卡 | `position_2024_coverage_repair_card` |
+| 当前只允许施工 | Position 2024 released day surface repair |
 | 当前仍禁止 | Position full build、Portfolio Plan full build、Trade full build、System full build、full rebuild、daily incremental、resume/idempotence、v1 complete |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Data Foundation
@@ -66,10 +66,11 @@ Data `2024-01-02..2024-01-05` 已覆盖，而 `malf-2024-natural-year-coverage-r
 `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` 已真实执行，但
 released observation chain 仍从 `2024-01-08` 起步。随后
 `alpha-signal-2024-coverage-repair-card-20260509-01` 已通过，并把 released Alpha / Signal day
-surface 前移到 `2024-01-02`；但临时 system probe diagnosis 已确认新的首断点已下移到
-downstream `position`。当前唯一 prepared next card 已切到
-`coverage_gap_evidence_incomplete_closeout_card`。当前只允许 downstream coverage gap evidence closeout，
-不允许扩成 Data / System / Pipeline semantic repair，或打开 full rebuild / v1 complete。
+surface 前移到 `2024-01-02`；随后
+`coverage-gap-evidence-incomplete-closeout-card-20260509-01` 已真实执行并通过，确认 released
+Position / Portfolio Plan / Trade 的最早 day surface 都从 `2024-01-09` 起步，因此 live authority
+已切到 `position_2024_coverage_repair_card`。当前只允许 Position 2024 released day surface
+repair，不允许扩成 Portfolio Plan / Trade / System / Pipeline semantic repair，或打开 full rebuild / v1 complete。
 
 ## 2. 主线模块
 

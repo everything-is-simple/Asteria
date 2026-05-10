@@ -15,7 +15,6 @@ from tests.unit.pipeline.constants import (
     PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_CONCLUSION,
     PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_EVIDENCE_INDEX,
     PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID,
-    PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION,
     PIPELINE_CURRENT_DOC_STATUS,
     PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
     PIPELINE_CURRENT_GATE_STATE,
@@ -31,6 +30,7 @@ from tests.unit.pipeline.constants import (
     PIPELINE_MALF_REPAIR_PREPARED_DOC_STATUS,
     PIPELINE_MALF_REPAIR_PREPARED_FORMAL_DB_PERMISSION,
     PIPELINE_MALF_REPAIR_PREPARED_GATE_STATE,
+    PIPELINE_POSITION_REPAIR_ACTION,
     PIPELINE_PREPARED_DOC_STATUS,
     PIPELINE_PREPARED_FORMAL_DB_PERMISSION,
     PIPELINE_PREPARED_GATE_STATE,
@@ -214,7 +214,7 @@ def build_full_chain_dry_run_prepared_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'next_allowed_action = "{PIPELINE_MALF_REPAIR_ACTION}"',
+            f'next_allowed_action = "{PIPELINE_POSITION_REPAIR_ACTION}"',
             f'next_allowed_action = "{PIPELINE_DRY_RUN_CARD_ACTION}"',
             1,
         )
@@ -322,7 +322,7 @@ def build_bounded_proof_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'next_allowed_action = "{PIPELINE_MALF_REPAIR_ACTION}"',
+            f'next_allowed_action = "{PIPELINE_POSITION_REPAIR_ACTION}"',
             f'next_allowed_action = "{PIPELINE_BOUNDED_PROOF_CARD_ACTION}"',
             1,
         )
@@ -414,7 +414,7 @@ def build_year_replay_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            f'next_allowed_action = "{PIPELINE_MALF_REPAIR_ACTION}"',
+            f'next_allowed_action = "{PIPELINE_POSITION_REPAIR_ACTION}"',
             f'next_allowed_action = "{PIPELINE_YEAR_REPLAY_CARD_ACTION}"',
             1,
         )
@@ -447,16 +447,16 @@ def build_year_replay_rerun_authorized_repo(tmp_path: Path) -> Path:
         return repo_root
     registry_path.write_text(
         registry_text.replace(
-            (
-                "current_allowed_next_card = "
-                f'"{PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION}"'
-            ),
+            (f'current_allowed_next_card = "{PIPELINE_POSITION_REPAIR_ACTION}"'),
             f'current_allowed_next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
             1,
         )
         .replace(
-            f'next_card = "{PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION}"',
-            f'next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
+            (f'next_card = "{PIPELINE_POSITION_REPAIR_ACTION}"\n{CURRENT_PIPELINE_ACTIVE_CARD}'),
+            (
+                f'next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"\n'
+                f"{_active_card_line(PIPELINE_YEAR_REPLAY_RERUN_CARD_RUN_ID)}"
+            ),
             1,
         )
         .replace(
@@ -471,8 +471,8 @@ def build_year_replay_rerun_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            CURRENT_PIPELINE_ACTIVE_CARD,
-            _active_card_line(PIPELINE_YEAR_REPLAY_RERUN_CARD_RUN_ID),
+            f'next_allowed_action = "{PIPELINE_POSITION_REPAIR_ACTION}"',
+            f'next_allowed_action = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
             1,
         ),
         encoding="utf-8",

@@ -2,7 +2,7 @@
 
 日期：2026-05-09
 
-状态：`prepared / not executed`
+状态：`passed`
 
 ## 1. 目标
 
@@ -19,7 +19,7 @@ repair 序列。
 | released Signal earliest day | `2024-01-02` |
 | released Position earliest day | `2024-01-09` |
 | released Portfolio Plan earliest day | `2024-01-09` |
-| released Trade order intent earliest day | `2024-12-31` |
+| released Trade earliest day | `2024-01-09` |
 | temp system probe diagnosis | `downstream_surface_gap:position` |
 
 ## 3. 允许动作
@@ -43,3 +43,20 @@ repair 序列。
 - 对 downstream released day surface 的最早断点给出单点、可复核的 closeout 结论。
 - 若能锁定唯一下一模块 repair，则把 live authority 切到该 repair card。
 - 若仍无法单点归因，truthful 保留 `evidence_incomplete`，不得伪装成模块已 ready。
+
+## 6. 实际结果
+
+本卡已正式执行，并把当前唯一 prepared next card 切到：
+
+```text
+position-2024-coverage-repair-card-20260509-01
+```
+
+closeout 结论如下：
+
+- released Alpha earliest day = `2024-01-02`
+- released Signal earliest day = `2024-01-02`
+- released Position earliest day = `2024-01-09`
+- released Portfolio Plan earliest day = `2024-01-09`
+- released Trade earliest day = `2024-01-09`
+- truthful attribution = `downstream_surface_gap:position`

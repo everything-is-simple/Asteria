@@ -108,6 +108,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Pipeline | `pipeline-one-year-strategy-behavior-replay-rerun-handoff-20260509-01` | `passed` | [conclusion](records/pipeline/pipeline-one-year-strategy-behavior-replay-rerun-handoff-20260509-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-one-year-strategy-behavior-replay-rerun-handoff-20260509-01.evidence-index.md) |
 | Pipeline | `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` | `blocked` | [conclusion](records/pipeline/pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01.evidence-index.md) |
 | Pipeline | `alpha-signal-2024-coverage-repair-card-20260509-01` | `passed` | [conclusion](records/pipeline/alpha-signal-2024-coverage-repair-card-20260509-01.conclusion.md) | [evidence-index](records/pipeline/alpha-signal-2024-coverage-repair-card-20260509-01.evidence-index.md) |
+| Pipeline | `coverage-gap-evidence-incomplete-closeout-card-20260509-01` | `passed` | [conclusion](records/pipeline/coverage-gap-evidence-incomplete-closeout-card-20260509-01.conclusion.md) | [evidence-index](records/pipeline/coverage-gap-evidence-incomplete-closeout-card-20260509-01.evidence-index.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
@@ -174,7 +175,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   随后 `pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01` 也已真实执行，但继续 `blocked`：
   released observation chain 仍从 `2024-01-08` 起步，且 rerun source lock 未消费 repaired MALF run。`alpha-signal-2024-coverage-repair-card-20260509-01`
   现已通过，并把 released Alpha / Signal day surface 前移到 `2024-01-02`；但新的首断点已下移到 downstream `position`，
-  当前唯一 prepared next card 已切到 `coverage-gap-evidence-incomplete-closeout-card-20260509-01`。
+  随后 `coverage-gap-evidence-incomplete-closeout-card-20260509-01` 已真实执行并通过，当前唯一 prepared next card 已切到 `position-2024-coverage-repair-card-20260509-01`。
   后半场 repair phase roadmap 已收敛回 `docs/03-refactor/04-asteria-full-system-roadmap-v1.md` 单点维护；旧第二张
   repair roadmap 已删除，不再承载独立状态机。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
@@ -184,7 +185,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 以下只登记尚未执行的 prepared card 队列，不作为 passed conclusion：
 
 ```text
-coverage-gap-evidence-incomplete-closeout-card-20260509-01
+position-2024-coverage-repair-card-20260509-01
 ```
 
 ## 3.1 Newly Passed Pre-Position Repair Card

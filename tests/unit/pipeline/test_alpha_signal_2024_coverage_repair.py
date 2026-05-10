@@ -17,7 +17,10 @@ from tests.unit.pipeline.alpha_signal_2024_coverage_repair_support import (
     repair_request,
     seed_live_released_chain,
 )
-from tests.unit.pipeline.support import build_governance_repo
+from tests.unit.pipeline.support import (
+    build_governance_repo,
+    build_year_replay_rerun_authorized_repo,
+)
 
 from asteria.pipeline.alpha_signal_2024_coverage_repair import (
     build_merged_malf_service_day,
@@ -270,8 +273,11 @@ def test_repair_orchestration_rewrites_day_only_and_preserves_released_run_ids(
 
 def test_followup_uses_temp_repo_view_and_reports_truthful_next_card(tmp_path: Path) -> None:
     seed_live_released_chain(tmp_path)
-    live_repo_root = build_governance_repo(tmp_path)
-    request = repair_request(tmp_path, followup=True, repo_root=live_repo_root)
+    (tmp_path / "live").mkdir()
+    (tmp_path / "rerun").mkdir()
+    live_repo_root = build_governance_repo(tmp_path / "live")
+    rerun_repo_root = build_year_replay_rerun_authorized_repo(tmp_path / "rerun")
+    request = repair_request(tmp_path, followup=True, repo_root=rerun_repo_root)
 
     summary = run_alpha_signal_2024_coverage_repair(request)
     live_registry = (live_repo_root / "governance" / "module_gate_registry.toml").read_text(
@@ -287,10 +293,7 @@ def test_followup_uses_temp_repo_view_and_reports_truthful_next_card(tmp_path: P
         "system-readout-2024-coverage-repair-card-20260509-01",
         "pipeline-year-replay-source-selection-repair-card-20260509-01",
     }
-    assert (
-        'current_allowed_next_card = "coverage_gap_evidence_incomplete_closeout_card"'
-        in live_registry
-    )
+    assert 'current_allowed_next_card = "position_2024_coverage_repair_card"' in live_registry
     assert (
         'current_allowed_next_card = "pipeline_one_year_strategy_behavior_replay_rerun_build_card"'
         in followup_registry

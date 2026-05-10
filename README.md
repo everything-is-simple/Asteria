@@ -121,8 +121,10 @@ blocked：released observation chain 继续从旧的 MALF/Alpha/Signal 链路起
 仍是 `2024-01-08`，且未锁到 repaired MALF run。随后
 `alpha-signal-2024-coverage-repair-card-20260509-01` 已通过，把 released Alpha / Signal day
 surface 前移到 `2024-01-02`；但临时 system probe diagnosis 已确认新的首断点已下移到
-downstream `position`。当前唯一 prepared next card 已切到
-`coverage-gap-evidence-incomplete-closeout-card-20260509-01`；本轮仍不得解释成 full rebuild、
+downstream `position`。随后 `coverage-gap-evidence-incomplete-closeout-card-20260509-01`
+也已真实执行并通过，把 live authority 进一步切到
+`position-2024-coverage-repair-card-20260509-01`；当前只允许 Position 2024 released day
+surface repair，仍不得解释成 Portfolio Plan / Trade / System full build、full rebuild、
 daily incremental、resume/idempotence 或 `v1 complete` 授权。
 仍不能宣称全主线数据已经齐全或完整证券主数据已齐。
 

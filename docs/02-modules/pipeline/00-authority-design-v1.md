@@ -2,13 +2,13 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / coverage gap diagnosis executed / MALF natural-year coverage repair passed / year replay rerun blocked / alpha-signal coverage repair passed / downstream coverage gap evidence closeout prepared
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / coverage gap diagnosis executed / MALF natural-year coverage repair passed / year replay rerun blocked / alpha-signal coverage repair passed / downstream coverage gap evidence closeout passed / position 2024 coverage repair prepared
 
 ## 1. 模块定义
 
 Pipeline 是 Asteria 的编排层与治理记录层，不是业务语义模块，也不属于策略主线。
 
-Pipeline 当前已释放三层运行事实：`system_readout` 单模块 orchestration、`full_chain_day` dry-run、以及 `full_chain_day` bounded proof。此后有两次 year replay 类执行：第一次 `year_replay` 因完整自然年不足而 blocked；第二次 `year_replay_rerun` 也已真实执行；随后 `alpha-signal-2024-coverage-repair-card-20260509-01` 已通过，把 released Alpha / Signal day surface 前移到 `2024-01-02`。当前下一步已切到 downstream coverage gap evidence closeout。它只记录运行、步骤、门禁快照、构建清单和审计结果；不定义 MALF、Alpha、Signal、Position、Portfolio Plan、Trade 或 System Readout 的业务含义，不回写业务真值，不以自身状态代替模块 release 状态。
+Pipeline 当前已释放三层运行事实：`system_readout` 单模块 orchestration、`full_chain_day` dry-run、以及 `full_chain_day` bounded proof。此后有两次 year replay 类执行：第一次 `year_replay` 因完整自然年不足而 blocked；第二次 `year_replay_rerun` 也已真实执行；随后 `alpha-signal-2024-coverage-repair-card-20260509-01` 已通过，把 released Alpha / Signal day surface 前移到 `2024-01-02`；再随后 `coverage-gap-evidence-incomplete-closeout-card-20260509-01` 已通过，把当前下一步收口到 Position 2024 released day surface repair。它只记录运行、步骤、门禁快照、构建清单和审计结果；不定义 MALF、Alpha、Signal、Position、Portfolio Plan、Trade 或 System Readout 的业务含义，不回写业务真值，不以自身状态代替模块 release 状态。
 
 ## 2. 当前放行事实
 
@@ -35,7 +35,7 @@ alpha-signal-2024-coverage-repair-card-20260509-01 passed
 | formal DB | `H:\Asteria-data\pipeline.duckdb` 已创建 |
 | released module scope | `system_readout` single-module orchestration + `full_chain_day` dry-run + `full_chain_day` bounded proof |
 | released run modes | `bounded / dry-run / resume / audit-only` |
-| current next card | `coverage_gap_evidence_incomplete_closeout_card` |
+| current next card | `position_2024_coverage_repair_card` |
 | full-chain dry-run | 已执行 / 已通过 |
 | full-chain bounded proof | 已执行 / 已通过 |
 | one-year strategy behavior replay | 已执行 / `blocked`（完整自然年覆盖不足） |
@@ -107,8 +107,9 @@ flowchart LR
 
 ## 8. 下一步
 
-当前 live `current_allowed_next_card` 是 `coverage_gap_evidence_incomplete_closeout_card`。
-`alpha-signal-2024-coverage-repair-card-20260509-01` 已证明：
-released Alpha / Signal day surface 已前移到 `2024-01-02`，但 downstream released day surface 仍从
-`Position 2024-01-09` 开始。因此当前最小剩余断点已不再是 MALF，也不再是 Alpha / Signal；不允许直接跳去
-System Readout repair、Pipeline source-selection repair、full rebuild、daily incremental 或 `v1 complete`。
+当前 live `current_allowed_next_card` 是 `position_2024_coverage_repair_card`。
+`coverage-gap-evidence-incomplete-closeout-card-20260509-01` 已证明：released Alpha / Signal day
+surface 已前移到 `2024-01-02`，而 released Position / Portfolio Plan / Trade day surface 的最早日期
+都仍是 `2024-01-09`。因此当前唯一 live repair 施工位已经收口到 Position，不允许直接跳去
+Portfolio Plan repair、Trade repair、System Readout repair、Pipeline source-selection repair、
+full rebuild、daily incremental 或 `v1 complete`。
