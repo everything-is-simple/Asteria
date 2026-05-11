@@ -18,8 +18,30 @@ def _seed_clean_data(root: Path) -> None:
     meta_db = root / "market_meta.duckdb"
     bootstrap_raw_market_database(raw_db)
     bootstrap_market_base_day_database(base_db)
+    for timeframe in ("week", "month"):
+        bootstrap_market_base_day_database(root / f"market_base_{timeframe}.duckdb")
     bootstrap_market_meta_database(meta_db)
     with duckdb.connect(str(raw_db)) as con:
+        con.execute(
+            """
+            insert into raw_market_sync_run
+            values ('run-1', 'data_bootstrap', 'daily_incremental', 'stock', 'backward',
+                    'H:\\tdx_offline_Data', 'completed', 2, 2, 'data-bootstrap-v1',
+                    current_timestamp)
+            """
+        )
+        con.execute(
+            """
+            insert into raw_market_source_file
+            values
+            ('source-1', 'tdx_offline_txt', 'run-1', 'stock', '600000.SH',
+             'backward', 'source-path-1', 100, current_timestamp, 'rev-1',
+             'run-1', 'data-bootstrap-v1', current_timestamp),
+            ('source-2', 'tdx_offline_txt', 'run-1', 'stock', '600000.SH',
+             'none', 'source-path-2', 100, current_timestamp, 'rev-2',
+             'run-1', 'data-bootstrap-v1', current_timestamp)
+            """
+        )
         con.execute(
             """
             insert into raw_market_bar
@@ -33,6 +55,13 @@ def _seed_clean_data(root: Path) -> None:
             """
         )
     with duckdb.connect(str(base_db)) as con:
+        con.execute(
+            """
+            insert into market_base_run
+            values ('run-1', 'data_bootstrap', 'daily_incremental', 'stock', 'backward',
+                    'completed', 2, 2, 1, 'data-bootstrap-v1', current_timestamp)
+            """
+        )
         con.execute(
             """
             insert into market_base_bar
@@ -57,6 +86,52 @@ def _seed_clean_data(root: Path) -> None:
              date '2024-01-02', 'run-1', 'data-bootstrap-v1', current_timestamp)
             """
         )
+        con.execute(
+            """
+            insert into market_base_dirty_scope
+            values ('600000.SH|day|backward|run-1', '600000.SH', 'stock', 'day',
+                    'backward', date '2024-01-02', date '2024-01-02',
+                    'source_file_changed', 'open', 'run-1', 'run-1',
+                    'data-bootstrap-v1', current_timestamp)
+            """
+        )
+    for timeframe in ("week", "month"):
+        with duckdb.connect(str(root / f"market_base_{timeframe}.duckdb")) as con:
+            con.execute(
+                """
+                insert into market_base_run
+                values ('run-1', 'legacy_data_import', 'full', 'stock', 'backward',
+                        'completed', 1, 1, 1, 'data-bootstrap-v1', current_timestamp)
+                """
+            )
+            con.execute(
+                """
+                insert into market_base_bar
+                values ('600000.SH', 'stock', ?, date '2024-01-05', date '2024-01-05',
+                        'analysis_price_line', 'backward', 10, 11, 9, 10.5, 100, 1050,
+                        'legacy_lifespan', 'run-1', 'rev-1', 'source-path-1', 'run-1',
+                        'data-bootstrap-v1', current_timestamp)
+                """,
+                [timeframe],
+            )
+            con.execute(
+                """
+                insert into market_base_latest
+                values ('600000.SH', 'stock', ?, 'analysis_price_line', 'backward',
+                        date '2024-01-05', 'run-1', 'data-bootstrap-v1',
+                        current_timestamp)
+                """,
+                [timeframe],
+            )
+            con.execute(
+                """
+                insert into market_base_dirty_scope
+                values (?, '600000.SH', 'stock', ?, 'backward', date '2024-01-05',
+                        date '2024-01-05', 'legacy_import', 'open', 'run-1',
+                        'run-1', 'data-bootstrap-v1', current_timestamp)
+                """,
+                [f"600000.SH|{timeframe}|backward|run-1", timeframe],
+            )
     with duckdb.connect(str(meta_db)) as con:
         con.execute(
             """
@@ -113,7 +188,23 @@ def test_production_audit_passes_clean_analysis_and_execution_lines(tmp_path: Pa
     assert summary.status == "passed"
     assert summary.hard_fail_count == 0
     assert summary.checks["market_base_day.duckdb:price_line_mapping"] == "passed"
+    assert summary.checks["raw_market.duckdb:source_manifest_diff_ready"] == "passed"
+    assert summary.checks["market_base_week.duckdb:dirty_scope_present"] == "passed"
+    assert summary.checks["market_base_month.duckdb:dirty_scope_present"] == "passed"
     assert summary.checks["market_meta.duckdb:industry_classification_source_policy"] == "passed"
+
+
+def test_production_audit_fails_when_week_month_ledgers_are_missing(tmp_path: Path) -> None:
+    data_root = tmp_path / "asteria-data"
+    _seed_clean_data(data_root)
+    (data_root / "market_base_week.duckdb").unlink()
+    (data_root / "market_base_month.duckdb").unlink()
+
+    summary = run_data_production_audit(data_root=data_root, run_id="audit-missing-wm-001")
+
+    assert summary.status == "failed"
+    assert summary.checks["market_base_week.duckdb:exists"] == "failed"
+    assert summary.checks["market_base_month.duckdb:exists"] == "failed"
 
 
 def test_production_audit_accepts_sw_industry_snapshot_rows(tmp_path: Path) -> None:

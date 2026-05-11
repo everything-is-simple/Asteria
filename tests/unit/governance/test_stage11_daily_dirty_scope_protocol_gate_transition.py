@@ -7,6 +7,7 @@ from tests.unit.pipeline.support import (
     CURRENT_ALLOWED_NEXT_CARD_ACTION,
     DATA_DAILY_HARDENING_ACTION,
     DATA_DAILY_HARDENING_RUN_ID,
+    MALF_DAILY_INCREMENTAL_LEDGER_RUN_ID,
     PIPELINE_CURRENT_DOC_STATUS,
     PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
     PIPELINE_CURRENT_PROOF_RUN_ID,
@@ -68,9 +69,10 @@ def test_stage11_protocol_passes_and_moves_live_next_card_to_data_daily_hardenin
     ).read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == CURRENT_ACTIVE_MAINLINE_MODULE
-    assert registry["active_foundation_card"] == DATA_DAILY_HARDENING_RUN_ID
+    assert registry["active_foundation_card"] == "none"
     assert registry["current_allowed_next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
-    assert modules["data"]["next_card"] == DATA_DAILY_HARDENING_ACTION
+    assert modules["data"]["latest_completed_card"] == DATA_DAILY_HARDENING_ACTION
+    assert modules["data"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["system_readout"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["system_readout"]["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["pipeline"]["doc_status"] == PIPELINE_CURRENT_DOC_STATUS
@@ -103,13 +105,22 @@ def test_stage11_protocol_passes_and_moves_live_next_card_to_data_daily_hardenin
         "target_run_id",
     ]
     assert (
+        repo_root
+        / "docs/04-execution/records/malf/"
+        / f"{MALF_DAILY_INCREMENTAL_LEDGER_RUN_ID}.card.md"
+    ).exists()
+    assert (
         f"| Pipeline | `{PIPELINE_STAGE11_PROTOCOL_RUN_ID}` | `passed / protocol frozen` |"
         in conclusion_index
+    )
+    assert (
+        f"| Data | `{DATA_DAILY_HARDENING_RUN_ID}` | "
+        "`passed / data daily incremental sample hardened` |" in conclusion_index
     )
     assert "状态：`passed / protocol frozen`" in protocol_conclusion
     assert f"| allowed next action | `{DATA_DAILY_HARDENING_ACTION}` |" in protocol_conclusion
     assert f"| prepared next card | `{DATA_DAILY_HARDENING_RUN_ID}` |" in protocol_conclusion
-    assert "状态：`prepared / not executed`" in prepared_data_card
+    assert "状态：`passed / data daily incremental sample hardened`" in prepared_data_card
 
 
 def test_project_governance_rejects_closed_stage11_protocol_as_live_next_card(
@@ -121,11 +132,11 @@ def test_project_governance_rejects_closed_stage11_protocol_as_live_next_card(
     registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
         registry_text.replace(
-            f'current_allowed_next_card = "{DATA_DAILY_HARDENING_ACTION}"',
+            f'current_allowed_next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"',
             f'current_allowed_next_card = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
             1,
         ).replace(
-            'next_card = "data_ledger_daily_incremental_hardening_card"\n'
+            f'next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"\n'
             'active_card = "docs/04-execution/records/pipeline/'
             'system-wide-daily-dirty-scope-protocol-card.card.md"',
             f'next_card = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"\n'
@@ -137,7 +148,7 @@ def test_project_governance_rejects_closed_stage11_protocol_as_live_next_card(
     )
     pipeline_contract_path.write_text(
         pipeline_contract_path.read_text(encoding="utf-8").replace(
-            f'next_allowed_action = "{DATA_DAILY_HARDENING_ACTION}"',
+            f'next_allowed_action = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"',
             f'next_allowed_action = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
             1,
         ),

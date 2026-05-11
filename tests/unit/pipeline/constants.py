@@ -22,6 +22,7 @@ PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID = (
 PIPELINE_DISPOSITION_DECISION_RUN_ID = "pipeline-year-replay-disposition-decision-card-20260510-01"
 PIPELINE_STAGE11_PROTOCOL_RUN_ID = "system-wide-daily-dirty-scope-protocol-card"
 DATA_DAILY_HARDENING_RUN_ID = "data-ledger-daily-incremental-hardening-card"
+MALF_DAILY_INCREMENTAL_LEDGER_RUN_ID = "malf-daily-incremental-ledger-build-card"
 PIPELINE_YEAR_REPLAY_RERUN_CARD_RUN_ID = (
     "pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01"
 )
@@ -55,7 +56,8 @@ PIPELINE_SOURCE_SELECTION_REPAIR_ACTION = "pipeline_year_replay_source_selection
 PIPELINE_DISPOSITION_DECISION_ACTION = "pipeline_year_replay_disposition_decision_card"
 PIPELINE_STAGE11_PROTOCOL_ACTION = "system_wide_daily_dirty_scope_protocol_card"
 DATA_DAILY_HARDENING_ACTION = "data_ledger_daily_incremental_hardening_card"
-CURRENT_ALLOWED_NEXT_CARD_ACTION = DATA_DAILY_HARDENING_ACTION
+MALF_DAILY_INCREMENTAL_LEDGER_ACTION = "malf_daily_incremental_ledger_build_card"
+CURRENT_ALLOWED_NEXT_CARD_ACTION = MALF_DAILY_INCREMENTAL_LEDGER_ACTION
 CURRENT_ACTIVE_MAINLINE_MODULE = "system_readout"
 PIPELINE_CURRENT_PROOF_RUN_ID = PIPELINE_STAGE11_PROTOCOL_RUN_ID
 CURRENT_PIPELINE_ACTIVE_CARD = (
@@ -107,7 +109,8 @@ PIPELINE_CURRENT_DOC_STATUS = (
     "passed / portfolio_plan 2024 coverage repair passed / trade 2024 coverage repair "
     "passed / system_readout 2024 coverage repair handoff passed / pipeline year replay "
     "source-selection repair passed / year replay disposition decision passed / stage 11 "
-    "day dirty scope protocol passed / live next card moved to data daily hardening"
+    "day dirty scope protocol passed / data daily incremental sample hardened / "
+    "live next card moved to malf daily incremental ledger build"
 )
 PIPELINE_FULL_CHAIN_PREPARED_DOC_STATUS = (
     "frozen six-doc set / freeze review passed / single-module orchestration build passed / "
@@ -170,7 +173,7 @@ PIPELINE_CURRENT_GATE_STATE = (
     "portfolio_plan_2024_coverage_repair_passed; trade_2024_coverage_repair_passed; "
     "system_readout_2024_coverage_repair_handoff_passed; "
     "year_replay_source_selection_repair_passed; year_replay_disposition_decision_passed; "
-    "stage11_day_dirty_scope_protocol_passed"
+    "stage11_day_dirty_scope_protocol_passed; data_daily_incremental_sample_hardened"
 )
 PIPELINE_PREPARED_GATE_STATE = (
     "single_module_orchestration_build_passed; full_chain_dry_run_prepared; full_chain_not_executed"
@@ -198,8 +201,8 @@ PIPELINE_CURRENT_FORMAL_DB_PERMISSION = (
     "trade_2024_coverage_repair_passed; system_readout_2024_coverage_repair_passed; "
     "year_replay_source_selection_repair_passed; "
     "year_replay_disposition_decision_passed_truthful_closeout; "
-    "stage11_day_protocol_frozen; data_daily_incremental_hardening_requires_new_card; "
-    "full_rebuild_requires_new_card"
+    "stage11_day_protocol_frozen; data_daily_incremental_sample_hardened; "
+    "malf_daily_incremental_ledger_build_requires_new_card; full_rebuild_requires_new_card"
 )
 PIPELINE_PREPARED_FORMAL_DB_PERMISSION = (
     "released_single_module_orchestration_ledger_only; "

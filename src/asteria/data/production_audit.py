@@ -24,13 +24,15 @@ def run_data_production_audit(
     hard_fail_count = 0
 
     raw_db = data_root / "raw_market.duckdb"
-    raw_status = _check_raw_market(raw_db)
-    checks["raw_market.duckdb:natural_key_uniqueness"] = raw_status
-    hard_fail_count += raw_status == "failed"
+    for check_name, status in _check_raw_market(raw_db).items():
+        checks[f"raw_market.duckdb:{check_name}"] = status
+        hard_fail_count += status == "failed"
 
     for db_name in BASE_DATABASES:
         db_path = data_root / db_name
         if not db_path.exists():
+            checks[f"{db_name}:exists"] = "failed"
+            hard_fail_count += 1
             if db_name == "market_base_day.duckdb":
                 checks[f"{db_name}:execution_price_line_present"] = "failed"
                 hard_fail_count += 1
@@ -57,9 +59,14 @@ def run_data_production_audit(
     )
 
 
-def _check_raw_market(path: Path) -> str:
+def _check_raw_market(path: Path) -> dict[str, str]:
     if not path.exists():
-        return "failed"
+        return {
+            "exists": "failed",
+            "natural_key_uniqueness": "failed",
+            "run_ledger_present": "failed",
+            "source_manifest_diff_ready": "failed",
+        }
     with duckdb.connect(str(path), read_only=True) as con:
         duplicate_count = _count_result(
             con.execute(
@@ -74,7 +81,18 @@ def _check_raw_market(path: Path) -> str:
                 """
             ).fetchone()
         )
-    return "passed" if duplicate_count == 0 else "failed"
+        run_count = _count_result(
+            con.execute("select count(*) from raw_market_sync_run").fetchone()
+        )
+        source_count = _count_result(
+            con.execute("select count(*) from raw_market_source_file").fetchone()
+        )
+    return {
+        "exists": "passed",
+        "natural_key_uniqueness": "passed" if duplicate_count == 0 else "failed",
+        "run_ledger_present": "passed" if run_count > 0 else "failed",
+        "source_manifest_diff_ready": "passed" if source_count > 0 else "failed",
+    }
 
 
 def _check_market_base(path: Path, *, require_execution_price_line: bool) -> dict[str, str]:
@@ -115,6 +133,10 @@ def _check_market_base(path: Path, *, require_execution_price_line: bool) -> dic
                 """
             ).fetchone()
         )
+        run_count = _count_result(con.execute("select count(*) from market_base_run").fetchone())
+        dirty_scope_count = _count_result(
+            con.execute("select count(*) from market_base_dirty_scope").fetchone()
+        )
         execution_line_count = _count_result(
             con.execute(
                 """
@@ -127,6 +149,9 @@ def _check_market_base(path: Path, *, require_execution_price_line: bool) -> dic
             ).fetchone()
         )
     checks = {
+        "exists": "passed",
+        "run_ledger_present": "passed" if run_count > 0 else "failed",
+        "dirty_scope_present": "passed" if dirty_scope_count > 0 else "failed",
         "natural_key_uniqueness": "passed" if natural_dups == 0 else "failed",
         "latest_pointer_uniqueness": "passed" if latest_dups == 0 else "failed",
         "price_line_mapping": "passed" if price_line_failures == 0 else "failed",

@@ -42,7 +42,7 @@ pipeline-year-replay-source-selection-repair-card-20260509-01 passed
 | formal DB | `H:\Asteria-data\pipeline.duckdb` 已创建 |
 | released module scope | `system_readout` single-module orchestration + `full_chain_day` dry-run + `full_chain_day` bounded proof |
 | released run modes | `bounded / dry-run / resume / audit-only` |
-| current next card | `data_ledger_daily_incremental_hardening_card` |
+| current next card | `malf_daily_incremental_ledger_build_card` |
 | full-chain dry-run | 已执行 / 已通过 |
 | full-chain bounded proof | 已执行 / 已通过 |
 | one-year strategy behavior replay | 已执行 / `blocked`（完整自然年覆盖不足） |
@@ -114,7 +114,7 @@ flowchart LR
 
 ## 8. 下一步
 
-当前 live `current_allowed_next_card` 是 `data_ledger_daily_incremental_hardening_card`。
+当前 live `current_allowed_next_card` 是 `malf_daily_incremental_ledger_build_card`。
 `pipeline-year-replay-disposition-decision-card-20260510-01` 已裁定：在 released observed window 仅缺
 `2024-01-01` 的前提下，不再重跑 rerun，而是做 truthful closeout，并把后续长期能力问题移交到 Stage 11。
 随后 `system-wide-daily-dirty-scope-protocol-card` 也已完成 `day`-only 协议冻结。

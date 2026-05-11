@@ -27,6 +27,7 @@ H:\Asteria-Validated\Asteria-signal-production-builder-hardening-20260506-01.zip
 H:\Asteria-Validated\Asteria-position-bounded-proof-build-card-20260506-01.zip
 H:\Asteria-Validated\Asteria-portfolio-plan-freeze-review-20260507-01.zip
 H:\Asteria-Validated\Asteria-portfolio-plan-bounded-proof-build-card-20260507-01.zip
+H:\Asteria-Validated\Asteria-data-ledger-daily-incremental-hardening-card-20260511-01.zip
 ```
 
 `214427` 快照是 2026-04-28 docs/code 基线；`130309` 快照是三天重构成果的
@@ -69,6 +70,7 @@ Pipeline single-module orchestration build 已通过
 Pipeline full-chain dry-run authorization scope freeze 已通过
 Pipeline full-chain dry-run 已通过
 Pipeline full-chain bounded proof authorization scope freeze 已通过
+Data ledger daily incremental hardening sample 已通过
 ```
 
 当前已交付主线模块文档索引：
@@ -92,7 +94,7 @@ System Readout
 当前最新形成结论：
 
 ```text
-Stage 11 day dirty scope protocol frozen / live next card moved to data daily hardening
+Data daily incremental sample hardened / live next card moved to malf daily incremental ledger build
 ```
 
 当前最新语义升级资产：
@@ -109,25 +111,25 @@ rules；当前 runtime passed evidence 已升级为 MALF v1.4 day runtime sync i
 当前 live 下一张执行卡：
 
 ```text
-data-ledger-daily-incremental-hardening-card
+malf-daily-incremental-ledger-build-card
 ```
 
 对应 symbolic allowed next action：
 
 ```text
-data_ledger_daily_incremental_hardening_card
+malf_daily_incremental_ledger_build_card
 ```
 
 当前 repair 结论锚点：
 
 ```text
-system-wide-daily-dirty-scope-protocol-card
+data-ledger-daily-incremental-hardening-card
 ```
 
 对应下一步 allowed next action：
 
 ```text
-data_ledger_daily_incremental_hardening_card
+malf_daily_incremental_ledger_build_card
 ```
 
 历史已放行动作锚点：
@@ -139,7 +141,7 @@ pipeline_one_year_strategy_behavior_replay_rerun_build_card
 当前只允许施工对象：
 
 ```text
-System-wide daily dirty scope protocol
+MALF daily incremental ledger build card
 ```
 
 当前已通过 bounded proof 的主线模块：

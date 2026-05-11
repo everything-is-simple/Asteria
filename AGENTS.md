@@ -31,6 +31,7 @@
 - `H:\Asteria-Validated\Asteria-signal-production-builder-hardening-20260506-01.zip`
 - `H:\Asteria-Validated\Asteria-position-bounded-proof-build-card-20260506-01.zip`
 - `H:\Asteria-Validated\Asteria-portfolio-plan-freeze-review-20260507-01.zip`
+- `H:\Asteria-Validated\Asteria-data-ledger-daily-incremental-hardening-card-20260511-01.zip`
 
 当前门禁：
 
@@ -58,12 +59,13 @@
 - `Position bounded proof passed`
 - `Portfolio Plan freeze review passed`
 - `Portfolio Plan bounded proof passed`
-- 下一步允许动作：`trade_bounded_proof_build_card`
+- `Data ledger daily incremental hardening sample passed`
+- 下一步允许动作：`malf_daily_incremental_ledger_build_card`
 - Data 已封为主线输入底座；后续 Data 只能通过明确 maintenance card 扩展。
 - `market_meta.duckdb` 已放行最小客观事实与可匹配正式 Data 标的的申万 2021 当前行业快照；Data reference target maintenance closeout 已完成 source inventory 裁决；ST、停牌、真实上市/退市状态、历史行业沿革和 index/block membership 仍因无 approved source manifest 而 retained。
 - MALF v1.4 是 Core operational boundary 权威定义升级；不等于 runtime proof passed。
-- MALF v1.3 closeout 仍只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；MALF week/month bounded proof、Alpha production builder hardening、Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof 与 Trade freeze review 已通过，当前下一卡是 Trade bounded proof build card。
-- Position bounded proof 已放行 day `position.duckdb` 表面；Portfolio Plan bounded proof 已放行 day `portfolio_plan.duckdb` 表面；Trade freeze review 已冻结 Trade 六件套但未创建 `trade.duckdb`；当前仅授权准备 Trade bounded proof build card，不授权 Trade full build、Portfolio Plan full build、Position full build、System 下游施工或全链路 pipeline。
+- MALF v1.3 closeout 仍只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；MALF week/month bounded proof、Alpha production builder hardening、Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade/System bounded proof、Pipeline year replay closeout、Stage 11 protocol 与 Data daily incremental sample hardening 已通过，当前下一卡是 MALF daily incremental ledger build card。
+- Position bounded proof 已放行 day `position.duckdb` 表面；Portfolio Plan bounded proof 已放行 day `portfolio_plan.duckdb` 表面；Trade bounded proof 已放行 day `trade.duckdb` 表面；System Readout 已放行 day `system.duckdb` readout surface；当前仅授权准备 MALF daily incremental ledger build card，不授权 MALF full build、Alpha/Signal daily runtime、下游 daily runtime、System full build 或全链路 pipeline。
 
 硬规则：
 

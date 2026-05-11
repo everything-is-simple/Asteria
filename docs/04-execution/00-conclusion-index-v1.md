@@ -42,6 +42,7 @@
 - `H:\Asteria-Validated\Asteria-system-readout-2024-coverage-repair-card-20260509-01.zip`
 - `H:\Asteria-Validated\Asteria-pipeline-system-readout-2024-coverage-repair-handoff-20260510-01.zip`
 - `H:\Asteria-Validated\Asteria-pipeline-year-replay-source-selection-repair-card-20260509-01.zip`
+- `H:\Asteria-Validated\Asteria-data-ledger-daily-incremental-hardening-card-20260511-01.zip`
 
 `214427` 是重要 docs/code 快照锚点；`130309` 是三天重构成果的历史系统
 docs/code 快照；`101006` 是 Data formal promotion（Data 正式提升）与 MALF v1.3
@@ -64,6 +65,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Data | `data-foundation-target-completeness-review-20260506-01` | `review-only / bounded mainline input sufficient / full target incomplete` | [conclusion](records/data/data-foundation-target-completeness-review-20260506-01.conclusion.md) | [evidence-index](records/data/data-foundation-target-completeness-review-20260506-01.evidence-index.md) |
 | Data | `data-reference-target-maintenance-scope-20260506-01` | `passed / scope frozen` | [conclusion](records/data/data-reference-target-maintenance-scope-20260506-01.conclusion.md) | [evidence-index](records/data/data-reference-target-maintenance-scope-20260506-01.evidence-index.md) |
 | Data | `data-reference-target-maintenance-closeout-20260506-01` | `passed / source inventory closed / gaps retained` | [conclusion](records/data/data-reference-target-maintenance-closeout-20260506-01.conclusion.md) | [evidence-index](records/data/data-reference-target-maintenance-closeout-20260506-01.evidence-index.md) |
+| Data | `data-ledger-daily-incremental-hardening-card` | `passed / data daily incremental sample hardened` | [conclusion](records/data/data-ledger-daily-incremental-hardening-card.conclusion.md) | [evidence-index](records/data/data-ledger-daily-incremental-hardening-card.evidence-index.md) |
 | MALF | `malf-day-bounded-proof-20260428-01` | `passed` | [conclusion](records/malf/malf-day-bounded-proof-20260428-01.conclusion.md) | [evidence-index](records/malf/malf-day-bounded-proof-20260428-01.evidence-index.md) |
 | MALF | `malf-lifespan-dense-bar-snapshot-gap-20260429-01` | `blocked` | [conclusion](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.conclusion.md) | [evidence-index](records/malf/malf-lifespan-dense-bar-snapshot-gap-20260429-01.evidence-index.md) |
 | MALF | `malf-lifespan-dense-bar-snapshot-resolution-20260429-01` | `passed` | [conclusion](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.conclusion.md) | [evidence-index](records/malf/malf-lifespan-dense-bar-snapshot-resolution-20260429-01.evidence-index.md) |
@@ -212,7 +214,9 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   closeout，并把 current live `current_allowed_next_card` 切到 `system_wide_daily_dirty_scope_protocol_card`。
   随后 `system-wide-daily-dirty-scope-protocol-card` 也已真实冻结并通过：Stage 11 当前只冻结 `day`
   主链 dirty scope / impact scope / checkpoint / lineage / writer-read-only 边界，不打开 daily runtime；
-  当前唯一 live next card 已继续前进到 `data-ledger-daily-incremental-hardening-card`。
+  随后 `data-ledger-daily-incremental-hardening-card` 已通过 Data-only 样板 proof，把 Data 四个行情账本的
+  daily incremental / resume / audit evidence 做成第一张样板；当前唯一 live next card 已继续前进到
+  `malf-daily-incremental-ledger-build-card`。
   后半场 repair phase roadmap 已收敛回 `docs/03-refactor/04-asteria-full-system-roadmap-v1.md` 单点维护；旧第二张
   repair roadmap 已删除，不再承载独立状态机。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
@@ -222,7 +226,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 以下登记当前仍然有效的 live next card：
 
 ```text
-data-ledger-daily-incremental-hardening-card
+malf-daily-incremental-ledger-build-card
 ```
 
 ## 3.1 Newly Passed Pre-Position Repair Card
