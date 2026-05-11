@@ -2,6 +2,7 @@ from pathlib import Path
 from shutil import copy2, copytree
 
 from scripts.governance.check_project_governance import run_checks
+from tests.unit.pipeline.support_state import rewrite_registry_module_fields
 
 from asteria.governance.release_gates import ReleaseGateRecord, _check_gate_ledger
 
@@ -72,16 +73,11 @@ def test_project_governance_rejects_multiple_build_allowed_mainline_modules(
 ) -> None:
     repo_root = _copy_governance_repo(tmp_path)
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
-    registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
-        registry_text.replace(
-            'doc_status = "frozen six-doc set / bounded proof passed / '
-            'production hardening passed"\n'
-            "allow_build = false",
-            'doc_status = "frozen six-doc set / bounded proof passed / '
-            'production hardening passed"\n'
-            "allow_build = true",
-            1,
+        rewrite_registry_module_fields(
+            registry_path.read_text(encoding="utf-8"),
+            module_id="alpha",
+            field_updates={"allow_build": "true"},
         ),
         encoding="utf-8",
     )

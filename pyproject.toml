@@ -31,7 +31,7 @@ packages = ["src/asteria"]
 [tool.pytest.ini_options]
 pythonpath = ["src", "."]
 testpaths = ["tests"]
-addopts = "--basetemp=H:/Asteria-temp/pytest-tmp-default"
+addopts = "--import-mode=importlib --basetemp=H:/Asteria-temp/pytest-tmp-default"
 cache_dir = "H:/Asteria-temp/pytest-cache-default"
 
 [tool.ruff]

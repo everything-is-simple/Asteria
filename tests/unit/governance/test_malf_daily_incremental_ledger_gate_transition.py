@@ -77,7 +77,7 @@ def test_malf_daily_incremental_ledger_closure_moves_live_next_card_to_alpha_sig
     assert registry["current_allowed_next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["malf"]["doc_status"] == MALF_CURRENT_DOC_STATUS
     assert modules["malf"]["proof_status"] == MALF_CURRENT_PROOF_STATUS
-    assert modules["malf"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
+    assert modules["malf"]["next_card"] == ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_ACTION
     assert modules["system_readout"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["system_readout"]["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["pipeline"]["doc_status"] == PIPELINE_CURRENT_DOC_STATUS
@@ -99,7 +99,9 @@ def test_malf_daily_incremental_ledger_closure_moves_live_next_card_to_alpha_sig
         f"| prepared next card | `{ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_RUN_ID}` |"
         in malf_conclusion
     )
-    assert "状态：`prepared / not executed`" in prepared_alpha_signal_card
+    assert "状态：`passed / alpha signal daily incremental sample hardened`" in (
+        prepared_alpha_signal_card
+    )
 
 
 def test_project_governance_rejects_closed_malf_daily_incremental_card_as_live_next_card(

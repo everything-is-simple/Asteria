@@ -3,6 +3,7 @@ from shutil import copy2, copytree
 
 from scripts.governance.check_project_governance import run_checks
 from tests.unit.pipeline.support import (
+    ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_RUN_ID,
     CURRENT_ACTIVE_MAINLINE_MODULE,
     CURRENT_ALLOWED_NEXT_CARD_ACTION,
     DATA_DAILY_HARDENING_ACTION,
@@ -15,6 +16,7 @@ from tests.unit.pipeline.support import (
     PIPELINE_STAGE11_PROTOCOL_ACTION,
     PIPELINE_STAGE11_PROTOCOL_RUN_ID,
 )
+from tests.unit.pipeline.support_state import rewrite_registry_module_fields
 
 try:
     import tomllib
@@ -81,14 +83,14 @@ def test_stage11_protocol_passes_and_moves_live_next_card_to_data_daily_hardenin
     assert modules["pipeline"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["pipeline"]["proof_run_id"] == PIPELINE_CURRENT_PROOF_RUN_ID
     assert modules["pipeline"]["active_card"] == (
-        "docs/04-execution/records/pipeline/system-wide-daily-dirty-scope-protocol-card.card.md"
+        "docs/04-execution/records/pipeline/alpha-signal-daily-incremental-ledger-build-card.card.md"
     )
     assert pipeline_contract["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert pipeline_contract["release_conclusion"] == (
-        "docs/04-execution/records/pipeline/system-wide-daily-dirty-scope-protocol-card.conclusion.md"
+        "docs/04-execution/records/pipeline/alpha-signal-daily-incremental-ledger-build-card.conclusion.md"
     )
     assert pipeline_contract["evidence_index"] == (
-        "docs/04-execution/records/pipeline/system-wide-daily-dirty-scope-protocol-card.evidence-index.md"
+        "docs/04-execution/records/pipeline/alpha-signal-daily-incremental-ledger-build-card.evidence-index.md"
     )
     assert pipeline_contract["daily_protocol_timeframe"] == "day"
     assert pipeline_contract["daily_protocol_lineage_fields"] == [
@@ -111,6 +113,11 @@ def test_stage11_protocol_passes_and_moves_live_next_card_to_data_daily_hardenin
         / f"{MALF_DAILY_INCREMENTAL_LEDGER_RUN_ID}.card.md"
     ).exists()
     assert (
+        repo_root
+        / "docs/04-execution/records/pipeline/"
+        / f"{ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_RUN_ID}.card.md"
+    ).exists()
+    assert (
         f"| Pipeline | `{PIPELINE_STAGE11_PROTOCOL_RUN_ID}` | `passed / protocol frozen` |"
         in conclusion_index
     )
@@ -130,19 +137,21 @@ def test_project_governance_rejects_closed_stage11_protocol_as_live_next_card(
     repo_root = _copy_governance_repo(tmp_path)
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     pipeline_contract_path = repo_root / "governance" / "module_api_contracts" / "pipeline.toml"
-    registry_text = registry_path.read_text(encoding="utf-8")
+    registry_text = rewrite_registry_module_fields(
+        registry_path.read_text(encoding="utf-8"),
+        module_id="pipeline",
+        field_updates={
+            "next_card": f'"{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
+            "active_card": (
+                '"docs/04-execution/records/pipeline/'
+                'system-wide-daily-dirty-scope-protocol-card.card.md"'
+            ),
+        },
+    )
     registry_path.write_text(
         registry_text.replace(
             f'current_allowed_next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"',
             f'current_allowed_next_card = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
-            1,
-        ).replace(
-            f'next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"\n'
-            'active_card = "docs/04-execution/records/pipeline/'
-            'system-wide-daily-dirty-scope-protocol-card.card.md"',
-            f'next_card = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"\n'
-            'active_card = "docs/04-execution/records/pipeline/'
-            'system-wide-daily-dirty-scope-protocol-card.card.md"',
             1,
         ),
         encoding="utf-8",

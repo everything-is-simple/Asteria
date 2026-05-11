@@ -4,8 +4,10 @@ from pathlib import Path
 from shutil import copy2, copytree
 
 from tests.unit.pipeline.constants import (
+    CURRENT_ALLOWED_NEXT_CARD_ACTION,
     CURRENT_PIPELINE_ACTIVE_CARD,
     DATA_DAILY_HARDENING_ACTION,
+    DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION,
     PIPELINE_BOUNDED_INPUT_BOUNDARY,
     PIPELINE_BOUNDED_PROOF_CARD_ACTION,
     PIPELINE_BOUNDED_PROOF_CARD_RUN_ID,
@@ -18,6 +20,7 @@ from tests.unit.pipeline.constants import (
     PIPELINE_CURRENT_DOC_STATUS,
     PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
     PIPELINE_CURRENT_GATE_STATE,
+    PIPELINE_CURRENT_PROOF_RUN_ID,
     PIPELINE_DISPOSITION_DECISION_RUN_ID,
     PIPELINE_DRY_RUN_CARD_ACTION,
     PIPELINE_DRY_RUN_CARD_RUN_ID,
@@ -52,16 +55,8 @@ from tests.unit.pipeline.support_state import (
 )
 
 
-def _active_card_line(run_id: str) -> str:
-    return f'active_card = "docs/04-execution/records/pipeline/{run_id}.card.md"'
-
-
-def _release_conclusion_line(run_id: str) -> str:
-    return f'release_conclusion = "docs/04-execution/records/pipeline/{run_id}.conclusion.md"'
-
-
-def _evidence_index_line(run_id: str) -> str:
-    return f'evidence_index = "docs/04-execution/records/pipeline/{run_id}.evidence-index.md"'
+def _pipeline_record_line(field: str, run_id: str, suffix: str) -> str:
+    return f'{field} = "docs/04-execution/records/pipeline/{run_id}.{suffix}.md"'
 
 
 def build_governance_repo(tmp_path: Path) -> Path:
@@ -144,7 +139,7 @@ def build_full_chain_dry_run_prepared_repo(tmp_path: Path) -> Path:
         )
         .replace(
             PIPELINE_MALF_REPAIR_ACTIVE_CARD,
-            _active_card_line(PIPELINE_DRY_RUN_SCOPE_FREEZE_RUN_ID),
+            _pipeline_record_line("active_card", PIPELINE_DRY_RUN_SCOPE_FREEZE_RUN_ID, "card"),
             1,
         )
         .replace(
@@ -214,6 +209,8 @@ def build_bounded_proof_authorized_repo(tmp_path: Path) -> Path:
     repo_root = build_governance_repo(tmp_path)
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     registry_text = rewind_current_malf_repair_state(registry_path.read_text(encoding="utf-8"))
+    freeze_run_id = PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID
+    closeout_run_id = PIPELINE_BOUNDED_PROOF_CLOSEOUT_RUN_ID
     registry_path.write_text(
         registry_text.replace(
             f'current_allowed_next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
@@ -234,19 +231,19 @@ def build_bounded_proof_authorized_repo(tmp_path: Path) -> Path:
         )
         .replace(
             PIPELINE_MALF_REPAIR_ACTIVE_CARD,
-            _active_card_line(PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID),
+            _pipeline_record_line("active_card", freeze_run_id, "card"),
             1,
         )
         .replace(
             "release_conclusion = "
-            f'"docs/04-execution/records/pipeline/{PIPELINE_BOUNDED_PROOF_CLOSEOUT_RUN_ID}.conclusion.md"',
-            _release_conclusion_line(PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID),
+            f'"docs/04-execution/records/pipeline/{closeout_run_id}.conclusion.md"',
+            _pipeline_record_line("release_conclusion", freeze_run_id, "conclusion"),
             1,
         )
         .replace(
             "evidence_index = "
-            f'"docs/04-execution/records/pipeline/{PIPELINE_BOUNDED_PROOF_CLOSEOUT_RUN_ID}.evidence-index.md"',
-            _evidence_index_line(PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID),
+            f'"docs/04-execution/records/pipeline/{closeout_run_id}.evidence-index.md"',
+            _pipeline_record_line("evidence_index", freeze_run_id, "evidence-index"),
             1,
         )
         .replace(
@@ -283,13 +280,17 @@ def build_bounded_proof_authorized_repo(tmp_path: Path) -> Path:
         contract_text.replace(
             "release_conclusion = "
             f'"docs/04-execution/records/pipeline/{PIPELINE_BOUNDED_PROOF_CLOSEOUT_RUN_ID}.conclusion.md"',
-            _release_conclusion_line(PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID),
+            _pipeline_record_line(
+                "release_conclusion", PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID, "conclusion"
+            ),
             1,
         )
         .replace(
             "evidence_index = "
             f'"docs/04-execution/records/pipeline/{PIPELINE_BOUNDED_PROOF_CLOSEOUT_RUN_ID}.evidence-index.md"',
-            _evidence_index_line(PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID),
+            _pipeline_record_line(
+                "evidence_index", PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID, "evidence-index"
+            ),
             1,
         )
         .replace(
@@ -308,6 +309,8 @@ def build_year_replay_authorized_repo(tmp_path: Path) -> Path:
     repo_root = build_governance_repo(tmp_path)
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     registry_text = rewind_current_malf_repair_state(registry_path.read_text(encoding="utf-8"))
+    freeze_run_id = PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID
+    closeout_run_id = PIPELINE_BOUNDED_PROOF_CLOSEOUT_RUN_ID
     registry_path.write_text(
         registry_text.replace(
             f'current_allowed_next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
@@ -326,17 +329,17 @@ def build_year_replay_authorized_repo(tmp_path: Path) -> Path:
         )
         .replace(
             PIPELINE_MALF_REPAIR_ACTIVE_CARD,
-            _active_card_line(PIPELINE_YEAR_REPLAY_SCOPE_FREEZE_RUN_ID),
+            _pipeline_record_line("active_card", PIPELINE_YEAR_REPLAY_SCOPE_FREEZE_RUN_ID, "card"),
             1,
         )
         .replace(
-            _release_conclusion_line(PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID),
-            _release_conclusion_line(PIPELINE_BOUNDED_PROOF_CLOSEOUT_RUN_ID),
+            _pipeline_record_line("release_conclusion", freeze_run_id, "conclusion"),
+            _pipeline_record_line("release_conclusion", closeout_run_id, "conclusion"),
             1,
         )
         .replace(
-            _evidence_index_line(PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID),
-            _evidence_index_line(PIPELINE_BOUNDED_PROOF_CLOSEOUT_RUN_ID),
+            _pipeline_record_line("evidence_index", freeze_run_id, "evidence-index"),
+            _pipeline_record_line("evidence_index", closeout_run_id, "evidence-index"),
             1,
         )
         .replace(
@@ -401,34 +404,32 @@ def build_year_replay_rerun_authorized_repo(tmp_path: Path) -> Path:
     if f'current_allowed_next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"' in registry_text:
         return repo_root
     updated_text = registry_text
-    for old_action in (
-        DATA_DAILY_HARDENING_ACTION,
-        PIPELINE_POSITION_REPAIR_ACTION,
-        "system_readout_2024_coverage_repair_card",
+    for field_name in ("current_allowed_next_card", "next_allowed_action"):
+        for old_action in (
+            CURRENT_ALLOWED_NEXT_CARD_ACTION,
+            DATA_DAILY_HARDENING_ACTION,
+            DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION,
+            PIPELINE_POSITION_REPAIR_ACTION,
+            "system_readout_2024_coverage_repair_card",
+            "pipeline_year_replay_source_selection_repair_card",
+            "pipeline_year_replay_disposition_decision_card",
+            PIPELINE_STAGE11_PROTOCOL_ACTION,
+        ):
+            updated_text = updated_text.replace(
+                f'{field_name} = "{old_action}"',
+                f'{field_name} = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
+            )
+    for old_card in (
+        CURRENT_ALLOWED_NEXT_CARD_ACTION,
+        DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION,
         "pipeline_year_replay_source_selection_repair_card",
         "pipeline_year_replay_disposition_decision_card",
         PIPELINE_STAGE11_PROTOCOL_ACTION,
     ):
         updated_text = updated_text.replace(
-            f'current_allowed_next_card = "{old_action}"',
-            f'current_allowed_next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
+            f'next_card = "{old_card}"',
+            f'next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
         )
-        updated_text = updated_text.replace(
-            f'next_allowed_action = "{old_action}"',
-            f'next_allowed_action = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
-        )
-    updated_text = updated_text.replace(
-        'next_card = "pipeline_year_replay_source_selection_repair_card"',
-        f'next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
-    )
-    updated_text = updated_text.replace(
-        'next_card = "pipeline_year_replay_disposition_decision_card"',
-        f'next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
-    )
-    updated_text = updated_text.replace(
-        f'next_card = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
-        f'next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
-    )
     registry_path.write_text(
         updated_text.replace(
             f'doc_status = "{PIPELINE_CURRENT_DOC_STATUS}"',
@@ -436,6 +437,11 @@ def build_year_replay_rerun_authorized_repo(tmp_path: Path) -> Path:
             "build passed / full-chain dry-run passed / full-chain day bounded proof passed / "
             "one-year strategy behavior replay blocked / coverage gap diagnosis executed / MALF "
             'natural-year coverage repair passed / year replay rerun prepared"',
+            1,
+        )
+        .replace(
+            f'proof_run_id = "{PIPELINE_CURRENT_PROOF_RUN_ID}"',
+            f'proof_run_id = "{PIPELINE_BOUNDED_PROOF_CARD_RUN_ID}"',
             1,
         )
         .replace(
@@ -450,7 +456,7 @@ def build_year_replay_rerun_authorized_repo(tmp_path: Path) -> Path:
         )
         .replace(
             CURRENT_PIPELINE_ACTIVE_CARD,
-            _active_card_line(PIPELINE_YEAR_REPLAY_RERUN_CARD_RUN_ID),
+            _pipeline_record_line("active_card", PIPELINE_YEAR_REPLAY_RERUN_CARD_RUN_ID, "card"),
             1,
         ),
         encoding="utf-8",
@@ -485,7 +491,7 @@ def _rewrite_pipeline_next_card(
         if line.startswith('next_card = "'):
             lines[idx] = f'next_card = "{current_action}"'
         elif line.startswith('active_card = "docs/04-execution/records/pipeline/'):
-            lines[idx] = _active_card_line(active_card_run_id)
+            lines[idx] = _pipeline_record_line("active_card", active_card_run_id, "card")
         elif line.startswith('next_allowed_action = "'):
             lines[idx] = f'next_allowed_action = "{current_action}"'
         elif proof_run_id is not None and line.startswith('proof_run_id = "'):
