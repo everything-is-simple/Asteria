@@ -5,6 +5,7 @@ from shutil import copy2, copytree
 
 from tests.unit.pipeline.constants import (
     CURRENT_PIPELINE_ACTIVE_CARD,
+    DATA_DAILY_HARDENING_ACTION,
     PIPELINE_BOUNDED_INPUT_BOUNDARY,
     PIPELINE_BOUNDED_PROOF_CARD_ACTION,
     PIPELINE_BOUNDED_PROOF_CARD_RUN_ID,
@@ -401,6 +402,7 @@ def build_year_replay_rerun_authorized_repo(tmp_path: Path) -> Path:
         return repo_root
     updated_text = registry_text
     for old_action in (
+        DATA_DAILY_HARDENING_ACTION,
         PIPELINE_POSITION_REPAIR_ACTION,
         "system_readout_2024_coverage_repair_card",
         "pipeline_year_replay_source_selection_repair_card",

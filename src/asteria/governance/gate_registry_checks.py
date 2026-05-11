@@ -285,7 +285,7 @@ def _current_next_card_has_closed_conclusion(
         if run_id != card_prefix and not run_id.startswith(f"{card_prefix}-"):
             continue
         text = conclusion_path.read_text(encoding="utf-8")
-        if re.search(r"状态：`(?:passed|blocked)`", text):
+        if re.search(r"状态：`(?:passed|blocked)(?: / [^`]*)?`", text):
             return True
     return False
 

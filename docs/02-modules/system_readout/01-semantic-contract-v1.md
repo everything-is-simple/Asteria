@@ -13,6 +13,10 @@
 当前允许宣称的是 `System Readout bounded proof passed / full build not executed`，
 不允许直接宣称 System full build opened。
 
+随后 `system-wide-daily-dirty-scope-protocol-card` 已把 Stage 11 的 day-only dirty/impact
+协议冻结到合同层：System Readout 在该协议内继续保持 `read_only_consumer`，不得充当 writer，
+也不得借此触发任何上游重算。
+
 ## 2. 前置门槛
 
 本合同在以下条件满足前不得冻结：

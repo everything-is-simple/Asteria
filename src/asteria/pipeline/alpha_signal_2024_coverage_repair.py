@@ -34,6 +34,14 @@ from asteria.signal.contracts import (
     SignalBuildSummary,
 )
 
+FOLLOWUP_YEAR_REPLAY_RERUN_ACTION = "pipeline_one_year_strategy_behavior_replay_rerun_build_card"
+FOLLOWUP_YEAR_REPLAY_RERUN_CARD_RUN_ID = (
+    "pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01"
+)
+FOLLOWUP_YEAR_REPLAY_REQUIRED_PROOF_RUN_ID = (
+    "pipeline-full-chain-bounded-proof-build-card-20260508-01"
+)
+
 
 def run_alpha_signal_2024_coverage_repair(
     request: AlphaSignalCoverageRepairRequest,
@@ -246,27 +254,49 @@ def _build_followup_repo_root(request: AlphaSignalCoverageRepairRequest) -> Path
     governance_root.mkdir(parents=True, exist_ok=True)
     registry_text = registry_source.read_text(encoding="utf-8")
     for old_action in (
+        "data_ledger_daily_incremental_hardening_card",
+        "system_wide_daily_dirty_scope_protocol_card",
+        "pipeline_year_replay_disposition_decision_card",
+        "pipeline_year_replay_source_selection_repair_card",
         "coverage_gap_evidence_incomplete_closeout_card",
         "alpha_signal_2024_coverage_repair_card",
     ):
         rewritten = registry_text.replace(
             f'current_allowed_next_card = "{old_action}"',
-            (
-                "current_allowed_next_card = "
-                '"pipeline_one_year_strategy_behavior_replay_rerun_build_card"'
-            ),
-            1,
-        )
-        rewritten = rewritten.replace(
-            f'next_card = "{old_action}"',
-            'next_card = "pipeline_one_year_strategy_behavior_replay_rerun_build_card"',
+            (f'current_allowed_next_card = "{FOLLOWUP_YEAR_REPLAY_RERUN_ACTION}"'),
             1,
         )
         if rewritten != registry_text:
             registry_text = rewritten
             break
+    registry_text = _rewrite_followup_pipeline_registry(registry_text)
     (governance_root / "module_gate_registry.toml").write_text(registry_text, encoding="utf-8")
     return target_root
+
+
+def _rewrite_followup_pipeline_registry(registry_text: str) -> str:
+    lines = registry_text.splitlines()
+    in_pipeline = False
+    for idx, line in enumerate(lines):
+        if line == 'module_id = "pipeline"':
+            in_pipeline = True
+            continue
+        if in_pipeline and line == "[[modules]]":
+            break
+        if not in_pipeline:
+            continue
+        if line.startswith('next_card = "'):
+            lines[idx] = f'next_card = "{FOLLOWUP_YEAR_REPLAY_RERUN_ACTION}"'
+        elif line.startswith('active_card = "docs/04-execution/records/pipeline/'):
+            lines[idx] = (
+                'active_card = "docs/04-execution/records/pipeline/'
+                f'{FOLLOWUP_YEAR_REPLAY_RERUN_CARD_RUN_ID}.card.md"'
+            )
+        elif line.startswith('next_allowed_action = "'):
+            lines[idx] = f'next_allowed_action = "{FOLLOWUP_YEAR_REPLAY_RERUN_ACTION}"'
+        elif line.startswith('proof_run_id = "'):
+            lines[idx] = f'proof_run_id = "{FOLLOWUP_YEAR_REPLAY_REQUIRED_PROOF_RUN_ID}"'
+    return "\n".join(lines) + "\n"
 
 
 def _write_card_evidence(

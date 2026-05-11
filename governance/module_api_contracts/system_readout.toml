@@ -13,12 +13,15 @@ writeback_boundary = "readout only; never trigger business mutation"
 run_modes = ["bounded", "resume", "audit-only"]
 resume_behavior = "resume from checkpoint after full-chain released day sources are locked"
 source_manifest_fields = ["source_db", "source_run_id", "source_release_version", "source_audit_status"]
+daily_protocol_role = "read_only_consumer"
+daily_protocol_lineage_fields = ["source_run_id", "target_run_id"]
+daily_protocol_scope_fields = ["symbol", "trade_date", "timeframe", "source_run_id"]
 forbidden_inputs = ["mock_formal_data", "unreleased_business_table"]
 forbidden_outputs = ["business_mutation", "strategy_redefinition"]
 release_conclusion = "docs/04-execution/records/system_readout/system-readout-bounded-proof-build-card-20260508-01.conclusion.md"
 evidence_index = "docs/04-execution/records/system_readout/system-readout-bounded-proof-build-card-20260508-01.evidence-index.md"
-next_allowed_action = "pipeline_freeze_review"
-input_boundary = "read_only_released_full_chain_day_bounded_surfaces"
+next_allowed_action = "data_ledger_daily_incremental_hardening_card"
+input_boundary = "read_only_released_full_chain_day_bounded_surfaces; read_only_daily_impact_scope_consumer"
 
 [[official_inputs]]
 input_type = "database"

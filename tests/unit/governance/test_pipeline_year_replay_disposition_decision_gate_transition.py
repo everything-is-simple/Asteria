@@ -11,7 +11,6 @@ from tests.unit.pipeline.support import (
     PIPELINE_DISPOSITION_DECISION_ACTION,
     PIPELINE_DISPOSITION_DECISION_RUN_ID,
     PIPELINE_SOURCE_SELECTION_REPAIR_ACTION,
-    PIPELINE_STAGE11_PROTOCOL_ACTION,
     PIPELINE_STAGE11_PROTOCOL_RUN_ID,
     PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION,
 )
@@ -58,10 +57,10 @@ def test_pipeline_disposition_decision_moves_live_next_card_to_stage11() -> None
         / "docs/04-execution/records/pipeline/"
         / f"{PIPELINE_DISPOSITION_DECISION_RUN_ID}.conclusion.md"
     ).read_text(encoding="utf-8")
-    prepared_card = (
+    protocol_conclusion = (
         repo_root
         / "docs/04-execution/records/pipeline/"
-        / f"{PIPELINE_STAGE11_PROTOCOL_RUN_ID}.card.md"
+        / f"{PIPELINE_STAGE11_PROTOCOL_RUN_ID}.conclusion.md"
     ).read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == CURRENT_ACTIVE_MAINLINE_MODULE
@@ -69,7 +68,7 @@ def test_pipeline_disposition_decision_moves_live_next_card_to_stage11() -> None
     assert modules["pipeline"]["status"] == "released"
     assert modules["pipeline"]["doc_status"] == PIPELINE_CURRENT_DOC_STATUS
     assert modules["pipeline"]["formal_db_permission"] == PIPELINE_CURRENT_FORMAL_DB_PERMISSION
-    assert modules["pipeline"]["next_card"] == PIPELINE_STAGE11_PROTOCOL_ACTION
+    assert modules["pipeline"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["pipeline"]["proof_run_id"] == PIPELINE_CURRENT_PROOF_RUN_ID
     assert modules["system_readout"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["system_readout"]["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
@@ -82,7 +81,7 @@ def test_pipeline_disposition_decision_moves_live_next_card_to_stage11() -> None
         disposition_conclusion
     )
     assert "| replay rerun reopened | `no` |" in disposition_conclusion
-    assert "状态：`prepared / not executed`" in prepared_card
+    assert "状态：`passed / protocol frozen`" in protocol_conclusion
 
 
 def test_project_governance_rejects_reopening_closed_pipeline_year_replay_cards(
@@ -99,12 +98,17 @@ def test_project_governance_rejects_reopening_closed_pipeline_year_replay_cards(
     ):
         registry_path.write_text(
             baseline.replace(
-                f'current_allowed_next_card = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
+                f'current_allowed_next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"',
                 f'current_allowed_next_card = "{action}"',
                 1,
             ).replace(
-                f'next_card = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
-                f'next_card = "{action}"',
+                'next_card = "data_ledger_daily_incremental_hardening_card"\n'
+                'active_card = "docs/04-execution/records/pipeline/'
+                'system-wide-daily-dirty-scope-protocol-card.card.md"',
+                f'next_card = "{action}"\n'
+                'active_card = "docs/04-execution/records/pipeline/'
+                'system-wide-daily-dirty-scope-protocol-card.card.md"',
+                1,
             ),
             encoding="utf-8",
         )

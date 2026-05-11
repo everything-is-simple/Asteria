@@ -66,10 +66,10 @@ def test_pipeline_source_selection_repair_advances_live_next_card() -> None:
         / "docs/04-execution/records/pipeline/"
         / f"{PIPELINE_DISPOSITION_DECISION_RUN_ID}.conclusion.md"
     ).read_text(encoding="utf-8")
-    prepared_card = (
+    protocol_conclusion = (
         repo_root
         / "docs/04-execution/records/pipeline/"
-        / f"{PIPELINE_STAGE11_PROTOCOL_RUN_ID}.card.md"
+        / f"{PIPELINE_STAGE11_PROTOCOL_RUN_ID}.conclusion.md"
     ).read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == CURRENT_ACTIVE_MAINLINE_MODULE
@@ -90,7 +90,7 @@ def test_pipeline_source_selection_repair_advances_live_next_card() -> None:
     )
     assert "pipeline-year-replay-disposition-decision-card-20260510-01" in repair_evidence
     assert "状态：`passed`" in disposition_conclusion
-    assert "状态：`prepared / not executed`" in prepared_card
+    assert "状态：`passed / protocol frozen`" in protocol_conclusion
 
 
 def test_project_governance_rejects_reopening_closed_source_selection_repair_card(

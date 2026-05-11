@@ -3,11 +3,13 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+from asteria.pipeline import stage11_daily_protocol_contracts as stage11_protocol_contracts
+
 PIPELINE_DISPOSITION_DECISION_CARD = "pipeline-year-replay-disposition-decision-card-20260510-01"
 PIPELINE_DISPOSITION_DECISION_ACTION = "pipeline_year_replay_disposition_decision_card"
-PIPELINE_STAGE11_PROTOCOL_CARD = "system-wide-daily-dirty-scope-protocol-card"
-PIPELINE_STAGE11_PROTOCOL_ACTION = "system_wide_daily_dirty_scope_protocol_card"
 PIPELINE_DISPOSITION_DECISION_OUTCOME = "truthful_closeout_and_stage11_handoff"
+PIPELINE_STAGE11_PROTOCOL_CARD = stage11_protocol_contracts.PIPELINE_STAGE11_PROTOCOL_CARD
+PIPELINE_STAGE11_PROTOCOL_ACTION = stage11_protocol_contracts.PIPELINE_STAGE11_PROTOCOL_ACTION
 
 
 @dataclass(frozen=True)

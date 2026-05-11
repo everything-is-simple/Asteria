@@ -5,6 +5,7 @@ from scripts.governance.check_project_governance import run_checks
 from tests.unit.pipeline.support import (
     CURRENT_ACTIVE_MAINLINE_MODULE,
     CURRENT_ALLOWED_NEXT_CARD_ACTION,
+    DATA_DAILY_HARDENING_RUN_ID,
     PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID,
     PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_RUN_ID,
     PIPELINE_CURRENT_DOC_STATUS,
@@ -73,7 +74,7 @@ def test_pipeline_scope_freeze_preserves_historical_scope_after_runtime_pass() -
     ).read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == CURRENT_ACTIVE_MAINLINE_MODULE
-    assert registry["active_foundation_card"] == "none"
+    assert registry["active_foundation_card"] == DATA_DAILY_HARDENING_RUN_ID
     assert registry["current_allowed_next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert registry["latest_mainline_release_run_id"] == (
         "system-readout-2024-coverage-repair-card-20260509-01"

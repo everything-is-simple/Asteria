@@ -2,7 +2,7 @@
 
 日期：2026-05-11
 
-状态：`prepared / not executed`
+状态：`passed / protocol frozen`
 
 ## 1. 目标
 
@@ -28,7 +28,17 @@
 - 只定义 Stage 11 的 writer/read-only 规则，不改任何既有业务语义。
 - 为后续 daily incremental / full rebuild cards 建立统一入口。
 
-## 4. 仍然禁止
+## 4. Freeze Result
+
+| item | result |
+|---|---|
+| timeframe | `day only` |
+| writer modules | `data -> malf -> alpha -> signal -> position -> portfolio_plan -> trade` |
+| read-only modules | `system_readout -> pipeline` |
+| lineage | `source_run_id -> target_run_id` |
+| next allowed action | `data_ledger_daily_incremental_hardening_card` |
+
+## 5. 仍然禁止
 
 | forbidden | decision |
 |---|---|

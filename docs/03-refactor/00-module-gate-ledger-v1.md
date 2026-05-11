@@ -92,7 +92,7 @@ System Readout
 当前最新形成结论：
 
 ```text
-Pipeline year replay source-selection repair completed / follow-up moved to pipeline disposition decision
+Stage 11 day dirty scope protocol frozen / live next card moved to data daily hardening
 ```
 
 当前最新语义升级资产：
@@ -109,25 +109,25 @@ rules；当前 runtime passed evidence 已升级为 MALF v1.4 day runtime sync i
 当前 live 下一张执行卡：
 
 ```text
-system-wide-daily-dirty-scope-protocol-card
+data-ledger-daily-incremental-hardening-card
 ```
 
 对应 symbolic allowed next action：
 
 ```text
-system_wide_daily_dirty_scope_protocol_card
+data_ledger_daily_incremental_hardening_card
 ```
 
 当前 repair 结论锚点：
 
 ```text
-pipeline-year-replay-disposition-decision-card-20260510-01
+system-wide-daily-dirty-scope-protocol-card
 ```
 
 对应下一步 allowed next action：
 
 ```text
-system_wide_daily_dirty_scope_protocol_card
+data_ledger_daily_incremental_hardening_card
 ```
 
 历史已放行动作锚点：

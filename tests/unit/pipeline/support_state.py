@@ -4,6 +4,7 @@ from tests.unit.pipeline.constants import (
     CURRENT_ACTIVE_MAINLINE_MODULE,
     CURRENT_ALLOWED_NEXT_CARD_ACTION,
     CURRENT_PIPELINE_ACTIVE_CARD,
+    DATA_DAILY_HARDENING_ACTION,
     MALF_BASELINE_DOC_STATUS,
     MALF_BASELINE_PROOF_STATUS,
     MALF_CURRENT_DOC_STATUS,
@@ -106,6 +107,11 @@ def rewind_current_malf_repair_state(registry_text: str) -> str:
             1,
         )
         .replace(
+            'active_foundation_card = "data-ledger-daily-incremental-hardening-card"',
+            'active_foundation_card = "none"',
+            1,
+        )
+        .replace(
             (
                 f'next_card = "pipeline_one_year_strategy_behavior_replay_rerun_build_card"\n'
                 'active_card = "docs/04-execution/records/malf/'
@@ -143,6 +149,11 @@ def rewind_current_malf_repair_state(registry_text: str) -> str:
             1,
         )
         .replace(
+            f'next_card = "{DATA_DAILY_HARDENING_ACTION}"',
+            f'next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
+            1,
+        )
+        .replace(
             f'proof_status = "{PIPELINE_CURRENT_GATE_STATE}"',
             f'proof_status = "{PIPELINE_MALF_REPAIR_PREPARED_GATE_STATE}"',
             1,
@@ -164,6 +175,11 @@ def rewind_current_malf_repair_state(registry_text: str) -> str:
         )
         .replace(
             f'next_allowed_action = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
+            'next_allowed_action = "malf_2024_natural_year_coverage_repair_card"',
+            1,
+        )
+        .replace(
+            f'next_allowed_action = "{DATA_DAILY_HARDENING_ACTION}"',
             'next_allowed_action = "malf_2024_natural_year_coverage_repair_card"',
             1,
         )

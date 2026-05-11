@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from tests.unit.pipeline.constants import (
+    CURRENT_ALLOWED_NEXT_CARD_ACTION,
     CURRENT_PIPELINE_ACTIVE_CARD,
     PIPELINE_CURRENT_DOC_STATUS,
     PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
@@ -10,7 +11,6 @@ from tests.unit.pipeline.constants import (
     PIPELINE_DISPOSITION_DECISION_ACTION,
     PIPELINE_DISPOSITION_DECISION_RUN_ID,
     PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID,
-    PIPELINE_STAGE11_PROTOCOL_ACTION,
 )
 from tests.unit.pipeline.support_repo_builders import (
     _active_card_line,
@@ -18,6 +18,7 @@ from tests.unit.pipeline.support_repo_builders import (
     _release_conclusion_line,
     build_governance_repo,
 )
+from tests.unit.pipeline.support_state import rewrite_registry_module_fields
 
 PRE_DISPOSITION_DOC_STATUS = (
     "frozen six-doc set / freeze review passed / single-module orchestration build passed / "
@@ -55,17 +56,32 @@ def build_year_replay_disposition_authorized_repo(tmp_path: Path) -> Path:
     repo_root = build_governance_repo(tmp_path)
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     registry_text = registry_path.read_text(encoding="utf-8")
+    registry_text = registry_text.replace(
+        f'current_allowed_next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"',
+        f'current_allowed_next_card = "{PIPELINE_DISPOSITION_DECISION_ACTION}"',
+        1,
+    ).replace(
+        'active_foundation_card = "data-ledger-daily-incremental-hardening-card"',
+        'active_foundation_card = "none"',
+        1,
+    )
+    registry_text = rewrite_registry_module_fields(
+        registry_text,
+        module_id="system_readout",
+        field_updates={
+            "next_card": f'"{PIPELINE_DISPOSITION_DECISION_ACTION}"',
+            "next_allowed_action": f'"{PIPELINE_DISPOSITION_DECISION_ACTION}"',
+        },
+    )
+    registry_text = rewrite_registry_module_fields(
+        registry_text,
+        module_id="pipeline",
+        field_updates={
+            "next_card": f'"{PIPELINE_DISPOSITION_DECISION_ACTION}"',
+        },
+    )
     registry_path.write_text(
         registry_text.replace(
-            f'current_allowed_next_card = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
-            f'current_allowed_next_card = "{PIPELINE_DISPOSITION_DECISION_ACTION}"',
-            1,
-        )
-        .replace(
-            f'next_card = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
-            f'next_card = "{PIPELINE_DISPOSITION_DECISION_ACTION}"',
-        )
-        .replace(
             CURRENT_PIPELINE_ACTIVE_CARD,
             _active_card_line(PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID),
             1,
@@ -106,7 +122,7 @@ def build_year_replay_disposition_authorized_repo(tmp_path: Path) -> Path:
     contract_text = contract_path.read_text(encoding="utf-8")
     contract_path.write_text(
         contract_text.replace(
-            f'next_allowed_action = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
+            f'next_allowed_action = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"',
             f'next_allowed_action = "{PIPELINE_DISPOSITION_DECISION_ACTION}"',
             1,
         )
