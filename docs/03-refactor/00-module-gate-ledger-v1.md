@@ -94,7 +94,7 @@ System Readout
 当前最新形成结论：
 
 ```text
-Data daily incremental sample hardened / live next card moved to malf daily incremental ledger build
+MALF daily incremental sample hardened / live next card moved to alpha-signal daily incremental ledger build
 ```
 
 当前最新语义升级资产：
@@ -111,25 +111,25 @@ rules；当前 runtime passed evidence 已升级为 MALF v1.4 day runtime sync i
 当前 live 下一张执行卡：
 
 ```text
-malf-daily-incremental-ledger-build-card
+alpha-signal-daily-incremental-ledger-build-card
 ```
 
 对应 symbolic allowed next action：
 
 ```text
-malf_daily_incremental_ledger_build_card
+alpha_signal_daily_incremental_ledger_build_card
 ```
 
 当前 repair 结论锚点：
 
 ```text
-data-ledger-daily-incremental-hardening-card
+malf-daily-incremental-ledger-build-card
 ```
 
 对应下一步 allowed next action：
 
 ```text
-malf_daily_incremental_ledger_build_card
+alpha_signal_daily_incremental_ledger_build_card
 ```
 
 历史已放行动作锚点：
@@ -141,7 +141,7 @@ pipeline_one_year_strategy_behavior_replay_rerun_build_card
 当前只允许施工对象：
 
 ```text
-MALF daily incremental ledger build card
+Alpha/Signal daily incremental ledger build card
 ```
 
 当前已通过 bounded proof 的主线模块：

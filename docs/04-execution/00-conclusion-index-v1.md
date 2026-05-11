@@ -80,6 +80,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | MALF | `malf-week-bounded-proof-build-20260506-01` | `passed` | [conclusion](records/malf/malf-week-bounded-proof-build-20260506-01.conclusion.md) | [evidence-index](records/malf/malf-week-bounded-proof-build-20260506-01.evidence-index.md) |
 | MALF | `malf-month-bounded-proof-build-20260506-01` | `passed` | [conclusion](records/malf/malf-month-bounded-proof-build-20260506-01.conclusion.md) | [evidence-index](records/malf/malf-month-bounded-proof-build-20260506-01.evidence-index.md) |
 | MALF | `malf-2024-natural-year-coverage-repair-card-20260509-01` | `passed` | [conclusion](records/malf/malf-2024-natural-year-coverage-repair-card-20260509-01.conclusion.md) | [evidence-index](records/malf/malf-2024-natural-year-coverage-repair-card-20260509-01.evidence-index.md) |
+| MALF | `malf-daily-incremental-ledger-build-card` | `passed / malf daily incremental sample hardened` | [conclusion](records/malf/malf-daily-incremental-ledger-build-card.conclusion.md) | [evidence-index](records/malf/malf-daily-incremental-ledger-build-card.evidence-index.md) |
 | Alpha | `alpha-freeze-review-20260429-01` | `passed` | [conclusion](records/alpha/alpha-freeze-review-20260429-01.conclusion.md) | [evidence-index](records/alpha/alpha-freeze-review-20260429-01.evidence-index.md) |
 | Alpha | `alpha-bounded-proof-20260429-01` | `passed` | [conclusion](records/alpha/alpha-bounded-proof-20260429-01.conclusion.md) | [evidence-index](records/alpha/alpha-bounded-proof-20260429-01.evidence-index.md) |
 | Alpha | `alpha-target-completeness-review-20260506-01` | `review-only / bounded proof clean / full target incomplete` | [conclusion](records/alpha/alpha-target-completeness-review-20260506-01.conclusion.md) | [evidence-index](records/alpha/alpha-target-completeness-review-20260506-01.evidence-index.md) |
@@ -215,8 +216,10 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   随后 `system-wide-daily-dirty-scope-protocol-card` 也已真实冻结并通过：Stage 11 当前只冻结 `day`
   主链 dirty scope / impact scope / checkpoint / lineage / writer-read-only 边界，不打开 daily runtime；
   随后 `data-ledger-daily-incremental-hardening-card` 已通过 Data-only 样板 proof，把 Data 四个行情账本的
-  daily incremental / resume / audit evidence 做成第一张样板；当前唯一 live next card 已继续前进到
-  `malf-daily-incremental-ledger-build-card`。
+  daily incremental / resume / audit evidence 做成第一张样板；随后
+  `malf-daily-incremental-ledger-build-card` 也已通过 MALF day-only 样板 proof，把 MALF `day`
+  三库正式接到 Data dirty scope，并生成 MALF 自身 `daily_impact_scope` / lineage / checkpoint / audit；
+  当前唯一 live next card 已继续前进到 `alpha-signal-daily-incremental-ledger-build-card`。
   后半场 repair phase roadmap 已收敛回 `docs/03-refactor/04-asteria-full-system-roadmap-v1.md` 单点维护；旧第二张
   repair roadmap 已删除，不再承载独立状态机。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
@@ -226,7 +229,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 以下登记当前仍然有效的 live next card：
 
 ```text
-malf-daily-incremental-ledger-build-card
+alpha-signal-daily-incremental-ledger-build-card
 ```
 
 ## 3.1 Newly Passed Pre-Position Repair Card

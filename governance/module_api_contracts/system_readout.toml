@@ -20,7 +20,7 @@ forbidden_inputs = ["mock_formal_data", "unreleased_business_table"]
 forbidden_outputs = ["business_mutation", "strategy_redefinition"]
 release_conclusion = "docs/04-execution/records/system_readout/system-readout-bounded-proof-build-card-20260508-01.conclusion.md"
 evidence_index = "docs/04-execution/records/system_readout/system-readout-bounded-proof-build-card-20260508-01.evidence-index.md"
-next_allowed_action = "malf_daily_incremental_ledger_build_card"
+next_allowed_action = "alpha_signal_daily_incremental_ledger_build_card"
 input_boundary = "read_only_released_full_chain_day_bounded_surfaces; read_only_daily_impact_scope_consumer"
 
 [[official_inputs]]

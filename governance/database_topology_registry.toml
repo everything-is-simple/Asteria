@@ -1,7 +1,7 @@
 registry_version = "2026-05-06.v1"
 formal_root = "H:/Asteria-data"
 build_runner_standard = "docs/00-governance/04-database-build-runner-standard-v1.md"
-build_runner_standard_status = "project-level rule; MALF day supplemental builder is the first executable sample; does not open blocked modules or pipeline runtime"
+build_runner_standard_status = "project-level rule; MALF day supplemental builder remains the first executable sample; MALF day daily incremental sample is now hardened in temp/report only; no downstream daily runtime or pipeline runtime opened"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
     "H:/Asteria-Validated/2.backups/Asteria-docs-code-20260428-214427.zip",
@@ -125,6 +125,7 @@ checkpoint_policy = "malf_replay_scope"
 checkpoint_key = ["symbol_bucket", "bar_dt"]
 replay_scope = ["bar_dt", "symbol", "source_market_base_run_id"]
 promote_rule = "core_audit_passed"
+coverage_policy = "released day bounded surface exists; daily_incremental sample hardened for temp-only replay from earliest dirty date; no formal H:/Asteria-data mutation under this card"
 
 [[databases]]
 db_name = "malf_lifespan_day.duckdb"
@@ -137,6 +138,7 @@ checkpoint_policy = "malf_replay_scope"
 checkpoint_key = ["symbol_bucket", "bar_dt"]
 replay_scope = ["bar_dt", "wave_id"]
 promote_rule = "lifespan_audit_passed"
+coverage_policy = "released day bounded surface exists; daily_incremental sample hardened for temp-only replay from earliest dirty date; no formal H:/Asteria-data mutation under this card"
 
 [[databases]]
 db_name = "malf_service_day.duckdb"
@@ -149,6 +151,7 @@ checkpoint_policy = "malf_replay_scope"
 checkpoint_key = ["symbol_bucket", "bar_dt"]
 replay_scope = ["bar_dt", "symbol", "service_version"]
 promote_rule = "interface_audit_passed"
+coverage_policy = "released day bounded surface exists; daily_incremental sample hardened for temp-only replay from earliest dirty date; no formal H:/Asteria-data mutation under this card"
 
 [[databases]]
 db_name = "malf_core_week.duckdb"

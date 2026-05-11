@@ -7,7 +7,7 @@ from typing import Any
 
 MALF_SCHEMA_VERSION = "malf-v1-4-runtime-sync-v1"
 VALID_TIMEFRAMES = {"day", "week", "month"}
-VALID_RUN_MODES = {"bounded", "segmented", "full", "resume", "audit-only"}
+VALID_RUN_MODES = {"bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"}
 DEFAULT_PIVOT_DETECTION_RULE_VERSION = "pivot-fractal-1bar-v1"
 DEFAULT_CORE_EVENT_ORDERING_VERSION = "core-event-order-v1"
 DEFAULT_PRICE_COMPARE_POLICY = "strict"

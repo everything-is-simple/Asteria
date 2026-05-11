@@ -47,21 +47,23 @@ def test_project_governance_passes_current_repo() -> None:
     assert findings == []
 
 
-def test_malf_module_contract_points_at_month_bounded_closeout() -> None:
+def test_malf_module_contract_points_at_daily_incremental_closeout() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     contract_path = repo_root / "governance" / "module_api_contracts" / "malf.toml"
     with contract_path.open("rb") as handle:
         contract = tomllib.load(handle)
 
     assert contract["release_conclusion"] == (
-        "docs/04-execution/records/malf/malf-month-bounded-proof-build-20260506-01.conclusion.md"
+        "docs/04-execution/records/malf/malf-daily-incremental-ledger-build-card.conclusion.md"
     )
     assert contract["evidence_index"] == (
-        "docs/04-execution/records/malf/malf-month-bounded-proof-build-20260506-01.evidence-index.md"
+        "docs/04-execution/records/malf/malf-daily-incremental-ledger-build-card.evidence-index.md"
     )
     assert (
-        contract["formal_db_permission"]
-        == "released_day_week_month_core_lifespan_service_only; malf_full_build_requires_new_card"
+        contract["formal_db_permission"] == "released_day_week_month_core_lifespan_service_only; "
+        "malf_daily_incremental_sample_hardened_without_formal_db_mutation; "
+        "alpha_signal_daily_incremental_ledger_build_requires_new_card; "
+        "malf_full_build_requires_new_card"
     )
 
 
