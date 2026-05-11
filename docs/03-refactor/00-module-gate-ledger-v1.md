@@ -109,25 +109,25 @@ rules；当前 runtime passed evidence 已升级为 MALF v1.4 day runtime sync i
 当前 live 下一张执行卡：
 
 ```text
-pipeline-year-replay-disposition-decision-card-20260510-01
+system-wide-daily-dirty-scope-protocol-card
 ```
 
 对应 symbolic allowed next action：
 
 ```text
-pipeline_year_replay_disposition_decision_card
+system_wide_daily_dirty_scope_protocol_card
 ```
 
 当前 repair 结论锚点：
 
 ```text
-pipeline-year-replay-source-selection-repair-card-20260509-01
+pipeline-year-replay-disposition-decision-card-20260510-01
 ```
 
 对应下一步 allowed next action：
 
 ```text
-pipeline_year_replay_disposition_decision_card
+system_wide_daily_dirty_scope_protocol_card
 ```
 
 历史已放行动作锚点：
@@ -139,7 +139,7 @@ pipeline_one_year_strategy_behavior_replay_rerun_build_card
 当前只允许施工对象：
 
 ```text
-Pipeline year replay disposition decision
+System-wide daily dirty scope protocol
 ```
 
 当前已通过 bounded proof 的主线模块：
@@ -256,6 +256,13 @@ full rebuild、daily incremental 或 `v1 complete`。
 window 已覆盖 `2024-01-02..2024-12-31`，follow-up attribution 仍是 `calendar_semantic_gap_only`。
 因此当前唯一 live allowed next action 已切到 `pipeline_year_replay_disposition_decision_card`。本卡不直接执行 rerun、
 closeout 或 Stage 11 runtime。
+
+2026-05-11：`pipeline-year-replay-disposition-decision-card-20260510-01` 已真实执行并完成。该只读 disposition
+确认 released observed window 已是 `2024-01-02..2024-12-31`、MALF source lock clean 已修复、follow-up attribution
+只剩 `calendar_semantic_gap_only`，而当前 full-year audit 仍硬要求 `2024-01-01..2024-12-31`。因此此刻再跑一次
+rerun 不会产生新信息；当前正式裁决是不 rerun、做 truthful closeout，并把唯一 live allowed next action 切到
+`system_wide_daily_dirty_scope_protocol_card`。这仍不打开 System full build、Pipeline semantic repair、full rebuild、
+daily incremental 或 `v1 complete`。
 
 ## 1.1 Pre-Position 上游修补队列
 

@@ -17,6 +17,7 @@ from tests.unit.pipeline.constants import (
     PIPELINE_CURRENT_DOC_STATUS,
     PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
     PIPELINE_CURRENT_GATE_STATE,
+    PIPELINE_DISPOSITION_DECISION_RUN_ID,
     PIPELINE_DRY_RUN_CARD_ACTION,
     PIPELINE_DRY_RUN_CARD_RUN_ID,
     PIPELINE_DRY_RUN_FORMAL_DB_PERMISSION,
@@ -36,16 +37,18 @@ from tests.unit.pipeline.constants import (
     PIPELINE_RELEASE_CONCLUSION,
     PIPELINE_RELEASE_EVIDENCE_INDEX,
     PIPELINE_RUN_ID,
-    PIPELINE_SCOPE_FREEZE_CONCLUSION,
-    PIPELINE_SCOPE_FREEZE_EVIDENCE_INDEX,
     PIPELINE_SCOPE_FREEZE_RUN_ID,
+    PIPELINE_STAGE11_PROTOCOL_ACTION,
     PIPELINE_YEAR_REPLAY_CARD_ACTION,
     PIPELINE_YEAR_REPLAY_PREPARED_DOC_STATUS,
     PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION,
     PIPELINE_YEAR_REPLAY_RERUN_CARD_RUN_ID,
     PIPELINE_YEAR_REPLAY_SCOPE_FREEZE_RUN_ID,
 )
-from tests.unit.pipeline.support_state import rewind_current_malf_repair_state
+from tests.unit.pipeline.support_state import (
+    rewind_current_malf_repair_state,
+    rewrite_registry_module_fields,
+)
 
 
 def _active_card_line(run_id: str) -> str:
@@ -74,30 +77,45 @@ def build_governance_repo(tmp_path: Path) -> Path:
 def build_prepared_pipeline_repo(tmp_path: Path) -> Path:
     repo_root = build_full_chain_dry_run_prepared_repo(tmp_path)
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
-    registry_text = registry_path.read_text(encoding="utf-8")
     registry_path.write_text(
-        registry_text.replace(
-            f'status = "released"\ndoc_status = "{PIPELINE_FULL_CHAIN_PREPARED_DOC_STATUS}"',
-            f'status = "freeze_review_passed"\ndoc_status = "{PIPELINE_PREPARED_DOC_STATUS}"',
-            1,
-        )
-        .replace(
+        registry_path.read_text(encoding="utf-8").replace(
             f'current_allowed_next_card = "{PIPELINE_DRY_RUN_CARD_ACTION}"',
             'current_allowed_next_card = "pipeline_single_module_orchestration_build_card"',
             1,
-        )
-        .replace(
-            f'next_card = "{PIPELINE_DRY_RUN_CARD_ACTION}"',
-            'next_card = "pipeline_single_module_orchestration_build_card"',
-            1,
-        )
-        .replace(
-            _active_card_line(PIPELINE_DRY_RUN_SCOPE_FREEZE_RUN_ID),
-            _active_card_line(PIPELINE_SCOPE_FREEZE_RUN_ID),
-            1,
-        )
-        .replace(PIPELINE_RELEASE_CONCLUSION, PIPELINE_SCOPE_FREEZE_CONCLUSION, 1)
-        .replace(PIPELINE_RELEASE_EVIDENCE_INDEX, PIPELINE_SCOPE_FREEZE_EVIDENCE_INDEX, 1),
+        ),
+        encoding="utf-8",
+    )
+    registry_path.write_text(
+        rewrite_registry_module_fields(
+            registry_path.read_text(encoding="utf-8"),
+            module_id="system_readout",
+            field_updates={
+                "next_card": '"pipeline_single_module_orchestration_build_card"',
+                "next_allowed_action": '"pipeline_single_module_orchestration_build_card"',
+            },
+        ),
+        encoding="utf-8",
+    )
+    registry_path.write_text(
+        rewrite_registry_module_fields(
+            registry_path.read_text(encoding="utf-8"),
+            module_id="pipeline",
+            field_updates={
+                "status": '"freeze_review_passed"',
+                "doc_status": f'"{PIPELINE_PREPARED_DOC_STATUS}"',
+                "next_card": '"pipeline_single_module_orchestration_build_card"',
+                "active_card": (
+                    f'"docs/04-execution/records/pipeline/{PIPELINE_SCOPE_FREEZE_RUN_ID}.card.md"'
+                ),
+                "release_conclusion": (
+                    f'"docs/04-execution/records/pipeline/{PIPELINE_SCOPE_FREEZE_RUN_ID}.conclusion.md"'
+                ),
+                "evidence_index": (
+                    f'"docs/04-execution/records/pipeline/{PIPELINE_SCOPE_FREEZE_RUN_ID}.evidence-index.md"'
+                ),
+                "next_allowed_action": '"pipeline_single_module_orchestration_build_card"',
+            },
+        ),
         encoding="utf-8",
     )
     return repo_root
@@ -387,6 +405,7 @@ def build_year_replay_rerun_authorized_repo(tmp_path: Path) -> Path:
         "system_readout_2024_coverage_repair_card",
         "pipeline_year_replay_source_selection_repair_card",
         "pipeline_year_replay_disposition_decision_card",
+        PIPELINE_STAGE11_PROTOCOL_ACTION,
     ):
         updated_text = updated_text.replace(
             f'current_allowed_next_card = "{old_action}"',
@@ -404,6 +423,10 @@ def build_year_replay_rerun_authorized_repo(tmp_path: Path) -> Path:
         'next_card = "pipeline_year_replay_disposition_decision_card"',
         f'next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
     )
+    updated_text = updated_text.replace(
+        f'next_card = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
+        f'next_card = "{PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION}"',
+    )
     registry_path.write_text(
         updated_text.replace(
             f'doc_status = "{PIPELINE_CURRENT_DOC_STATUS}"',
@@ -415,6 +438,11 @@ def build_year_replay_rerun_authorized_repo(tmp_path: Path) -> Path:
         )
         .replace(
             'proof_run_id = "pipeline-system-readout-2024-coverage-repair-handoff-20260510-01"',
+            f'proof_run_id = "{PIPELINE_BOUNDED_PROOF_CARD_RUN_ID}"',
+            1,
+        )
+        .replace(
+            f'proof_run_id = "{PIPELINE_DISPOSITION_DECISION_RUN_ID}"',
             f'proof_run_id = "{PIPELINE_BOUNDED_PROOF_CARD_RUN_ID}"',
             1,
         )
@@ -456,6 +484,8 @@ def _rewrite_pipeline_next_card(
             lines[idx] = f'next_card = "{current_action}"'
         elif line.startswith('active_card = "docs/04-execution/records/pipeline/'):
             lines[idx] = _active_card_line(active_card_run_id)
+        elif line.startswith('next_allowed_action = "'):
+            lines[idx] = f'next_allowed_action = "{current_action}"'
         elif proof_run_id is not None and line.startswith('proof_run_id = "'):
             lines[idx] = f'proof_run_id = "{proof_run_id}"'
     registry_path.write_text("\n".join(lines) + "\n", encoding="utf-8")

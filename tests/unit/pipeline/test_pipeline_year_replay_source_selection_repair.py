@@ -165,14 +165,7 @@ def test_source_selection_repair_promotes_disposition_decision_when_truth_is_cle
     assert summary.followup_attribution == "calendar_semantic_gap_only"
     assert summary.next_card == PIPELINE_DISPOSITION_DECISION_CARD
     assert Path(summary.validated_zip).exists()
-    assert (
-        tmp_path
-        / "report"
-        / "pipeline"
-        / date.today().isoformat()
-        / "pipeline-year-replay-source-selection-repair-card-20260509-01"
-        / "manifest.json"
-    ).exists()
+    assert Path(summary.manifest_path).exists()
 
 
 def _seed_repaired_malf_run(db_path: Path, dates: list[date]) -> None:

@@ -19,6 +19,7 @@ from tests.unit.pipeline.constants import (
     PIPELINE_MALF_REPAIR_PREPARED_GATE_STATE,
     PIPELINE_MALF_REPAIR_RUN_ID,
     PIPELINE_SOURCE_SELECTION_REPAIR_ACTION,
+    PIPELINE_STAGE11_PROTOCOL_ACTION,
 )
 
 POSITION_CURRENT_DOC_STATUS = (
@@ -62,6 +63,29 @@ POSITION_CURRENT_PROOF_STATUS = (
     'proof_status = "bounded_proof_passed; 2024_coverage_repair_prepared; full_build_not_executed"'
 )
 POSITION_BASELINE_PROOF_STATUS = 'proof_status = "bounded_proof_passed; full_build_not_executed"'
+
+
+def rewrite_registry_module_fields(
+    registry_text: str,
+    *,
+    module_id: str,
+    field_updates: dict[str, str],
+) -> str:
+    lines = registry_text.splitlines()
+    in_module = False
+    for idx, line in enumerate(lines):
+        if line == f'module_id = "{module_id}"':
+            in_module = True
+            continue
+        if in_module and line == "[[modules]]":
+            break
+        if not in_module:
+            continue
+        for field_name, field_value in field_updates.items():
+            if line.startswith(f"{field_name} = "):
+                lines[idx] = f"{field_name} = {field_value}"
+                break
+    return "\n".join(lines) + "\n"
 
 
 def rewind_current_malf_repair_state(registry_text: str) -> str:
@@ -114,6 +138,11 @@ def rewind_current_malf_repair_state(registry_text: str) -> str:
             1,
         )
         .replace(
+            f'next_card = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
+            f'next_card = "{PIPELINE_MALF_REPAIR_ACTION}"',
+            1,
+        )
+        .replace(
             f'proof_status = "{PIPELINE_CURRENT_GATE_STATE}"',
             f'proof_status = "{PIPELINE_MALF_REPAIR_PREPARED_GATE_STATE}"',
             1,
@@ -130,6 +159,11 @@ def rewind_current_malf_repair_state(registry_text: str) -> str:
         )
         .replace(
             f'next_allowed_action = "{PIPELINE_DISPOSITION_DECISION_ACTION}"',
+            'next_allowed_action = "malf_2024_natural_year_coverage_repair_card"',
+            1,
+        )
+        .replace(
+            f'next_allowed_action = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
             'next_allowed_action = "malf_2024_natural_year_coverage_repair_card"',
             1,
         )

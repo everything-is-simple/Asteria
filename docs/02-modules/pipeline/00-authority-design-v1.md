@@ -42,7 +42,7 @@ pipeline-year-replay-source-selection-repair-card-20260509-01 passed
 | formal DB | `H:\Asteria-data\pipeline.duckdb` 已创建 |
 | released module scope | `system_readout` single-module orchestration + `full_chain_day` dry-run + `full_chain_day` bounded proof |
 | released run modes | `bounded / dry-run / resume / audit-only` |
-| current next card | `pipeline_year_replay_disposition_decision_card` |
+| current next card | `system_wide_daily_dirty_scope_protocol_card` |
 | full-chain dry-run | 已执行 / 已通过 |
 | full-chain bounded proof | 已执行 / 已通过 |
 | one-year strategy behavior replay | 已执行 / `blocked`（完整自然年覆盖不足） |
@@ -114,9 +114,8 @@ flowchart LR
 
 ## 8. 下一步
 
-当前 live `current_allowed_next_card` 是 `pipeline_year_replay_disposition_decision_card`。
-`pipeline-year-replay-source-selection-repair-card-20260509-01` 已证明：released `system_readout_run`
-仍是 `system-readout-bounded-proof-build-card-20260508-01`，但 year replay 读取路径已经统一消费当前 repaired
-`system_source_manifest`，released observed window 也已覆盖 `2024-01-02..2024-12-31`。因此当前唯一 live
-施工位不再是 source-selection repair，而是 disposition decision；在这张决策卡完成之前，仍不得直接跳去 rerun、
-System full build、Pipeline semantic repair、full rebuild、daily incremental 或 `v1 complete`。
+当前 live `current_allowed_next_card` 是 `system_wide_daily_dirty_scope_protocol_card`。
+`pipeline-year-replay-disposition-decision-card-20260510-01` 已裁定：在 released observed window 仅缺
+`2024-01-01` 的前提下，不再重跑 rerun，而是做 truthful closeout，并把后续长期能力问题移交到 Stage 11。
+因此当前唯一 live 施工位不再是 year replay disposition，而是 Stage 11 入口协议卡；在这张协议卡完成之前，
+仍不得直接跳去 full rebuild、daily incremental、System full build、Pipeline semantic repair 或 `v1 complete`。

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from datetime import date
 from pathlib import Path
 
 import duckdb
@@ -183,14 +182,7 @@ def test_year_replay_rerun_flags_unlocked_malf_repair_source(
     assert summary.status == "failed"
     assert summary.module_scope == "year_replay_rerun"
     assert summary.hard_fail_count > 0
-    behavior_summary = (
-        tmp_path
-        / "report"
-        / "pipeline"
-        / date.today().isoformat()
-        / PIPELINE_YEAR_REPLAY_RERUN_CARD_RUN_ID
-        / "behavior-summary.json"
-    )
+    behavior_summary = Path(summary.manifest_path or "").with_name("behavior-summary.json")
     assert behavior_summary.exists()
     assert PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID in behavior_summary.read_text(
         encoding="utf-8"
@@ -275,11 +267,4 @@ def test_year_replay_writes_behavior_summary_and_flags_incomplete_natural_year_c
     assert summary.module_scope == "year_replay"
     assert summary.hard_fail_count > 0
     assert Path(summary.validated_zip or "").exists()
-    assert (
-        tmp_path
-        / "report"
-        / "pipeline"
-        / date.today().isoformat()
-        / "pipeline-one-year-strategy-behavior-replay-build-card-20260508-01"
-        / "behavior-summary.json"
-    ).exists()
+    assert Path(summary.manifest_path or "").with_name("behavior-summary.json").exists()

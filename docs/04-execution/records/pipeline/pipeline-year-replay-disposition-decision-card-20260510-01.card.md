@@ -2,7 +2,7 @@
 
 日期：2026-05-10
 
-状态：`prepared / not executed`
+状态：`passed`
 
 ## 1. 目标
 
@@ -35,3 +35,21 @@
 | 直接执行 `year_replay_rerun` | 禁止 |
 | 打开 System full build / Pipeline semantic repair | 禁止 |
 | 打开 full rebuild / daily incremental / `v1 complete` | 禁止 |
+
+## 5. 实际结果
+
+本卡已于 `2026-05-11` 完成只读 disposition 决策。正式裁决如下：
+
+- 不再重跑 `year_replay_rerun`。
+- 当前 year replay 记为 truthful closeout，而不是误报为 passed。
+- 后续长期能力问题转入 Stage 11 队列，当前唯一 prepared next card 切到
+  `system-wide-daily-dirty-scope-protocol-card`。
+
+触发该裁决的 live truth：
+
+| item | value |
+|---|---|
+| observed released window | `2024-01-02..2024-12-31` |
+| source lock clean | `true` |
+| follow-up attribution | `calendar_semantic_gap_only` |
+| full-year audit still requires | `2024-01-01..2024-12-31` |

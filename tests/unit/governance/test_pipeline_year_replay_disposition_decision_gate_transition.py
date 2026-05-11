@@ -8,10 +8,12 @@ from tests.unit.pipeline.support import (
     PIPELINE_CURRENT_DOC_STATUS,
     PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
     PIPELINE_CURRENT_PROOF_RUN_ID,
+    PIPELINE_DISPOSITION_DECISION_ACTION,
     PIPELINE_DISPOSITION_DECISION_RUN_ID,
     PIPELINE_SOURCE_SELECTION_REPAIR_ACTION,
-    PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID,
+    PIPELINE_STAGE11_PROTOCOL_ACTION,
     PIPELINE_STAGE11_PROTOCOL_RUN_ID,
+    PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION,
 )
 
 try:
@@ -42,7 +44,7 @@ def _messages(repo_root: Path) -> list[str]:
     return [finding.message for finding in run_checks(repo_root)]
 
 
-def test_pipeline_source_selection_repair_advances_live_next_card() -> None:
+def test_pipeline_disposition_decision_moves_live_next_card_to_stage11() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     with registry_path.open("rb") as handle:
@@ -50,16 +52,6 @@ def test_pipeline_source_selection_repair_advances_live_next_card() -> None:
     modules = {module["module_id"]: module for module in registry["modules"]}
     conclusion_index = (
         repo_root / "docs" / "04-execution" / "00-conclusion-index-v1.md"
-    ).read_text(encoding="utf-8")
-    repair_conclusion = (
-        repo_root
-        / "docs/04-execution/records/pipeline/"
-        / f"{PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID}.conclusion.md"
-    ).read_text(encoding="utf-8")
-    repair_evidence = (
-        repo_root
-        / "docs/04-execution/records/pipeline/"
-        / f"{PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID}.evidence-index.md"
     ).read_text(encoding="utf-8")
     disposition_conclusion = (
         repo_root
@@ -77,42 +69,46 @@ def test_pipeline_source_selection_repair_advances_live_next_card() -> None:
     assert modules["pipeline"]["status"] == "released"
     assert modules["pipeline"]["doc_status"] == PIPELINE_CURRENT_DOC_STATUS
     assert modules["pipeline"]["formal_db_permission"] == PIPELINE_CURRENT_FORMAL_DB_PERMISSION
-    assert modules["pipeline"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
+    assert modules["pipeline"]["next_card"] == PIPELINE_STAGE11_PROTOCOL_ACTION
     assert modules["pipeline"]["proof_run_id"] == PIPELINE_CURRENT_PROOF_RUN_ID
     assert modules["system_readout"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["system_readout"]["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
-    assert (
-        f"| Pipeline | `{PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID}` | `passed` |" in conclusion_index
-    )
-    assert "状态：`passed`" in repair_conclusion
-    assert "| allowed next action | `pipeline_year_replay_disposition_decision_card` |" in (
-        repair_conclusion
-    )
-    assert "pipeline-year-replay-disposition-decision-card-20260510-01" in repair_evidence
+    assert f"| Pipeline | `{PIPELINE_DISPOSITION_DECISION_RUN_ID}` | `passed` |" in conclusion_index
     assert "状态：`passed`" in disposition_conclusion
+    assert "| allowed next action | `system_wide_daily_dirty_scope_protocol_card` |" in (
+        disposition_conclusion
+    )
+    assert "| prepared next card | `system-wide-daily-dirty-scope-protocol-card` |" in (
+        disposition_conclusion
+    )
+    assert "| replay rerun reopened | `no` |" in disposition_conclusion
     assert "状态：`prepared / not executed`" in prepared_card
 
 
-def test_project_governance_rejects_reopening_closed_source_selection_repair_card(
+def test_project_governance_rejects_reopening_closed_pipeline_year_replay_cards(
     tmp_path: Path,
 ) -> None:
     repo_root = _copy_governance_repo(tmp_path)
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
-    registry_text = registry_path.read_text(encoding="utf-8")
-    registry_path.write_text(
-        registry_text.replace(
-            (f'current_allowed_next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"'),
-            f'current_allowed_next_card = "{PIPELINE_SOURCE_SELECTION_REPAIR_ACTION}"',
-            1,
-        ).replace(
-            f'next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"',
-            f'next_card = "{PIPELINE_SOURCE_SELECTION_REPAIR_ACTION}"',
-            1,
-        ),
-        encoding="utf-8",
-    )
+    baseline = registry_path.read_text(encoding="utf-8")
 
-    assert any(
-        "current allowed next card must not point to a closed execution conclusion" in message
-        for message in _messages(repo_root)
-    )
+    for action in (
+        PIPELINE_DISPOSITION_DECISION_ACTION,
+        PIPELINE_SOURCE_SELECTION_REPAIR_ACTION,
+        PIPELINE_YEAR_REPLAY_RERUN_CARD_ACTION,
+    ):
+        registry_path.write_text(
+            baseline.replace(
+                f'current_allowed_next_card = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
+                f'current_allowed_next_card = "{action}"',
+                1,
+            ).replace(
+                f'next_card = "{PIPELINE_STAGE11_PROTOCOL_ACTION}"',
+                f'next_card = "{action}"',
+            ),
+            encoding="utf-8",
+        )
+        assert any(
+            "current allowed next card must not point to a closed execution conclusion" in message
+            for message in _messages(repo_root)
+        )

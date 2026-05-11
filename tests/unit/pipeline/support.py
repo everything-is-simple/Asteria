@@ -5,6 +5,9 @@ from pathlib import Path
 from tests.unit.pipeline import constants as pipeline_constants
 from tests.unit.pipeline import support_repo_builders as repo_builders
 from tests.unit.pipeline.constants import *  # noqa: F403
+from tests.unit.pipeline.disposition_repo_builder import (
+    build_year_replay_disposition_authorized_repo as disposition_repo_builder,
+)
 from tests.unit.system_readout.support import build_request as build_system_request
 from tests.unit.system_readout.support import seed_chain
 
@@ -15,6 +18,7 @@ build_full_chain_dry_run_prepared_repo = repo_builders.build_full_chain_dry_run_
 build_governance_repo = repo_builders.build_governance_repo
 build_prepared_pipeline_repo = repo_builders.build_prepared_pipeline_repo
 build_year_replay_authorized_repo = repo_builders.build_year_replay_authorized_repo
+build_year_replay_disposition_authorized_repo = disposition_repo_builder
 build_year_replay_rerun_authorized_repo = repo_builders.build_year_replay_rerun_authorized_repo
 
 CURRENT_ACTIVE_MAINLINE_MODULE = pipeline_constants.CURRENT_ACTIVE_MAINLINE_MODULE
@@ -22,6 +26,8 @@ PIPELINE_FULL_CHAIN_PASSED_DOC_STATUS = pipeline_constants.PIPELINE_FULL_CHAIN_P
 PIPELINE_ALPHA_SIGNAL_REPAIR_RUN_ID = pipeline_constants.PIPELINE_ALPHA_SIGNAL_REPAIR_RUN_ID
 PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID = pipeline_constants.PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID
 PIPELINE_DISPOSITION_DECISION_RUN_ID = pipeline_constants.PIPELINE_DISPOSITION_DECISION_RUN_ID
+PIPELINE_STAGE11_PROTOCOL_RUN_ID = pipeline_constants.PIPELINE_STAGE11_PROTOCOL_RUN_ID
+PIPELINE_STAGE11_PROTOCOL_ACTION = pipeline_constants.PIPELINE_STAGE11_PROTOCOL_ACTION
 PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_RUN_ID = (
     pipeline_constants.PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_RUN_ID
 )
@@ -29,6 +35,7 @@ PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION = (
     pipeline_constants.PIPELINE_COVERAGE_GAP_EVIDENCE_INCOMPLETE_CLOSEOUT_ACTION
 )
 PIPELINE_SOURCE_SELECTION_REPAIR_ACTION = pipeline_constants.PIPELINE_SOURCE_SELECTION_REPAIR_ACTION
+PIPELINE_CURRENT_PROOF_RUN_ID = pipeline_constants.PIPELINE_CURRENT_PROOF_RUN_ID
 PIPELINE_YEAR_REPLAY_CARD_RUN_ID = pipeline_constants.PIPELINE_YEAR_REPLAY_CARD_RUN_ID
 PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID = (
     pipeline_constants.PIPELINE_YEAR_REPLAY_RERUN_REQUIRED_MALF_RUN_ID

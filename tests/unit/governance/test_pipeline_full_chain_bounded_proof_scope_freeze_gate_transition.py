@@ -10,8 +10,8 @@ from tests.unit.pipeline.support import (
     PIPELINE_BOUNDED_PROOF_CLOSEOUT_RUN_ID,
     PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID,
     PIPELINE_CURRENT_DOC_STATUS,
+    PIPELINE_CURRENT_PROOF_RUN_ID,
     PIPELINE_DRY_RUN_CARD_RUN_ID,
-    PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID,
     PIPELINE_YEAR_REPLAY_CARD_RUN_ID,
     PIPELINE_YEAR_REPLAY_SCOPE_FREEZE_RUN_ID,
 )
@@ -79,7 +79,7 @@ def test_pipeline_bounded_proof_scope_freeze_restores_prepared_next_card() -> No
     assert modules["pipeline"]["status"] == "released"
     assert modules["pipeline"]["doc_status"] == PIPELINE_CURRENT_DOC_STATUS
     assert modules["pipeline"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
-    assert modules["pipeline"]["proof_run_id"] == PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID
+    assert modules["pipeline"]["proof_run_id"] == PIPELINE_CURRENT_PROOF_RUN_ID
     assert (
         f"| Pipeline | `{PIPELINE_BOUNDED_PROOF_SCOPE_FREEZE_RUN_ID}` | `passed / scope frozen` |"
         in conclusion_index

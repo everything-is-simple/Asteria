@@ -12,6 +12,7 @@ def allowed_pipeline_runner_names() -> set[str]:
         "run_pipeline_full_chain_dry_run.py",
         "run_year_replay_coverage_gap_diagnosis.py",
         "run_pipeline_year_replay_source_selection_repair.py",
+        "run_pipeline_year_replay_disposition_decision.py",
         "run_alpha_signal_2024_coverage_repair.py",
         "run_downstream_coverage_gap_closeout.py",
     }

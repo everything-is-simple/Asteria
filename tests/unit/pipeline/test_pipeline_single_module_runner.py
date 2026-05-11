@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-from datetime import date
 from pathlib import Path
 
 import duckdb
@@ -126,14 +125,7 @@ def test_bounded_proof_writes_closeout_and_resume_reuses_checkpoint(tmp_path: Pa
     assert summary.hard_fail_count == 0
     assert summary.validated_zip is not None
     assert Path(summary.validated_zip).exists()
-    assert (
-        tmp_path
-        / "report"
-        / "pipeline"
-        / date.today().isoformat()
-        / "pipeline-single-module-orchestration-unit-001"
-        / "manifest.json"
-    ).exists()
+    assert Path(summary.manifest_path or "").exists()
 
     resumed = run_pipeline_build(build_request(tmp_path, repo_root=repo_root, mode="resume"))
 

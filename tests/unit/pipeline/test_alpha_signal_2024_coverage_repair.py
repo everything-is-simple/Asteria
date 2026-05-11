@@ -18,6 +18,7 @@ from tests.unit.pipeline.alpha_signal_2024_coverage_repair_support import (
     seed_live_released_chain,
 )
 from tests.unit.pipeline.support import (
+    CURRENT_ALLOWED_NEXT_CARD_ACTION,
     build_governance_repo,
     build_year_replay_rerun_authorized_repo,
 )
@@ -292,8 +293,13 @@ def test_followup_uses_temp_repo_view_and_reports_truthful_next_card(tmp_path: P
         "coverage-gap-evidence-incomplete-closeout-card-20260509-01",
         "system-readout-2024-coverage-repair-card-20260509-01",
         "pipeline-year-replay-source-selection-repair-card-20260509-01",
+        "position-2024-coverage-repair-card-20260509-01",
     }
-    assert 'current_allowed_next_card = "position_2024_coverage_repair_card"' in live_registry
+    assert f'current_allowed_next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"' in live_registry
+    assert (
+        'current_allowed_next_card = "pipeline_one_year_strategy_behavior_replay_rerun_build_card"'
+        not in live_registry
+    )
     assert (
         'current_allowed_next_card = "pipeline_one_year_strategy_behavior_replay_rerun_build_card"'
         in followup_registry

@@ -120,6 +120,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Pipeline | `pipeline-trade-2024-coverage-repair-handoff-20260510-01` | `passed` | [conclusion](records/pipeline/pipeline-trade-2024-coverage-repair-handoff-20260510-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-trade-2024-coverage-repair-handoff-20260510-01.evidence-index.md) |
 | Pipeline | `pipeline-system-readout-2024-coverage-repair-handoff-20260510-01` | `passed` | [conclusion](records/pipeline/pipeline-system-readout-2024-coverage-repair-handoff-20260510-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-system-readout-2024-coverage-repair-handoff-20260510-01.evidence-index.md) |
 | Pipeline | `pipeline-year-replay-source-selection-repair-card-20260509-01` | `passed` | [conclusion](records/pipeline/pipeline-year-replay-source-selection-repair-card-20260509-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-year-replay-source-selection-repair-card-20260509-01.evidence-index.md) |
+| Pipeline | `pipeline-year-replay-disposition-decision-card-20260510-01` | `passed` | [conclusion](records/pipeline/pipeline-year-replay-disposition-decision-card-20260510-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-year-replay-disposition-decision-card-20260510-01.evidence-index.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
@@ -203,10 +204,11 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   又已真实执行并完成，follow-up 只剩 `calendar_semantic_gap_only`；随后
   `pipeline-system-readout-2024-coverage-repair-handoff-20260510-01` 已通过，把 Pipeline live handoff truth
   同步到 `pipeline_year_replay_source_selection_repair_card`。随后
-  `pipeline-year-replay-source-selection-repair-card-20260509-01` 也已真实执行并完成：Pipeline year replay
+  `pipeline-year-replay-source-selection-repair-card-20260509-01` 与
+  `pipeline-year-replay-disposition-decision-card-20260510-01` 也都已真实执行并完成：Pipeline year replay
   读取路径现已统一消费当前 released `System Readout` truth，released observed window 已覆盖
-  `2024-01-02..2024-12-31`，MALF source lock 也已指向 repaired run；因此 current live
-  `current_allowed_next_card` 已切到 `pipeline_year_replay_disposition_decision_card`。
+  `2024-01-02..2024-12-31`，MALF source lock 也已指向 repaired run；当前正式裁决是不 rerun、做 truthful
+  closeout，并把 current live `current_allowed_next_card` 切到 `system_wide_daily_dirty_scope_protocol_card`。
   后半场 repair phase roadmap 已收敛回 `docs/03-refactor/04-asteria-full-system-roadmap-v1.md` 单点维护；旧第二张
   repair roadmap 已删除，不再承载独立状态机。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
@@ -216,7 +218,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 以下登记当前仍然有效的 live next card：
 
 ```text
-pipeline-year-replay-disposition-decision-card-20260510-01
+system-wide-daily-dirty-scope-protocol-card
 ```
 
 ## 3.1 Newly Passed Pre-Position Repair Card
