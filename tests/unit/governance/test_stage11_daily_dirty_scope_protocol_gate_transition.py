@@ -6,6 +6,7 @@ from tests.unit.pipeline.support import (
     ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_RUN_ID,
     CURRENT_ACTIVE_MAINLINE_MODULE,
     CURRENT_ALLOWED_NEXT_CARD_ACTION,
+    CURRENT_PIPELINE_ACTIVE_CARD,
     DATA_DAILY_HARDENING_ACTION,
     DATA_DAILY_HARDENING_RUN_ID,
     MALF_DAILY_INCREMENTAL_LEDGER_ACTION,
@@ -82,15 +83,15 @@ def test_stage11_protocol_passes_and_moves_live_next_card_to_data_daily_hardenin
     assert modules["pipeline"]["formal_db_permission"] == PIPELINE_CURRENT_FORMAL_DB_PERMISSION
     assert modules["pipeline"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["pipeline"]["proof_run_id"] == PIPELINE_CURRENT_PROOF_RUN_ID
-    assert modules["pipeline"]["active_card"] == (
-        "docs/04-execution/records/pipeline/alpha-signal-daily-incremental-ledger-build-card.card.md"
-    )
+    assert modules["pipeline"]["active_card"] == CURRENT_PIPELINE_ACTIVE_CARD.replace(
+        'active_card = "', ""
+    ).replace('"', "")
     assert pipeline_contract["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert pipeline_contract["release_conclusion"] == (
-        "docs/04-execution/records/pipeline/alpha-signal-daily-incremental-ledger-build-card.conclusion.md"
+        "docs/04-execution/records/pipeline/downstream-daily-impact-ledger-schema-card.conclusion.md"
     )
     assert pipeline_contract["evidence_index"] == (
-        "docs/04-execution/records/pipeline/alpha-signal-daily-incremental-ledger-build-card.evidence-index.md"
+        "docs/04-execution/records/pipeline/downstream-daily-impact-ledger-schema-card.evidence-index.md"
     )
     assert pipeline_contract["daily_protocol_timeframe"] == "day"
     assert pipeline_contract["daily_protocol_lineage_fields"] == [

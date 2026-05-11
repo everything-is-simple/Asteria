@@ -6,7 +6,9 @@ from tests.unit.pipeline.support import (
     ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_ACTION,
     ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_RUN_ID,
     CURRENT_ACTIVE_MAINLINE_MODULE,
+    CURRENT_ALLOWED_NEXT_CARD_ACTION,
 )
+from tests.unit.pipeline.support_state import rewrite_registry_module_fields
 
 try:
     import tomllib
@@ -16,6 +18,8 @@ except ModuleNotFoundError:  # Python 3.10
 
 DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION = "downstream_daily_impact_ledger_schema_card"
 DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_RUN_ID = "downstream-daily-impact-ledger-schema-card"
+DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_ACTION = "downstream_daily_incremental_runner_build_card"
+DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_RUN_ID = "downstream-daily-incremental-runner-build-card"
 ALPHA_CURRENT_DOC_STATUS = (
     "frozen six-doc set / bounded proof passed / production hardening passed / "
     "daily incremental sample hardened"
@@ -48,7 +52,7 @@ def _messages(repo_root: Path) -> list[str]:
     return [finding.message for finding in run_checks(repo_root)]
 
 
-def test_alpha_signal_daily_incremental_closure_moves_live_next_card_to_downstream_schema() -> None:
+def test_alpha_signal_daily_incremental_closure_moves_live_next_to_runner() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     pipeline_contract_path = repo_root / "governance" / "module_api_contracts" / "pipeline.toml"
@@ -75,29 +79,29 @@ def test_alpha_signal_daily_incremental_closure_moves_live_next_card_to_downstre
         / "docs/04-execution/records/pipeline/"
         / f"{ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_RUN_ID}.conclusion.md"
     ).read_text(encoding="utf-8")
-    prepared_downstream_card = (
+    downstream_schema_conclusion = (
         repo_root
         / "docs/04-execution/records/pipeline/"
-        / f"{DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_RUN_ID}.card.md"
+        / f"{DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_RUN_ID}.conclusion.md"
+    ).read_text(encoding="utf-8")
+    prepared_runner_card = (
+        repo_root
+        / "docs/04-execution/records/pipeline/"
+        / f"{DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_RUN_ID}.card.md"
     ).read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == CURRENT_ACTIVE_MAINLINE_MODULE
-    assert registry["current_allowed_next_card"] == DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION
+    assert registry["current_allowed_next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["alpha"]["doc_status"] == ALPHA_CURRENT_DOC_STATUS
     assert modules["signal"]["doc_status"] == SIGNAL_CURRENT_DOC_STATUS
-    assert modules["system_readout"]["next_card"] == DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION
-    assert (
-        modules["system_readout"]["next_allowed_action"]
-        == DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION
-    )
-    assert modules["pipeline"]["next_card"] == DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION
-    assert (
-        modules["pipeline"]["next_allowed_action"] == DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION
-    )
+    assert modules["system_readout"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
+    assert modules["system_readout"]["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
+    assert modules["pipeline"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
+    assert modules["pipeline"]["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert "daily_incremental" in alpha_contract["run_modes"]
     assert "daily_incremental" in signal_contract["run_modes"]
-    assert pipeline_contract["next_allowed_action"] == DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION
-    assert system_contract["next_allowed_action"] == DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION
+    assert pipeline_contract["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
+    assert system_contract["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert (
         f"| Pipeline | `{ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_RUN_ID}` | "
         "`passed / alpha signal daily incremental sample hardened` |" in conclusion_index
@@ -106,7 +110,12 @@ def test_alpha_signal_daily_incremental_closure_moves_live_next_card_to_downstre
         f"| allowed next action | `{DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION}` |"
         in pipeline_conclusion
     )
-    assert "状态：`prepared / not executed`" in prepared_downstream_card
+    assert "状态：`passed / downstream daily impact schema frozen`" in downstream_schema_conclusion
+    assert (
+        f"| allowed next action | `{DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_ACTION}` |"
+        in downstream_schema_conclusion
+    )
+    assert "状态：`prepared / not executed`" in prepared_runner_card
 
 
 def test_project_governance_rejects_closed_alpha_signal_daily_card_as_live_next_card(
@@ -116,23 +125,28 @@ def test_project_governance_rejects_closed_alpha_signal_daily_card_as_live_next_
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     system_contract_path = repo_root / "governance" / "module_api_contracts" / "system_readout.toml"
     pipeline_contract_path = repo_root / "governance" / "module_api_contracts" / "pipeline.toml"
-    registry_text = registry_path.read_text(encoding="utf-8")
+    registry_text = rewrite_registry_module_fields(
+        registry_path.read_text(encoding="utf-8"),
+        module_id="system_readout",
+        field_updates={"next_card": f'"{ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_ACTION}"'},
+    )
+    registry_text = rewrite_registry_module_fields(
+        registry_text,
+        module_id="pipeline",
+        field_updates={"next_card": f'"{ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_ACTION}"'},
+    )
     registry_path.write_text(
         registry_text.replace(
-            f'current_allowed_next_card = "{DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION}"',
+            f'current_allowed_next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"',
             f'current_allowed_next_card = "{ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_ACTION}"',
             1,
-        ).replace(
-            f'next_card = "{DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION}"',
-            f'next_card = "{ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_ACTION}"',
-            4,
         ),
         encoding="utf-8",
     )
     for path in (system_contract_path, pipeline_contract_path):
         path.write_text(
             path.read_text(encoding="utf-8").replace(
-                f'next_allowed_action = "{DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION}"',
+                f'next_allowed_action = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"',
                 f'next_allowed_action = "{ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_ACTION}"',
                 1,
             ),

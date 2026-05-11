@@ -310,9 +310,9 @@ grain = "signal"
 ledger_role = "position_ledger"
 writer = "run_position_build"
 allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
-checkpoint_policy = "position_replay_scope"
-checkpoint_key = ["signal_id"]
-replay_scope = ["signal_id", "symbol"]
+checkpoint_policy = "stage11_daily_protocol_scope"
+checkpoint_key = ["symbol", "trade_date", "source_run_id"]
+replay_scope = ["symbol", "trade_date", "source_run_id"]
 promote_rule = "position_audit_passed"
 
 [[databases]]
@@ -322,9 +322,9 @@ grain = "portfolio_run"
 ledger_role = "portfolio_plan_ledger"
 writer = "run_portfolio_plan_build"
 allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
-checkpoint_policy = "portfolio_replay_scope"
-checkpoint_key = ["portfolio_run_id"]
-replay_scope = ["position_candidate_id", "portfolio_run_id"]
+checkpoint_policy = "stage11_daily_protocol_scope"
+checkpoint_key = ["symbol", "trade_date", "source_run_id"]
+replay_scope = ["symbol", "trade_date", "source_run_id"]
 promote_rule = "portfolio_plan_audit_passed"
 
 [[databases]]
@@ -334,9 +334,9 @@ grain = "execution"
 ledger_role = "trade_ledger"
 writer = "run_trade_build"
 allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
-checkpoint_policy = "trade_replay_scope"
-checkpoint_key = ["order_intent_id", "execution_trade_date"]
-replay_scope = ["order_intent_id", "execution_trade_date"]
+checkpoint_policy = "stage11_daily_protocol_scope"
+checkpoint_key = ["symbol", "trade_date", "source_run_id"]
+replay_scope = ["symbol", "trade_date", "source_run_id"]
 promote_rule = "trade_audit_passed"
 
 [[databases]]
@@ -346,9 +346,9 @@ grain = "readout"
 ledger_role = "system_readout"
 writer = "run_system_readout_build"
 allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
-checkpoint_policy = "readout_source_manifest"
-checkpoint_key = ["system_readout_run_id"]
-replay_scope = ["source_run_id", "module_release_version"]
+checkpoint_policy = "stage11_daily_protocol_scope"
+checkpoint_key = ["symbol", "trade_date", "source_run_id"]
+replay_scope = ["symbol", "trade_date", "source_run_id"]
 promote_rule = "system_readout_audit_passed"
 
 [[databases]]

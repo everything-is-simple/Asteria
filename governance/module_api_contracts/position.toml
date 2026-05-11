@@ -6,12 +6,17 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
     "H:/Asteria-Validated/Asteria-position-bounded-proof-build-card-20260506-01.zip",
 ]
-gate_state = "freeze_review_passed; bounded_proof_passed; full_build_not_executed"
-formal_db_permission = "released_day_bounded_position_candidate_entry_exit_only; full_build_requires_new_card"
+gate_state = "freeze_review_passed; bounded_proof_passed; daily_impact_schema_frozen; full_build_not_executed"
+formal_db_permission = "released_day_bounded_position_candidate_entry_exit_only; daily_impact_schema_frozen; downstream_daily_runtime_requires_runner_card; no_formal_H:/Asteria-data_mutation_under_this_card; full_build_requires_new_card"
 writeback_boundary = "consume released Signal only; never write back upstream"
 run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
 resume_behavior = "resume from position checkpoint after Signal release"
 source_manifest_fields = ["source_signal_release_version", "source_signal_run_id"]
+daily_protocol_role = "writer"
+daily_protocol_scope_fields = ["symbol", "trade_date", "timeframe", "source_run_id"]
+daily_protocol_lineage_fields = ["source_run_id", "target_run_id"]
+daily_protocol_replay_scope_fields = ["symbol", "trade_date", "source_run_id"]
+daily_protocol_impact_date_fields = ["candidate_dt", "entry_reference_dt", "entry_valid_from", "entry_valid_until", "exit_reference_dt", "exit_valid_from", "exit_valid_until"]
 forbidden_inputs = ["raw_market.duckdb.raw_market_bar", "malf_internal", "alpha_internal", "mock_formal_data"]
 forbidden_outputs = ["signal_writeback", "alpha_writeback", "malf_writeback", "portfolio_allocation", "actual_fill"]
 

@@ -87,6 +87,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Alpha | `alpha-target-completeness-review-20260506-01` | `review-only / bounded proof clean / full target incomplete` | [conclusion](records/alpha/alpha-target-completeness-review-20260506-01.conclusion.md) | [evidence-index](records/alpha/alpha-target-completeness-review-20260506-01.evidence-index.md) |
 | Alpha | `alpha-production-builder-hardening-20260506-01` | `passed` | [conclusion](records/alpha/alpha-production-builder-hardening-20260506-01.conclusion.md) | [evidence-index](records/alpha/alpha-production-builder-hardening-20260506-01.evidence-index.md) |
 | Pipeline | `alpha-signal-daily-incremental-ledger-build-card` | `passed / alpha signal daily incremental sample hardened` | [conclusion](records/pipeline/alpha-signal-daily-incremental-ledger-build-card.conclusion.md) | [evidence-index](records/pipeline/alpha-signal-daily-incremental-ledger-build-card.evidence-index.md) |
+| Pipeline | `downstream-daily-impact-ledger-schema-card` | `passed / downstream daily impact schema frozen` | [conclusion](records/pipeline/downstream-daily-impact-ledger-schema-card.conclusion.md) | [evidence-index](records/pipeline/downstream-daily-impact-ledger-schema-card.evidence-index.md) |
 | Signal | `signal-freeze-review-20260429-01` | `passed` | [conclusion](records/signal/signal-freeze-review-20260429-01.conclusion.md) | [evidence-index](records/signal/signal-freeze-review-20260429-01.evidence-index.md) |
 | Signal | `signal-bounded-proof-20260429-01` | `passed` | [conclusion](records/signal/signal-bounded-proof-20260429-01.conclusion.md) | [evidence-index](records/signal/signal-bounded-proof-20260429-01.evidence-index.md) |
 | Signal | `signal-target-completeness-review-20260506-01` | `review-only / bounded proof clean / full target incomplete` | [conclusion](records/signal/signal-target-completeness-review-20260506-01.conclusion.md) | [evidence-index](records/signal/signal-target-completeness-review-20260506-01.evidence-index.md) |
@@ -222,8 +223,11 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   `malf-daily-incremental-ledger-build-card` 也已通过 MALF day-only 样板 proof，把 MALF `day`
   三库正式接到 Data dirty scope，并生成 MALF 自身 `daily_impact_scope` / lineage / checkpoint / audit；
   随后 `alpha-signal-daily-incremental-ledger-build-card` 也已通过 Alpha/Signal day-only 样板 proof，
-  把 MALF sample lineage 继续推进到 Alpha 五族与 Signal；当前唯一 live next card 已继续前进到
-  `downstream-daily-impact-ledger-schema-card`。
+  把 MALF sample lineage 继续推进到 Alpha 五族与 Signal；之后
+  `downstream-daily-impact-ledger-schema-card` 也已闭环为 passed，
+  将 Position / Portfolio Plan / Trade / System Readout 的 Stage 11 impact map 与
+  replay/checkpoint 口径冻结完成；当前唯一 live next card 已继续前进到
+  `downstream-daily-incremental-runner-build-card`。
   后半场 repair phase roadmap 已收敛回 `docs/03-refactor/04-asteria-full-system-roadmap-v1.md` 单点维护；旧第二张
   repair roadmap 已删除，不再承载独立状态机。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
@@ -233,7 +237,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 以下登记当前仍然有效的 live next card：
 
 ```text
-downstream-daily-impact-ledger-schema-card
+downstream-daily-incremental-runner-build-card
 ```
 
 ## 3.1 Newly Passed Pre-Position Repair Card

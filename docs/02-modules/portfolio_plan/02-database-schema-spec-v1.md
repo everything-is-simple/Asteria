@@ -193,3 +193,23 @@ erDiagram
 | `fill_id` | 禁止，归属 Trade |
 | `system_readout_id` | 禁止，归属 System Readout |
 | 自定义 MALF / Alpha / Signal / Position 字段 | 禁止 |
+
+## 14. Stage 11 Daily Impact Map
+
+Stage 11 当前只冻结 Portfolio Plan 的 downstream daily impact schema，不打开 runtime：
+
+| 项 | 冻结口径 |
+|---|---|
+| protocol scope | `symbol + trade_date + timeframe + source_run_id` |
+| lineage | `source_run_id -> target_run_id` |
+| replay scope | `symbol + trade_date + source_run_id` |
+| 业务日期锚点 | `plan_dt` |
+| 二级传播日期 | `candidate_dt`，`exposure_valid_from`，`exposure_valid_until` |
+| 上游映射 | `candidate_dt -> plan_dt` |
+| trim 继承规则 | `portfolio_trim_ledger` 继续继承父 `portfolio_admission.plan_dt`，本卡不新增 `trim_dt` |
+
+Non-goals：
+
+- 不把组合裁决降级成单标的日线主键
+- 不新增 Trade / System 字段
+- 不在本卡内打开 Portfolio Plan daily incremental runner

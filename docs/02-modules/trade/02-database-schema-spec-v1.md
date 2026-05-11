@@ -195,3 +195,22 @@ erDiagram
 `fill_ledger` 表族在本卡只冻结 schema。`trade-bounded-proof-build-card-20260507-01`
 已执行完成，但由于没有 evidence-backed execution / fill source，`fill_ledger` 仍保持空表；
 该缺口必须通过 `trade_audit` 记录为 retained gap。
+
+## 14. Stage 11 Daily Impact Map
+
+Stage 11 当前只冻结 Trade 的 downstream daily impact schema，不打开 runtime：
+
+| 项 | 冻结口径 |
+|---|---|
+| protocol scope | `symbol + trade_date + timeframe + source_run_id` |
+| lineage | `source_run_id -> target_run_id` |
+| replay scope | `symbol + trade_date + source_run_id` |
+| 业务日期锚点 | `intent_dt` |
+| 二级传播日期 | `plan_dt`，`execution_valid_from`，`execution_valid_until`，`execution_dt`，`rejection_dt` |
+| 上游映射 | `plan_dt -> intent_dt` |
+
+Non-goals：
+
+- 不新增 fill source，不打开 fill 补数
+- 不把 `order_intent_ledger` 自然键改写成 `trade_date + symbol`
+- 不在本卡内打开 Trade daily incremental runner

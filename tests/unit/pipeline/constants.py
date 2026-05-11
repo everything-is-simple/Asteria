@@ -24,6 +24,8 @@ PIPELINE_STAGE11_PROTOCOL_RUN_ID = "system-wide-daily-dirty-scope-protocol-card"
 DATA_DAILY_HARDENING_RUN_ID = "data-ledger-daily-incremental-hardening-card"
 MALF_DAILY_INCREMENTAL_LEDGER_RUN_ID = "malf-daily-incremental-ledger-build-card"
 ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_RUN_ID = "alpha-signal-daily-incremental-ledger-build-card"
+DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_RUN_ID = "downstream-daily-impact-ledger-schema-card"
+DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_RUN_ID = "downstream-daily-incremental-runner-build-card"
 PIPELINE_YEAR_REPLAY_RERUN_CARD_RUN_ID = (
     "pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01"
 )
@@ -59,14 +61,14 @@ PIPELINE_STAGE11_PROTOCOL_ACTION = "system_wide_daily_dirty_scope_protocol_card"
 DATA_DAILY_HARDENING_ACTION = "data_ledger_daily_incremental_hardening_card"
 MALF_DAILY_INCREMENTAL_LEDGER_ACTION = "malf_daily_incremental_ledger_build_card"
 ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_ACTION = "alpha_signal_daily_incremental_ledger_build_card"
-DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_RUN_ID = "downstream-daily-impact-ledger-schema-card"
 DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION = "downstream_daily_impact_ledger_schema_card"
-CURRENT_ALLOWED_NEXT_CARD_ACTION = DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION
+DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_ACTION = "downstream_daily_incremental_runner_build_card"
+CURRENT_ALLOWED_NEXT_CARD_ACTION = DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_ACTION
 CURRENT_ACTIVE_MAINLINE_MODULE = "system_readout"
-PIPELINE_CURRENT_PROOF_RUN_ID = ALPHA_SIGNAL_DAILY_INCREMENTAL_LEDGER_RUN_ID
+PIPELINE_CURRENT_PROOF_RUN_ID = DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_RUN_ID
 CURRENT_PIPELINE_ACTIVE_CARD = (
     'active_card = "docs/04-execution/records/pipeline/'
-    'alpha-signal-daily-incremental-ledger-build-card.card.md"'
+    'downstream-daily-impact-ledger-schema-card.card.md"'
 )
 PIPELINE_MALF_REPAIR_ACTIVE_CARD = (
     'active_card = "docs/04-execution/records/malf/'
@@ -116,7 +118,8 @@ PIPELINE_CURRENT_DOC_STATUS = (
     "source-selection repair passed / year replay disposition decision passed / stage 11 "
     "day dirty scope protocol passed / data daily incremental sample hardened / "
     "MALF daily incremental sample hardened / alpha signal daily incremental sample "
-    "hardened / live next card moved to downstream daily impact ledger schema"
+    "hardened / downstream daily impact schema frozen / live next card moved to "
+    "downstream daily incremental runner"
 )
 PIPELINE_FULL_CHAIN_PREPARED_DOC_STATUS = (
     "frozen six-doc set / freeze review passed / single-module orchestration build passed / "
@@ -180,7 +183,8 @@ PIPELINE_CURRENT_GATE_STATE = (
     "system_readout_2024_coverage_repair_handoff_passed; "
     "year_replay_source_selection_repair_passed; year_replay_disposition_decision_passed; "
     "stage11_day_dirty_scope_protocol_passed; data_daily_incremental_sample_hardened; "
-    "malf_daily_incremental_sample_hardened; alpha_signal_daily_incremental_sample_hardened"
+    "malf_daily_incremental_sample_hardened; alpha_signal_daily_incremental_sample_hardened; "
+    "downstream_daily_impact_schema_frozen"
 )
 PIPELINE_PREPARED_GATE_STATE = (
     "single_module_orchestration_build_passed; full_chain_dry_run_prepared; full_chain_not_executed"
@@ -211,7 +215,9 @@ PIPELINE_CURRENT_FORMAL_DB_PERMISSION = (
     "stage11_day_protocol_frozen; data_daily_incremental_sample_hardened; "
     "malf_daily_incremental_sample_hardened_without_formal_db_mutation; "
     "alpha_signal_daily_incremental_sample_hardened_without_formal_db_mutation; "
-    "downstream_daily_impact_ledger_schema_requires_new_card; "
+    "downstream_daily_impact_schema_frozen; "
+    "downstream_daily_runtime_requires_runner_card; "
+    "no_formal_H:/Asteria-data_mutation_under_this_card; "
     "full_rebuild_requires_new_card"
 )
 PIPELINE_PREPARED_FORMAL_DB_PERMISSION = (

@@ -7,8 +7,8 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-system-readout-freeze-review-20260507-01.zip",
     "H:/Asteria-Validated/Asteria-system-readout-bounded-proof-build-card-20260508-01.zip",
 ]
-gate_state = "freeze_review_passed; bounded_proof_passed; full_build_not_executed; trade_released"
-formal_db_permission = "released_day_bounded_system_readout_only; system_full_build_requires_new_card"
+gate_state = "freeze_review_passed; bounded_proof_passed; daily_impact_schema_frozen; full_build_not_executed; trade_released"
+formal_db_permission = "released_day_bounded_system_readout_only; daily_impact_schema_frozen; downstream_daily_runtime_requires_runner_card; no_formal_H:/Asteria-data_mutation_under_this_card; system_full_build_requires_new_card"
 writeback_boundary = "readout only; never trigger business mutation"
 run_modes = ["bounded", "resume", "audit-only"]
 resume_behavior = "resume from checkpoint after full-chain released day sources are locked"
@@ -16,11 +16,13 @@ source_manifest_fields = ["source_db", "source_run_id", "source_release_version"
 daily_protocol_role = "read_only_consumer"
 daily_protocol_lineage_fields = ["source_run_id", "target_run_id"]
 daily_protocol_scope_fields = ["symbol", "trade_date", "timeframe", "source_run_id"]
+daily_protocol_replay_scope_fields = ["symbol", "trade_date", "source_run_id"]
+daily_protocol_impact_date_fields = ["readout_dt"]
 forbidden_inputs = ["mock_formal_data", "unreleased_business_table"]
 forbidden_outputs = ["business_mutation", "strategy_redefinition"]
 release_conclusion = "docs/04-execution/records/system_readout/system-readout-bounded-proof-build-card-20260508-01.conclusion.md"
 evidence_index = "docs/04-execution/records/system_readout/system-readout-bounded-proof-build-card-20260508-01.evidence-index.md"
-next_allowed_action = "downstream_daily_impact_ledger_schema_card"
+next_allowed_action = "downstream_daily_incremental_runner_build_card"
 input_boundary = "read_only_released_full_chain_day_bounded_surfaces; read_only_daily_impact_scope_consumer"
 
 [[official_inputs]]

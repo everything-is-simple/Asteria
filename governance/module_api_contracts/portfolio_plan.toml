@@ -8,12 +8,17 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-portfolio-plan-freeze-review-20260507-01.zip",
     "H:/Asteria-Validated/Asteria-portfolio-plan-bounded-proof-build-card-20260507-01.zip",
 ]
-gate_state = "freeze_review_passed; bounded_proof_passed; full_build_not_executed"
-formal_db_permission = "released_day_bounded_portfolio_admission_target_exposure_trim_only; full_build_requires_new_card"
+gate_state = "freeze_review_passed; bounded_proof_passed; daily_impact_schema_frozen; full_build_not_executed"
+formal_db_permission = "released_day_bounded_portfolio_admission_target_exposure_trim_only; daily_impact_schema_frozen; downstream_daily_runtime_requires_runner_card; no_formal_H:/Asteria-data_mutation_under_this_card; full_build_requires_new_card"
 writeback_boundary = "consume released Position only; never write back upstream"
 run_modes = ["bounded", "resume", "audit-only"]
 resume_behavior = "resume from portfolio checkpoint after Position release"
 source_manifest_fields = ["source_position_release_version", "source_position_run_id"]
+daily_protocol_role = "writer"
+daily_protocol_scope_fields = ["symbol", "trade_date", "timeframe", "source_run_id"]
+daily_protocol_lineage_fields = ["source_run_id", "target_run_id"]
+daily_protocol_replay_scope_fields = ["symbol", "trade_date", "source_run_id"]
+daily_protocol_impact_date_fields = ["candidate_dt", "plan_dt", "exposure_valid_from", "exposure_valid_until"]
 forbidden_inputs = ["alpha_internal", "malf_internal", "signal_internal", "mock_formal_data"]
 forbidden_outputs = ["position_writeback", "signal_writeback", "alpha_writeback", "malf_writeback", "actual_fill", "broker_order_id"]
 

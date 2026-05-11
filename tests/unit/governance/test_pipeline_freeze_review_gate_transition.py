@@ -82,7 +82,8 @@ def test_pipeline_scope_freeze_preserves_historical_scope_after_runtime_pass() -
     assert modules["system_readout"]["allow_review"] is False
     assert modules["system_readout"]["status"] == "released"
     assert modules["system_readout"]["proof_status"] == (
-        "bounded_proof_passed; 2024_coverage_repair_passed; full_build_not_executed"
+        "bounded_proof_passed; 2024_coverage_repair_passed; daily_impact_schema_frozen; "
+        "full_build_not_executed"
     )
     assert modules["system_readout"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["pipeline"]["status"] == "released"

@@ -13,10 +13,12 @@ from tests.unit.pipeline.constants import (
     PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID,
 )
 from tests.unit.pipeline.support_repo_builders import (
-    _active_card_line,
-    _evidence_index_line,
-    _release_conclusion_line,
     build_governance_repo,
+)
+from tests.unit.pipeline.support_repo_record_lines import (
+    active_card_line,
+    evidence_index_line,
+    release_conclusion_line,
 )
 from tests.unit.pipeline.support_state import rewrite_registry_module_fields
 
@@ -83,17 +85,17 @@ def build_year_replay_disposition_authorized_repo(tmp_path: Path) -> Path:
     registry_path.write_text(
         registry_text.replace(
             CURRENT_PIPELINE_ACTIVE_CARD,
-            _active_card_line(PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID),
+            active_card_line(PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID),
             1,
         )
         .replace(
-            _release_conclusion_line(PIPELINE_DISPOSITION_DECISION_RUN_ID),
-            _release_conclusion_line(PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID),
+            release_conclusion_line(PIPELINE_DISPOSITION_DECISION_RUN_ID),
+            release_conclusion_line(PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID),
             1,
         )
         .replace(
-            _evidence_index_line(PIPELINE_DISPOSITION_DECISION_RUN_ID),
-            _evidence_index_line(PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID),
+            evidence_index_line(PIPELINE_DISPOSITION_DECISION_RUN_ID),
+            evidence_index_line(PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID),
             1,
         )
         .replace(
@@ -127,13 +129,13 @@ def build_year_replay_disposition_authorized_repo(tmp_path: Path) -> Path:
             1,
         )
         .replace(
-            _release_conclusion_line(PIPELINE_DISPOSITION_DECISION_RUN_ID),
-            _release_conclusion_line(PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID),
+            release_conclusion_line(PIPELINE_DISPOSITION_DECISION_RUN_ID),
+            release_conclusion_line(PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID),
             1,
         )
         .replace(
-            _evidence_index_line(PIPELINE_DISPOSITION_DECISION_RUN_ID),
-            _evidence_index_line(PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID),
+            evidence_index_line(PIPELINE_DISPOSITION_DECISION_RUN_ID),
+            evidence_index_line(PIPELINE_SOURCE_SELECTION_REPAIR_RUN_ID),
             1,
         )
         .replace(

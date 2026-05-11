@@ -180,3 +180,22 @@ erDiagram
 | `order_intent_id` | 禁止，归属 Trade |
 | `fill_id` | 禁止，归属 Trade |
 | 自定义 MALF / Alpha / Signal 字段 | 禁止 |
+
+## 13. Stage 11 Daily Impact Map
+
+Stage 11 当前只冻结 Position 的 downstream daily impact schema，不打开 runtime：
+
+| 项 | 冻结口径 |
+|---|---|
+| protocol scope | `symbol + trade_date + timeframe + source_run_id` |
+| lineage | `source_run_id -> target_run_id` |
+| replay scope | `symbol + trade_date + source_run_id` |
+| 业务日期锚点 | `candidate_dt` |
+| 二级传播日期 | `entry_reference_dt`，`entry_valid_from`，`entry_valid_until`，`exit_reference_dt`，`exit_valid_from`，`exit_valid_until` |
+| 上游映射 | `signal_dt -> candidate_dt` |
+
+Non-goals：
+
+- 不把 `position_candidate_ledger` 的自然键改写成 `trade_date + symbol`
+- 不新增 Trade / Portfolio 字段
+- 不在本卡内打开 Position daily incremental runner

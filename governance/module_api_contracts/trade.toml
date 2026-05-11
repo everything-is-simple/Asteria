@@ -8,12 +8,17 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-trade-bounded-proof-build-card-20260507-01.zip",
     "H:/Asteria-Validated/Asteria-trade-2024-coverage-repair-card-20260509-01.zip",
 ]
-gate_state = "freeze_review_passed; bounded_proof_passed; 2024_coverage_repair_passed; full_build_not_executed"
-formal_db_permission = "released_day_bounded_trade_order_intent_execution_plan_only; fill_ledger_retained_gap_without_evidence_source; full_build_requires_new_card"
+gate_state = "freeze_review_passed; bounded_proof_passed; 2024_coverage_repair_passed; daily_impact_schema_frozen; full_build_not_executed"
+formal_db_permission = "released_day_bounded_trade_order_intent_execution_plan_only; fill_ledger_retained_gap_without_evidence_source; daily_impact_schema_frozen; downstream_daily_runtime_requires_runner_card; no_formal_H:/Asteria-data_mutation_under_this_card; full_build_requires_new_card"
 writeback_boundary = "consume released Portfolio Plan only; never write back upstream"
 run_modes = ["bounded", "resume", "audit-only"]
 resume_behavior = "resume from trade checkpoint after Portfolio Plan release"
 source_manifest_fields = ["source_portfolio_plan_release_version", "source_portfolio_plan_run_id"]
+daily_protocol_role = "writer"
+daily_protocol_scope_fields = ["symbol", "trade_date", "timeframe", "source_run_id"]
+daily_protocol_lineage_fields = ["source_run_id", "target_run_id"]
+daily_protocol_replay_scope_fields = ["symbol", "trade_date", "source_run_id"]
+daily_protocol_impact_date_fields = ["plan_dt", "intent_dt", "execution_valid_from", "execution_valid_until", "execution_dt", "rejection_dt"]
 forbidden_inputs = ["position_internal", "signal_internal", "alpha_internal", "malf_internal", "mock_formal_data"]
 forbidden_outputs = [
     "position_writeback",
@@ -25,7 +30,7 @@ forbidden_outputs = [
 ]
 release_conclusion = "docs/04-execution/records/trade/trade-2024-coverage-repair-card-20260509-01.conclusion.md"
 evidence_index = "docs/04-execution/records/trade/trade-2024-coverage-repair-card-20260509-01.evidence-index.md"
-next_allowed_action = "system_readout_2024_coverage_repair_card"
+next_allowed_action = "downstream_daily_incremental_runner_build_card"
 proof_status = "bounded_proof_passed; 2024_coverage_repair_passed; full_build_not_executed"
 input_boundary = "read_only_released_portfolio_plan_bounded_proof_surface"
 

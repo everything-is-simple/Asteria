@@ -195,3 +195,22 @@ erDiagram
 | 自定义 Alpha / Signal / Position / Portfolio / Trade 字段 | 禁止 |
 | 业务重算结果表 | 禁止 |
 | 上游 mutation table | 禁止 |
+
+## 14. Stage 11 Daily Impact Map
+
+Stage 11 当前只冻结 System Readout 的 readout-only impact 角色，不打开 runtime：
+
+| 项 | 冻结口径 |
+|---|---|
+| protocol role | `read_only_consumer` |
+| protocol scope | `symbol + trade_date + timeframe + source_run_id` |
+| lineage | `source_run_id -> target_run_id` |
+| replay scope | `symbol + trade_date + source_run_id` |
+| 唯一 readout impact 日期 | `readout_dt` |
+| 辅助日期 | `summary_dt`，`audit_dt` 只保留审计/摘要角色，不作为上游重算触发 |
+
+Non-goals：
+
+- 不让 System Readout 反向触发上游业务重算
+- 不新增业务 mutation 表
+- 不在本卡内打开 System Readout daily incremental runner
