@@ -231,11 +231,12 @@ module_id = "alpha"
 grain = "cross_timeframe"
 ledger_role = "alpha_family"
 writer = "run_alpha_bof_build"
-allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
 checkpoint_policy = "alpha_replay_scope"
 checkpoint_key = ["alpha_family", "timeframe", "symbol_bucket", "bar_dt"]
 replay_scope = ["timeframe", "bar_dt", "symbol", "alpha_family", "source_malf_run_id"]
 promote_rule = "alpha_production_audit_passed"
+coverage_policy = "released day/week/month family surfaces exist; day daily_incremental sample hardened for temp-only replay from earliest dirty date; no formal H:/Asteria-data mutation under this card"
 
 [[databases]]
 db_name = "alpha_tst.duckdb"
@@ -243,11 +244,12 @@ module_id = "alpha"
 grain = "cross_timeframe"
 ledger_role = "alpha_family"
 writer = "run_alpha_tst_build"
-allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
 checkpoint_policy = "alpha_replay_scope"
 checkpoint_key = ["alpha_family", "timeframe", "symbol_bucket", "bar_dt"]
 replay_scope = ["timeframe", "bar_dt", "symbol", "alpha_family", "source_malf_run_id"]
 promote_rule = "alpha_production_audit_passed"
+coverage_policy = "released day/week/month family surfaces exist; day daily_incremental sample hardened for temp-only replay from earliest dirty date; no formal H:/Asteria-data mutation under this card"
 
 [[databases]]
 db_name = "alpha_pb.duckdb"
@@ -255,11 +257,12 @@ module_id = "alpha"
 grain = "cross_timeframe"
 ledger_role = "alpha_family"
 writer = "run_alpha_pb_build"
-allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
 checkpoint_policy = "alpha_replay_scope"
 checkpoint_key = ["alpha_family", "timeframe", "symbol_bucket", "bar_dt"]
 replay_scope = ["timeframe", "bar_dt", "symbol", "alpha_family", "source_malf_run_id"]
 promote_rule = "alpha_production_audit_passed"
+coverage_policy = "released day/week/month family surfaces exist; day daily_incremental sample hardened for temp-only replay from earliest dirty date; no formal H:/Asteria-data mutation under this card"
 
 [[databases]]
 db_name = "alpha_cpb.duckdb"
@@ -267,11 +270,12 @@ module_id = "alpha"
 grain = "cross_timeframe"
 ledger_role = "alpha_family"
 writer = "run_alpha_cpb_build"
-allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
 checkpoint_policy = "alpha_replay_scope"
 checkpoint_key = ["alpha_family", "timeframe", "symbol_bucket", "bar_dt"]
 replay_scope = ["timeframe", "bar_dt", "symbol", "alpha_family", "source_malf_run_id"]
 promote_rule = "alpha_production_audit_passed"
+coverage_policy = "released day/week/month family surfaces exist; day daily_incremental sample hardened for temp-only replay from earliest dirty date; no formal H:/Asteria-data mutation under this card"
 
 [[databases]]
 db_name = "alpha_bpb.duckdb"
@@ -279,11 +283,12 @@ module_id = "alpha"
 grain = "cross_timeframe"
 ledger_role = "alpha_family"
 writer = "run_alpha_bpb_build"
-allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
 checkpoint_policy = "alpha_replay_scope"
 checkpoint_key = ["alpha_family", "timeframe", "symbol_bucket", "bar_dt"]
 replay_scope = ["timeframe", "bar_dt", "symbol", "alpha_family", "source_malf_run_id"]
 promote_rule = "alpha_production_audit_passed"
+coverage_policy = "released day/week/month family surfaces exist; day daily_incremental sample hardened for temp-only replay from earliest dirty date; no formal H:/Asteria-data mutation under this card"
 
 [[databases]]
 db_name = "signal.duckdb"
@@ -291,11 +296,12 @@ module_id = "signal"
 grain = "cross_timeframe"
 ledger_role = "signal_ledger"
 writer = "run_signal_build"
-allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+allowed_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
 checkpoint_policy = "signal_replay_scope"
 checkpoint_key = ["timeframe", "symbol_bucket", "signal_dt"]
 replay_scope = ["timeframe", "signal_dt", "symbol", "source_alpha_run_id"]
 promote_rule = "signal_production_audit_passed"
+coverage_policy = "released day/week/month signal surface exists; day daily_incremental sample hardened for temp-only replay from earliest dirty date; no formal H:/Asteria-data mutation under this card"
 
 [[databases]]
 db_name = "position.duckdb"

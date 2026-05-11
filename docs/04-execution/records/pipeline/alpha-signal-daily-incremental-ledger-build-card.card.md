@@ -2,7 +2,7 @@
 
 日期：2026-05-11
 
-状态：`prepared / not executed`
+状态：`passed / alpha signal daily incremental sample hardened`
 
 ## 1. 目标
 
@@ -31,3 +31,14 @@
 | 借 prepared card 直接执行 downstream daily runtime | 禁止 |
 | 打开 full rebuild 或声明 `v1 complete` | 禁止 |
 | 重定义 MALF dirty scope / impact scope 语义 | 禁止 |
+
+## 5. 执行结果
+
+本卡已按“day-only / temp-only / single-symbol sample”执行。Alpha 五族与 Signal 的 sample
+target、`derived-replay-scope.json`、`daily-impact-scope.json`、`lineage.json`、
+`batch-ledger.jsonl`、`checkpoint.json` 与 `audit-summary.json` 已落在 `H:\Asteria-temp`
+与 `H:\Asteria-report`；validated evidence zip 已落在 `H:\Asteria-Validated`。
+
+正式结论只放行 Alpha/Signal daily incremental 样板能力，并把 live next card 前推到
+`downstream-daily-impact-ledger-schema-card`。本卡不打开 Position/Portfolio Plan/Trade/System
+downstream daily runtime，不打开 full rebuild，也不宣称 `v1 complete`。

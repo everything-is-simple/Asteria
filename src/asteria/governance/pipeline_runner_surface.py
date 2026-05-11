@@ -14,6 +14,7 @@ def allowed_pipeline_runner_names() -> set[str]:
         "run_pipeline_year_replay_source_selection_repair.py",
         "run_pipeline_year_replay_disposition_decision.py",
         "run_alpha_signal_2024_coverage_repair.py",
+        "run_alpha_signal_daily_incremental_ledger.py",
         "run_downstream_coverage_gap_closeout.py",
     }
 

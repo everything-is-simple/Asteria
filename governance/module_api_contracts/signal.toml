@@ -1,7 +1,7 @@
 module_id = "signal"
 display_name = "Signal"
 contract_version = "v1"
-status = "released"
+status = "released_production_builder_hardening_and_daily_incremental_sample_passed"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
     "H:/Asteria-Validated/Asteria-alpha-bounded-proof-20260429-01.zip",
@@ -10,12 +10,15 @@ authority_assets = [
 ]
 release_conclusion = "docs/04-execution/records/signal/signal-production-builder-hardening-20260506-01.conclusion.md"
 evidence_index = "docs/04-execution/records/signal/signal-production-builder-hardening-20260506-01.evidence-index.md"
-gate_state = "bounded_proof_passed; production_builder_hardening_passed; upstream_release_decision_next"
-formal_db_permission = "released_day_week_month_production_builder_signal_db_only; position_requires_release_decision"
+gate_state = "bounded_proof_passed; production_builder_hardening_passed; daily_incremental_sample_hardened; downstream_daily_impact_ledger_schema_next"
+formal_db_permission = "released_day_week_month_production_builder_signal_db_only; day_daily_incremental_sample_hardened_without_formal_db_mutation; downstream_daily_runtime_requires_new_card"
 writeback_boundary = "consume released Alpha only; never write back to Alpha or MALF"
-run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+run_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
 resume_behavior = "resume from signal checkpoint after Alpha release"
 source_manifest_fields = ["source_alpha_release_version", "source_alpha_run_id"]
+daily_protocol_scope_fields = ["symbol", "trade_date", "timeframe", "source_run_id"]
+daily_protocol_lineage_fields = ["source_run_id", "target_run_id"]
+daily_protocol_replay_scope_fields = ["symbol", "target_start_dt", "target_end_dt", "source_alpha_run_id"]
 forbidden_inputs = ["malf_core_internal", "malf_service_unreleased", "malf_service_direct_business_input", "legacy_downstream", "mock_formal_data"]
 forbidden_outputs = ["alpha_writeback", "malf_writeback", "position_size", "target_weight", "portfolio_allocation", "order_intent", "fill_id"]
 

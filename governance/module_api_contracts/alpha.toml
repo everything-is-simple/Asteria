@@ -1,7 +1,7 @@
 module_id = "alpha"
 display_name = "Alpha"
 contract_version = "v1"
-status = "released_production_builder_hardening_passed"
+status = "released_production_builder_hardening_and_daily_incremental_sample_passed"
 authority_assets = [
     "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_2",
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
@@ -9,12 +9,15 @@ authority_assets = [
 ]
 release_conclusion = "docs/04-execution/records/alpha/alpha-production-builder-hardening-20260506-01.conclusion.md"
 evidence_index = "docs/04-execution/records/alpha/alpha-production-builder-hardening-20260506-01.evidence-index.md"
-gate_state = "bounded_proof_passed; production_builder_hardening_passed; signal_production_builder_hardening_next"
-formal_db_permission = "released_day_week_month_production_builder_family_dbs_only; signal_requires_own_card"
+gate_state = "bounded_proof_passed; production_builder_hardening_passed; daily_incremental_sample_hardened; downstream_daily_impact_ledger_schema_next"
+formal_db_permission = "released_day_week_month_production_builder_family_dbs_only; day_daily_incremental_sample_hardened_without_formal_db_mutation; downstream_daily_runtime_requires_new_card"
 writeback_boundary = "read_malf_wave_position_only; never write back to MALF"
-run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+run_modes = ["bounded", "segmented", "full", "resume", "audit-only", "daily_incremental"]
 resume_behavior = "resume from alpha family checkpoint after MALF service release"
 source_manifest_fields = ["source_malf_service_version", "source_malf_run_id", "source_malf_sample_version"]
+daily_protocol_scope_fields = ["symbol", "trade_date", "timeframe", "source_run_id"]
+daily_protocol_lineage_fields = ["source_run_id", "target_run_id"]
+daily_protocol_replay_scope_fields = ["symbol", "target_start_dt", "target_end_dt", "source_malf_run_id"]
 forbidden_inputs = ["raw_market.duckdb.raw_market_bar", "malf_core_internal", "malf_lifespan_internal", "legacy_downstream", "mock_formal_data"]
 forbidden_outputs = ["malf_writeback", "wave_core_state_redefinition", "system_state_redefinition", "position_size", "portfolio_allocation", "order_intent"]
 
