@@ -11,6 +11,7 @@ from tests.unit.pipeline.support import (
     PIPELINE_CURRENT_DOC_STATUS,
     PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
     PIPELINE_CURRENT_PROOF_RUN_ID,
+    PIPELINE_FULL_DAILY_INCREMENTAL_CHAIN_ACTION,
     PIPELINE_FULL_DAILY_INCREMENTAL_CHAIN_RUN_ID,
 )
 from tests.unit.pipeline.support_state import rewrite_registry_module_fields
@@ -108,12 +109,16 @@ def test_downstream_daily_incremental_runner_closure_moves_live_next_to_pipeline
         "`passed / downstream daily incremental sample hardened` |" in conclusion_index
     )
     assert "状态：`passed / downstream daily incremental sample hardened`" in runner_conclusion
-    assert f"| allowed next action | `{CURRENT_ALLOWED_NEXT_CARD_ACTION}` |" in runner_conclusion
+    assert f"| allowed next action | `{PIPELINE_FULL_DAILY_INCREMENTAL_CHAIN_ACTION}` |" in (
+        runner_conclusion
+    )
     assert (
         f"| prepared next card | `{PIPELINE_FULL_DAILY_INCREMENTAL_CHAIN_RUN_ID}` |"
         in runner_conclusion
     )
-    assert "状态：`prepared / not executed`" in prepared_full_chain_card
+    assert "状态：`passed / pipeline full daily incremental chain proof passed`" in (
+        prepared_full_chain_card
+    )
 
 
 def test_project_governance_rejects_closed_downstream_runner_as_live_next_card(

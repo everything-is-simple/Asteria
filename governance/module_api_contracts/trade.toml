@@ -30,7 +30,7 @@ forbidden_outputs = [
 ]
 release_conclusion = "docs/04-execution/records/trade/trade-2024-coverage-repair-card-20260509-01.conclusion.md"
 evidence_index = "docs/04-execution/records/trade/trade-2024-coverage-repair-card-20260509-01.evidence-index.md"
-next_allowed_action = "pipeline_full_daily_incremental_chain_build_card"
+next_allowed_action = "full_rebuild_and_daily_incremental_release_closeout_card"
 proof_status = "bounded_proof_passed; 2024_coverage_repair_passed; downstream_daily_incremental_sample_hardened; full_build_not_executed"
 input_boundary = "read_only_released_portfolio_plan_bounded_proof_surface"
 

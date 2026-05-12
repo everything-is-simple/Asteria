@@ -124,11 +124,11 @@ def test_downstream_daily_impact_schema_keeps_schema_truth_after_runner_closure(
     assert pipeline_contract["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert pipeline_contract["release_conclusion"] == (
         "docs/04-execution/records/pipeline/"
-        "downstream-daily-incremental-runner-build-card.conclusion.md"
+        "pipeline-full-daily-incremental-chain-build-card.conclusion.md"
     )
     assert pipeline_contract["evidence_index"] == (
         "docs/04-execution/records/pipeline/"
-        "downstream-daily-incremental-runner-build-card.evidence-index.md"
+        "pipeline-full-daily-incremental-chain-build-card.evidence-index.md"
     )
     assert system_contract["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert (

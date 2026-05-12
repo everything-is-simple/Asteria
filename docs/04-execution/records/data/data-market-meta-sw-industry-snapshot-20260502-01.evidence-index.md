@@ -9,7 +9,7 @@
 | asset | path |
 |---|---|
 | run_id | `data-market-meta-sw-industry-snapshot-20260502-01` |
-| source_xlsx | `H:\Asteria-Validated\Market-Average-Lifespan-reference\申万行业分类\最新个股申万行业分类(完整版-截至7月末).xlsx` |
+| source_xlsx | `H:\Asteria-Validated\MALF-reference\申万行业分类\最新个股申万行业分类(完整版-截至7月末).xlsx` |
 | report_dir | `H:\Asteria-report\data\2026-05-02\data-market-meta-sw-industry-snapshot-20260502-01` |
 | closeout | `H:\Asteria-report\data\2026-05-02\data-market-meta-sw-industry-snapshot-20260502-01\closeout.md` |
 | manifest | `H:\Asteria-report\data\2026-05-02\data-market-meta-sw-industry-snapshot-20260502-01\manifest.json` |

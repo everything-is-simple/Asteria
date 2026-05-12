@@ -7,8 +7,8 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-system-readout-freeze-review-20260507-01.zip",
     "H:/Asteria-Validated/Asteria-system-readout-bounded-proof-build-card-20260508-01.zip",
 ]
-gate_state = "freeze_review_passed; bounded_proof_passed; daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened; full_build_not_executed; trade_released"
-formal_db_permission = "released_day_bounded_system_readout_only; daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened_without_formal_db_mutation; no_formal_H:/Asteria-data_mutation_under_this_card; system_full_build_requires_new_card"
+gate_state = "freeze_review_passed; bounded_proof_passed; daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened; pipeline_full_daily_incremental_chain_passed; full_build_not_executed; trade_released"
+formal_db_permission = "released_day_bounded_system_readout_only; daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened_without_formal_db_mutation; pipeline_full_daily_incremental_chain_passed_without_formal_db_mutation; no_formal_H:/Asteria-data_mutation_under_this_card; system_full_build_requires_new_card"
 writeback_boundary = "readout only; never trigger business mutation"
 run_modes = ["bounded", "daily_incremental", "resume", "audit-only"]
 resume_behavior = "resume from checkpoint after full-chain released day sources are locked"
@@ -22,7 +22,7 @@ forbidden_inputs = ["mock_formal_data", "unreleased_business_table"]
 forbidden_outputs = ["business_mutation", "strategy_redefinition"]
 release_conclusion = "docs/04-execution/records/system_readout/system-readout-bounded-proof-build-card-20260508-01.conclusion.md"
 evidence_index = "docs/04-execution/records/system_readout/system-readout-bounded-proof-build-card-20260508-01.evidence-index.md"
-next_allowed_action = "pipeline_full_daily_incremental_chain_build_card"
+next_allowed_action = "full_rebuild_and_daily_incremental_release_closeout_card"
 input_boundary = "read_only_released_full_chain_day_bounded_surfaces; read_only_daily_impact_scope_consumer"
 
 [[official_inputs]]

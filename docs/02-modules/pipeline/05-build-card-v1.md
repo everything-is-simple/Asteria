@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / coverage gap diagnosis executed / MALF natural-year coverage repair passed / year replay rerun blocked / alpha-signal coverage repair passed / downstream coverage gap evidence closeout passed / position 2024 coverage repair passed / portfolio plan 2024 coverage repair passed / trade 2024 coverage repair passed / system_readout 2024 coverage repair prepared
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / coverage gap diagnosis executed / MALF natural-year coverage repair passed / year replay rerun blocked / alpha-signal coverage repair passed / downstream coverage gap evidence closeout passed / position 2024 coverage repair passed / portfolio plan 2024 coverage repair passed / trade 2024 coverage repair passed / system_readout 2024 coverage repair passed / daily incremental chain proof passed
 
 ## 1. 当前卡位
 
@@ -21,6 +21,7 @@ pipeline-one-year-strategy-behavior-replay-build-card-20260508-01
 pipeline-year-replay-coverage-gap-diagnosis-and-repair-scope-freeze-20260509-01
 pipeline-one-year-strategy-behavior-replay-rerun-build-card-20260509-01
 alpha-signal-2024-coverage-repair-card-20260509-01
+pipeline-full-daily-incremental-chain-build-card
 ```
 
 ## 2. 当前放行
@@ -31,7 +32,7 @@ alpha-signal-2024-coverage-repair-card-20260509-01
 | released surface | `system_readout single-module orchestration` + `full_chain_day dry-run` + `full_chain_day bounded proof` |
 | formal DB | `pipeline.duckdb created` |
 | allowed run modes | `bounded / dry-run / resume / audit-only` |
-| current next card | `system_readout_2024_coverage_repair_card` |
+| current next card | `full_rebuild_and_daily_incremental_release_closeout_card` |
 
 ## 3. 当前仍禁止
 
@@ -47,8 +48,6 @@ alpha-signal-2024-coverage-repair-card-20260509-01
 ## 4. 下一步入口
 
 当前 live prepared next card 已经切到
-`system-readout-2024-coverage-repair-card-20260509-01`。Pipeline 当前只保留 blocked replay truth、
-Alpha/Signal repair passed truth、downstream closeout passed truth、Position repair passed truth、Portfolio Plan
-repair passed truth 与 Trade repair passed truth，不再拥有新的 live repair 施工位；后续如需继续推进 Pipeline
-source-selection repair、full rebuild、daily incremental 或 `v1 complete`，都必须等 System Readout 2024
-coverage repair 形成结论后再单独授权。
+`full-rebuild-and-daily-incremental-release-closeout-card`。Pipeline 当前只保留 orchestration proof truth：
+full daily incremental chain 已通过，但 formal full rebuild、daily incremental release closeout、System full build
+与 `v1 complete` 都仍未授权为 passed。

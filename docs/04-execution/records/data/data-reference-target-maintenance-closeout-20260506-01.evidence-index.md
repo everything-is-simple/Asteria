@@ -28,14 +28,14 @@
 
 | 资产 | sha256 | closeout decision |
 |---|---|---|
-| `H:\Asteria-Validated\Market-Average-Lifespan-reference\申万行业分类\最新个股申万行业分类(完整版-截至7月末).xlsx` | `B242AB04E0F68357CF90772E3F15367644D3E74C08A767EB9C5EDCF21467FCBB` | already released as current SW2021 snapshot |
-| `H:\Asteria-Validated\Market-Average-Lifespan-reference\申万行业分类\StockClassifyUse_stock.xls` | `15979D9CF8A3B83CCC8DADC967DE52F35E667B4F4DA5E4E4E3DD5A8BB1F17402` | inventory only; no approved import manifest in this card |
-| `H:\Asteria-Validated\Market-Average-Lifespan-reference\申万行业分类\SwClassCode_2021.xls` | `923492F4BCF3C7056904385A0769E4DDA561904A29ECD9243F942680CEF68C81` | inventory only; no approved import manifest in this card |
-| `H:\Asteria-Validated\Market-Average-Lifespan-reference\申万行业分类\SwClass.7z` | `9DD2D2C502045634974183A4E4061A1CC8B82FC292AFCAA3596FDC1EA0D8DF05` | inventory only; no approved import manifest in this card |
-| `H:\Asteria-Validated\Market-Average-Lifespan-reference\A股市场\A股市场交易规则-tushare版.md` | `EE342CF401F24200B42FFE401675B3314FEF3A1454AB6B0D394D5C311900E874` | rules reference only; not per-instrument source facts |
-| `H:\Asteria-Validated\Market-Average-Lifespan-reference\A股市场\A股申万行业指数-tushare版.md` | `033334ADC37F172D9BEA08485C1F619CCFF2B9475C9B1D633F0731D632B249CF` | API/reference note only; not released membership facts |
-| `H:\Asteria-Validated\Market-Average-Lifespan-reference\A股市场\A股涨跌停板制度-tushare版.md` | `893B9F1883FA9FF4B88990D9F63B50B1C2248B4379A29491C88D25862B854872` | rules reference only; no ST status fact release |
-| `H:\Asteria-Validated\Market-Average-Lifespan-reference\tushare\tushare-5000积分-官方-兜底号.md` | `4CFDD5BE1CA8632F7863F2BCC3A3DD24C18F048AC7E9384EBF40AEC41CE807DD` | credential note only; not used as data source |
+| `H:\Asteria-Validated\MALF-reference\申万行业分类\最新个股申万行业分类(完整版-截至7月末).xlsx` | `B242AB04E0F68357CF90772E3F15367644D3E74C08A767EB9C5EDCF21467FCBB` | already released as current SW2021 snapshot |
+| `H:\Asteria-Validated\MALF-reference\申万行业分类\StockClassifyUse_stock.xls` | `15979D9CF8A3B83CCC8DADC967DE52F35E667B4F4DA5E4E4E3DD5A8BB1F17402` | inventory only; no approved import manifest in this card |
+| `H:\Asteria-Validated\MALF-reference\申万行业分类\SwClassCode_2021.xls` | `923492F4BCF3C7056904385A0769E4DDA561904A29ECD9243F942680CEF68C81` | inventory only; no approved import manifest in this card |
+| `H:\Asteria-Validated\MALF-reference\申万行业分类\SwClass.7z` | `9DD2D2C502045634974183A4E4061A1CC8B82FC292AFCAA3596FDC1EA0D8DF05` | inventory only; no approved import manifest in this card |
+| `H:\Asteria-Validated\MALF-reference\A股市场\A股市场交易规则-tushare版.md` | `EE342CF401F24200B42FFE401675B3314FEF3A1454AB6B0D394D5C311900E874` | rules reference only; not per-instrument source facts |
+| `H:\Asteria-Validated\MALF-reference\A股市场\A股申万行业指数-tushare版.md` | `033334ADC37F172D9BEA08485C1F619CCFF2B9475C9B1D633F0731D632B249CF` | API/reference note only; not released membership facts |
+| `H:\Asteria-Validated\MALF-reference\A股市场\A股涨跌停板制度-tushare版.md` | `893B9F1883FA9FF4B88990D9F63B50B1C2248B4379A29491C88D25862B854872` | rules reference only; no ST status fact release |
+| `H:\Asteria-Validated\MALF-reference\tushare\tushare-5000积分-官方-兜底号.md` | `4CFDD5BE1CA8632F7863F2BCC3A3DD24C18F048AC7E9384EBF40AEC41CE807DD` | credential note only; not used as data source |
 
 ## 4. External Evidence
 

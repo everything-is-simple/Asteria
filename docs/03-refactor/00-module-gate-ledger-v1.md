@@ -94,7 +94,7 @@ System Readout
 当前最新形成结论：
 
 ```text
-Downstream daily impact schema frozen / live next card moved to downstream daily incremental runner build
+Pipeline full daily incremental chain proof passed / live next card moved to release closeout
 ```
 
 当前最新语义升级资产：
@@ -111,25 +111,25 @@ rules；当前 runtime passed evidence 已升级为 MALF v1.4 day runtime sync i
 当前 live 下一张执行卡：
 
 ```text
-pipeline-full-daily-incremental-chain-build-card
+full-rebuild-and-daily-incremental-release-closeout-card
 ```
 
 对应 symbolic allowed next action：
 
 ```text
-pipeline_full_daily_incremental_chain_build_card
+full_rebuild_and_daily_incremental_release_closeout_card
 ```
 
 当前 repair 结论锚点：
 
 ```text
-downstream-daily-incremental-runner-build-card
+pipeline-full-daily-incremental-chain-build-card
 ```
 
 对应下一步 allowed next action：
 
 ```text
-pipeline_full_daily_incremental_chain_build_card
+full_rebuild_and_daily_incremental_release_closeout_card
 ```
 
 历史已放行动作锚点：
@@ -141,7 +141,7 @@ pipeline_one_year_strategy_behavior_replay_rerun_build_card
 当前只允许施工对象：
 
 ```text
-Downstream daily incremental runner build card
+Full rebuild and daily incremental release closeout card
 ```
 
 当前已通过 bounded proof 的主线模块：
