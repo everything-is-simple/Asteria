@@ -166,7 +166,12 @@ def _check_current_next_card(
         findings.append(
             Finding(path, "current allowed next card is missing matching execution card")
         )
-    if _current_next_card_has_closed_conclusion(repo_root, next_card_module, current_next):
+    if _current_next_card_has_closed_conclusion(
+        repo_root,
+        next_card_module,
+        current_next,
+        modules.get(next_card_module, {}),
+    ):
         findings.append(
             Finding(
                 path,
@@ -274,7 +279,10 @@ def _current_next_card_file_exists(repo_root: Path, module_id: str, next_card: s
 
 
 def _current_next_card_has_closed_conclusion(
-    repo_root: Path, module_id: str, next_card: str
+    repo_root: Path,
+    module_id: str,
+    next_card: str,
+    module: dict[str, Any],
 ) -> bool:
     record_dir = _next_card_record_dir(repo_root, module_id, next_card)
     if not record_dir.exists():
@@ -285,9 +293,37 @@ def _current_next_card_has_closed_conclusion(
         if run_id != card_prefix and not run_id.startswith(f"{card_prefix}-"):
             continue
         text = conclusion_path.read_text(encoding="utf-8")
-        if re.search(r"状态：`(?:passed|blocked)(?: / [^`]*)?`", text):
+        status_match = re.search(r"状态：`(?P<status>passed|blocked)(?: / [^`]*)?`", text)
+        if not status_match:
+            continue
+        if status_match.group("status") == "blocked" and _blocked_release_closeout_allows_reentry(
+            module_id,
+            next_card,
+            module,
+        ):
+            continue
+        if status_match:
             return True
     return False
+
+
+def _blocked_release_closeout_allows_reentry(
+    module_id: str,
+    next_card: str,
+    module: dict[str, Any],
+) -> bool:
+    if module_id != "pipeline":
+        return False
+    if next_card != "full_rebuild_and_daily_incremental_release_closeout_card":
+        return False
+    proof_status = str(module.get("proof_status", ""))
+    formal_db_permission = str(module.get("formal_db_permission", ""))
+    return (
+        "full_rebuild_daily_incremental_release_closeout_blocked" in proof_status
+        and "formal_release_evidence_incomplete" in proof_status
+        and "full_rebuild_proof_missing" in formal_db_permission
+        and "daily_incremental_release_closeout_blocked" in formal_db_permission
+    )
 
 
 def _next_card_record_dir(repo_root: Path, module_id: str, next_card: str) -> Path:

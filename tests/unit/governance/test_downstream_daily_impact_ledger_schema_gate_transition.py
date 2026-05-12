@@ -123,12 +123,10 @@ def test_downstream_daily_impact_schema_keeps_schema_truth_after_runner_closure(
     ).rstrip('"')
     assert pipeline_contract["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert pipeline_contract["release_conclusion"] == (
-        "docs/04-execution/records/pipeline/"
-        "pipeline-full-daily-incremental-chain-build-card.conclusion.md"
+        f"docs/04-execution/records/pipeline/{PIPELINE_CURRENT_PROOF_RUN_ID}.conclusion.md"
     )
     assert pipeline_contract["evidence_index"] == (
-        "docs/04-execution/records/pipeline/"
-        "pipeline-full-daily-incremental-chain-build-card.evidence-index.md"
+        f"docs/04-execution/records/pipeline/{PIPELINE_CURRENT_PROOF_RUN_ID}.evidence-index.md"
     )
     assert system_contract["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert (

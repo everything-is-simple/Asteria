@@ -40,9 +40,7 @@ def _messages(repo_root: Path) -> list[str]:
     return [finding.message for finding in run_checks(repo_root)]
 
 
-def test_pipeline_full_daily_incremental_chain_closure_moves_live_next_to_release_closeout() -> (
-    None
-):
+def test_pipeline_full_daily_incremental_chain_closure_feeds_blocked_release_closeout() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     pipeline_contract_path = repo_root / "governance" / "module_api_contracts" / "pipeline.toml"
@@ -92,17 +90,28 @@ def test_pipeline_full_daily_incremental_chain_closure_moves_live_next_to_releas
     assert modules["system_readout"]["next_allowed_action"] == NEXT_RELEASE_CLOSEOUT_ACTION
     assert modules["pipeline"]["next_card"] == NEXT_RELEASE_CLOSEOUT_ACTION
     assert modules["pipeline"]["next_allowed_action"] == NEXT_RELEASE_CLOSEOUT_ACTION
-    assert modules["pipeline"]["proof_run_id"] == PIPELINE_FULL_DAILY_INCREMENTAL_CHAIN_RUN_ID
+    assert modules["pipeline"]["proof_run_id"] == NEXT_RELEASE_CLOSEOUT_RUN_ID
     assert (
         modules["pipeline"]["active_card"] == "docs/04-execution/records/pipeline/"
-        f"{PIPELINE_FULL_DAILY_INCREMENTAL_CHAIN_RUN_ID}.card.md"
+        f"{NEXT_RELEASE_CLOSEOUT_RUN_ID}.card.md"
+    )
+    assert pipeline_contract["release_conclusion"] == (
+        f"docs/04-execution/records/pipeline/{NEXT_RELEASE_CLOSEOUT_RUN_ID}.conclusion.md"
+    )
+    assert pipeline_contract["evidence_index"] == (
+        f"docs/04-execution/records/pipeline/{NEXT_RELEASE_CLOSEOUT_RUN_ID}.evidence-index.md"
     )
     assert pipeline_contract["next_allowed_action"] == NEXT_RELEASE_CLOSEOUT_ACTION
     assert system_contract["next_allowed_action"] == NEXT_RELEASE_CLOSEOUT_ACTION
     assert trade_contract["next_allowed_action"] == NEXT_RELEASE_CLOSEOUT_ACTION
     assert "pipeline_full_daily_incremental_chain_passed" in modules["pipeline"]["proof_status"]
     assert (
-        "daily_incremental_release_closeout_requires_new_card"
+        "full_rebuild_daily_incremental_release_closeout_blocked"
+        in (modules["pipeline"]["proof_status"])
+    )
+    assert "full_rebuild_proof_missing" in (modules["pipeline"]["formal_db_permission"])
+    assert (
+        "daily_incremental_release_closeout_blocked"
         in (modules["pipeline"]["formal_db_permission"])
     )
     assert (
@@ -115,7 +124,7 @@ def test_pipeline_full_daily_incremental_chain_closure_moves_live_next_to_releas
     assert "no formal H:/Asteria-data mutation" in full_chain_conclusion
     assert "daily incremental release closeout not executed" in full_chain_conclusion
     assert "formal full rebuild not executed" in full_chain_evidence
-    assert "状态：`prepared / not executed`" in next_closeout_card
+    assert "状态：`blocked / formal release evidence incomplete`" in next_closeout_card
 
 
 def test_project_governance_rejects_closed_full_daily_chain_as_live_next_card(

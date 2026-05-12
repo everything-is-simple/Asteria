@@ -17,6 +17,7 @@ def allowed_pipeline_runner_names() -> set[str]:
         "run_alpha_signal_daily_incremental_ledger.py",
         "run_downstream_daily_incremental_ledger.py",
         "run_pipeline_full_daily_incremental_chain.py",
+        "run_full_rebuild_daily_incremental_release_closeout.py",
         "run_downstream_coverage_gap_closeout.py",
     }
 

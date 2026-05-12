@@ -45,6 +45,7 @@
 - `H:\Asteria-Validated\Asteria-data-ledger-daily-incremental-hardening-card-20260511-01.zip`
 - `H:\Asteria-Validated\Asteria-alpha-signal-daily-incremental-ledger-build-card-20260511-01.zip`
 - `H:\Asteria-Validated\Asteria-pipeline-full-daily-incremental-chain-build-card-20260512-01.zip`
+- `H:\Asteria-Validated\Asteria-full-rebuild-and-daily-incremental-release-closeout-card-20260512-01.zip`
 
 `214427` 是重要 docs/code 快照锚点；`130309` 是三天重构成果的历史系统
 docs/code 快照；`101006` 是 Data formal promotion（Data 正式提升）与 MALF v1.3
@@ -130,6 +131,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Pipeline | `pipeline-year-replay-disposition-decision-card-20260510-01` | `passed` | [conclusion](records/pipeline/pipeline-year-replay-disposition-decision-card-20260510-01.conclusion.md) | [evidence-index](records/pipeline/pipeline-year-replay-disposition-decision-card-20260510-01.evidence-index.md) |
 | Pipeline | `system-wide-daily-dirty-scope-protocol-card` | `passed / protocol frozen` | [conclusion](records/pipeline/system-wide-daily-dirty-scope-protocol-card.conclusion.md) | [evidence-index](records/pipeline/system-wide-daily-dirty-scope-protocol-card.evidence-index.md) |
 | Pipeline | `pipeline-full-daily-incremental-chain-build-card` | `passed / pipeline full daily incremental chain proof passed` | [conclusion](records/pipeline/pipeline-full-daily-incremental-chain-build-card.conclusion.md) | [evidence-index](records/pipeline/pipeline-full-daily-incremental-chain-build-card.evidence-index.md) |
+| Pipeline | `full-rebuild-and-daily-incremental-release-closeout-card` | `blocked / formal release evidence incomplete` | [conclusion](records/pipeline/full-rebuild-and-daily-incremental-release-closeout-card.conclusion.md) | [evidence-index](records/pipeline/full-rebuild-and-daily-incremental-release-closeout-card.evidence-index.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
@@ -232,8 +234,10 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   `downstream-daily-incremental-runner-build-card` 也已完成下游 day-only sample runner proof；
   随后 `pipeline-full-daily-incremental-chain-build-card` 已在 Pipeline 模块内串联
   Data -> MALF -> Alpha -> Signal -> Position -> Portfolio Plan -> Trade -> System Readout
-  的 day-only daily incremental 样板，当前唯一 live next card 已继续前进到
-  `full-rebuild-and-daily-incremental-release-closeout-card`。
+  的 day-only daily incremental 样板；随后
+  `full-rebuild-and-daily-incremental-release-closeout-card` 已执行 truthful closeout，
+  但因 formal full rebuild proof、daily incremental release proof 与 final release evidence
+  尚未形成而 blocked。
   后半场 repair phase roadmap 已收敛回 `docs/03-refactor/04-asteria-full-system-roadmap-v1.md` 单点维护；旧第二张
   repair roadmap 已删除，不再承载独立状态机。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
@@ -243,7 +247,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 以下登记当前仍然有效的 live next card：
 
 ```text
-full-rebuild-and-daily-incremental-release-closeout-card
+full-rebuild-and-daily-incremental-release-closeout-card (blocked / formal release evidence incomplete)
 ```
 
 ## 3.1 Newly Passed Pre-Position Repair Card

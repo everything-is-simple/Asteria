@@ -73,10 +73,10 @@ FULL_REBUILD_AND_DAILY_INCREMENTAL_RELEASE_CLOSEOUT_ACTION = (
 )
 CURRENT_ALLOWED_NEXT_CARD_ACTION = FULL_REBUILD_AND_DAILY_INCREMENTAL_RELEASE_CLOSEOUT_ACTION
 CURRENT_ACTIVE_MAINLINE_MODULE = "system_readout"
-PIPELINE_CURRENT_PROOF_RUN_ID = PIPELINE_FULL_DAILY_INCREMENTAL_CHAIN_RUN_ID
+PIPELINE_CURRENT_PROOF_RUN_ID = FULL_REBUILD_AND_DAILY_INCREMENTAL_RELEASE_CLOSEOUT_RUN_ID
 CURRENT_PIPELINE_ACTIVE_CARD = (
     'active_card = "docs/04-execution/records/pipeline/'
-    'pipeline-full-daily-incremental-chain-build-card.card.md"'
+    'full-rebuild-and-daily-incremental-release-closeout-card.card.md"'
 )
 PIPELINE_MALF_REPAIR_ACTIVE_CARD = (
     'active_card = "docs/04-execution/records/malf/'
@@ -127,8 +127,8 @@ PIPELINE_CURRENT_DOC_STATUS = (
     "day dirty scope protocol passed / data daily incremental sample hardened / "
     "MALF daily incremental sample hardened / alpha signal daily incremental sample "
     "hardened / downstream daily impact schema frozen / downstream daily incremental sample "
-    "hardened / pipeline full daily incremental chain proof passed / live next card moved "
-    "to full rebuild and daily incremental release closeout"
+    "hardened / pipeline full daily incremental chain proof passed / full rebuild daily "
+    "incremental release closeout blocked"
 )
 PIPELINE_FULL_CHAIN_PREPARED_DOC_STATUS = (
     "frozen six-doc set / freeze review passed / single-module orchestration build passed / "
@@ -194,7 +194,9 @@ PIPELINE_CURRENT_GATE_STATE = (
     "stage11_day_dirty_scope_protocol_passed; data_daily_incremental_sample_hardened; "
     "malf_daily_incremental_sample_hardened; alpha_signal_daily_incremental_sample_hardened; "
     "downstream_daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened; "
-    "pipeline_full_daily_incremental_chain_passed"
+    "pipeline_full_daily_incremental_chain_passed; "
+    "full_rebuild_daily_incremental_release_closeout_blocked; "
+    "formal_release_evidence_incomplete"
 )
 PIPELINE_PREPARED_GATE_STATE = (
     "single_module_orchestration_build_passed; full_chain_dry_run_prepared; full_chain_not_executed"
@@ -229,8 +231,8 @@ PIPELINE_CURRENT_FORMAL_DB_PERMISSION = (
     "downstream_daily_incremental_sample_hardened_without_formal_db_mutation; "
     "no_formal_H:/Asteria-data_mutation_under_this_card; "
     "pipeline_full_daily_incremental_chain_passed_without_formal_db_mutation; "
-    "daily_incremental_release_closeout_requires_new_card; "
-    "full_rebuild_requires_new_card"
+    "full_rebuild_proof_missing; daily_incremental_release_closeout_blocked; "
+    "final_release_evidence_retained_gap"
 )
 PIPELINE_PREPARED_FORMAL_DB_PERMISSION = (
     "released_single_module_orchestration_ledger_only; "

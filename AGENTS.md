@@ -60,12 +60,18 @@
 - `Portfolio Plan freeze review passed`
 - `Portfolio Plan bounded proof passed`
 - `Data ledger daily incremental hardening sample passed`
-- 下一步允许动作：`malf_daily_incremental_ledger_build_card`
+- `MALF daily incremental sample hardened`
+- `Alpha/Signal daily incremental sample hardened`
+- `Downstream daily impact schema frozen`
+- `Downstream daily incremental sample hardened`
+- `Pipeline full daily incremental chain proof passed`
+- `Full rebuild and daily incremental release closeout blocked`
+- 当前 release closeout 状态：`full_rebuild_and_daily_incremental_release_closeout_card` blocked / formal release evidence incomplete
 - Data 已封为主线输入底座；后续 Data 只能通过明确 maintenance card 扩展。
 - `market_meta.duckdb` 已放行最小客观事实与可匹配正式 Data 标的的申万 2021 当前行业快照；Data reference target maintenance closeout 已完成 source inventory 裁决；ST、停牌、真实上市/退市状态、历史行业沿革和 index/block membership 仍因无 approved source manifest 而 retained。
 - MALF v1.4 是 Core operational boundary 权威定义升级；不等于 runtime proof passed。
-- MALF v1.3 closeout 仍只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；MALF week/month bounded proof、Alpha production builder hardening、Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade/System bounded proof、Pipeline year replay closeout、Stage 11 protocol 与 Data daily incremental sample hardening 已通过，当前下一卡是 MALF daily incremental ledger build card。
-- Position bounded proof 已放行 day `position.duckdb` 表面；Portfolio Plan bounded proof 已放行 day `portfolio_plan.duckdb` 表面；Trade bounded proof 已放行 day `trade.duckdb` 表面；System Readout 已放行 day `system.duckdb` readout surface；当前仅授权准备 MALF daily incremental ledger build card，不授权 MALF full build、Alpha/Signal daily runtime、下游 daily runtime、System full build 或全链路 pipeline。
+- MALF v1.3 closeout 仍只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；MALF week/month bounded proof、Alpha production builder hardening、Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade/System bounded proof、Pipeline year replay closeout、Stage 11 protocol、Data/MALF/Alpha/Signal/downstream daily incremental samples 与 Pipeline full daily incremental chain proof 已通过。
+- Full rebuild and daily incremental release closeout 已执行但 blocked：formal full rebuild proof、daily incremental release proof、resume/idempotence release proof 与 final release evidence 尚未形成；不得宣称 full rebuild passed、daily incremental release passed、System full build 或 `v1 complete`。
 
 硬规则：
 

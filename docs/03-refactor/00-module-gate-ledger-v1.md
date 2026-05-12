@@ -28,6 +28,7 @@ H:\Asteria-Validated\Asteria-position-bounded-proof-build-card-20260506-01.zip
 H:\Asteria-Validated\Asteria-portfolio-plan-freeze-review-20260507-01.zip
 H:\Asteria-Validated\Asteria-portfolio-plan-bounded-proof-build-card-20260507-01.zip
 H:\Asteria-Validated\Asteria-data-ledger-daily-incremental-hardening-card-20260511-01.zip
+H:\Asteria-Validated\Asteria-full-rebuild-and-daily-incremental-release-closeout-card-20260512-01.zip
 ```
 
 `214427` 快照是 2026-04-28 docs/code 基线；`130309` 快照是三天重构成果的
@@ -94,7 +95,7 @@ System Readout
 当前最新形成结论：
 
 ```text
-Pipeline full daily incremental chain proof passed / live next card moved to release closeout
+Full rebuild and daily incremental release closeout blocked / formal release evidence incomplete
 ```
 
 当前最新语义升级资产：
@@ -108,10 +109,10 @@ rules；当前 runtime passed evidence 已升级为 MALF v1.4 day runtime sync i
 且 week/month bounded proof 已通过。该结论只覆盖 day/week/month runtime proof，不打开 MALF full build、
 下游施工或 Pipeline runtime。
 
-当前 live 下一张执行卡：
+当前 release closeout 状态：
 
 ```text
-full-rebuild-and-daily-incremental-release-closeout-card
+full-rebuild-and-daily-incremental-release-closeout-card = blocked / formal release evidence incomplete
 ```
 
 对应 symbolic allowed next action：
@@ -120,10 +121,10 @@ full-rebuild-and-daily-incremental-release-closeout-card
 full_rebuild_and_daily_incremental_release_closeout_card
 ```
 
-当前 repair 结论锚点：
+当前 release 结论锚点：
 
 ```text
-pipeline-full-daily-incremental-chain-build-card
+full-rebuild-and-daily-incremental-release-closeout-card
 ```
 
 对应下一步 allowed next action：
@@ -138,10 +139,10 @@ full_rebuild_and_daily_incremental_release_closeout_card
 pipeline_one_year_strategy_behavior_replay_rerun_build_card
 ```
 
-当前只允许施工对象：
+当前只允许后续动作：
 
 ```text
-Full rebuild and daily incremental release closeout card
+真实 formal full rebuild proof / daily incremental release proof / resume-idempotence proof / final release evidence
 ```
 
 当前已通过 bounded proof 的主线模块：
