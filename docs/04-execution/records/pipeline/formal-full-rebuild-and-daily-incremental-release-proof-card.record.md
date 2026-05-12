@@ -15,18 +15,22 @@
 
 1. 新增 `src/asteria/pipeline/formal_release_proof.py`，实现 formal release proof 的 guarded evidence runner。
 2. 新增 `scripts/pipeline/run_formal_release_proof.py`，提供 `audit-only` / `release-proof` / `resume` CLI。
-3. 增加 targeted tests，覆盖 audit-only 不写正式库、缺少 allow flag blocked、staging failure 不 promote、guarded promote manifest、resume/idempotence。
-4. 同步 runner allowlist、gate checker、module gate registry、module API contracts、roadmap、gate ledger 与 conclusion index。
+3. 新增 `src/asteria/pipeline/formal_release_source_proof.py` 与 `scripts/pipeline/run_formal_release_source_proof.py`，把 `runner surface missing` 拆成 source surface gap matrix。
+4. 增加 targeted tests，覆盖 audit-only 不写正式库、缺少 allow flag blocked、staging failure 不 promote、guarded promote manifest、resume/idempotence、source surface gap matrix 与 source-proof resume。
+5. 同步 runner allowlist、gate checker、module gate registry、module API contracts、roadmap、gate ledger 与 conclusion index。
 
 ## 3. 边界
 
 本卡没有直接标记 `v1 complete`，没有打开 Pipeline semantic repair，没有重定义任何业务模块语义。
 
-当前 blocked 原因不是 Pipeline chain proof 缺失，而是 formal release-grade full rebuild / daily incremental runner surface 仍缺失。
+当前 blocked 原因不是 Pipeline chain proof 缺失，而是 formal release-grade full rebuild / daily incremental runner surface 仍缺失；source surface runner 只负责生成 temp/report 证据和 `formal-release-proof-manifest.json`，不得写 `H:\Asteria-data`。
 
 ## 4. Evidence
 
 - `src/asteria/pipeline/formal_release_proof.py`
 - `scripts/pipeline/run_formal_release_proof.py`
+- `src/asteria/pipeline/formal_release_source_proof.py`
+- `scripts/pipeline/run_formal_release_source_proof.py`
+- `tests/unit/pipeline/test_formal_release_source_proof.py`
 - `tests/unit/pipeline/test_formal_release_proof.py`
 - `tests/unit/governance/test_formal_release_proof_gate_transition.py`

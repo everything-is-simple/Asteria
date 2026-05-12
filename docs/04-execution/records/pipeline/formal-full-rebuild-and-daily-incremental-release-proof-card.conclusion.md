@@ -10,10 +10,13 @@
 
 当前阻塞点是 release-grade full rebuild / daily incremental runner surface 仍未全部形成；不能用前序 Pipeline daily incremental sample chain 或 closeout summary 替代正式 release 证据。
 
+本卡已新增 source surface gap matrix runner，用于把缺口拆成可复跑、机器可读的 `formal_full_rebuild_proof` / `daily_incremental_release_proof` / `resume_idempotence_proof` 三项 source surface。该 runner 只写 `H:\Asteria-temp` 与 `H:\Asteria-report`，不写 `H:\Asteria-data`，也不触发 guarded promote。
+
 ## 2. Gate Result
 
 | item | decision |
 |---|---|
+| source surface gap matrix | `implemented / temp-report only` |
 | formal full rebuild proof | `blocked / runner surface missing` |
 | daily incremental release proof | `blocked / runner surface missing` |
 | resume/idempotence release proof | `blocked / runner surface missing` |

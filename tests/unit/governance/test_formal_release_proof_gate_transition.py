@@ -55,6 +55,8 @@ def test_formal_release_proof_card_is_registered_as_current_blocked_proof() -> N
     assert pipeline_contract["evidence_index"] == modules["pipeline"]["evidence_index"]
     assert "状态：`blocked / runner surface missing`" in card
     assert "状态：`blocked / runner surface missing`" in conclusion
+    assert "source surface gap matrix" in conclusion
+    assert "run_formal_release_source_proof.py" in evidence
     assert "formal full rebuild proof | `blocked / runner surface missing`" in conclusion
     assert "daily incremental release proof | `blocked / runner surface missing`" in conclusion
     assert "backup manifest" in evidence

@@ -11,3 +11,7 @@ def test_pipeline_full_daily_incremental_chain_runner_is_allowlisted() -> None:
 
 def test_formal_release_proof_runner_is_allowlisted() -> None:
     assert "run_formal_release_proof.py" in allowed_pipeline_runner_names()
+
+
+def test_formal_release_source_proof_runner_is_allowlisted() -> None:
+    assert "run_formal_release_source_proof.py" in allowed_pipeline_runner_names()
