@@ -2,7 +2,7 @@
 
 日期：2026-05-12
 
-状态：`prepared / pending final release closeout`
+状态：`passed / v1 complete`
 
 ## 1. 目标
 
@@ -28,4 +28,6 @@
 
 ## 4. 当前状态
 
-当前卡尚未执行。上一卡已提供 formal full rebuild proof、daily incremental release proof、resume/idempotence proof 与 final release evidence passed；本卡下一步是最终 release closeout / `v1 complete` 裁决。
+当前卡已执行。上一卡提供的 formal full rebuild proof、daily incremental release proof、resume/idempotence proof 与 final release evidence 均通过一致性核对；当前 `H:\Asteria-data` 25 个正式 DuckDB 与 final release evidence manifest 一致。
+
+本卡结论为 `passed / v1 complete`。该结论只表示 Asteria v1 final release closeout 完成；不打开 Pipeline semantic repair，不重定义业务模块语义，不宣称额外 System full build，并保留 `fill_ledger` 仍受 execution/fill source evidence 约束。

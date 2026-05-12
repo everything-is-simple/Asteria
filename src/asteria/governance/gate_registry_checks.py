@@ -310,9 +310,11 @@ def _blocked_current_card_allows_reentry(
     next_card: str,
     module: dict[str, Any],
 ) -> bool:
-    return _blocked_release_closeout_allows_reentry(
-        module_id, next_card, module
-    ) or _blocked_formal_release_proof_allows_reentry(module_id, next_card, module)
+    return (
+        _blocked_release_closeout_allows_reentry(module_id, next_card, module)
+        or _blocked_formal_release_proof_allows_reentry(module_id, next_card, module)
+        or _blocked_final_release_closeout_allows_reentry(module_id, next_card, module)
+    )
 
 
 def _blocked_release_closeout_allows_reentry(
@@ -350,6 +352,24 @@ def _blocked_formal_release_proof_allows_reentry(
         and "formal_release_evidence_incomplete" in proof_status
         and "runner_surface_missing" in proof_status
         and "formal_release_proof_runner_surface_missing" in formal_db_permission
+    )
+
+
+def _blocked_final_release_closeout_allows_reentry(
+    module_id: str,
+    next_card: str,
+    module: dict[str, Any],
+) -> bool:
+    if module_id != "pipeline":
+        return False
+    if next_card != "final_release_closeout_card":
+        return False
+    proof_status = str(module.get("proof_status", ""))
+    formal_db_permission = str(module.get("formal_db_permission", ""))
+    return (
+        "final_release_closeout_blocked" in proof_status
+        and "final_release_evidence_inconsistent" in proof_status
+        and "final_release_closeout_blocked_evidence_inconsistent" in formal_db_permission
     )
 
 

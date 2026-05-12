@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from tests.unit.pipeline.constants import (
-    FINAL_RELEASE_CLOSEOUT_ACTION,
+    FINAL_RELEASE_CLOSEOUT_RUN_ID,
     FORMAL_RELEASE_PROOF_RUN_ID,
     FULL_REBUILD_AND_DAILY_INCREMENTAL_RELEASE_CLOSEOUT_RUN_ID,
 )
@@ -40,26 +40,27 @@ def test_formal_release_proof_card_transitioned_to_final_closeout() -> None:
 
     next_card = (records_root / "final-release-closeout-card.card.md").read_text(encoding="utf-8")
 
-    assert registry["current_allowed_next_card"] == FINAL_RELEASE_CLOSEOUT_ACTION
+    assert registry["current_allowed_next_card"] == ""
     assert modules["pipeline"]["active_card"] == (
-        f"docs/04-execution/records/pipeline/{FORMAL_RELEASE_PROOF_RUN_ID}.card.md"
+        f"docs/04-execution/records/pipeline/{FINAL_RELEASE_CLOSEOUT_RUN_ID}.card.md"
     )
     assert modules["pipeline"]["release_conclusion"] == (
-        f"docs/04-execution/records/pipeline/{FORMAL_RELEASE_PROOF_RUN_ID}.conclusion.md"
+        f"docs/04-execution/records/pipeline/{FINAL_RELEASE_CLOSEOUT_RUN_ID}.conclusion.md"
     )
     assert modules["pipeline"]["evidence_index"] == (
-        f"docs/04-execution/records/pipeline/{FORMAL_RELEASE_PROOF_RUN_ID}.evidence-index.md"
+        f"docs/04-execution/records/pipeline/{FINAL_RELEASE_CLOSEOUT_RUN_ID}.evidence-index.md"
     )
     assert (
         "formal_full_rebuild_and_daily_incremental_release_proof_passed"
         in modules["pipeline"]["proof_status"]
     )
-    assert "final_release_closeout_pending" in modules["pipeline"]["proof_status"]
+    assert "final_release_closeout_passed" in modules["pipeline"]["proof_status"]
+    assert "v1_complete" in modules["pipeline"]["proof_status"]
     assert (
         "guarded_promote_completed_with_explicit_allow"
         in modules["pipeline"]["formal_db_permission"]
     )
-    assert pipeline_contract["next_allowed_action"] == FINAL_RELEASE_CLOSEOUT_ACTION
+    assert pipeline_contract["next_allowed_action"] == ""
     assert pipeline_contract["release_conclusion"] == modules["pipeline"]["release_conclusion"]
     assert pipeline_contract["evidence_index"] == modules["pipeline"]["evidence_index"]
     assert "状态：`passed / formal release evidence complete`" in card
@@ -73,13 +74,11 @@ def test_formal_release_proof_card_transitioned_to_final_closeout() -> None:
     assert "promote manifest" in evidence
     assert "final release evidence" in evidence
     assert "状态：`blocked / formal release evidence incomplete`" in old_closeout
-    assert "状态：`prepared / pending final release closeout`" in next_card
+    assert "状态：`passed / v1 complete`" in next_card
     passed_row = (
         f"| Pipeline | `{FORMAL_RELEASE_PROOF_RUN_ID}` | "
         "`passed / formal release evidence complete` |"
     )
-    prepared_row = (
-        "| Pipeline | `final-release-closeout-card` | `prepared / pending final release closeout` |"
-    )
+    prepared_row = "| Pipeline | `final-release-closeout-card` | `passed / v1 complete` |"
     assert passed_row in conclusion_index
     assert prepared_row in conclusion_index

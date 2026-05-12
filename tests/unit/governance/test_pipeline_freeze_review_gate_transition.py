@@ -75,9 +75,7 @@ def test_pipeline_scope_freeze_preserves_historical_scope_after_runtime_pass() -
     assert registry["active_mainline_module"] == CURRENT_ACTIVE_MAINLINE_MODULE
     assert registry["active_foundation_card"] == "none"
     assert registry["current_allowed_next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
-    assert registry["latest_mainline_release_run_id"] == (
-        "system-readout-2024-coverage-repair-card-20260509-01"
-    )
+    assert registry["latest_mainline_release_run_id"] == "final-release-closeout-card"
     assert modules["system_readout"]["allow_build"] is False
     assert modules["system_readout"]["allow_review"] is False
     assert modules["system_readout"]["status"] == "released"

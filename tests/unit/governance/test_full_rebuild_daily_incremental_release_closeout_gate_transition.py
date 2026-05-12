@@ -1,8 +1,7 @@
 from pathlib import Path
 
 from tests.unit.pipeline.constants import (
-    FORMAL_RELEASE_PROOF_ACTION,
-    FORMAL_RELEASE_PROOF_RUN_ID,
+    FINAL_RELEASE_CLOSEOUT_RUN_ID,
     FULL_REBUILD_AND_DAILY_INCREMENTAL_RELEASE_CLOSEOUT_RUN_ID,
 )
 
@@ -41,31 +40,40 @@ def test_release_closeout_blocked_state_is_registered() -> None:
         repo_root / "docs" / "04-execution" / "00-conclusion-index-v1.md"
     ).read_text(encoding="utf-8")
 
-    assert registry["current_allowed_next_card"] == FORMAL_RELEASE_PROOF_ACTION
+    assert registry["current_allowed_next_card"] == ""
     assert modules["pipeline"]["active_card"] == (
-        f"docs/04-execution/records/pipeline/{FORMAL_RELEASE_PROOF_RUN_ID}.card.md"
+        f"docs/04-execution/records/pipeline/{FINAL_RELEASE_CLOSEOUT_RUN_ID}.card.md"
     )
     assert modules["pipeline"]["release_conclusion"] == (
-        f"docs/04-execution/records/pipeline/{FORMAL_RELEASE_PROOF_RUN_ID}.conclusion.md"
+        f"docs/04-execution/records/pipeline/{FINAL_RELEASE_CLOSEOUT_RUN_ID}.conclusion.md"
     )
     assert modules["pipeline"]["evidence_index"] == (
-        f"docs/04-execution/records/pipeline/{FORMAL_RELEASE_PROOF_RUN_ID}.evidence-index.md"
+        f"docs/04-execution/records/pipeline/{FINAL_RELEASE_CLOSEOUT_RUN_ID}.evidence-index.md"
     )
     assert (
         "full_rebuild_daily_incremental_release_closeout_blocked"
         in modules["pipeline"]["proof_status"]
     )
-    assert "formal_release_evidence_incomplete" in modules["pipeline"]["proof_status"]
-    assert "full_rebuild_proof_missing" in modules["pipeline"]["formal_db_permission"]
-    assert pipeline_contract["next_allowed_action"] == FORMAL_RELEASE_PROOF_ACTION
+    assert (
+        "formal_full_rebuild_and_daily_incremental_release_proof_passed"
+        in (modules["pipeline"]["proof_status"])
+    )
+    assert "final_release_closeout_passed" in modules["pipeline"]["formal_db_permission"]
+    assert pipeline_contract["next_allowed_action"] == ""
     assert pipeline_contract["release_conclusion"] == modules["pipeline"]["release_conclusion"]
     assert pipeline_contract["evidence_index"] == modules["pipeline"]["evidence_index"]
     assert "状态：`blocked / formal release evidence incomplete`" in card
     assert "result | `blocked / formal release evidence incomplete`" in record
-    assert f"next allowed action | `{FORMAL_RELEASE_PROOF_ACTION}`" in record
+    assert (
+        "next allowed action | `formal_full_rebuild_and_daily_incremental_release_proof_card`"
+        in record
+    )
     assert "formal full rebuild proof | `blocked`" in conclusion
     assert "daily incremental release proof | `blocked`" in conclusion
-    assert f"allowed next action | `{FORMAL_RELEASE_PROOF_ACTION}`" in conclusion
+    assert (
+        "allowed next action | `formal_full_rebuild_and_daily_incremental_release_proof_card`"
+        in conclusion
+    )
     assert "formal full rebuild not executed" in evidence
     assert (
         f"| Pipeline | `{FULL_REBUILD_AND_DAILY_INCREMENTAL_RELEASE_CLOSEOUT_RUN_ID}` | "

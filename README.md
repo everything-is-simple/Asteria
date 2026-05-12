@@ -60,6 +60,7 @@ H:\Asteria-Validated\Asteria-trade-bounded-proof-build-card-20260507-01.zip
 H:\Asteria-Validated\Asteria-system-readout-freeze-review-20260507-01.zip
 H:\Asteria-Validated\Asteria-pipeline-full-chain-bounded-proof-authorization-scope-freeze-20260508-01.zip
 H:\Asteria-Validated\Asteria-alpha-signal-2024-coverage-repair-card-20260509-01.zip
+H:\Asteria-Validated\Asteria-final-release-closeout-card-20260512-01.zip
 ```
 
 当前门禁状态：
@@ -127,6 +128,9 @@ downstream `position`。随后 `coverage-gap-evidence-incomplete-closeout-card-2
 surface repair，仍不得解释成 Portfolio Plan / Trade / System full build、full rebuild、
 daily incremental、resume/idempotence 或 `v1 complete` 授权。
 仍不能宣称全主线数据已经齐全或完整证券主数据已齐。
+随后 formal release proof 与 final release closeout 已完成，`final-release-closeout-card`
+结论为 `passed / v1 complete`；这不打开 Pipeline semantic repair，不重定义业务模块语义，
+`fill_ledger` 仍受 execution/fill source evidence 约束。
 
 ## 阅读入口
 

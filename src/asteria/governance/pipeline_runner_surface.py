@@ -20,6 +20,7 @@ def allowed_pipeline_runner_names() -> set[str]:
         "run_full_rebuild_daily_incremental_release_closeout.py",
         "run_formal_release_source_proof.py",
         "run_formal_release_proof.py",
+        "run_final_release_closeout.py",
         "run_downstream_coverage_gap_closeout.py",
     }
 
