@@ -73,7 +73,8 @@ FULL_REBUILD_AND_DAILY_INCREMENTAL_RELEASE_CLOSEOUT_ACTION = (
     "full_rebuild_and_daily_incremental_release_closeout_card"
 )
 FORMAL_RELEASE_PROOF_ACTION = "formal_full_rebuild_and_daily_incremental_release_proof_card"
-CURRENT_ALLOWED_NEXT_CARD_ACTION = FORMAL_RELEASE_PROOF_ACTION
+FINAL_RELEASE_CLOSEOUT_ACTION = "final_release_closeout_card"
+CURRENT_ALLOWED_NEXT_CARD_ACTION = FINAL_RELEASE_CLOSEOUT_ACTION
 CURRENT_ACTIVE_MAINLINE_MODULE = "system_readout"
 PIPELINE_CURRENT_PROOF_RUN_ID = FORMAL_RELEASE_PROOF_RUN_ID
 CURRENT_PIPELINE_ACTIVE_CARD = (
@@ -130,7 +131,8 @@ PIPELINE_CURRENT_DOC_STATUS = (
     "MALF daily incremental sample hardened / alpha signal daily incremental sample "
     "hardened / downstream daily impact schema frozen / downstream daily incremental sample "
     "hardened / pipeline full daily incremental chain proof passed / full rebuild daily "
-    "incremental release closeout blocked / formal release proof blocked"
+    "incremental release closeout blocked / formal release proof passed / final release "
+    "closeout pending"
 )
 PIPELINE_FULL_CHAIN_PREPARED_DOC_STATUS = (
     "frozen six-doc set / freeze review passed / single-module orchestration build passed / "
@@ -198,8 +200,8 @@ PIPELINE_CURRENT_GATE_STATE = (
     "downstream_daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened; "
     "pipeline_full_daily_incremental_chain_passed; "
     "full_rebuild_daily_incremental_release_closeout_blocked; "
-    "formal_release_evidence_incomplete; formal_release_proof_blocked; "
-    "runner_surface_missing"
+    "formal_full_rebuild_and_daily_incremental_release_proof_passed; "
+    "final_release_closeout_pending"
 )
 PIPELINE_PREPARED_GATE_STATE = (
     "single_module_orchestration_build_passed; full_chain_dry_run_prepared; full_chain_not_executed"
@@ -232,11 +234,10 @@ PIPELINE_CURRENT_FORMAL_DB_PERMISSION = (
     "alpha_signal_daily_incremental_sample_hardened_without_formal_db_mutation; "
     "downstream_daily_impact_schema_frozen; "
     "downstream_daily_incremental_sample_hardened_without_formal_db_mutation; "
-    "no_formal_H:/Asteria-data_mutation_under_this_card; "
-    "pipeline_full_daily_incremental_chain_passed_without_formal_db_mutation; "
-    "full_rebuild_proof_missing; daily_incremental_release_closeout_blocked; "
-    "final_release_evidence_retained_gap; formal_release_proof_runner_surface_missing; "
-    "formal_full_rebuild_and_daily_incremental_release_requires_guarded_promote"
+    "pipeline_full_daily_incremental_chain_passed; formal_full_rebuild_proof_passed; "
+    "daily_incremental_release_proof_passed; resume_idempotence_proof_passed; "
+    "final_release_evidence_passed; guarded_promote_completed_with_explicit_allow; "
+    "final_release_closeout_pending"
 )
 PIPELINE_PREPARED_FORMAL_DB_PERMISSION = (
     "released_single_module_orchestration_ledger_only; "

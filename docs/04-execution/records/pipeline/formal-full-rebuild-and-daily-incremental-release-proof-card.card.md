@@ -2,7 +2,7 @@
 
 日期：2026-05-12
 
-状态：`blocked / runner surface missing`
+状态：`passed / formal release evidence complete`
 
 ## 1. 目标
 
@@ -33,6 +33,6 @@
 
 ## 4. 当前执行结果
 
-本卡的 guarded proof runner 与 CLI 已落地，但当前正式 release-grade full rebuild / daily incremental runner surface 尚未全部形成。
+本卡已完成 source surface audit、source proof、guarded release proof 与 resume/idempotence 复跑。三项 source proof surface 指向同一个正式 DB source root，生成 `formal-release-proof-manifest.json`，并通过显式 `--allow-formal-data-write` 走完 staging rebuild、formal DB backup、audit、promote 到 `H:\Asteria-data` 的 guarded 路径。
 
-因此本卡当前结论保持 `blocked / runner surface missing`。只有四类证据全部真实通过后，下一张才可能进入 final release closeout / `v1 complete` 裁决。
+因此本卡结论为 `passed / formal release evidence complete`。下一张只允许进入 `final_release_closeout_card` 做最终 release closeout / `v1 complete` 裁决；本卡本身仍不宣称 System full build 或 `v1 complete`。

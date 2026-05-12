@@ -29,6 +29,7 @@ H:\Asteria-Validated\Asteria-portfolio-plan-freeze-review-20260507-01.zip
 H:\Asteria-Validated\Asteria-portfolio-plan-bounded-proof-build-card-20260507-01.zip
 H:\Asteria-Validated\Asteria-data-ledger-daily-incremental-hardening-card-20260511-01.zip
 H:\Asteria-Validated\Asteria-full-rebuild-and-daily-incremental-release-closeout-card-20260512-01.zip
+H:\Asteria-Validated\Asteria-formal-full-rebuild-and-daily-incremental-release-proof-card-20260512-01.zip
 ```
 
 `214427` 快照是 2026-04-28 docs/code 基线；`130309` 快照是三天重构成果的
@@ -96,7 +97,7 @@ System Readout
 
 ```text
 Full rebuild and daily incremental release closeout blocked / formal release evidence incomplete
-Formal full rebuild and daily incremental release proof blocked / runner surface missing
+Formal full rebuild and daily incremental release proof passed / formal release evidence complete
 ```
 
 当前最新语义升级资产：
@@ -114,25 +115,25 @@ rules；当前 runtime passed evidence 已升级为 MALF v1.4 day runtime sync i
 
 ```text
 full-rebuild-and-daily-incremental-release-closeout-card = blocked / formal release evidence incomplete
-formal-full-rebuild-and-daily-incremental-release-proof-card = blocked / runner surface missing
+formal-full-rebuild-and-daily-incremental-release-proof-card = passed / formal release evidence complete
 ```
 
 对应 symbolic allowed next action：
 
 ```text
-formal_full_rebuild_and_daily_incremental_release_proof_card
+final_release_closeout_card
 ```
 
 当前 release 结论锚点：
 
 ```text
-formal-full-rebuild-and-daily-incremental-release-proof-card
+final-release-closeout-card
 ```
 
 对应下一步 allowed next action：
 
 ```text
-formal_full_rebuild_and_daily_incremental_release_proof_card
+final_release_closeout_card
 ```
 
 历史已放行动作锚点：
@@ -144,7 +145,7 @@ pipeline_one_year_strategy_behavior_replay_rerun_build_card
 当前只允许后续动作：
 
 ```text
-真实 formal full rebuild proof / daily incremental release proof / resume-idempotence proof / final release evidence
+final release closeout / `v1 complete` 裁决；如证据不一致则 truthful blocked
 ```
 
 当前已通过 bounded proof 的主线模块：

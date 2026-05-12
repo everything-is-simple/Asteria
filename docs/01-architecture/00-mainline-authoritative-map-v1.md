@@ -30,9 +30,9 @@ flowchart LR
 |---|---|
 | 当前已冻结主线模块 | `MALF`; `Alpha`; `Signal`; `Position`; `Portfolio Plan`; `Trade`; `System Readout` |
 | 当前已通过 bounded proof | `MALF day`; `MALF week`; `MALF month`; `Alpha day`; `Signal day`; `Position day`; `Portfolio Plan day`; `Trade bounded proof`; `System Readout day bounded proof`; `MALF v1.4 day runtime sync implementation` |
-| 当前 release closeout 状态 | `blocked / formal release evidence incomplete` |
-| 当前只允许后续动作 | 真实 formal full rebuild proof、daily incremental release proof、resume/idempotence proof、final release evidence |
-| 当前仍禁止 | 宣称 full rebuild passed、daily incremental release passed、System full build、Pipeline semantic repair、v1 complete |
+| 当前 release closeout 状态 | formal release proof 已通过；final release closeout pending |
+| 当前只允许后续动作 | `final_release_closeout_card`：核对 formal release evidence 并做最终 closeout / `v1 complete` 裁决 |
+| 当前仍禁止 | 在 final closeout 前宣称 System full build、Pipeline semantic repair、v1 complete |
 
 `Signal bounded proof` 已基于已放行的 Alpha candidate 完成最小证明。Data Foundation
 已补齐正式 `market_meta.duckdb` 的最小事实，并部分释放可匹配正式 Data 标的的申万
@@ -81,8 +81,9 @@ admission surface 已前移覆盖 `2024-01-02..2024-01-05`，而 target exposure
 `2024-01-05` materialize，因此语义断点已继续下移到 System Readout。后续 System Readout repair、
 Stage 11 daily protocol、Data/MALF/Alpha/Signal/downstream daily incremental sample、Pipeline full daily
 incremental chain proof 均已闭环；当前 `full-rebuild-and-daily-incremental-release-closeout-card`
-已执行但 blocked，原因是 formal full rebuild proof、daily incremental release proof 与 final release
-evidence 尚未形成。不允许扩成 Pipeline semantic repair，或宣称 full rebuild / daily incremental release /
+已执行但 blocked，原因是当时 formal full rebuild proof、daily incremental release proof 与 final release
+evidence 尚未形成。随后 `formal-full-rebuild-and-daily-incremental-release-proof-card` 已通过，并完成 guarded
+formal DB promote 与 resume/idempotence evidence；不允许扩成 Pipeline semantic repair，或在 final closeout 前宣称
 `v1 complete` 已通过。
 
 ## 2. 主线模块
