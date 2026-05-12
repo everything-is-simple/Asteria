@@ -23,12 +23,12 @@
 | Pipeline semantic repair opened | `no` |
 | System full build opened | `no` |
 | `v1 complete` claim | `forbidden / not claimed` |
-| allowed next action | `full_rebuild_and_daily_incremental_release_closeout_card` |
+| allowed next action | `formal_full_rebuild_and_daily_incremental_release_proof_card` |
 
 ## 3. 后续边界
 
 当前仍不得宣称 full rebuild passed、daily incremental release passed、production release 或 `v1 complete`。
-若要解除 blocked，必须另行形成真实 formal full rebuild proof、daily incremental release proof、resume/idempotence proof 与 final release evidence。
+若要解除 blocked，下一卡必须执行 `formal_full_rebuild_and_daily_incremental_release_proof_card`，另行形成真实 formal full rebuild proof、daily incremental release proof、resume/idempotence proof 与 final release evidence。
 
 ## 4. Evidence
 

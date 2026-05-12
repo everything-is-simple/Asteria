@@ -12,7 +12,7 @@ except ModuleNotFoundError:  # Python 3.10
     import tomli as tomllib
 
 
-def test_release_closeout_blocked_state_is_registered() -> None:
+def test_formal_release_proof_card_is_registered_as_current_blocked_proof() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_path = repo_root / "governance" / "module_gate_registry.toml"
     pipeline_contract_path = repo_root / "governance" / "module_api_contracts" / "pipeline.toml"
@@ -24,18 +24,15 @@ def test_release_closeout_blocked_state_is_registered() -> None:
         pipeline_contract = tomllib.load(handle)
 
     modules = {module["module_id"]: module for module in registry["modules"]}
-    card = (
-        records_root / f"{FULL_REBUILD_AND_DAILY_INCREMENTAL_RELEASE_CLOSEOUT_RUN_ID}.card.md"
-    ).read_text(encoding="utf-8")
-    record = (
-        records_root / f"{FULL_REBUILD_AND_DAILY_INCREMENTAL_RELEASE_CLOSEOUT_RUN_ID}.record.md"
-    ).read_text(encoding="utf-8")
-    conclusion = (
+    card = (records_root / f"{FORMAL_RELEASE_PROOF_RUN_ID}.card.md").read_text(encoding="utf-8")
+    conclusion = (records_root / f"{FORMAL_RELEASE_PROOF_RUN_ID}.conclusion.md").read_text(
+        encoding="utf-8"
+    )
+    evidence = (records_root / f"{FORMAL_RELEASE_PROOF_RUN_ID}.evidence-index.md").read_text(
+        encoding="utf-8"
+    )
+    old_closeout = (
         records_root / f"{FULL_REBUILD_AND_DAILY_INCREMENTAL_RELEASE_CLOSEOUT_RUN_ID}.conclusion.md"
-    ).read_text(encoding="utf-8")
-    evidence = (
-        records_root
-        / f"{FULL_REBUILD_AND_DAILY_INCREMENTAL_RELEASE_CLOSEOUT_RUN_ID}.evidence-index.md"
     ).read_text(encoding="utf-8")
     conclusion_index = (
         repo_root / "docs" / "04-execution" / "00-conclusion-index-v1.md"
@@ -51,23 +48,19 @@ def test_release_closeout_blocked_state_is_registered() -> None:
     assert modules["pipeline"]["evidence_index"] == (
         f"docs/04-execution/records/pipeline/{FORMAL_RELEASE_PROOF_RUN_ID}.evidence-index.md"
     )
-    assert (
-        "full_rebuild_daily_incremental_release_closeout_blocked"
-        in modules["pipeline"]["proof_status"]
-    )
-    assert "formal_release_evidence_incomplete" in modules["pipeline"]["proof_status"]
-    assert "full_rebuild_proof_missing" in modules["pipeline"]["formal_db_permission"]
+    assert "formal_release_proof_blocked" in modules["pipeline"]["proof_status"]
+    assert "runner_surface_missing" in modules["pipeline"]["formal_db_permission"]
     assert pipeline_contract["next_allowed_action"] == FORMAL_RELEASE_PROOF_ACTION
     assert pipeline_contract["release_conclusion"] == modules["pipeline"]["release_conclusion"]
     assert pipeline_contract["evidence_index"] == modules["pipeline"]["evidence_index"]
-    assert "状态：`blocked / formal release evidence incomplete`" in card
-    assert "result | `blocked / formal release evidence incomplete`" in record
-    assert f"next allowed action | `{FORMAL_RELEASE_PROOF_ACTION}`" in record
-    assert "formal full rebuild proof | `blocked`" in conclusion
-    assert "daily incremental release proof | `blocked`" in conclusion
-    assert f"allowed next action | `{FORMAL_RELEASE_PROOF_ACTION}`" in conclusion
-    assert "formal full rebuild not executed" in evidence
+    assert "状态：`blocked / runner surface missing`" in card
+    assert "状态：`blocked / runner surface missing`" in conclusion
+    assert "formal full rebuild proof | `blocked / runner surface missing`" in conclusion
+    assert "daily incremental release proof | `blocked / runner surface missing`" in conclusion
+    assert "backup manifest" in evidence
+    assert "staging manifest" in evidence
+    assert "promote manifest" in evidence
+    assert "状态：`blocked / formal release evidence incomplete`" in old_closeout
     assert (
-        f"| Pipeline | `{FULL_REBUILD_AND_DAILY_INCREMENTAL_RELEASE_CLOSEOUT_RUN_ID}` | "
-        "`blocked / formal release evidence incomplete` |"
+        f"| Pipeline | `{FORMAL_RELEASE_PROOF_RUN_ID}` | `blocked / runner surface missing` |"
     ) in conclusion_index

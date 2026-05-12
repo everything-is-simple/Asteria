@@ -2,7 +2,7 @@
 
 日期：2026-04-29
 
-状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / coverage gap diagnosis executed / MALF natural-year coverage repair passed / year replay rerun blocked / alpha-signal coverage repair passed / downstream coverage gap evidence closeout passed / position 2024 coverage repair passed / portfolio plan 2024 coverage repair passed / trade 2024 coverage repair passed / system_readout 2024 coverage repair handoff passed / year replay source-selection repair passed / year replay disposition decision passed / stage 11 day dirty scope protocol passed / data daily incremental sample hardened / MALF daily incremental sample hardened
+状态：frozen / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / coverage gap diagnosis executed / MALF natural-year coverage repair passed / year replay rerun blocked / alpha-signal coverage repair passed / downstream coverage gap evidence closeout passed / position 2024 coverage repair passed / portfolio plan 2024 coverage repair passed / trade 2024 coverage repair passed / system_readout 2024 coverage repair handoff passed / year replay source-selection repair passed / year replay disposition decision passed / stage 11 day dirty scope protocol passed / data daily incremental sample hardened / MALF daily incremental sample hardened / formal release proof blocked
 
 ## 1. 模块定义
 
@@ -46,7 +46,7 @@ malf-daily-incremental-ledger-build-card passed
 | formal DB | `H:\Asteria-data\pipeline.duckdb` 已创建 |
 | released module scope | `system_readout` single-module orchestration + `full_chain_day` dry-run + `full_chain_day` bounded proof |
 | released run modes | `bounded / dry-run / daily_incremental / resume / audit-only` |
-| current next card | `full_rebuild_and_daily_incremental_release_closeout_card` |
+| current next card | `formal_full_rebuild_and_daily_incremental_release_proof_card` |
 | full-chain dry-run | 已执行 / 已通过 |
 | full-chain bounded proof | 已执行 / 已通过 |
 | one-year strategy behavior replay | 已执行 / `blocked`（完整自然年覆盖不足） |
@@ -118,7 +118,7 @@ flowchart LR
 
 ## 8. 下一步
 
-当前 live `current_allowed_next_card` 是 `full_rebuild_and_daily_incremental_release_closeout_card`。
+当前 live `current_allowed_next_card` 是 `formal_full_rebuild_and_daily_incremental_release_proof_card`。
 `pipeline-year-replay-disposition-decision-card-20260510-01` 已裁定：在 released observed window 仅缺
 `2024-01-01` 的前提下，不再重跑 rerun，而是做 truthful closeout，并把后续长期能力问题移交到 Stage 11。
 随后 `system-wide-daily-dirty-scope-protocol-card`、`data-ledger-daily-incremental-hardening-card` 与
@@ -127,5 +127,7 @@ flowchart LR
 与 `downstream-daily-incremental-runner-build-card` 也已闭环，把 downstream impact map /
 replay scope 与 day-only runner 样板冻结到当前 repo truth。随后
 `pipeline-full-daily-incremental-chain-build-card` 已通过 Pipeline full daily incremental chain proof。
-因此当前唯一 live 施工位已继续前进到 release closeout；在该卡完成之前，仍不得直接宣称
-full rebuild passed、daily incremental release passed、System full build、Pipeline semantic repair 或 `v1 complete`。
+随后 `full-rebuild-and-daily-incremental-release-closeout-card` 已 truthful blocked；当前唯一 live 施工位
+已继续前进到 formal release proof card。该卡只允许补 formal full rebuild、daily incremental release、
+resume/idempotence 与 final evidence；在四类证据真实通过前，仍不得直接宣称 full rebuild passed、
+daily incremental release passed、System full build、Pipeline semantic repair 或 `v1 complete`。

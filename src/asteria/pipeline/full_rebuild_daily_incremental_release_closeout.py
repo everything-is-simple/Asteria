@@ -9,7 +9,8 @@ FULL_REBUILD_DAILY_INCREMENTAL_RELEASE_CLOSEOUT_CARD = (
     "full-rebuild-and-daily-incremental-release-closeout-card"
 )
 PREREQUISITE_CHAIN_CARD = "pipeline-full-daily-incremental-chain-build-card"
-NEXT_ALLOWED_ACTION = "full_rebuild_and_daily_incremental_release_closeout_card"
+PREREQUISITE_ALLOWED_ACTION = "full_rebuild_and_daily_incremental_release_closeout_card"
+NEXT_ALLOWED_ACTION = "formal_full_rebuild_and_daily_incremental_release_proof_card"
 REPORT_DATE = "2026-05-12"
 RELEASE_EVIDENCE_MARKERS = {
     "manifest": ("manifest",),
@@ -118,7 +119,7 @@ def _decisions(evidence: dict[str, str]) -> dict[str, str]:
     evidence_index = evidence["prerequisite_evidence_index"]
     prerequisite_passed = (
         "passed / pipeline full daily incremental chain proof passed" in conclusion
-        and NEXT_ALLOWED_ACTION in conclusion
+        and PREREQUISITE_ALLOWED_ACTION in conclusion
     )
     if not prerequisite_passed:
         return {

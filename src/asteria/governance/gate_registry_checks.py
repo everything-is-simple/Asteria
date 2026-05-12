@@ -296,15 +296,23 @@ def _current_next_card_has_closed_conclusion(
         status_match = re.search(r"状态：`(?P<status>passed|blocked)(?: / [^`]*)?`", text)
         if not status_match:
             continue
-        if status_match.group("status") == "blocked" and _blocked_release_closeout_allows_reentry(
-            module_id,
-            next_card,
-            module,
+        if status_match.group("status") == "blocked" and _blocked_current_card_allows_reentry(
+            module_id, next_card, module
         ):
             continue
         if status_match:
             return True
     return False
+
+
+def _blocked_current_card_allows_reentry(
+    module_id: str,
+    next_card: str,
+    module: dict[str, Any],
+) -> bool:
+    return _blocked_release_closeout_allows_reentry(
+        module_id, next_card, module
+    ) or _blocked_formal_release_proof_allows_reentry(module_id, next_card, module)
 
 
 def _blocked_release_closeout_allows_reentry(
@@ -323,6 +331,25 @@ def _blocked_release_closeout_allows_reentry(
         and "formal_release_evidence_incomplete" in proof_status
         and "full_rebuild_proof_missing" in formal_db_permission
         and "daily_incremental_release_closeout_blocked" in formal_db_permission
+    )
+
+
+def _blocked_formal_release_proof_allows_reentry(
+    module_id: str,
+    next_card: str,
+    module: dict[str, Any],
+) -> bool:
+    if module_id != "pipeline":
+        return False
+    if next_card != "formal_full_rebuild_and_daily_incremental_release_proof_card":
+        return False
+    proof_status = str(module.get("proof_status", ""))
+    formal_db_permission = str(module.get("formal_db_permission", ""))
+    return (
+        "formal_release_proof_blocked" in proof_status
+        and "formal_release_evidence_incomplete" in proof_status
+        and "runner_surface_missing" in proof_status
+        and "formal_release_proof_runner_surface_missing" in formal_db_permission
     )
 
 

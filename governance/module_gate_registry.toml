@@ -1,7 +1,7 @@
 registry_version = "2026-05-02.v1"
 active_mainline_module = "system_readout"
 active_foundation_card = "none"
-current_allowed_next_card = "full_rebuild_and_daily_incremental_release_closeout_card"
+current_allowed_next_card = "formal_full_rebuild_and_daily_incremental_release_proof_card"
 authority_assets = [
     "H:/Asteria-Validated/Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md",
     "H:/Asteria-Validated/2.backups/Asteria-docs-code-20260428-214427.zip",
@@ -210,7 +210,7 @@ release_conclusion = "docs/04-execution/records/trade/trade-2024-coverage-repair
 evidence_index = "docs/04-execution/records/trade/trade-2024-coverage-repair-card-20260509-01.evidence-index.md"
 formal_db_permission = "released_day_bounded_trade_order_intent_execution_plan_only; fill_ledger_retained_gap_without_evidence_source; daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened_without_formal_db_mutation; no_formal_H:/Asteria-data_mutation_under_this_card; full_build_requires_new_card"
 input_boundary = "read_only_released_portfolio_plan_bounded_proof_surface"
-next_allowed_action = "full_rebuild_and_daily_incremental_release_closeout_card"
+next_allowed_action = "formal_full_rebuild_and_daily_incremental_release_proof_card"
 
 [[modules]]
 module_id = "system_readout"
@@ -223,7 +223,7 @@ allow_review = false
 doc_path = "docs/02-modules/system_readout"
 db_name = "system.duckdb"
 waits_for = "trade_released"
-next_card = "full_rebuild_and_daily_incremental_release_closeout_card"
+next_card = "formal_full_rebuild_and_daily_incremental_release_proof_card"
 active_card = "docs/04-execution/records/pipeline/pipeline-full-daily-incremental-chain-build-card.card.md"
 freeze_review_status = "passed"
 freeze_review_run_id = "system-readout-freeze-review-20260507-01"
@@ -233,7 +233,7 @@ release_conclusion = "docs/04-execution/records/system_readout/system-readout-20
 evidence_index = "docs/04-execution/records/system_readout/system-readout-2024-coverage-repair-card-20260509-01.evidence-index.md"
 formal_db_permission = "released_day_bounded_system_readout_only; daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened_without_formal_db_mutation; pipeline_full_daily_incremental_chain_passed_without_formal_db_mutation; no_formal_H:/Asteria-data_mutation_under_this_card; system_full_build_requires_new_card"
 input_boundary = "read_only_released_full_chain_day_bounded_surfaces"
-next_allowed_action = "full_rebuild_and_daily_incremental_release_closeout_card"
+next_allowed_action = "formal_full_rebuild_and_daily_incremental_release_proof_card"
 
 [[modules]]
 module_id = "pipeline"
@@ -245,15 +245,15 @@ allow_build = false
 allow_review = false
 doc_path = "docs/02-modules/pipeline"
 waits_for = "malf_bounded_proof_gate"
-next_card = "full_rebuild_and_daily_incremental_release_closeout_card"
-active_card = "docs/04-execution/records/pipeline/full-rebuild-and-daily-incremental-release-closeout-card.card.md"
+next_card = "formal_full_rebuild_and_daily_incremental_release_proof_card"
+active_card = "docs/04-execution/records/pipeline/formal-full-rebuild-and-daily-incremental-release-proof-card.card.md"
 freeze_review_status = "passed"
 freeze_review_run_id = "pipeline-freeze-review-20260508-01"
-release_conclusion = "docs/04-execution/records/pipeline/full-rebuild-and-daily-incremental-release-closeout-card.conclusion.md"
-evidence_index = "docs/04-execution/records/pipeline/full-rebuild-and-daily-incremental-release-closeout-card.evidence-index.md"
-doc_status = "frozen six-doc set / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / coverage gap diagnosis executed / MALF natural-year coverage repair passed / year replay rerun blocked / alpha-signal coverage repair passed / downstream coverage gap evidence closeout passed / position 2024 coverage repair passed / portfolio_plan 2024 coverage repair passed / trade 2024 coverage repair passed / system_readout 2024 coverage repair handoff passed / pipeline year replay source-selection repair passed / year replay disposition decision passed / stage 11 day dirty scope protocol passed / data daily incremental sample hardened / MALF daily incremental sample hardened / alpha signal daily incremental sample hardened / downstream daily impact schema frozen / downstream daily incremental sample hardened / pipeline full daily incremental chain proof passed / full rebuild daily incremental release closeout blocked"
-formal_db_permission = "released_full_chain_bounded_proof_ledger_only; one_year_strategy_behavior_replay_blocked_incomplete_natural_year_coverage; coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_passed; year_replay_rerun_blocked; alpha_signal_2024_coverage_repair_passed; coverage_gap_evidence_incomplete_closeout_passed; position_2024_coverage_repair_passed; portfolio_plan_2024_coverage_repair_passed; trade_2024_coverage_repair_passed; system_readout_2024_coverage_repair_passed; year_replay_source_selection_repair_passed; year_replay_disposition_decision_passed_truthful_closeout; stage11_day_protocol_frozen; data_daily_incremental_sample_hardened; malf_daily_incremental_sample_hardened_without_formal_db_mutation; alpha_signal_daily_incremental_sample_hardened_without_formal_db_mutation; downstream_daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened_without_formal_db_mutation; no_formal_H:/Asteria-data_mutation_under_this_card; pipeline_full_daily_incremental_chain_passed_without_formal_db_mutation; full_rebuild_proof_missing; daily_incremental_release_closeout_blocked; final_release_evidence_retained_gap"
+release_conclusion = "docs/04-execution/records/pipeline/formal-full-rebuild-and-daily-incremental-release-proof-card.conclusion.md"
+evidence_index = "docs/04-execution/records/pipeline/formal-full-rebuild-and-daily-incremental-release-proof-card.evidence-index.md"
+doc_status = "frozen six-doc set / freeze review passed / single-module orchestration build passed / full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy behavior replay blocked / coverage gap diagnosis executed / MALF natural-year coverage repair passed / year replay rerun blocked / alpha-signal coverage repair passed / downstream coverage gap evidence closeout passed / position 2024 coverage repair passed / portfolio_plan 2024 coverage repair passed / trade 2024 coverage repair passed / system_readout 2024 coverage repair handoff passed / pipeline year replay source-selection repair passed / year replay disposition decision passed / stage 11 day dirty scope protocol passed / data daily incremental sample hardened / MALF daily incremental sample hardened / alpha signal daily incremental sample hardened / downstream daily impact schema frozen / downstream daily incremental sample hardened / pipeline full daily incremental chain proof passed / full rebuild daily incremental release closeout blocked / formal release proof blocked"
+formal_db_permission = "released_full_chain_bounded_proof_ledger_only; one_year_strategy_behavior_replay_blocked_incomplete_natural_year_coverage; coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_passed; year_replay_rerun_blocked; alpha_signal_2024_coverage_repair_passed; coverage_gap_evidence_incomplete_closeout_passed; position_2024_coverage_repair_passed; portfolio_plan_2024_coverage_repair_passed; trade_2024_coverage_repair_passed; system_readout_2024_coverage_repair_passed; year_replay_source_selection_repair_passed; year_replay_disposition_decision_passed_truthful_closeout; stage11_day_protocol_frozen; data_daily_incremental_sample_hardened; malf_daily_incremental_sample_hardened_without_formal_db_mutation; alpha_signal_daily_incremental_sample_hardened_without_formal_db_mutation; downstream_daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened_without_formal_db_mutation; no_formal_H:/Asteria-data_mutation_under_this_card; pipeline_full_daily_incremental_chain_passed_without_formal_db_mutation; full_rebuild_proof_missing; daily_incremental_release_closeout_blocked; final_release_evidence_retained_gap; formal_release_proof_runner_surface_missing; formal_full_rebuild_and_daily_incremental_release_requires_guarded_promote"
 input_boundary = "orchestration_metadata_only; released_full_chain_day_bounded_surfaces; stage11_day_protocol_definition_only; downstream_day_sample_runtime_temp_only; full_daily_incremental_chain_orchestration_temp_only"
-proof_status = "single_module_orchestration_build_passed; full_chain_dry_run_passed; full_chain_day_bounded_proof_passed; one_year_strategy_behavior_replay_blocked; coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_passed; year_replay_rerun_blocked; alpha_signal_2024_coverage_repair_passed; coverage_gap_evidence_incomplete_closeout_passed; position_2024_coverage_repair_passed; portfolio_plan_2024_coverage_repair_passed; trade_2024_coverage_repair_passed; system_readout_2024_coverage_repair_handoff_passed; year_replay_source_selection_repair_passed; year_replay_disposition_decision_passed; stage11_day_dirty_scope_protocol_passed; data_daily_incremental_sample_hardened; malf_daily_incremental_sample_hardened; alpha_signal_daily_incremental_sample_hardened; downstream_daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened; pipeline_full_daily_incremental_chain_passed; full_rebuild_daily_incremental_release_closeout_blocked; formal_release_evidence_incomplete"
-proof_run_id = "full-rebuild-and-daily-incremental-release-closeout-card"
-next_allowed_action = "full_rebuild_and_daily_incremental_release_closeout_card"
+proof_status = "single_module_orchestration_build_passed; full_chain_dry_run_passed; full_chain_day_bounded_proof_passed; one_year_strategy_behavior_replay_blocked; coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_passed; year_replay_rerun_blocked; alpha_signal_2024_coverage_repair_passed; coverage_gap_evidence_incomplete_closeout_passed; position_2024_coverage_repair_passed; portfolio_plan_2024_coverage_repair_passed; trade_2024_coverage_repair_passed; system_readout_2024_coverage_repair_handoff_passed; year_replay_source_selection_repair_passed; year_replay_disposition_decision_passed; stage11_day_dirty_scope_protocol_passed; data_daily_incremental_sample_hardened; malf_daily_incremental_sample_hardened; alpha_signal_daily_incremental_sample_hardened; downstream_daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened; pipeline_full_daily_incremental_chain_passed; full_rebuild_daily_incremental_release_closeout_blocked; formal_release_evidence_incomplete; formal_release_proof_blocked; runner_surface_missing"
+proof_run_id = "formal-full-rebuild-and-daily-incremental-release-proof-card"
+next_allowed_action = "formal_full_rebuild_and_daily_incremental_release_proof_card"

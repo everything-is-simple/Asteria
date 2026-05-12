@@ -96,6 +96,7 @@ System Readout
 
 ```text
 Full rebuild and daily incremental release closeout blocked / formal release evidence incomplete
+Formal full rebuild and daily incremental release proof blocked / runner surface missing
 ```
 
 当前最新语义升级资产：
@@ -113,24 +114,25 @@ rules；当前 runtime passed evidence 已升级为 MALF v1.4 day runtime sync i
 
 ```text
 full-rebuild-and-daily-incremental-release-closeout-card = blocked / formal release evidence incomplete
+formal-full-rebuild-and-daily-incremental-release-proof-card = blocked / runner surface missing
 ```
 
 对应 symbolic allowed next action：
 
 ```text
-full_rebuild_and_daily_incremental_release_closeout_card
+formal_full_rebuild_and_daily_incremental_release_proof_card
 ```
 
 当前 release 结论锚点：
 
 ```text
-full-rebuild-and-daily-incremental-release-closeout-card
+formal-full-rebuild-and-daily-incremental-release-proof-card
 ```
 
 对应下一步 allowed next action：
 
 ```text
-full_rebuild_and_daily_incremental_release_closeout_card
+formal_full_rebuild_and_daily_incremental_release_proof_card
 ```
 
 历史已放行动作锚点：

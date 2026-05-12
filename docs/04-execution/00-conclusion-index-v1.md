@@ -132,6 +132,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Pipeline | `system-wide-daily-dirty-scope-protocol-card` | `passed / protocol frozen` | [conclusion](records/pipeline/system-wide-daily-dirty-scope-protocol-card.conclusion.md) | [evidence-index](records/pipeline/system-wide-daily-dirty-scope-protocol-card.evidence-index.md) |
 | Pipeline | `pipeline-full-daily-incremental-chain-build-card` | `passed / pipeline full daily incremental chain proof passed` | [conclusion](records/pipeline/pipeline-full-daily-incremental-chain-build-card.conclusion.md) | [evidence-index](records/pipeline/pipeline-full-daily-incremental-chain-build-card.evidence-index.md) |
 | Pipeline | `full-rebuild-and-daily-incremental-release-closeout-card` | `blocked / formal release evidence incomplete` | [conclusion](records/pipeline/full-rebuild-and-daily-incremental-release-closeout-card.conclusion.md) | [evidence-index](records/pipeline/full-rebuild-and-daily-incremental-release-closeout-card.evidence-index.md) |
+| Pipeline | `formal-full-rebuild-and-daily-incremental-release-proof-card` | `blocked / runner surface missing` | [conclusion](records/pipeline/formal-full-rebuild-and-daily-incremental-release-proof-card.conclusion.md) | [evidence-index](records/pipeline/formal-full-rebuild-and-daily-incremental-release-proof-card.evidence-index.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
@@ -237,7 +238,9 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   的 day-only daily incremental 样板；随后
   `full-rebuild-and-daily-incremental-release-closeout-card` 已执行 truthful closeout，
   但因 formal full rebuild proof、daily incremental release proof 与 final release evidence
-  尚未形成而 blocked。
+  尚未形成而 blocked。随后 `formal-full-rebuild-and-daily-incremental-release-proof-card`
+  已落地 guarded proof runner 与治理入口，但当前仍 blocked：release-grade full rebuild / daily incremental
+  runner surface missing。
   后半场 repair phase roadmap 已收敛回 `docs/03-refactor/04-asteria-full-system-roadmap-v1.md` 单点维护；旧第二张
   repair roadmap 已删除，不再承载独立状态机。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
@@ -247,7 +250,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 以下登记当前仍然有效的 live next card：
 
 ```text
-full-rebuild-and-daily-incremental-release-closeout-card (blocked / formal release evidence incomplete)
+formal-full-rebuild-and-daily-incremental-release-proof-card (blocked / runner surface missing)
 ```
 
 ## 3.1 Newly Passed Pre-Position Repair Card

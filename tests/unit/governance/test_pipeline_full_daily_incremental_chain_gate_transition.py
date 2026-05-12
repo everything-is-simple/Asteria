@@ -3,6 +3,8 @@ from shutil import copy2, copytree
 
 from scripts.governance.check_project_governance import run_checks
 from tests.unit.pipeline.constants import (
+    FORMAL_RELEASE_PROOF_ACTION,
+    FORMAL_RELEASE_PROOF_RUN_ID,
     PIPELINE_FULL_DAILY_INCREMENTAL_CHAIN_ACTION,
     PIPELINE_FULL_DAILY_INCREMENTAL_CHAIN_RUN_ID,
 )
@@ -83,27 +85,30 @@ def test_pipeline_full_daily_incremental_chain_closure_feeds_blocked_release_clo
     next_closeout_card = (
         repo_root / "docs/04-execution/records/pipeline" / f"{NEXT_RELEASE_CLOSEOUT_RUN_ID}.card.md"
     ).read_text(encoding="utf-8")
+    formal_proof_card = (
+        repo_root / "docs/04-execution/records/pipeline" / f"{FORMAL_RELEASE_PROOF_RUN_ID}.card.md"
+    ).read_text(encoding="utf-8")
 
-    assert registry["current_allowed_next_card"] == NEXT_RELEASE_CLOSEOUT_ACTION
-    assert modules["trade"]["next_allowed_action"] == NEXT_RELEASE_CLOSEOUT_ACTION
-    assert modules["system_readout"]["next_card"] == NEXT_RELEASE_CLOSEOUT_ACTION
-    assert modules["system_readout"]["next_allowed_action"] == NEXT_RELEASE_CLOSEOUT_ACTION
-    assert modules["pipeline"]["next_card"] == NEXT_RELEASE_CLOSEOUT_ACTION
-    assert modules["pipeline"]["next_allowed_action"] == NEXT_RELEASE_CLOSEOUT_ACTION
-    assert modules["pipeline"]["proof_run_id"] == NEXT_RELEASE_CLOSEOUT_RUN_ID
+    assert registry["current_allowed_next_card"] == FORMAL_RELEASE_PROOF_ACTION
+    assert modules["trade"]["next_allowed_action"] == FORMAL_RELEASE_PROOF_ACTION
+    assert modules["system_readout"]["next_card"] == FORMAL_RELEASE_PROOF_ACTION
+    assert modules["system_readout"]["next_allowed_action"] == FORMAL_RELEASE_PROOF_ACTION
+    assert modules["pipeline"]["next_card"] == FORMAL_RELEASE_PROOF_ACTION
+    assert modules["pipeline"]["next_allowed_action"] == FORMAL_RELEASE_PROOF_ACTION
+    assert modules["pipeline"]["proof_run_id"] == FORMAL_RELEASE_PROOF_RUN_ID
     assert (
         modules["pipeline"]["active_card"] == "docs/04-execution/records/pipeline/"
-        f"{NEXT_RELEASE_CLOSEOUT_RUN_ID}.card.md"
+        f"{FORMAL_RELEASE_PROOF_RUN_ID}.card.md"
     )
     assert pipeline_contract["release_conclusion"] == (
-        f"docs/04-execution/records/pipeline/{NEXT_RELEASE_CLOSEOUT_RUN_ID}.conclusion.md"
+        f"docs/04-execution/records/pipeline/{FORMAL_RELEASE_PROOF_RUN_ID}.conclusion.md"
     )
     assert pipeline_contract["evidence_index"] == (
-        f"docs/04-execution/records/pipeline/{NEXT_RELEASE_CLOSEOUT_RUN_ID}.evidence-index.md"
+        f"docs/04-execution/records/pipeline/{FORMAL_RELEASE_PROOF_RUN_ID}.evidence-index.md"
     )
-    assert pipeline_contract["next_allowed_action"] == NEXT_RELEASE_CLOSEOUT_ACTION
-    assert system_contract["next_allowed_action"] == NEXT_RELEASE_CLOSEOUT_ACTION
-    assert trade_contract["next_allowed_action"] == NEXT_RELEASE_CLOSEOUT_ACTION
+    assert pipeline_contract["next_allowed_action"] == FORMAL_RELEASE_PROOF_ACTION
+    assert system_contract["next_allowed_action"] == FORMAL_RELEASE_PROOF_ACTION
+    assert trade_contract["next_allowed_action"] == FORMAL_RELEASE_PROOF_ACTION
     assert "pipeline_full_daily_incremental_chain_passed" in modules["pipeline"]["proof_status"]
     assert (
         "full_rebuild_daily_incremental_release_closeout_blocked"
@@ -119,12 +124,14 @@ def test_pipeline_full_daily_incremental_chain_closure_feeds_blocked_release_clo
         "`passed / pipeline full daily incremental chain proof passed` |" in conclusion_index
     )
     assert NEXT_RELEASE_CLOSEOUT_RUN_ID in conclusion_index
+    assert FORMAL_RELEASE_PROOF_RUN_ID in conclusion_index
     assert "状态：`passed / pipeline full daily incremental chain proof passed`" in full_chain_card
     assert "pipeline full daily incremental chain proof passed" in full_chain_record
     assert "no formal H:/Asteria-data mutation" in full_chain_conclusion
     assert "daily incremental release closeout not executed" in full_chain_conclusion
     assert "formal full rebuild not executed" in full_chain_evidence
     assert "状态：`blocked / formal release evidence incomplete`" in next_closeout_card
+    assert "状态：`blocked / runner surface missing`" in formal_proof_card
 
 
 def test_project_governance_rejects_closed_full_daily_chain_as_live_next_card(
@@ -148,11 +155,11 @@ def test_project_governance_rejects_closed_full_daily_chain_as_live_next_card(
     )
     registry_path.write_text(
         registry_text.replace(
-            f'current_allowed_next_card = "{NEXT_RELEASE_CLOSEOUT_ACTION}"',
+            f'current_allowed_next_card = "{FORMAL_RELEASE_PROOF_ACTION}"',
             f'current_allowed_next_card = "{PIPELINE_FULL_DAILY_INCREMENTAL_CHAIN_ACTION}"',
             1,
         ).replace(
-            f'next_allowed_action = "{NEXT_RELEASE_CLOSEOUT_ACTION}"',
+            f'next_allowed_action = "{FORMAL_RELEASE_PROOF_ACTION}"',
             f'next_allowed_action = "{PIPELINE_FULL_DAILY_INCREMENTAL_CHAIN_ACTION}"',
             3,
         ),
@@ -161,7 +168,7 @@ def test_project_governance_rejects_closed_full_daily_chain_as_live_next_card(
     for path in (system_contract_path, pipeline_contract_path, trade_contract_path):
         path.write_text(
             path.read_text(encoding="utf-8").replace(
-                f'next_allowed_action = "{NEXT_RELEASE_CLOSEOUT_ACTION}"',
+                f'next_allowed_action = "{FORMAL_RELEASE_PROOF_ACTION}"',
                 f'next_allowed_action = "{PIPELINE_FULL_DAILY_INCREMENTAL_CHAIN_ACTION}"',
                 1,
             ),

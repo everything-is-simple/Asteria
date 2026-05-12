@@ -13,7 +13,7 @@
 | item | value |
 |---|---|
 | prepared by | `pipeline-full-daily-incremental-chain-build-card` |
-| live allowed next action | `full_rebuild_and_daily_incremental_release_closeout_card` |
+| live allowed next action | `formal_full_rebuild_and_daily_incremental_release_proof_card` |
 | current stage | `Stage 11 step 8` |
 
 ## 3. 允许动作

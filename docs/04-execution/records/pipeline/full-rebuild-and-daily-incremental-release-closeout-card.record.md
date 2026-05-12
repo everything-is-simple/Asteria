@@ -9,7 +9,7 @@
 | module | `pipeline` |
 | run_id | `full-rebuild-and-daily-incremental-release-closeout-card` |
 | result | `blocked / formal release evidence incomplete` |
-| next allowed action | `full_rebuild_and_daily_incremental_release_closeout_card` |
+| next allowed action | `formal_full_rebuild_and_daily_incremental_release_proof_card` |
 
 ## 2. 执行顺序
 
@@ -17,6 +17,7 @@
 2. 新增 `scripts/pipeline/run_full_rebuild_daily_incremental_release_closeout.py`，默认 `audit-only`，输出到 `H:\Asteria-temp`、`H:\Asteria-report` 与 `H:\Asteria-Validated`。
 3. 执行 closeout CLI，生成 summary、closeout、release-readiness manifest 与 validated manifest。
 4. 将 repo authority 同步为 blocked：前序 Pipeline chain proof passed，但 formal full rebuild proof 与 daily incremental release proof 均未执行。
+5. blocked closeout 后续被切到 `formal_full_rebuild_and_daily_incremental_release_proof_card`，只允许补 formal release 证据，不允许直接宣称 `v1 complete`。
 
 ## 3. 边界
 
