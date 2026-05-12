@@ -88,10 +88,10 @@ def test_stage11_protocol_passes_and_moves_live_next_card_to_data_daily_hardenin
     ).replace('"', "")
     assert pipeline_contract["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert pipeline_contract["release_conclusion"] == (
-        "docs/04-execution/records/pipeline/downstream-daily-impact-ledger-schema-card.conclusion.md"
+        "docs/04-execution/records/pipeline/downstream-daily-incremental-runner-build-card.conclusion.md"
     )
     assert pipeline_contract["evidence_index"] == (
-        "docs/04-execution/records/pipeline/downstream-daily-impact-ledger-schema-card.evidence-index.md"
+        "docs/04-execution/records/pipeline/downstream-daily-incremental-runner-build-card.evidence-index.md"
     )
     assert pipeline_contract["daily_protocol_timeframe"] == "day"
     assert pipeline_contract["daily_protocol_lineage_fields"] == [

@@ -25,7 +25,9 @@ from tests.unit.pipeline.constants import (
 
 POSITION_CURRENT_DOC_STATUS = (
     'doc_status = "freeze review passed / release decision passed / bounded proof passed / '
-    '2024 coverage repair prepared / full build not executed"'
+    "2024 coverage repair passed / downstream breakpoint moved to portfolio_plan / "
+    "daily impact schema frozen / downstream daily incremental sample hardened / "
+    'full build not executed"'
 )
 POSITION_BASELINE_DOC_STATUS = (
     'doc_status = "freeze review passed / release decision passed / bounded proof passed / '
@@ -41,7 +43,9 @@ POSITION_BASELINE_ACTIVE_CARD = (
 )
 POSITION_CURRENT_PAUSE = (
     'position_construction_pause = "bounded_proof_passed; '
-    '2024_coverage_repair_prepared; full_build_requires_new_card"'
+    "2024_coverage_repair_passed; downstream_breakpoint_moved_to_portfolio_plan; "
+    "daily_impact_schema_frozen; downstream_daily_runtime_requires_runner_card; "
+    'full_build_requires_new_card"'
 )
 POSITION_BASELINE_PAUSE = (
     'position_construction_pause = "bounded_proof_passed; full_build_requires_new_card"'
@@ -51,7 +55,11 @@ POSITION_CURRENT_QUEUE = (
     "data_reference_target_maintenance_closeout -> malf_week_bounded_proof_build -> "
     "malf_month_bounded_proof_build -> alpha_production_builder_hardening -> "
     "signal_production_builder_hardening -> upstream_pre_position_release_decision; "
-    'closed=position_bounded_proof_build_card; current=position_2024_coverage_repair_card"'
+    "closed=position_bounded_proof_build_card; latest_execution="
+    "position_2024_coverage_repair_card_passed; handoff_completed="
+    "trade_2024_coverage_repair_card; stage11_schema_frozen="
+    "downstream_daily_impact_ledger_schema_card; current="
+    'downstream_daily_incremental_runner_build_card"'
 )
 POSITION_BASELINE_QUEUE = (
     'pre_position_repair_queue = "data_reference_target_maintenance_scope -> '
@@ -61,7 +69,9 @@ POSITION_BASELINE_QUEUE = (
     'closed=position_bounded_proof_build_card; current=portfolio_plan_freeze_review"'
 )
 POSITION_CURRENT_PROOF_STATUS = (
-    'proof_status = "bounded_proof_passed; 2024_coverage_repair_prepared; full_build_not_executed"'
+    'proof_status = "bounded_proof_passed; 2024_coverage_repair_passed; '
+    "downstream_breakpoint_moved_to_portfolio_plan; daily_impact_schema_frozen; "
+    'downstream_daily_incremental_sample_hardened; full_build_not_executed"'
 )
 POSITION_BASELINE_PROOF_STATUS = 'proof_status = "bounded_proof_passed; full_build_not_executed"'
 

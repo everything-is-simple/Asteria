@@ -2,6 +2,14 @@ from pathlib import Path
 from shutil import copy2, copytree
 
 from scripts.governance.check_project_governance import run_checks
+from tests.unit.pipeline.support import (
+    CURRENT_ACTIVE_MAINLINE_MODULE,
+    CURRENT_ALLOWED_NEXT_CARD_ACTION,
+    CURRENT_PIPELINE_ACTIVE_CARD,
+    PIPELINE_CURRENT_DOC_STATUS,
+    PIPELINE_CURRENT_FORMAL_DB_PERMISSION,
+    PIPELINE_CURRENT_PROOF_RUN_ID,
+)
 from tests.unit.pipeline.support_state import rewrite_registry_module_fields
 
 try:
@@ -14,40 +22,6 @@ DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION = "downstream_daily_impact_ledger_s
 DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_RUN_ID = "downstream-daily-impact-ledger-schema-card"
 DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_ACTION = "downstream_daily_incremental_runner_build_card"
 DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_RUN_ID = "downstream-daily-incremental-runner-build-card"
-CURRENT_ACTIVE_MAINLINE_MODULE = "system_readout"
-PIPELINE_CURRENT_PROOF_RUN_ID = DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_RUN_ID
-PIPELINE_CURRENT_DOC_STATUS = (
-    "frozen six-doc set / freeze review passed / single-module orchestration build passed / "
-    "full-chain dry-run passed / full-chain day bounded proof passed / one-year strategy "
-    "behavior replay blocked / coverage gap diagnosis executed / MALF natural-year coverage "
-    "repair passed / year replay rerun blocked / alpha-signal coverage repair passed / "
-    "downstream coverage gap evidence closeout passed / position 2024 coverage repair "
-    "passed / portfolio_plan 2024 coverage repair passed / trade 2024 coverage repair "
-    "passed / system_readout 2024 coverage repair handoff passed / pipeline year replay "
-    "source-selection repair passed / year replay disposition decision passed / stage 11 "
-    "day dirty scope protocol passed / data daily incremental sample hardened / "
-    "MALF daily incremental sample hardened / alpha signal daily incremental sample "
-    "hardened / downstream daily impact schema frozen / live next card moved to "
-    "downstream daily incremental runner"
-)
-PIPELINE_CURRENT_FORMAL_DB_PERMISSION = (
-    "released_full_chain_bounded_proof_ledger_only; "
-    "one_year_strategy_behavior_replay_blocked_incomplete_natural_year_coverage; "
-    "coverage_gap_diagnosis_executed; malf_2024_natural_year_coverage_repair_passed; "
-    "year_replay_rerun_blocked; alpha_signal_2024_coverage_repair_passed; "
-    "coverage_gap_evidence_incomplete_closeout_passed; "
-    "position_2024_coverage_repair_passed; portfolio_plan_2024_coverage_repair_passed; "
-    "trade_2024_coverage_repair_passed; system_readout_2024_coverage_repair_passed; "
-    "year_replay_source_selection_repair_passed; "
-    "year_replay_disposition_decision_passed_truthful_closeout; "
-    "stage11_day_protocol_frozen; data_daily_incremental_sample_hardened; "
-    "malf_daily_incremental_sample_hardened_without_formal_db_mutation; "
-    "alpha_signal_daily_incremental_sample_hardened_without_formal_db_mutation; "
-    "downstream_daily_impact_schema_frozen; "
-    "downstream_daily_runtime_requires_runner_card; "
-    "no_formal_H:/Asteria-data_mutation_under_this_card; "
-    "full_rebuild_requires_new_card"
-)
 POSITION_IMPACT_DATE_FIELDS = [
     "candidate_dt",
     "entry_reference_dt",
@@ -111,7 +85,7 @@ def _topology_entry(topology: dict, db_name: str) -> dict:
     return next(entry for entry in topology["databases"] if entry["db_name"] == db_name)
 
 
-def test_downstream_daily_impact_schema_moves_live_next_to_runner() -> None:
+def test_downstream_daily_impact_schema_keeps_schema_truth_after_runner_closure() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry = _load_toml(repo_root / "governance" / "module_gate_registry.toml")
     pipeline_contract = _load_toml(
@@ -130,33 +104,33 @@ def test_downstream_daily_impact_schema_moves_live_next_to_runner() -> None:
         / "docs/04-execution/records/pipeline/"
         / f"{DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_RUN_ID}.conclusion.md"
     ).read_text(encoding="utf-8")
-    prepared_runner_card = (
+    runner_card = (
         repo_root
         / "docs/04-execution/records/pipeline/"
         / f"{DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_RUN_ID}.card.md"
     ).read_text(encoding="utf-8")
 
     assert registry["active_mainline_module"] == CURRENT_ACTIVE_MAINLINE_MODULE
-    assert registry["current_allowed_next_card"] == DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_ACTION
-    assert modules["system_readout"]["next_card"] == DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_ACTION
-    assert (
-        modules["system_readout"]["next_allowed_action"]
-        == DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_ACTION
-    )
+    assert registry["current_allowed_next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
+    assert modules["system_readout"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
+    assert modules["system_readout"]["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["pipeline"]["doc_status"] == PIPELINE_CURRENT_DOC_STATUS
     assert modules["pipeline"]["formal_db_permission"] == PIPELINE_CURRENT_FORMAL_DB_PERMISSION
-    assert modules["pipeline"]["next_card"] == DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_ACTION
+    assert modules["pipeline"]["next_card"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert modules["pipeline"]["proof_run_id"] == PIPELINE_CURRENT_PROOF_RUN_ID
-    assert pipeline_contract["next_allowed_action"] == DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_ACTION
+    assert modules["pipeline"]["active_card"] == CURRENT_PIPELINE_ACTIVE_CARD.replace(
+        'active_card = "', ""
+    ).rstrip('"')
+    assert pipeline_contract["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert pipeline_contract["release_conclusion"] == (
         "docs/04-execution/records/pipeline/"
-        "downstream-daily-impact-ledger-schema-card.conclusion.md"
+        "downstream-daily-incremental-runner-build-card.conclusion.md"
     )
     assert pipeline_contract["evidence_index"] == (
         "docs/04-execution/records/pipeline/"
-        "downstream-daily-impact-ledger-schema-card.evidence-index.md"
+        "downstream-daily-incremental-runner-build-card.evidence-index.md"
     )
-    assert system_contract["next_allowed_action"] == DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_ACTION
+    assert system_contract["next_allowed_action"] == CURRENT_ALLOWED_NEXT_CARD_ACTION
     assert (
         f"| Pipeline | `{DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_RUN_ID}` | "
         "`passed / downstream daily impact schema frozen` |" in conclusion_index
@@ -170,7 +144,7 @@ def test_downstream_daily_impact_schema_moves_live_next_to_runner() -> None:
         f"| prepared next card | `{DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_RUN_ID}` |"
         in schema_conclusion
     )
-    assert "状态：`prepared / not executed`" in prepared_runner_card
+    assert "状态：`passed / downstream daily incremental sample hardened`" in runner_card
 
 
 def test_downstream_daily_impact_schema_freezes_contracts_and_topology() -> None:
@@ -217,14 +191,19 @@ def test_downstream_daily_impact_schema_freezes_contracts_and_topology() -> None
     assert system_contract["daily_protocol_replay_scope_fields"] == EXPECTED_REPLAY_SCOPE_FIELDS
     assert system_contract["daily_protocol_impact_date_fields"] == SYSTEM_IMPACT_DATE_FIELDS
 
-    assert pipeline_contract["next_allowed_action"] == DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_ACTION
-    assert "daily_impact_schema_frozen" in pipeline_contract["gate_state"]
+    assert "daily_incremental" in position_contract["run_modes"]
+    assert "daily_incremental" in portfolio_contract["run_modes"]
+    assert "daily_incremental" in trade_contract["run_modes"]
+    assert "daily_incremental" in system_contract["run_modes"]
+    assert "daily_incremental" in pipeline_contract["run_modes"]
+    assert "downstream_daily_impact_schema_frozen" in pipeline_contract["gate_state"]
     assert (
-        "downstream_daily_runtime_requires_runner_card" in pipeline_contract["formal_db_permission"]
+        "downstream_daily_incremental_sample_hardened_without_formal_db_mutation"
+        in pipeline_contract["formal_db_permission"]
     )
     assert (
         "no_formal_H:/Asteria-data_mutation_under_this_card"
-        in (pipeline_contract["formal_db_permission"])
+        in pipeline_contract["formal_db_permission"]
     )
 
     for db_name in (
@@ -259,7 +238,7 @@ def test_project_governance_rejects_closed_downstream_schema_card_as_live_next_c
     )
     registry_path.write_text(
         registry_text.replace(
-            f'current_allowed_next_card = "{DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_ACTION}"',
+            f'current_allowed_next_card = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"',
             f'current_allowed_next_card = "{DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION}"',
             1,
         ),
@@ -268,7 +247,7 @@ def test_project_governance_rejects_closed_downstream_schema_card_as_live_next_c
     for path in (pipeline_contract_path, system_contract_path):
         path.write_text(
             path.read_text(encoding="utf-8").replace(
-                f'next_allowed_action = "{DOWNSTREAM_DAILY_INCREMENTAL_RUNNER_ACTION}"',
+                f'next_allowed_action = "{CURRENT_ALLOWED_NEXT_CARD_ACTION}"',
                 f'next_allowed_action = "{DOWNSTREAM_DAILY_IMPACT_LEDGER_SCHEMA_ACTION}"',
                 1,
             ),

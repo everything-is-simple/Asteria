@@ -6,10 +6,10 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-docs-code-20260428-214427.zip",
     "H:/Asteria-Validated/Asteria-position-bounded-proof-build-card-20260506-01.zip",
 ]
-gate_state = "freeze_review_passed; bounded_proof_passed; daily_impact_schema_frozen; full_build_not_executed"
-formal_db_permission = "released_day_bounded_position_candidate_entry_exit_only; daily_impact_schema_frozen; downstream_daily_runtime_requires_runner_card; no_formal_H:/Asteria-data_mutation_under_this_card; full_build_requires_new_card"
+gate_state = "freeze_review_passed; bounded_proof_passed; daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened; full_build_not_executed"
+formal_db_permission = "released_day_bounded_position_candidate_entry_exit_only; daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened_without_formal_db_mutation; no_formal_H:/Asteria-data_mutation_under_this_card; full_build_requires_new_card"
 writeback_boundary = "consume released Signal only; never write back upstream"
-run_modes = ["bounded", "segmented", "full", "resume", "audit-only"]
+run_modes = ["bounded", "segmented", "full", "daily_incremental", "resume", "audit-only"]
 resume_behavior = "resume from position checkpoint after Signal release"
 source_manifest_fields = ["source_signal_release_version", "source_signal_run_id"]
 daily_protocol_role = "writer"

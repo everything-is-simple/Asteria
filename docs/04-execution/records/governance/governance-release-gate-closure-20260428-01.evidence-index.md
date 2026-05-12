@@ -22,7 +22,7 @@
 | source_manifest | `not applicable; authority sources are declared in this index and card` |
 | validated_zip | `H:\Asteria-Validated\2.backups\Asteria-governance-release-gate-closure-20260428-01.zip` |
 | docs/code snapshot | `H:\Asteria-Validated\2.backups\Asteria-docs-code-20260428-214427.zip` |
-| deep research report | `H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md` |
+| deep research report | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_0\Asteria-deep-research-report-重构系统最新剖切面研究报告-20260428.md` |
 | MALF authority directory | `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_2` |
 | formal_db | `not applicable; no formal DB created` |
 

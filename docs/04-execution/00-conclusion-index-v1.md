@@ -226,8 +226,9 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
   把 MALF sample lineage 继续推进到 Alpha 五族与 Signal；之后
   `downstream-daily-impact-ledger-schema-card` 也已闭环为 passed，
   将 Position / Portfolio Plan / Trade / System Readout 的 Stage 11 impact map 与
-  replay/checkpoint 口径冻结完成；当前唯一 live next card 已继续前进到
-  `downstream-daily-incremental-runner-build-card`。
+  replay/checkpoint 口径冻结完成；随后
+  `downstream-daily-incremental-runner-build-card` 也已完成下游 day-only sample runner proof，
+  当前唯一 live next card 已继续前进到 `pipeline-full-daily-incremental-chain-build-card`。
   后半场 repair phase roadmap 已收敛回 `docs/03-refactor/04-asteria-full-system-roadmap-v1.md` 单点维护；旧第二张
   repair roadmap 已删除，不再承载独立状态机。
 - 后续 Portfolio Plan freeze review 等执行卡，都必须先登记到本索引，再视为正式结论落档。
@@ -237,7 +238,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 以下登记当前仍然有效的 live next card：
 
 ```text
-downstream-daily-incremental-runner-build-card
+pipeline-full-daily-incremental-chain-build-card
 ```
 
 ## 3.1 Newly Passed Pre-Position Repair Card
@@ -254,3 +255,4 @@ downstream-daily-incremental-runner-build-card
 | Portfolio Plan | `portfolio-plan-bounded-proof-build-card-20260507-01` | `passed` | [conclusion](records/portfolio_plan/portfolio-plan-bounded-proof-build-card-20260507-01.conclusion.md) |
 | Trade | `trade-freeze-review-20260507-01` | `passed` | [conclusion](records/trade/trade-freeze-review-20260507-01.conclusion.md) |
 | Trade | `trade-bounded-proof-build-card-20260507-01` | `passed` | [conclusion](records/trade/trade-bounded-proof-build-card-20260507-01.conclusion.md) |
+| Pipeline | `downstream-daily-incremental-runner-build-card` | `passed / downstream daily incremental sample hardened` | [conclusion](records/pipeline/downstream-daily-incremental-runner-build-card.conclusion.md) |

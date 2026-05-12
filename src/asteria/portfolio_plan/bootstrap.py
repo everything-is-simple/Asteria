@@ -97,13 +97,14 @@ def run_portfolio_plan_build(
             """,
             portfolio_rows.exposures,
         )
-        con.executemany(
-            """
-            insert into portfolio_trim_ledger
-            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            portfolio_rows.trims,
-        )
+        if portfolio_rows.trims:
+            con.executemany(
+                """
+                insert into portfolio_trim_ledger
+                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                portfolio_rows.trims,
+            )
         con.execute(
             """
             insert into portfolio_plan_run
@@ -257,8 +258,12 @@ def _load_position_inputs(request: PortfolioPlanBuildRequest) -> list[PositionPl
     if request.end_date:
         clauses.append("c.candidate_dt <= ?")
         params.append(request.end_date)
+    if request.symbols:
+        placeholders = ", ".join("?" for _ in request.symbols)
+        clauses.append(f"c.symbol in ({placeholders})")
+        params.extend(request.symbols)
     symbol_limit = ""
-    if request.symbol_limit is not None:
+    if request.symbol_limit is not None and not request.symbols:
         source_run_clause = ""
         source_run_params: list[object] = []
         if request.source_position_run_id:

@@ -195,8 +195,12 @@ def _load_signals(request: PositionBuildRequest) -> list[SignalInput]:
     if request.end_date:
         clauses.append("signal_dt <= ?")
         params.append(request.end_date)
+    if request.symbols:
+        placeholders = ", ".join("?" for _ in request.symbols)
+        clauses.append(f"symbol in ({placeholders})")
+        params.extend(request.symbols)
     symbol_limit = ""
-    if request.symbol_limit is not None:
+    if request.symbol_limit is not None and not request.symbols:
         source_run_clause = ""
         source_run_params: list[object] = []
         if request.source_signal_run_id:

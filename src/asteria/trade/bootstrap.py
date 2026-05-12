@@ -250,8 +250,12 @@ def _load_portfolio_plan_inputs(request: TradeBuildRequest) -> list[PortfolioPla
     if request.end_dt:
         clauses.append("a.plan_dt <= ?")
         params.append(request.end_dt)
+    if request.symbols:
+        placeholders = ", ".join("?" for _ in request.symbols)
+        clauses.append(f"a.symbol in ({placeholders})")
+        params.extend(request.symbols)
     symbol_limit = ""
-    if request.symbol_limit is not None:
+    if request.symbol_limit is not None and not request.symbols:
         source_run_clause = ""
         source_run_params: list[object] = []
         if source_run_id:

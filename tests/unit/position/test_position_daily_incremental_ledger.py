@@ -1,0 +1,135 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import duckdb
+from tests.unit.position.test_position_bounded_proof_runner import _seed_signal_db
+
+from asteria.position.contracts import PositionDailyIncrementalLedgerRequest
+from asteria.position.daily_incremental_ledger import run_position_daily_incremental_ledger
+
+
+def _write_signal_artifacts(tmp_path: Path, *, source_run_id: str) -> tuple[Path, Path, Path]:
+    run_root = (
+        tmp_path / "asteria-temp" / "signal" / "alpha-signal-daily-incremental-ledger-build-card"
+    )
+    run_root.mkdir(parents=True, exist_ok=True)
+    impact_scope_path = run_root / "daily-impact-scope.json"
+    lineage_path = run_root / "lineage.json"
+    checkpoint_path = run_root / "checkpoint.json"
+    impact_scope_path.write_text(
+        json.dumps(
+            {
+                "scopes": [
+                    {
+                        "symbol": "600000.SH",
+                        "trade_date": "2024-01-02",
+                        "timeframe": "day",
+                        "upstream_module": "signal",
+                        "source_run_id": "alpha-sample-001",
+                    },
+                    {
+                        "symbol": "600001.SH",
+                        "trade_date": "2024-01-03",
+                        "timeframe": "day",
+                        "upstream_module": "signal",
+                        "source_run_id": "alpha-sample-001",
+                    },
+                ]
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    lineage_path.write_text(
+        json.dumps(
+            {
+                "lineage": [
+                    {
+                        "source_run_id": "alpha-sample-001",
+                        "target_run_id": source_run_id,
+                    }
+                ]
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    checkpoint_path.write_text(json.dumps({"status": "completed"}, indent=2), encoding="utf-8")
+    return impact_scope_path, lineage_path, checkpoint_path
+
+
+def _request(
+    tmp_path: Path, run_id: str, *, mode: str = "daily_incremental"
+) -> PositionDailyIncrementalLedgerRequest:
+    impact_scope_path, lineage_path, checkpoint_path = _write_signal_artifacts(
+        tmp_path, source_run_id="signal-production-builder-hardening-20260506-01"
+    )
+    return PositionDailyIncrementalLedgerRequest(
+        source_signal_db=tmp_path / "data" / "signal.duckdb",
+        target_position_db=tmp_path / "asteria-temp" / "position-target" / "position.duckdb",
+        temp_root=tmp_path / "asteria-temp",
+        report_root=tmp_path / "asteria-report",
+        run_id=run_id,
+        mode=mode,
+        signal_daily_impact_scope_path=impact_scope_path,
+        signal_lineage_path=lineage_path,
+        signal_checkpoint_path=checkpoint_path,
+    )
+
+
+def _count_rows(path: Path, run_id: str) -> int:
+    with duckdb.connect(str(path), read_only=True) as con:
+        return int(
+            con.execute(
+                "select count(*) from position_candidate_ledger where run_id like ?",
+                [f"{run_id}-%"],
+            ).fetchone()[0]
+        )
+
+
+def test_position_daily_incremental_ledger_writes_scope_lineage_checkpoint_and_temp_target(
+    tmp_path: Path,
+) -> None:
+    _seed_signal_db(tmp_path / "data" / "signal.duckdb")
+    request = _request(tmp_path, "position-daily-001")
+
+    summary = run_position_daily_incremental_ledger(request)
+
+    assert summary.status == "passed"
+    assert Path(summary.daily_impact_scope_path).exists()
+    assert Path(summary.lineage_path).exists()
+    assert Path(summary.checkpoint_path).exists()
+    assert Path(summary.audit_summary_path).exists()
+    assert str(tmp_path / "asteria-temp") in summary.daily_impact_scope_path
+    assert str(tmp_path / "asteria-report") in summary.audit_summary_path
+    assert _count_rows(request.target_position_db, request.run_id) > 0
+
+
+def test_position_daily_incremental_ledger_resume_reuses_checkpoint(tmp_path: Path) -> None:
+    _seed_signal_db(tmp_path / "data" / "signal.duckdb")
+    request = _request(tmp_path, "position-daily-resume-001")
+    run_position_daily_incremental_ledger(request)
+
+    resumed = run_position_daily_incremental_ledger(
+        _request(tmp_path, "position-daily-resume-001", mode="resume")
+    )
+
+    assert resumed.status == "passed"
+    assert resumed.resume_reused is True
+
+
+def test_position_daily_incremental_ledger_audit_only_does_not_write_target_db(
+    tmp_path: Path,
+) -> None:
+    _seed_signal_db(tmp_path / "data" / "signal.duckdb")
+    request = _request(tmp_path, "position-daily-audit-001", mode="audit-only")
+
+    summary = run_position_daily_incremental_ledger(request)
+
+    assert summary.status == "passed"
+    assert request.target_position_db.exists() is False
+    assert Path(summary.audit_summary_path).exists()

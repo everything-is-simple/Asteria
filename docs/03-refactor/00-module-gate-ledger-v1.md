@@ -111,25 +111,25 @@ rules；当前 runtime passed evidence 已升级为 MALF v1.4 day runtime sync i
 当前 live 下一张执行卡：
 
 ```text
-downstream-daily-incremental-runner-build-card
+pipeline-full-daily-incremental-chain-build-card
 ```
 
 对应 symbolic allowed next action：
 
 ```text
-downstream_daily_incremental_runner_build_card
+pipeline_full_daily_incremental_chain_build_card
 ```
 
 当前 repair 结论锚点：
 
 ```text
-downstream-daily-impact-ledger-schema-card
+downstream-daily-incremental-runner-build-card
 ```
 
 对应下一步 allowed next action：
 
 ```text
-downstream_daily_incremental_runner_build_card
+pipeline_full_daily_incremental_chain_build_card
 ```
 
 历史已放行动作锚点：

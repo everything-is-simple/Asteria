@@ -7,8 +7,9 @@ from typing import Any
 
 PORTFOLIO_PLAN_SCHEMA_VERSION = "portfolio-plan-bounded-proof-v1"
 PORTFOLIO_PLAN_RULE_VERSION = "portfolio-position-capacity-minimal-v1"
+PORTFOLIO_PLAN_DAILY_INCREMENTAL_SCHEMA_VERSION = "portfolio-plan-daily-incremental-ledger-v1"
 PORTFOLIO_PLAN_MAX_ACTIVE_SYMBOLS = 3
-VALID_PORTFOLIO_PLAN_RUN_MODES = {"audit-only", "bounded", "resume"}
+VALID_PORTFOLIO_PLAN_RUN_MODES = {"audit-only", "bounded", "daily_incremental", "resume"}
 VALID_PORTFOLIO_PLAN_TIMEFRAMES = {"day"}
 
 
@@ -29,6 +30,7 @@ class PortfolioPlanBuildRequest:
     start_dt: str | None = None
     end_dt: str | None = None
     symbol_limit: int | None = None
+    symbols: tuple[str, ...] | None = None
     max_active_symbols: int = PORTFOLIO_PLAN_MAX_ACTIVE_SYMBOLS
 
     def __post_init__(self) -> None:
@@ -80,6 +82,94 @@ class PortfolioPlanBuildSummary:
     manifest_path: str | None = None
     closeout_path: str | None = None
     validated_zip: str | None = None
+    resume_reused: bool = False
+
+    def as_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class PortfolioPlanDailyIncrementalLedgerRequest:
+    source_position_db: Path
+    target_portfolio_plan_db: Path
+    temp_root: Path
+    report_root: Path
+    run_id: str
+    mode: str
+    position_daily_impact_scope_path: Path
+    position_lineage_path: Path
+    position_checkpoint_path: Path
+    batch_size: int = 1
+    timeframe: str = "day"
+    schema_version: str = PORTFOLIO_PLAN_DAILY_INCREMENTAL_SCHEMA_VERSION
+    portfolio_plan_rule_version: str = PORTFOLIO_PLAN_RULE_VERSION
+    source_position_release_version: str = "position-daily-incremental-sample"
+    max_active_symbols: int = PORTFOLIO_PLAN_MAX_ACTIVE_SYMBOLS
+
+    def __post_init__(self) -> None:
+        if self.mode not in {"daily_incremental", "resume", "audit-only"}:
+            raise ValueError(f"Unsupported Portfolio Plan daily incremental mode: {self.mode}")
+        if self.timeframe != "day":
+            raise ValueError("Portfolio Plan daily incremental sample is day-only")
+        if self.batch_size <= 0:
+            raise ValueError("batch_size must be positive")
+        if self.max_active_symbols <= 0:
+            raise ValueError("max_active_symbols must be positive")
+
+    @property
+    def run_root(self) -> Path:
+        return self.temp_root / "portfolio_plan" / self.run_id
+
+    @property
+    def report_dir(self) -> Path:
+        return self.report_root / "portfolio_plan" / "2026-05-12" / self.run_id
+
+    @property
+    def source_manifest_path(self) -> Path:
+        return self.run_root / "source-manifest.json"
+
+    @property
+    def derived_replay_scope_path(self) -> Path:
+        return self.run_root / "derived-replay-scope.json"
+
+    @property
+    def daily_impact_scope_path(self) -> Path:
+        return self.run_root / "daily-impact-scope.json"
+
+    @property
+    def lineage_path(self) -> Path:
+        return self.run_root / "lineage.json"
+
+    @property
+    def batch_ledger_path(self) -> Path:
+        return self.run_root / "batch-ledger.jsonl"
+
+    @property
+    def checkpoint_path(self) -> Path:
+        return self.run_root / "checkpoint.json"
+
+    @property
+    def audit_summary_path(self) -> Path:
+        return self.report_dir / "audit-summary.json"
+
+
+@dataclass(frozen=True)
+class PortfolioPlanDailyIncrementalLedgerSummary:
+    run_id: str
+    status: str
+    mode: str
+    timeframe: str
+    schema_version: str
+    batch_count: int
+    replay_scope_count: int
+    impact_scope_count: int
+    source_manifest_path: str
+    derived_replay_scope_path: str
+    daily_impact_scope_path: str
+    lineage_path: str
+    batch_ledger_path: str
+    checkpoint_path: str
+    audit_summary_path: str
     resume_reused: bool = False
 
     def as_dict(self) -> dict[str, Any]:

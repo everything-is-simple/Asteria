@@ -8,10 +8,10 @@ authority_assets = [
     "H:/Asteria-Validated/Asteria-portfolio-plan-freeze-review-20260507-01.zip",
     "H:/Asteria-Validated/Asteria-portfolio-plan-bounded-proof-build-card-20260507-01.zip",
 ]
-gate_state = "freeze_review_passed; bounded_proof_passed; daily_impact_schema_frozen; full_build_not_executed"
-formal_db_permission = "released_day_bounded_portfolio_admission_target_exposure_trim_only; daily_impact_schema_frozen; downstream_daily_runtime_requires_runner_card; no_formal_H:/Asteria-data_mutation_under_this_card; full_build_requires_new_card"
+gate_state = "freeze_review_passed; bounded_proof_passed; daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened; full_build_not_executed"
+formal_db_permission = "released_day_bounded_portfolio_admission_target_exposure_trim_only; daily_impact_schema_frozen; downstream_daily_incremental_sample_hardened_without_formal_db_mutation; no_formal_H:/Asteria-data_mutation_under_this_card; full_build_requires_new_card"
 writeback_boundary = "consume released Position only; never write back upstream"
-run_modes = ["bounded", "resume", "audit-only"]
+run_modes = ["bounded", "daily_incremental", "resume", "audit-only"]
 resume_behavior = "resume from portfolio checkpoint after Position release"
 source_manifest_fields = ["source_position_release_version", "source_position_run_id"]
 daily_protocol_role = "writer"

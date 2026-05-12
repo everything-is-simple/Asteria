@@ -369,6 +369,8 @@ def _filtered_rows(
             continue
         if request.end_date and row_date > request.end_date:
             continue
+        if request.symbols and str(row[symbol_index]) not in set(request.symbols):
+            continue
         filtered.append(row)
     if request.symbol_limit is None:
         return filtered

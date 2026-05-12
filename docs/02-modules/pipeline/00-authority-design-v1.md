@@ -45,8 +45,8 @@ malf-daily-incremental-ledger-build-card passed
 |---|---|
 | formal DB | `H:\Asteria-data\pipeline.duckdb` 已创建 |
 | released module scope | `system_readout` single-module orchestration + `full_chain_day` dry-run + `full_chain_day` bounded proof |
-| released run modes | `bounded / dry-run / resume / audit-only` |
-| current next card | `downstream_daily_incremental_runner_build_card` |
+| released run modes | `bounded / dry-run / daily_incremental / resume / audit-only` |
+| current next card | `pipeline_full_daily_incremental_chain_build_card` |
 | full-chain dry-run | 已执行 / 已通过 |
 | full-chain bounded proof | 已执行 / 已通过 |
 | one-year strategy behavior replay | 已执行 / `blocked`（完整自然年覆盖不足） |
@@ -118,13 +118,13 @@ flowchart LR
 
 ## 8. 下一步
 
-当前 live `current_allowed_next_card` 是 `downstream_daily_incremental_runner_build_card`。
+当前 live `current_allowed_next_card` 是 `pipeline_full_daily_incremental_chain_build_card`。
 `pipeline-year-replay-disposition-decision-card-20260510-01` 已裁定：在 released observed window 仅缺
 `2024-01-01` 的前提下，不再重跑 rerun，而是做 truthful closeout，并把后续长期能力问题移交到 Stage 11。
 随后 `system-wide-daily-dirty-scope-protocol-card`、`data-ledger-daily-incremental-hardening-card` 与
 `malf-daily-incremental-ledger-build-card` 已依次完成 `day`-only 样板推进；随后
-`alpha-signal-daily-incremental-ledger-build-card` 与
-`downstream-daily-impact-ledger-schema-card` 也已闭环，把 downstream impact map / replay scope
-冻结到当前 repo truth。
+`alpha-signal-daily-incremental-ledger-build-card`、`downstream-daily-impact-ledger-schema-card`
+与 `downstream-daily-incremental-runner-build-card` 也已闭环，把 downstream impact map /
+replay scope 与 day-only runner 样板冻结到当前 repo truth。
 因此当前唯一 live 施工位已继续前进到 downstream daily incremental runner；在该卡完成之前，
 仍不得直接跳去 full daily chain、full rebuild、System full build、Pipeline semantic repair 或 `v1 complete`。

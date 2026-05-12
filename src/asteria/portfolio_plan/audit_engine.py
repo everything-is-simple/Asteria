@@ -168,12 +168,9 @@ def build_portfolio_plan_audit_rows(
             where constraint_name is null or constraint_name = ''
             """,
         ),
-        _state_present_check(request, created_at, db_path, "admitted"),
-        _state_present_check(request, created_at, db_path, "rejected"),
-        _state_present_check(request, created_at, db_path, "trimmed"),
-        _state_present_check(request, created_at, db_path, "expired"),
         _forbidden_columns_check(request, created_at, db_path),
     ]
+    checks.extend(_bounded_state_presence_checks(request, created_at, db_path))
     hard_fail_count = sum(_as_int(row[5]) for row in checks if row[3] == "hard")
     payload = {
         "run_id": request.run_id,
@@ -318,6 +315,21 @@ def _state_present_check(
           and admission_state = '{state}'
         """,
     )
+
+
+def _bounded_state_presence_checks(
+    request: PortfolioPlanBuildRequest,
+    created_at: datetime,
+    db_path: Path,
+) -> list[tuple[object, ...]]:
+    if request.mode != "bounded":
+        return []
+    return [
+        _state_present_check(request, created_at, db_path, "admitted"),
+        _state_present_check(request, created_at, db_path, "rejected"),
+        _state_present_check(request, created_at, db_path, "trimmed"),
+        _state_present_check(request, created_at, db_path, "expired"),
+    ]
 
 
 def _forbidden_columns_check(
