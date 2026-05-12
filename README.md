@@ -145,7 +145,8 @@ daily incremental、resume/idempotence 或 `v1 complete` 授权。
 9. [模块设计文档标准](docs/02-modules/00-module-design-document-standard-v1.md)
 10. [模块门禁账本](docs/03-refactor/00-module-gate-ledger-v1.md)
 11. [全系统路线图 / 后半场修补阶段](docs/03-refactor/04-asteria-full-system-roadmap-v1.md)
-12. [执行卡记录区](docs/04-execution/README.md)
+12. [v1 使用验证路线图](docs/03-refactor/05-asteria-v1-usage-validation-roadmap-v1.md)
+13. [执行卡记录区](docs/04-execution/README.md)
 
 ## Python 环境
 

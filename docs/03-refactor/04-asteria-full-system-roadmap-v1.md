@@ -31,6 +31,10 @@ evidence 尚未形成，因此该 closeout 结论为 blocked。随后
 promote / resume-idempotence proof。随后 `final-release-closeout-card` 已核对 formal release evidence
 与当前正式 DB manifest 一致，结论为 `passed / v1 complete`。当前没有下一张 live card。
 
+v1 complete 之后的使用价值验收不改变本路线图的 terminal 结论；独立路线见
+`docs/03-refactor/05-asteria-v1-usage-validation-roadmap-v1.md`。该路线只用于只读使用验证与后续
+日更生产化范围裁决，不作为当前 live next card。
+
 地基轨道 `data-formal-promotion-evidence-20260502-01` 的 allowed next action
 `MALF v1.3 formal rebuild closeout` 已由当前 MALF v1.3 closeout 闭环。
 MALF v1.4 authority sync 只改变后续实现同步的权威输入，不改变 allowed next action。

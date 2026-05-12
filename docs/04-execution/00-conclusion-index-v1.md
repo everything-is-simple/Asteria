@@ -257,6 +257,11 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 none / terminal (`final-release-closeout-card` passed / v1 complete)
 ```
 
+v1 后使用验证路线已独立登记在
+`docs/03-refactor/05-asteria-v1-usage-validation-roadmap-v1.md`。该路线不修改当前 live next card；
+其中 planned 卡必须在实际执行时独立形成 `card`、`record`、`evidence-index` 与 `conclusion`
+后，才可登记为正式执行结论。
+
 ## 3.1 Newly Passed Pre-Position Repair Card
 
 | 模块 | run_id | status | conclusion |
