@@ -6,10 +6,11 @@
 
 1. `README.md`
 2. `docs/00-governance/00-asteria-refactor-charter-v1.md`
-3. `docs/01-architecture/00-mainline-authoritative-map-v1.md`
-4. `docs/01-architecture/01-database-topology-v1.md`
-5. `docs/03-refactor/00-module-gate-ledger-v1.md`
-6. `docs/04-execution/00-conclusion-index-v1.md`
+3. `docs/00-governance/06-asteria-6a-workflow-protocol-v1.md`
+4. `docs/01-architecture/00-mainline-authoritative-map-v1.md`
+5. `docs/01-architecture/01-database-topology-v1.md`
+6. `docs/03-refactor/00-module-gate-ledger-v1.md`
+7. `docs/04-execution/00-conclusion-index-v1.md`
 
 当前权威资产：
 
@@ -67,14 +68,16 @@
 - `Pipeline full daily incremental chain proof passed`
 - `Full rebuild and daily incremental release closeout blocked`
 - `Formal full rebuild and daily incremental release proof passed`
-- 当前 release closeout 状态：`full_rebuild_and_daily_incremental_release_closeout_card` blocked / formal release evidence incomplete
-- 当前 live next：`final_release_closeout_card` prepared / pending final release closeout
+- `Final release closeout passed`
+- 当前 release closeout 状态：`final_release_closeout_card` passed / v1 complete
+- 当前 live next：none / terminal
 - Data 已封为主线输入底座；后续 Data 只能通过明确 maintenance card 扩展。
 - `market_meta.duckdb` 已放行最小客观事实与可匹配正式 Data 标的的申万 2021 当前行业快照；Data reference target maintenance closeout 已完成 source inventory 裁决；ST、停牌、真实上市/退市状态、历史行业沿革和 index/block membership 仍因无 approved source manifest 而 retained。
 - MALF v1.4 是 Core operational boundary 权威定义升级；不等于 runtime proof passed。
 - MALF v1.3 closeout 仍只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；MALF week/month bounded proof、Alpha production builder hardening、Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade/System bounded proof、Pipeline year replay closeout、Stage 11 protocol、Data/MALF/Alpha/Signal/downstream daily incremental samples 与 Pipeline full daily incremental chain proof 已通过。
 - Full rebuild and daily incremental release closeout 已执行但 blocked：该历史 blocked 原因是当时 formal release evidence 尚未形成。
-- 当前下一卡是 `final_release_closeout_card`：只允许基于已通过的 formal release proof evidence 做最终 release closeout / `v1 complete` 裁决；若证据不一致或审计失败，必须 truthful blocked。当前不得提前宣称 System full build、Pipeline semantic repair 或 `v1 complete`。
+- Formal full rebuild and daily incremental release proof 已补齐正式证据；final release closeout 已核对 formal release evidence 与正式 DB manifest 并通过，当前为 terminal / no next card。
+- 当前不得把 `v1 complete` 扩写为 System full build、Pipeline semantic repair 或业务模块语义重定义。
 
 硬规则：
 
@@ -102,3 +105,10 @@ Python 环境：
 - Python 文件应保持在 500 行以内；脚本 wrapper 应保持在 240 行以内。
 - Markdown design/spec 文件应保持在 1200 行以内；超过时按模块拆分。
 - 注释应解释意图、边界和不明显的不变量，避免复述代码。
+
+Workflow：
+
+- Asteria 默认使用 `docs/00-governance/06-asteria-6a-workflow-protocol-v1.md` 定义的 Asteria-6A：A1 Align、A2 Architect、A3 Act、A4 Assert、A5 Archive、A6 Advance。
+- 工具顺序固定为：`codebase-retrieval` -> `context7` -> `fetch` -> `sequential-thinking` -> `codex_apps`；本地 exact search 只在 repo 语义检索之后用于穷尽已知字符串。
+- 每次施工前先完成 A1 live authority 核对；每次收口前运行 `H:\Asteria\.venv\Scripts\python.exe scripts\governance\check_asteria_workflow.py --strict`。
+- 未完成 A6 四件套 / registry / ledger / conclusion index 同步，不得宣告任务完成；blocked 卡也必须 truthful 落 conclusion 与 evidence-index。

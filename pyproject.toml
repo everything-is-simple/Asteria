@@ -71,6 +71,7 @@ required_docs = [
     "README.md",
     "AGENTS.md",
     "docs/00-governance/00-asteria-refactor-charter-v1.md",
+    "docs/00-governance/06-asteria-6a-workflow-protocol-v1.md",
     "docs/01-architecture/00-mainline-authoritative-map-v1.md",
     "docs/01-architecture/01-database-topology-v1.md",
     "docs/01-architecture/02-validated-asset-inventory-v1.md",

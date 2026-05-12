@@ -1,0 +1,29 @@
+{
+  "name": "asteria-workflow",
+  "version": "0.1.0",
+  "description": "Asteria 6A workflow hooks and local governance reminders for Codex.",
+  "author": {
+    "name": "Asteria"
+  },
+  "keywords": [
+    "asteria",
+    "workflow",
+    "governance",
+    "hooks"
+  ],
+  "hooks": "./hooks.json",
+  "interface": {
+    "displayName": "Asteria Workflow",
+    "shortDescription": "Use Asteria-6A governance hooks for repo work.",
+    "longDescription": "Adds Codex lifecycle reminders for A1 Align, A2 Architect, A3 Act, A4 Assert, A5 Archive, and A6 Advance when working in H:\\Asteria.",
+    "developerName": "Asteria",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive"
+    ],
+    "defaultPrompt": [
+      "Follow Asteria-6A workflow and verify live governance authority before acting"
+    ],
+    "screenshots": []
+  }
+}
