@@ -77,6 +77,7 @@
 - MALF v1.3 closeout 仍只放行 day Core/Lifespan/Service 的 formal-data bounded 表面；MALF week/month bounded proof、Alpha production builder hardening、Signal production builder hardening、upstream pre-position release decision、Position bounded proof、Portfolio Plan freeze review、Portfolio Plan bounded proof、Trade/System bounded proof、Pipeline year replay closeout、Stage 11 protocol、Data/MALF/Alpha/Signal/downstream daily incremental samples 与 Pipeline full daily incremental chain proof 已通过。
 - Full rebuild and daily incremental release closeout 已执行但 blocked：该历史 blocked 原因是当时 formal release evidence 尚未形成。
 - Formal full rebuild and daily incremental release proof 已补齐正式证据；final release closeout 已核对 formal release evidence 与正式 DB manifest 并通过，当前为 terminal / no next card。
+- `v1-usage-validation-scope-card-20260512-01` 已作为 post-terminal / roadmap-only route 通过：冻结了 `31` 个申万一级行业代表股、`2024-01-02..2024-12-31` 时间窗与 `read_only` 使用验证边界；下一张路线卡是 `v1-application-db-readiness-audit-card`，但当前 live next 仍保持 `none / terminal`。
 - 当前不得把 `v1 complete` 扩写为 System full build、Pipeline semantic repair 或业务模块语义重定义。
 
 硬规则：

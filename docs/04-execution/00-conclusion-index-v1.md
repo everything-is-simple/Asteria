@@ -136,6 +136,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Pipeline | `full-rebuild-and-daily-incremental-release-closeout-card` | `blocked / formal release evidence incomplete` | [conclusion](records/pipeline/full-rebuild-and-daily-incremental-release-closeout-card.conclusion.md) | [evidence-index](records/pipeline/full-rebuild-and-daily-incremental-release-closeout-card.evidence-index.md) |
 | Pipeline | `formal-full-rebuild-and-daily-incremental-release-proof-card` | `passed / formal release evidence complete` | [conclusion](records/pipeline/formal-full-rebuild-and-daily-incremental-release-proof-card.conclusion.md) | [evidence-index](records/pipeline/formal-full-rebuild-and-daily-incremental-release-proof-card.evidence-index.md) |
 | Pipeline | `final-release-closeout-card` | `passed / v1 complete` | [conclusion](records/pipeline/final-release-closeout-card.conclusion.md) | [evidence-index](records/pipeline/final-release-closeout-card.evidence-index.md) |
+| Pipeline | `v1-usage-validation-scope-card-20260512-01` | `passed / scope frozen / roadmap-only route` | [conclusion](records/pipeline/v1-usage-validation-scope-card-20260512-01.conclusion.md) | [evidence-index](records/pipeline/v1-usage-validation-scope-card-20260512-01.evidence-index.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
@@ -261,6 +262,15 @@ v1 后使用验证路线已独立登记在
 `docs/03-refactor/05-asteria-v1-usage-validation-roadmap-v1.md`。该路线不修改当前 live next card；
 其中 planned 卡必须在实际执行时独立形成 `card`、`record`、`evidence-index` 与 `conclusion`
 后，才可登记为正式执行结论。
+
+当前该路线已新增第一张正式执行结论：
+
+```text
+v1-usage-validation-scope-card-20260512-01 = passed / scope frozen / roadmap-only route
+```
+
+它冻结了 `31` 个申万一级行业代表股、`2024-01-02..2024-12-31` 时间窗与 `read_only`
+使用验证边界；但当前 live 下一卡仍保持 `none / terminal`。
 
 ## 3.1 Newly Passed Pre-Position Repair Card
 

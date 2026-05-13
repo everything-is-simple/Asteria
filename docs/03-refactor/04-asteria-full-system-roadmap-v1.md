@@ -33,7 +33,9 @@ promote / resume-idempotence proof。随后 `final-release-closeout-card` 已核
 
 v1 complete 之后的使用价值验收不改变本路线图的 terminal 结论；独立路线见
 `docs/03-refactor/05-asteria-v1-usage-validation-roadmap-v1.md`。该路线只用于只读使用验证与后续
-日更生产化范围裁决，不作为当前 live next card。
+日更生产化范围裁决，不作为当前 live next card。其第一张卡
+`v1-usage-validation-scope-card-20260512-01` 已通过，冻结了 `31` 个申万一级行业各取一只的
+代表股池、`2024-01-02..2024-12-31` 时间窗与 `read_only` 使用验证边界。
 
 地基轨道 `data-formal-promotion-evidence-20260502-01` 的 allowed next action
 `MALF v1.3 formal rebuild closeout` 已由当前 MALF v1.3 closeout 闭环。

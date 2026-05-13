@@ -75,8 +75,8 @@ maintenance / hardening card。
 
 | 顺序 | 卡 | 状态 | 独立目标 |
 |---:|---|---|---|
-| 1 | `v1-usage-validation-scope-card` | planned | 冻结股票池、日期范围、研究问题、报告格式与只读边界 |
-| 2 | `v1-application-db-readiness-audit-card` | planned | 只读核对 25 个正式 DB，重点确认 Data / MALF / Alpha / Signal 是否可作为应用输入 |
+| 1 | `v1-usage-validation-scope-card` | passed / scope frozen / 31-industry sample locked | 冻结股票池、日期范围、研究问题、报告格式与只读边界 |
+| 2 | `v1-application-db-readiness-audit-card` | prepared next route card | 只读核对 25 个正式 DB，重点确认 Data / MALF / Alpha / Signal 是否可作为应用输入 |
 | 3 | `v1-usage-readout-report-card` | planned | 只读跑一次应用读出，产出人读研究报告 |
 | 4 | `v1-usage-value-decision-card` | planned | 对报告做使用价值裁决，并分类 usage blocker / strategy quality issue / source caveat / future enhancement |
 | 5 | `daily-incremental-production-scope-card` | gated | 仅在第 4 张通过后，冻结日更生产化范围和正式写库治理 |
@@ -112,7 +112,21 @@ conclusion
 
 - 股票池、日期范围、研究问题、输出报告结构已冻结。
 - 明确不写 `H:\Asteria-data`。
-- 下一张只允许进入 DB readiness audit，不允许跳到日更生产化。
+- 下一张只允许进入 `v1-application-db-readiness-audit-card`，不允许跳到日更生产化。
+
+2026-05-12 freeze result：
+
+| 项 | 冻结结果 |
+|---|---|
+| 执行 run_id | `v1-usage-validation-scope-card-20260512-01` |
+| 股票池 | `31` 个申万一级行业各取 `1` 只代表股 |
+| 选股规则 | `2024 年覆盖完整度优先；execution-line 平均 amount 次优先；可带理由人工 override` |
+| 日期范围 | `2024-01-02..2024-12-31` |
+| 研究问题 | `Asteria 当前链路能否给出可解释、可审计的结构-信号-持仓-交易意图读出` |
+| 报告形态 | `双层输出：总报告 + 少量逐股 appendix` |
+| 正式 DB 权限 | `read_only` |
+| 当前 live next | `none / terminal`（保持不变） |
+| 下一张路线卡 | `v1-application-db-readiness-audit-card` |
 
 ### 5.2 `v1-application-db-readiness-audit-card`
 
