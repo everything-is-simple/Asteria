@@ -292,8 +292,8 @@ Phase 2 不改变 live gate；当前 live next 仍保持 `none / terminal`。
 | 顺序 | 卡 | 状态 | 独立目标 |
 |---:|---|---|---|
 | 1 | `v1-core-retention-and-outsourcing-boundary-card` | passed / core retention and outsourcing boundary frozen | 冻结哪些自研、哪些外包、哪些历史资产回收、哪些 GitHub 项目只参考 |
-| 2 | `v1-signal-export-contract-card` | prepared next route card | 冻结 Asteria 对外输出给回测框架的最小信号合同 |
-| 3 | `v1-t-plus-one-open-backtesting-py-proof-card` | planned / after signal export contract | 用 `backtesting.py` 跑 T 日 signal -> T+1 open 的极小收益 proof |
+| 2 | `v1-signal-export-contract-card` | passed / signal export contract frozen | 冻结 Asteria 对外输出给回测框架的最小信号合同 |
+| 3 | `v1-t-plus-one-open-backtesting-py-proof-card` | prepared next route card | 用 `backtesting.py` 跑 T 日 signal -> T+1 open 的极小收益 proof |
 | 4 | `v1-vectorbt-portfolio-analytics-proof-card` | planned / after backtesting.py proof | 用 `vectorbt` 做矩阵化组合级绩效、暴露、换手和回撤分析 |
 | 5 | `v1-broker-adapter-feasibility-card` | planned / after backtest semantics stable | 只读评估 easytrader / vn.py / 自研 broker kernel 的 adapter 可行性 |
 
@@ -333,7 +333,58 @@ Phase 2 不改变 live gate；当前 live next 仍保持 `none / terminal`。
 | 正式 DB mutation | `no` |
 | 下一张路线卡 | `v1-signal-export-contract-card` |
 
-### 6.3 历史版本回收边界
+### 6.3 `v1-signal-export-contract-card`
+
+目标：冻结 Asteria Core 向外部回测框架输出的最小信号合同，让后续 `backtesting.py`
+proof 可以只消费 `Data + MALF + Alpha + Signal` 的研究结果，而不是继续扩张
+Position / Portfolio Plan / Trade / System 平台。
+
+本卡只冻结 contract，不导出正式文件，不运行收益回测，不写 `H:\Asteria-data`，不安装外部依赖。
+
+最小外部信号合同：
+
+| 字段 | 来源 / 规则 | 语义 |
+|---|---|---|
+| `symbol` | `signal.duckdb::formal_signal_ledger.symbol` | Asteria 正式标的代码 |
+| `timeframe` | `formal_signal_ledger.timeframe` | 第一版外部 proof 只消费 `day` |
+| `signal_date` | `formal_signal_ledger.signal_dt` | T 日信号日期，对外统一命名为 `signal_date` |
+| `signal_type` | `formal_signal_ledger.signal_type` | Asteria 已冻结的信号类型 |
+| `signal_strength` | `formal_signal_ledger.signal_strength` | 信号强度，不直接等价于仓位或订单量 |
+| `signal_family` | derived from `signal_type` unless a later mapping card freezes a richer table | 给外部框架分组用的轻量 family 标签，不新增 Alpha 语义 |
+| `source_run_id` | `formal_signal_ledger.run_id` | 产生该信号的正式 Signal run |
+| `schema_version` | `formal_signal_ledger.schema_version` | Signal schema version |
+| `signal_rule_version` | `formal_signal_ledger.signal_rule_version` | Signal rule version |
+| `source_alpha_release_version` | `formal_signal_ledger.source_alpha_release_version` | 上游 Alpha release lineage |
+| `lineage` | machine-readable object from Signal ledger fields and optional `signal_component_ledger` rows | 至少包含 `signal_id`、`source_run_id`、`signal_rule_version`、`source_alpha_release_version`；若可用，附带 `alpha_candidate_ids` |
+| `execution_hint` | fixed literal `T_PLUS_1_OPEN` | 明确提示后续 proof 使用 T+1 开盘执行 |
+| `execution_signal_date` | same as `signal_date` | 记录信号发生日，不得改写为成交日 |
+| `execution_trade_date_policy` | fixed literal `next_trading_day_after_signal_date` | 下一交易日执行策略，由后续 backtest card 解析交易日历 |
+| `execution_price_field` | fixed literal `open` | 后续 proof 使用 T+1 open 作为模拟成交价 |
+
+边界：
+
+- 该 contract 是 `Signal -> external backtest adapter` 的消费合同，不是订单合同。
+- `signal_strength` 不等于 position size，也不等于 broker order quantity。
+- `execution_hint = T_PLUS_1_OPEN` 是下一阶段硬语义，但本卡不证明成交、不计算收益、不更新账户。
+- 当前 Asteria 仍不能宣称正式收益回测、真实成交闭环或实盘交易能力。
+- `lineage` 用于把外部 proof 追溯回正式 Signal / Alpha 证据，不允许回写 MALF、Alpha、Signal 或正式 DB。
+
+2026-05-13 contract result：
+
+| 项 | 裁决结果 |
+|---|---|
+| 执行 run_id | `v1-signal-export-contract-card-20260513-01` |
+| 当前 live next | `none / terminal`（保持不变） |
+| route type | `roadmap-only / read-only / post-terminal / contract freeze` |
+| formal source | `H:\Asteria-data\signal.duckdb::formal_signal_ledger` |
+| optional lineage source | `signal_component_ledger` |
+| required execution hint | `T_PLUS_1_OPEN` |
+| required trade date policy | `next_trading_day_after_signal_date` |
+| required price field | `open` |
+| 正式 DB mutation | `no` |
+| 下一张路线卡 | `v1-t-plus-one-open-backtesting-py-proof-card` |
+
+### 6.4 历史版本回收边界
 
 | 历史版本 | 回收内容 | 边界 |
 |---|---|---|
@@ -343,7 +394,7 @@ Phase 2 不改变 live gate；当前 live next 仍保持 `none / terminal`。
 | `G:\malf-history\MarketLifespan-Quant` | risk unit、trailing stop、system backtest/readout | 回收风控与系统读出经验 |
 | `G:\malf-history\Lifespan-Validated` | MALF / System 证据资产 | 只作为权威锚点，不作为运行时代码 |
 
-### 6.4 外部项目分工
+### 6.5 外部项目分工
 
 | 外部项目 | 分工 | 裁决 |
 |---|---|---|

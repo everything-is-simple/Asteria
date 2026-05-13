@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-RUN_ID = "v1-core-retention-and-outsourcing-boundary-card-20260513-01"
+RUN_ID = "v1-signal-export-contract-card-20260513-01"
 
 
-def test_v1_core_retention_outsourcing_boundary_is_recorded_without_reopening_live_next() -> None:
+def test_v1_signal_export_contract_is_recorded_without_reopening_live_next() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_text = (repo_root / "governance" / "module_gate_registry.toml").read_text(
         encoding="utf-8"
@@ -23,21 +23,31 @@ def test_v1_core_retention_outsourcing_boundary_is_recorded_without_reopening_li
 
     assert 'current_allowed_next_card = ""' in registry_text
     assert "none / terminal" in ledger_text
-    assert "Phase 2：Core Retention And Outsourcing Boundary" in roadmap_text
     assert (
-        "| 1 | `v1-core-retention-and-outsourcing-boundary-card` | "
-        "passed / core retention and outsourcing boundary frozen |"
+        "| 2 | `v1-signal-export-contract-card` | passed / signal export contract frozen |"
     ) in roadmap_text
-    assert "`Data source fact + MALF + Alpha + Signal`" in roadmap_text
-    assert "`Position / Portfolio Plan / Trade / System Readout`" in roadmap_text
-    assert "`T+0 signal -> T+1 open execution`" in roadmap_text
+    assert (
+        "| 3 | `v1-t-plus-one-open-backtesting-py-proof-card` | prepared next route card |"
+    ) in roadmap_text
     assert (
         "v1-signal-export-contract-card-20260513-01 = passed / signal export contract frozen"
     ) in ledger_text
     assert "next route card = v1-t-plus-one-open-backtesting-py-proof-card" in ledger_text
-    expected_row = (
-        f"| Pipeline | `{RUN_ID}` | `passed / core retention and outsourcing boundary frozen` |"
-    )
+    for required_text in (
+        "`symbol`",
+        "`signal_date`",
+        "`signal_strength`",
+        "`signal_family`",
+        "`source_run_id`",
+        "`lineage`",
+        "`T_PLUS_1_OPEN`",
+        "`next_trading_day_after_signal_date`",
+        "`open`",
+        "T+0 signal -> T+1 open execution",
+    ):
+        assert required_text in roadmap_text
+    assert "当前 Asteria 仍不能宣称正式收益回测" in roadmap_text
+    expected_row = f"| Pipeline | `{RUN_ID}` | `passed / signal export contract frozen` |"
     assert expected_row in conclusion_index
     for suffix in ("card", "record", "evidence-index", "conclusion"):
         assert (pipeline_records / f"{RUN_ID}.{suffix}.md").exists()
