@@ -2,12 +2,15 @@ from __future__ import annotations
 
 from pathlib import Path
 
-RUN_ID = "v1-downstream-reference-audit-20260513-01"
+RUN_ID = "v1-usage-value-decision-card-20260513-01"
 
 
-def test_v1_downstream_reference_audit_is_recorded_as_supplemental_input() -> None:
+def test_v1_usage_value_decision_route_is_recorded_without_reopening_live_next() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_text = (repo_root / "governance" / "module_gate_registry.toml").read_text(
+        encoding="utf-8"
+    )
+    ledger_text = (repo_root / "docs" / "03-refactor" / "00-module-gate-ledger-v1.md").read_text(
         encoding="utf-8"
     )
     roadmap_text = (
@@ -19,13 +22,14 @@ def test_v1_downstream_reference_audit_is_recorded_as_supplemental_input() -> No
     pipeline_records = repo_root / "docs" / "04-execution" / "records" / "pipeline"
 
     assert 'current_allowed_next_card = ""' in registry_text
-    assert "`v1-downstream-reference-audit-20260513-01`" in roadmap_text
+    assert "none / terminal" in ledger_text
     assert (
         "| 4 | `v1-usage-value-decision-card` | passed / research usable with caveats |"
     ) in roadmap_text
-    expected_row = (
-        f"| Pipeline | `{RUN_ID}` | `passed / downstream semantics benchmark input generated` |"
-    )
+    assert (
+        "| 5 | `daily-incremental-production-scope-card` | prepared next route card |"
+    ) in roadmap_text
+    expected_row = f"| Pipeline | `{RUN_ID}` | `passed / usage value decision completed` |"
     assert expected_row in conclusion_index
     for suffix in ("card", "record", "evidence-index", "conclusion"):
         assert (pipeline_records / f"{RUN_ID}.{suffix}.md").exists()

@@ -138,6 +138,10 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Pipeline | `final-release-closeout-card` | `passed / v1 complete` | [conclusion](records/pipeline/final-release-closeout-card.conclusion.md) | [evidence-index](records/pipeline/final-release-closeout-card.evidence-index.md) |
 | Pipeline | `v1-usage-validation-scope-card-20260512-01` | `passed / scope frozen / roadmap-only route` | [conclusion](records/pipeline/v1-usage-validation-scope-card-20260512-01.conclusion.md) | [evidence-index](records/pipeline/v1-usage-validation-scope-card-20260512-01.evidence-index.md) |
 | Pipeline | `v1-application-db-readiness-audit-card-20260513-01` | `passed / application DB readiness audited` | [conclusion](records/pipeline/v1-application-db-readiness-audit-card-20260513-01.conclusion.md) | [evidence-index](records/pipeline/v1-application-db-readiness-audit-card-20260513-01.evidence-index.md) |
+| Pipeline | `v1-usage-readout-report-card-20260513-01` | `passed / usage readout report generated` | [conclusion](records/pipeline/v1-usage-readout-report-card-20260513-01.conclusion.md) | [evidence-index](records/pipeline/v1-usage-readout-report-card-20260513-01.evidence-index.md) |
+| Pipeline | `v1-downstream-reference-audit-20260513-01` | `passed / downstream semantics benchmark input generated` | [conclusion](records/pipeline/v1-downstream-reference-audit-20260513-01.conclusion.md) | [evidence-index](records/pipeline/v1-downstream-reference-audit-20260513-01.evidence-index.md) |
+| Pipeline | `v1-usage-value-decision-card-20260513-01` | `passed / usage value decision completed` | [conclusion](records/pipeline/v1-usage-value-decision-card-20260513-01.conclusion.md) | [evidence-index](records/pipeline/v1-usage-value-decision-card-20260513-01.evidence-index.md) |
+| Pipeline | `v1-core-retention-and-outsourcing-boundary-card-20260513-01` | `passed / core retention and outsourcing boundary frozen` | [conclusion](records/pipeline/v1-core-retention-and-outsourcing-boundary-card-20260513-01.conclusion.md) | [evidence-index](records/pipeline/v1-core-retention-and-outsourcing-boundary-card-20260513-01.evidence-index.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
@@ -296,10 +300,37 @@ v1-usage-readout-report-card-20260513-01 = passed / usage readout report generat
 与 `usage-readout-manifest.json`。读出结果 `issue_count = 0`，正式 DB mutation 为 `no`；
 当前 live 下一卡仍保持 `none / terminal`，下一张路线卡为 `v1-usage-value-decision-card`。
 
+当前该路线的第四张正式执行结论也已形成：
+
+```text
+v1-usage-value-decision-card-20260513-01 = passed / usage value decision completed
+```
+
+它只读消费第 3 卡 `usage-readout` 和 `v1-downstream-reference-audit-20260513-01`
+supplemental input，裁决 `value_decision = research_usable_with_caveats`：
+当前 v1 有研究使用价值，但不得宣称收益回测、真实成交闭环或实盘交易能力。分类结果为
+`usage_blocker = 0`、`strategy_quality_issue = 2`、`source_caveat = 3`、
+`future_enhancement = 4`；当前 live 下一卡仍保持 `none / terminal`，下一张路线卡为
+`daily-incremental-production-scope-card`。
+
+当前该路线的 Phase 2 战略边界卡也已形成：
+
+```text
+v1-core-retention-and-outsourcing-boundary-card-20260513-01 = passed / core retention and outsourcing boundary frozen
+```
+
+它只读核对当前 Asteria、历史版本和外部量化框架，裁决 Asteria 后续不再默认自研完整量化平台：
+保留 `Data source fact + MALF + Alpha + Signal` 为自研核心，Position / Portfolio Plan / Trade /
+System Readout 保留现有 v1 readout 证据但停止平台化扩张，Backtest / Portfolio Analytics /
+Fill Simulation / Broker / Report 优先由成熟外部框架或 adapter 承接。当前 live 下一卡仍保持
+`none / terminal`，下一张路线卡为 `v1-signal-export-contract-card`。
+
 | Module | Run ID | Status | Conclusion |
 |---|---|---|---|
 | Pipeline | `v1-usage-readout-report-card-20260513-01` | `passed / usage readout report generated` | [conclusion](records/pipeline/v1-usage-readout-report-card-20260513-01.conclusion.md) |
 | Pipeline | `v1-downstream-reference-audit-20260513-01` | `passed / downstream semantics benchmark input generated` | [conclusion](records/pipeline/v1-downstream-reference-audit-20260513-01.conclusion.md) |
+| Pipeline | `v1-usage-value-decision-card-20260513-01` | `passed / usage value decision completed` | [conclusion](records/pipeline/v1-usage-value-decision-card-20260513-01.conclusion.md) |
+| Pipeline | `v1-core-retention-and-outsourcing-boundary-card-20260513-01` | `passed / core retention and outsourcing boundary frozen` | [conclusion](records/pipeline/v1-core-retention-and-outsourcing-boundary-card-20260513-01.conclusion.md) |
 
 ## 3.1 Newly Passed Pre-Position Repair Card
 

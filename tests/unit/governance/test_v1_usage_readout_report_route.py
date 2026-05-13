@@ -22,7 +22,9 @@ def test_v1_usage_readout_report_route_is_recorded_without_reopening_live_next()
     assert "| 3 | `v1-usage-readout-report-card` | passed / usage readout report generated |" in (
         roadmap_text
     )
-    assert ("| 4 | `v1-usage-value-decision-card` | prepared next route card |") in roadmap_text
+    assert (
+        "| 4 | `v1-usage-value-decision-card` | passed / research usable with caveats |"
+    ) in roadmap_text
     assert f"| Pipeline | `{RUN_ID}` | `passed / usage readout report generated` |" in (
         conclusion_index
     )

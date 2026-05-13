@@ -127,10 +127,15 @@ post-terminal v1 使用验证路线当前状态：
 v1-usage-validation-scope-card-20260512-01 = passed / scope frozen / roadmap-only route
 v1-application-db-readiness-audit-card-20260513-01 = passed / application DB readiness audited
 v1-usage-readout-report-card-20260513-01 = passed / usage readout report generated
-next route card = v1-usage-value-decision-card
+v1-downstream-reference-audit-20260513-01 = passed / downstream semantics benchmark input generated
+v1-usage-value-decision-card-20260513-01 = passed / usage value decision completed
+v1-core-retention-and-outsourcing-boundary-card-20260513-01 = passed / core retention and outsourcing boundary frozen
+next route card = v1-signal-export-contract-card
 ```
 
-该路线不修改 live next；当前 live truth 仍保持 `none / terminal`。
+该路线不修改 live next；当前 live truth 仍保持 `none / terminal`。`daily-incremental-production-scope-card`
+仍是 prepared route card，但 Phase 2 已先冻结“核心自研 + 外围外包/adapter”战略边界；
+进入日更生产化范围冻结前，必须先消费 `v1-signal-export-contract-card` 对外信号合同。
 
 对应 symbolic allowed next action：
 

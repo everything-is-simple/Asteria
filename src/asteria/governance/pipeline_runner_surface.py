@@ -17,6 +17,7 @@ def allowed_pipeline_runner_names() -> set[str]:
         "run_v1_application_db_readiness_audit.py",
         "run_v1_usage_readout_report.py",
         "run_downstream_reference_audit.py",
+        "run_v1_usage_value_decision.py",
         "run_alpha_signal_2024_coverage_repair.py",
         "run_alpha_signal_daily_incremental_ledger.py",
         "run_downstream_daily_incremental_ledger.py",
