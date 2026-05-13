@@ -137,6 +137,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Pipeline | `formal-full-rebuild-and-daily-incremental-release-proof-card` | `passed / formal release evidence complete` | [conclusion](records/pipeline/formal-full-rebuild-and-daily-incremental-release-proof-card.conclusion.md) | [evidence-index](records/pipeline/formal-full-rebuild-and-daily-incremental-release-proof-card.evidence-index.md) |
 | Pipeline | `final-release-closeout-card` | `passed / v1 complete` | [conclusion](records/pipeline/final-release-closeout-card.conclusion.md) | [evidence-index](records/pipeline/final-release-closeout-card.evidence-index.md) |
 | Pipeline | `v1-usage-validation-scope-card-20260512-01` | `passed / scope frozen / roadmap-only route` | [conclusion](records/pipeline/v1-usage-validation-scope-card-20260512-01.conclusion.md) | [evidence-index](records/pipeline/v1-usage-validation-scope-card-20260512-01.evidence-index.md) |
+| Pipeline | `v1-application-db-readiness-audit-card-20260513-01` | `passed / application DB readiness audited` | [conclusion](records/pipeline/v1-application-db-readiness-audit-card-20260513-01.conclusion.md) | [evidence-index](records/pipeline/v1-application-db-readiness-audit-card-20260513-01.evidence-index.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
@@ -271,6 +272,17 @@ v1-usage-validation-scope-card-20260512-01 = passed / scope frozen / roadmap-onl
 
 它冻结了 `31` 个申万一级行业代表股、`2024-01-02..2024-12-31` 时间窗与 `read_only`
 使用验证边界；但当前 live 下一卡仍保持 `none / terminal`。
+
+当前该路线的第二张正式执行结论也已形成：
+
+```text
+v1-application-db-readiness-audit-card-20260513-01 = passed / application DB readiness audited
+```
+
+它只读核对了 `H:\Asteria-data` 当前 `25` 个正式 DuckDB：`25 / 25` 可只读打开，
+上游 `20 / 20` 个 Data / MALF / Alpha / Signal DB 可作为应用输入，Downstream / Pipeline
+`5 / 5` 可读，`issue_count = 0`。当前 live 下一卡仍保持 `none / terminal`，下一张路线卡
+为 `v1-usage-readout-report-card`。
 
 ## 3.1 Newly Passed Pre-Position Repair Card
 

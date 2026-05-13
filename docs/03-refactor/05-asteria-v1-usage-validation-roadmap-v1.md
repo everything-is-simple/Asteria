@@ -76,8 +76,8 @@ maintenance / hardening card。
 | 顺序 | 卡 | 状态 | 独立目标 |
 |---:|---|---|---|
 | 1 | `v1-usage-validation-scope-card` | passed / scope frozen / 31-industry sample locked | 冻结股票池、日期范围、研究问题、报告格式与只读边界 |
-| 2 | `v1-application-db-readiness-audit-card` | prepared next route card | 只读核对 25 个正式 DB，重点确认 Data / MALF / Alpha / Signal 是否可作为应用输入 |
-| 3 | `v1-usage-readout-report-card` | planned | 只读跑一次应用读出，产出人读研究报告 |
+| 2 | `v1-application-db-readiness-audit-card` | passed / application DB readiness audited | 只读核对 25 个正式 DB，确认 Data / MALF / Alpha / Signal 可作为应用输入 |
+| 3 | `v1-usage-readout-report-card` | prepared next route card | 只读跑一次应用读出，产出人读研究报告 |
 | 4 | `v1-usage-value-decision-card` | planned | 对报告做使用价值裁决，并分类 usage blocker / strategy quality issue / source caveat / future enhancement |
 | 5 | `daily-incremental-production-scope-card` | gated | 仅在第 4 张通过后，冻结日更生产化范围和正式写库治理 |
 
@@ -146,6 +146,20 @@ conclusion
 - 当前 25 个 DuckDB 可被只读打开。
 - 上游 20 个 Data/MALF/Alpha/Signal DB 可作为应用输入。
 - 缺口只分类登记，不在本卡补库。
+
+2026-05-13 audit result：
+
+| 项 | 审计结果 |
+|---|---|
+| 执行 run_id | `v1-application-db-readiness-audit-card-20260513-01` |
+| 当前 live next | `none / terminal`（保持不变） |
+| 正式 DB 只读打开 | `25 / 25` |
+| 应用输入 DB ready | `20 / 20` |
+| Downstream / Pipeline 可读 | `5 / 5` |
+| issue_count | `0` |
+| 正式 DB mutation | `no` |
+| retained caveat | `fill_ledger source-bound gap`; `ST / 停牌 / 上市退市 / 历史行业沿革 source caveats` |
+| 下一张路线卡 | `v1-usage-readout-report-card` |
 
 ### 5.3 `v1-usage-readout-report-card`
 
