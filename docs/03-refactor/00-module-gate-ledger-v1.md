@@ -126,7 +126,8 @@ post-terminal v1 使用验证路线当前状态：
 ```text
 v1-usage-validation-scope-card-20260512-01 = passed / scope frozen / roadmap-only route
 v1-application-db-readiness-audit-card-20260513-01 = passed / application DB readiness audited
-next route card = v1-usage-readout-report-card
+v1-usage-readout-report-card-20260513-01 = passed / usage readout report generated
+next route card = v1-usage-value-decision-card
 ```
 
 该路线不修改 live next；当前 live truth 仍保持 `none / terminal`。

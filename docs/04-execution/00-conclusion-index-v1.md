@@ -284,6 +284,22 @@ v1-application-db-readiness-audit-card-20260513-01 = passed / application DB rea
 `5 / 5` 可读，`issue_count = 0`。当前 live 下一卡仍保持 `none / terminal`，下一张路线卡
 为 `v1-usage-readout-report-card`。
 
+当前该路线的第三张正式执行结论也已形成：
+
+```text
+v1-usage-readout-report-card-20260513-01 = passed / usage readout report generated
+```
+
+它只读消费 `v1-usage-validation-scope-card-20260512-01` 冻结的 `31` 个申万一级行业代表股与
+`2024-01-02..2024-12-31` 时间窗，生成
+`H:\Asteria-report\pipeline\2026-05-13\v1-usage-readout-report-card-20260513-01\usage-readout-report.md`
+与 `usage-readout-manifest.json`。读出结果 `issue_count = 0`，正式 DB mutation 为 `no`；
+当前 live 下一卡仍保持 `none / terminal`，下一张路线卡为 `v1-usage-value-decision-card`。
+
+| Module | Run ID | Status | Conclusion |
+|---|---|---|---|
+| Pipeline | `v1-usage-readout-report-card-20260513-01` | `passed / usage readout report generated` | [conclusion](records/pipeline/v1-usage-readout-report-card-20260513-01.conclusion.md) |
+
 ## 3.1 Newly Passed Pre-Position Repair Card
 
 | 模块 | run_id | status | conclusion |

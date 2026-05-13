@@ -77,8 +77,8 @@ maintenance / hardening card。
 |---:|---|---|---|
 | 1 | `v1-usage-validation-scope-card` | passed / scope frozen / 31-industry sample locked | 冻结股票池、日期范围、研究问题、报告格式与只读边界 |
 | 2 | `v1-application-db-readiness-audit-card` | passed / application DB readiness audited | 只读核对 25 个正式 DB，确认 Data / MALF / Alpha / Signal 可作为应用输入 |
-| 3 | `v1-usage-readout-report-card` | prepared next route card | 只读跑一次应用读出，产出人读研究报告 |
-| 4 | `v1-usage-value-decision-card` | planned | 对报告做使用价值裁决，并分类 usage blocker / strategy quality issue / source caveat / future enhancement |
+| 3 | `v1-usage-readout-report-card` | passed / usage readout report generated | 只读跑一次应用读出，产出人读研究报告 |
+| 4 | `v1-usage-value-decision-card` | prepared next route card | 对报告做使用价值裁决，并分类 usage blocker / strategy quality issue / source caveat / future enhancement |
 | 5 | `daily-incremental-production-scope-card` | gated | 仅在第 4 张通过后，冻结日更生产化范围和正式写库治理 |
 
 这些卡均不是当前 live next card。每张卡执行前必须独立创建或更新自己的：
@@ -182,6 +182,21 @@ conclusion
 - 临时产物落在 `H:\Asteria-temp`。
 - 不修改正式 DB。
 - 结论能被人读懂，并能追溯到正式 DB / run_id / source lineage。
+
+2026-05-13 readout result：
+
+| 项 | 读出结果 |
+|---|---|
+| 执行 run_id | `v1-usage-readout-report-card-20260513-01` |
+| 当前 live next | `none / terminal`（保持不变） |
+| 股票池 | `31` 个申万一级行业代表股 |
+| 日期范围 | `2024-01-02..2024-12-31` |
+| issue_count | `0` |
+| 正式 DB mutation | `no` |
+| 人读报告 | `H:\Asteria-report\pipeline\2026-05-13\v1-usage-readout-report-card-20260513-01\usage-readout-report.md` |
+| machine-readable manifest | `H:\Asteria-report\pipeline\2026-05-13\v1-usage-readout-report-card-20260513-01\usage-readout-manifest.json` |
+| retained caveat | `fill_ledger source-bound gap`; `ST / 停牌 / 上市退市 / 历史行业沿革 source caveats`; `calendar semantic gap` |
+| 下一张路线卡 | `v1-usage-value-decision-card` |
 
 ### 5.4 `v1-usage-value-decision-card`
 
