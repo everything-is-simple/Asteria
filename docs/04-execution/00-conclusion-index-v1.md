@@ -299,6 +299,7 @@ v1-usage-readout-report-card-20260513-01 = passed / usage readout report generat
 | Module | Run ID | Status | Conclusion |
 |---|---|---|---|
 | Pipeline | `v1-usage-readout-report-card-20260513-01` | `passed / usage readout report generated` | [conclusion](records/pipeline/v1-usage-readout-report-card-20260513-01.conclusion.md) |
+| Pipeline | `v1-downstream-reference-audit-20260513-01` | `passed / downstream semantics benchmark input generated` | [conclusion](records/pipeline/v1-downstream-reference-audit-20260513-01.conclusion.md) |
 
 ## 3.1 Newly Passed Pre-Position Repair Card
 

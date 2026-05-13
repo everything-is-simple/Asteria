@@ -81,6 +81,13 @@ maintenance / hardening card。
 | 4 | `v1-usage-value-decision-card` | prepared next route card | 对报告做使用价值裁决，并分类 usage blocker / strategy quality issue / source caveat / future enhancement |
 | 5 | `daily-incremental-production-scope-card` | gated | 仅在第 4 张通过后，冻结日更生产化范围和正式写库治理 |
 
+第 4 张卡执行前允许加入只读 supplemental input，但该输入不得成为新的 live gate，也不得改变
+`v1-usage-value-decision-card` 作为下一张路线卡的地位。
+
+| supplemental run_id | 状态 | 用途 |
+|---|---|---|
+| `v1-downstream-reference-audit-20260513-01` | passed / downstream semantics benchmark input generated | 对照 Hikyuu / FinHack / easytrader 的 Position -> Portfolio Plan -> Trade -> System 同类边界，作为第 4 卡裁决输入 |
+
 这些卡均不是当前 live next card。每张卡执行前必须独立创建或更新自己的：
 
 ```text
@@ -197,6 +204,18 @@ conclusion
 | machine-readable manifest | `H:\Asteria-report\pipeline\2026-05-13\v1-usage-readout-report-card-20260513-01\usage-readout-manifest.json` |
 | retained caveat | `fill_ledger source-bound gap`; `ST / 停牌 / 上市退市 / 历史行业沿革 source caveats`; `calendar semantic gap` |
 | 下一张路线卡 | `v1-usage-value-decision-card` |
+
+第 4 卡前置 supplemental input：
+
+| 项 | 结果 |
+|---|---|
+| 执行 run_id | `v1-downstream-reference-audit-20260513-01` |
+| 性质 | `roadmap_only_read_only_post_terminal_supplement` |
+| 当前 live next | `none / terminal`（保持不变） |
+| 外部参考 | Hikyuu / FinHack / easytrader |
+| 对照结论 | 已覆盖 `4`；表达风险 `2`；真实缺口 `1`；不适用外部参考 `1` |
+| 第 4 卡输入 | `order_intent_ledger = 1`; `order_rejection_ledger = 1158`; `fill_ledger row_count = 0` |
+| 正式 DB mutation | `no` |
 
 ### 5.4 `v1-usage-value-decision-card`
 
