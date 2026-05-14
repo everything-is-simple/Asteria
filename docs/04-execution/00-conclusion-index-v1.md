@@ -384,6 +384,19 @@ MALF v1.4 不变量锚定与 Alpha/PAS 恢复证明。该卡不运行收益 proo
 下一张路线卡为 `v1-malf-v1-4-immutability-anchor-card`，而
 `v1-broker-adapter-feasibility-card` 保持 deferred。
 
+当前 MALF v1.4 不变量锚定卡也已形成：
+
+```text
+v1-malf-v1-4-immutability-anchor-card-20260514-01 = passed / MALF v1.4 immutability anchored
+```
+
+它只读核对 `H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4` 与 repo 内 MALF
+authority evidence，输出后续 Alpha/PAS 工作必须遵守的 MALF 不变量清单。结论是：
+MALF v1.4 继续作为长期结构权威；Alpha/PAS 只能消费 MALF WavePosition / Service facts，
+不得写回或重定义 MALF；历史版本只能回收经验、样本和失败教训，不得覆盖 MALF v1.4。
+该卡不执行 runtime、不修改 schema、不写正式 DB、不迁移历史代码；当前 live 下一卡仍保持
+`none / terminal`，下一张路线卡为 `v1-alpha-pas-source-inventory-card`。
+
 | Module | Run ID | Status | Conclusion |
 |---|---|---|---|
 | Pipeline | `v1-usage-readout-report-card-20260513-01` | `passed / usage readout report generated` | [conclusion](records/pipeline/v1-usage-readout-report-card-20260513-01.conclusion.md) |
@@ -394,6 +407,7 @@ MALF v1.4 不变量锚定与 Alpha/PAS 恢复证明。该卡不运行收益 proo
 | Pipeline | `v1-t-plus-one-open-backtesting-py-proof-card-20260514-01` | `passed / t+1 open backtesting.py proof completed` | [conclusion](records/pipeline/v1-t-plus-one-open-backtesting-py-proof-card-20260514-01.conclusion.md) |
 | Pipeline | `v1-vectorbt-portfolio-analytics-proof-card-20260514-01` | `passed / vectorbt portfolio analytics proof completed` | [conclusion](records/pipeline/v1-vectorbt-portfolio-analytics-proof-card-20260514-01.conclusion.md) |
 | Pipeline | `v1-core-module-recovery-roadmap-freeze-card-20260514-01` | `passed / roadmap frozen / post-terminal route` | [conclusion](records/pipeline/v1-core-module-recovery-roadmap-freeze-card-20260514-01.conclusion.md) |
+| Pipeline | `v1-malf-v1-4-immutability-anchor-card-20260514-01` | `passed / MALF v1.4 immutability anchored` | [conclusion](records/pipeline/v1-malf-v1-4-immutability-anchor-card-20260514-01.conclusion.md) |
 
 ## 3.1 Newly Passed Pre-Position Repair Card
 

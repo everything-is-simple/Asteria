@@ -134,7 +134,8 @@ v1-signal-export-contract-card-20260513-01 = passed / signal export contract fro
 v1-t-plus-one-open-backtesting-py-proof-card-20260514-01 = passed / t+1 open backtesting.py proof completed
 v1-vectorbt-portfolio-analytics-proof-card-20260514-01 = passed / vectorbt portfolio analytics proof completed
 v1-core-module-recovery-roadmap-freeze-card-20260514-01 = passed / roadmap frozen / post-terminal route
-next route card = v1-malf-v1-4-immutability-anchor-card
+v1-malf-v1-4-immutability-anchor-card-20260514-01 = passed / MALF v1.4 immutability anchored
+next route card = v1-alpha-pas-source-inventory-card
 ```
 
 该路线不修改 live next；当前 live truth 仍保持 `none / terminal`。`daily-incremental-production-scope-card`
@@ -143,7 +144,11 @@ next route card = v1-malf-v1-4-immutability-anchor-card
 对组合级绩效、持仓暴露、换手和回撤的外部分析 proof。随后
 `v1-core-module-recovery-roadmap-freeze-card-20260514-01` 已冻结新的 core recovery / proof
 post-terminal 路线，把 broker feasibility 暂缓，并把下一张路线卡切到
-`v1-malf-v1-4-immutability-anchor-card`；当前 live truth 仍保持 `none / terminal`。
+`v1-malf-v1-4-immutability-anchor-card`。随后
+`v1-malf-v1-4-immutability-anchor-card-20260514-01` 已只读锚定 MALF v1.4 不变量清单，
+确认后续 Alpha/PAS 只能消费 MALF v1.4，不得重定义 MALF，也不得用历史版本覆盖
+MALF v1.4；下一张路线卡为 `v1-alpha-pas-source-inventory-card`。当前 live truth 仍保持
+`none / terminal`。
 
 对应 symbolic allowed next action：
 

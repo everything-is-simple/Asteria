@@ -106,8 +106,8 @@ Stage 0 只冻结路线与 no-live 边界。
 | 顺序 | 卡 | 状态 | 目标 |
 |---:|---|---|---|
 | 1 | `v1-core-module-recovery-roadmap-freeze-card` | passed / roadmap frozen | 冻结本路线图、broker 暂缓、no-live 边界 |
-| 2 | `v1-malf-v1-4-immutability-anchor-card` | prepared next route card | 只读锚定 MALF v1.4 不变量清单 |
-| 3 | `v1-alpha-pas-source-inventory-card` | planned | 盘点当前 Alpha/PAS、历史版本、书籍和系统经验 |
+| 2 | `v1-malf-v1-4-immutability-anchor-card` | passed / immutability anchored | 只读锚定 MALF v1.4 不变量清单 |
+| 3 | `v1-alpha-pas-source-inventory-card` | prepared next route card | 盘点当前 Alpha/PAS、历史版本、书籍和系统经验 |
 | 4 | `v1-alpha-pas-authority-map-card` | planned | 映射 Lance Beggs / Bob Volman / 简简单单做股票 / 历史系统中的 PAS 语义 |
 | 5 | `v1-alpha-pas-contract-redesign-card` | planned | 冻结新版 Alpha/PAS 合同，输入固定为 MALF v1.4 |
 | 6 | `v1-alpha-pas-bounded-proof-build-card` | planned | 小范围实现/恢复新版 Alpha/PAS bounded proof |
