@@ -295,7 +295,7 @@ Phase 2 不改变 live gate；当前 live next 仍保持 `none / terminal`。
 | 2 | `v1-signal-export-contract-card` | passed / signal export contract frozen | 冻结 Asteria 对外输出给回测框架的最小信号合同 |
 | 3 | `v1-t-plus-one-open-backtesting-py-proof-card` | passed / t+1 open backtesting.py proof completed | 用 `backtesting.py` 跑 T 日 signal -> T+1 open 的极小收益 proof |
 | 4 | `v1-vectorbt-portfolio-analytics-proof-card` | passed / vectorbt portfolio analytics proof completed | 用 `vectorbt` 做矩阵化组合级绩效、暴露、换手和回撤分析 |
-| 5 | `v1-broker-adapter-feasibility-card` | prepared next route card | 只读评估 easytrader / vn.py / 自研 broker kernel 的 adapter 可行性 |
+| 5 | `v1-broker-adapter-feasibility-card` | deferred / waiting for Alpha-PAS proof | 只读评估 easytrader / vn.py / 自研 broker kernel 的 adapter 可行性，但必须等待新版 Alpha/PAS 收益证明 |
 
 ### 6.2 `v1-core-retention-and-outsourcing-boundary-card`
 
@@ -472,7 +472,7 @@ PnL / drawdown / trade count 读数。
 | turnover proxy | `11.6788` |
 | skip reason | `no_active_signal_in_scope = 30`; `no_t_plus_one_open_bar = 1` |
 | `formal_db_mutation = no` | `true` |
-| 下一张路线卡 | `v1-broker-adapter-feasibility-card` |
+| 下一张路线卡 | `docs/03-refactor/06-asteria-core-module-recovery-and-proof-roadmap-v1.md` 的 `v1-core-module-recovery-roadmap-freeze-card` |
 
 通过含义：
 
@@ -483,6 +483,14 @@ PnL / drawdown / trade count 读数。
   `strategy quality issue / source caveat`，不是 live release blocker。
 - 本卡不得被解释为生产级组合回测、真实成交闭环、账户更新、broker adapter 或实盘交易能力；
   换句话说，仍然不得宣称实盘能力。
+
+后续路线校正：
+
+- 当前 vectorbt proof 证明了外部 portfolio analytics adapter 可运行，但没有证明当前 Alpha/PAS
+  已具备足够收益价值。
+- 因此 `v1-broker-adapter-feasibility-card` 暂缓，不作为马上执行的路线卡。
+- 新增独立路线图 `docs/03-refactor/06-asteria-core-module-recovery-and-proof-roadmap-v1.md`，
+  先冻结 MALF v1.4 不变量，并回看历史版本、书籍来源和旧系统经验，重做 Alpha/PAS 权威恢复与收益证明。
 
 ### 6.6 历史版本回收边界
 
@@ -525,6 +533,10 @@ Asteria 后续是否继续自研完整量化平台，还是保留核心研究引
 ```
 
 当前答案是：保留核心研究引擎，外围优先外包或 adapter 化。
+
+由于 Phase 2 的 `backtesting.py` 与 `vectorbt` proof 已暴露当前 Alpha/PAS 覆盖不足和收益未证明，
+下一步不直接进入 broker feasibility，而是转入
+`docs/03-refactor/06-asteria-core-module-recovery-and-proof-roadmap-v1.md`。
 
 ## 8. 与当前主线的关系
 
