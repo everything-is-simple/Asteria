@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-RUN_ID = "v1-core-retention-and-outsourcing-boundary-card-20260513-01"
+RUN_ID = "v1-vectorbt-portfolio-analytics-proof-card-20260514-01"
 
 
-def test_v1_core_retention_outsourcing_boundary_is_recorded_without_reopening_live_next() -> None:
+def test_v1_vectorbt_portfolio_analytics_proof_route_is_recorded() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     registry_text = (repo_root / "governance" / "module_gate_registry.toml").read_text(
         encoding="utf-8"
@@ -23,28 +23,29 @@ def test_v1_core_retention_outsourcing_boundary_is_recorded_without_reopening_li
 
     assert 'current_allowed_next_card = ""' in registry_text
     assert "none / terminal" in ledger_text
-    assert "Phase 2：Core Retention And Outsourcing Boundary" in roadmap_text
     assert (
-        "| 1 | `v1-core-retention-and-outsourcing-boundary-card` | "
-        "passed / core retention and outsourcing boundary frozen |"
+        "| 4 | `v1-vectorbt-portfolio-analytics-proof-card` | "
+        "passed / vectorbt portfolio analytics proof completed |"
     ) in roadmap_text
-    assert "`Data source fact + MALF + Alpha + Signal`" in roadmap_text
-    assert "`Position / Portfolio Plan / Trade / System Readout`" in roadmap_text
-    assert "`T+0 signal -> T+1 open execution`" in roadmap_text
-    assert (
-        "v1-signal-export-contract-card-20260513-01 = passed / signal export contract frozen"
-    ) in ledger_text
-    assert (
-        "v1-t-plus-one-open-backtesting-py-proof-card-20260514-01 = "
-        "passed / t+1 open backtesting.py proof completed"
-    ) in ledger_text
+    assert "| 5 | `v1-broker-adapter-feasibility-card` | prepared next route card |" in roadmap_text
     assert (
         "v1-vectorbt-portfolio-analytics-proof-card-20260514-01 = "
         "passed / vectorbt portfolio analytics proof completed"
     ) in ledger_text
     assert "next route card = v1-broker-adapter-feasibility-card" in ledger_text
+    for required_text in (
+        "`vectorbt`",
+        "T+0 signal -> T+1 open execution",
+        "组合级绩效",
+        "持仓暴露",
+        "换手",
+        "回撤",
+        "不得宣称实盘能力",
+        "`formal_db_mutation = no`",
+    ):
+        assert required_text in roadmap_text
     expected_row = (
-        f"| Pipeline | `{RUN_ID}` | `passed / core retention and outsourcing boundary frozen` |"
+        f"| Pipeline | `{RUN_ID}` | `passed / vectorbt portfolio analytics proof completed` |"
     )
     assert expected_row in conclusion_index
     for suffix in ("card", "record", "evidence-index", "conclusion"):

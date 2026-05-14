@@ -31,8 +31,10 @@ def test_v1_signal_export_contract_is_recorded_without_reopening_live_next() -> 
         "passed / t+1 open backtesting.py proof completed |"
     ) in roadmap_text
     assert (
-        "| 4 | `v1-vectorbt-portfolio-analytics-proof-card` | prepared next route card |"
+        "| 4 | `v1-vectorbt-portfolio-analytics-proof-card` | "
+        "passed / vectorbt portfolio analytics proof completed |"
     ) in roadmap_text
+    assert "| 5 | `v1-broker-adapter-feasibility-card` | prepared next route card |" in roadmap_text
     assert (
         "v1-signal-export-contract-card-20260513-01 = passed / signal export contract frozen"
     ) in ledger_text
@@ -40,7 +42,11 @@ def test_v1_signal_export_contract_is_recorded_without_reopening_live_next() -> 
         "v1-t-plus-one-open-backtesting-py-proof-card-20260514-01 = "
         "passed / t+1 open backtesting.py proof completed"
     ) in ledger_text
-    assert "next route card = v1-vectorbt-portfolio-analytics-proof-card" in ledger_text
+    assert (
+        "v1-vectorbt-portfolio-analytics-proof-card-20260514-01 = "
+        "passed / vectorbt portfolio analytics proof completed"
+    ) in ledger_text
+    assert "next route card = v1-broker-adapter-feasibility-card" in ledger_text
     for required_text in (
         "`symbol`",
         "`signal_date`",

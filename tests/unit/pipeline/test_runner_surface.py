@@ -16,3 +16,7 @@ def test_formal_release_proof_runner_is_allowlisted() -> None:
 
 def test_formal_release_source_proof_runner_is_allowlisted() -> None:
     assert "run_formal_release_source_proof.py" in allowed_pipeline_runner_names()
+
+
+def test_v1_vectorbt_portfolio_analytics_runner_is_allowlisted() -> None:
+    assert "run_v1_vectorbt_portfolio_analytics_proof.py" in allowed_pipeline_runner_names()
