@@ -247,8 +247,8 @@ Stage 0 只冻结路线与 no-live 边界。
 | 1 | `v1-core-module-recovery-roadmap-freeze-card` | passed / roadmap frozen | 冻结本路线图、broker 暂缓、no-live 边界 |
 | 2 | `v1-malf-v1-4-immutability-anchor-card` | passed / immutability anchored | 只读锚定 MALF v1.4 不变量清单 |
 | 3 | `v1-alpha-pas-source-inventory-card` | passed / source inventory completed | 盘点当前 Alpha/PAS、历史版本、书籍和系统经验 |
-| 4 | `v1-alpha-pas-authority-map-card` | prepared next route card | 映射书籍、历史系统和第 5 章交易实例，冻结 PAS 候选生命周期与 A 股入门剑边界 |
-| 5 | `v1-alpha-pas-contract-redesign-card` | planned | 冻结 Alpha/PAS v1.0 定义包与新版合同，输入固定为 MALF v1.4 |
+| 4 | `v1-alpha-pas-authority-map-card` | passed / authority map completed | 映射书籍、历史系统和第 5 章交易实例，冻结 PAS 候选生命周期与 A 股入门剑边界 |
+| 5 | `v1-alpha-pas-contract-redesign-card` | prepared next route card | 冻结 Alpha/PAS v1.0 定义包与新版合同，输入固定为 MALF v1.4 |
 | 6 | `v1-alpha-pas-bounded-proof-build-card` | planned | 小范围实现/恢复新版 Alpha/PAS bounded proof |
 | 7 | `v1-signal-contract-alignment-card` | planned | 让 Signal 对齐新版 Alpha/PAS 与 T+1 execution hint |
 | 8 | `v1-alpha-pas-t-plus-one-return-proof-card` | planned | T 日信号、T+1 开盘执行，输出收益/回撤/交易数/跳过原因 |
@@ -365,6 +365,19 @@ conclusion
   Alpha/PAS 只能输出候选生命周期、risk/reward viability hint 或 proof annotation，不生成管理动作。
 - 给出 `source_sufficiency = sufficient_for_definition / insufficient_for_migration_or_profit_proof` 裁决。
 - 给出 `Alpha_PAS_Design_Set_v1_0` 的文件清单、必须定义项、retained gaps。
+
+执行结果：
+
+| 项 | 结果 |
+|---|---|
+| 执行 run_id | `v1-alpha-pas-authority-map-card-20260514-01` |
+| 输出 | `docs/03-refactor/08-alpha-pas-authority-map-v1.md` |
+| 当前 live next | `none / terminal`（保持不变） |
+| 正式 DB mutation | `no` |
+| source sufficiency | `sufficient_for_definition / insufficient_for_migration_or_profit_proof` |
+| 当前链路状态 | `sword_blank / 剑胚` |
+| 新版链路上限 | `entry_level_a_share_survival_sword_candidate` |
+| 下一张路线卡 | `v1-alpha-pas-contract-redesign-card` |
 
 ### 5.5 `v1-alpha-pas-contract-redesign-card`
 

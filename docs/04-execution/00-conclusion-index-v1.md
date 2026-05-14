@@ -410,6 +410,23 @@ Alpha execution records、五个正式 Alpha DB，以及 `G:\malf-history`、`H:
 不写正式 DB；当前 live 下一卡仍保持 `none / terminal`，下一张路线卡为
 `v1-alpha-pas-authority-map-card`。
 
+当前 Alpha/PAS authority map 路线卡也已形成：
+
+```text
+v1-alpha-pas-authority-map-card-20260514-01 = passed / Alpha PAS authority map completed
+```
+
+它只读消费 `docs/03-refactor/07-alpha-pas-source-inventory-v1.md`，把当前 Alpha、
+历史 PAS 系统、YTC / Bob Volman / A 股经验与 MALF v1.4 映射为
+`docs/03-refactor/08-alpha-pas-authority-map-v1.md`。结论是：MALF v1.4 继续做结构尺，
+Alpha/PAS 只解释机会与候选生命周期，Signal 只做汇聚裁决；PAS 强弱比较必须基于
+MALF 已完成波段 baseline，当前 wave / candidate / transition 只能作为 in-flight
+confirmation / invalidation。当前 MALF + Alpha + Signal 仍是 `sword_blank / 剑胚`，
+新版链路完成后最多裁决为 `entry_level_a_share_survival_sword_candidate`。本卡不迁移历史代码、
+不复制书籍内容、不冻结新版 Alpha/PAS contract、不运行收益 proof、不写正式 DB；
+当前 live 下一卡仍保持 `none / terminal`，下一张路线卡为
+`v1-alpha-pas-contract-redesign-card`。
+
 | Module | Run ID | Status | Conclusion |
 |---|---|---|---|
 | Pipeline | `v1-usage-readout-report-card-20260513-01` | `passed / usage readout report generated` | [conclusion](records/pipeline/v1-usage-readout-report-card-20260513-01.conclusion.md) |
@@ -422,6 +439,7 @@ Alpha execution records、五个正式 Alpha DB，以及 `G:\malf-history`、`H:
 | Pipeline | `v1-core-module-recovery-roadmap-freeze-card-20260514-01` | `passed / roadmap frozen / post-terminal route` | [conclusion](records/pipeline/v1-core-module-recovery-roadmap-freeze-card-20260514-01.conclusion.md) |
 | Pipeline | `v1-malf-v1-4-immutability-anchor-card-20260514-01` | `passed / MALF v1.4 immutability anchored` | [conclusion](records/pipeline/v1-malf-v1-4-immutability-anchor-card-20260514-01.conclusion.md) |
 | Pipeline | `v1-alpha-pas-source-inventory-card-20260514-01` | `passed / Alpha PAS source inventory completed` | [conclusion](records/pipeline/v1-alpha-pas-source-inventory-card-20260514-01.conclusion.md) |
+| Pipeline | `v1-alpha-pas-authority-map-card-20260514-01` | `passed / Alpha PAS authority map completed` | [conclusion](records/pipeline/v1-alpha-pas-authority-map-card-20260514-01.conclusion.md) |
 
 ## 3.1 Newly Passed Pre-Position Repair Card
 

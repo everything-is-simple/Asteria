@@ -136,7 +136,8 @@ v1-vectorbt-portfolio-analytics-proof-card-20260514-01 = passed / vectorbt portf
 v1-core-module-recovery-roadmap-freeze-card-20260514-01 = passed / roadmap frozen / post-terminal route
 v1-malf-v1-4-immutability-anchor-card-20260514-01 = passed / MALF v1.4 immutability anchored
 v1-alpha-pas-source-inventory-card-20260514-01 = passed / Alpha PAS source inventory completed
-next route card = v1-alpha-pas-authority-map-card
+v1-alpha-pas-authority-map-card-20260514-01 = passed / Alpha PAS authority map completed
+next route card = v1-alpha-pas-contract-redesign-card
 ```
 
 该路线不修改 live next；当前 live truth 仍保持 `none / terminal`。`daily-incremental-production-scope-card`
@@ -156,6 +157,14 @@ docs / code / DB evidence、历史系统目录与书籍参考目录，输出
 `docs/03-refactor/07-alpha-pas-source-inventory-v1.md`。该卡不迁移历史代码、不复制书籍内容、
 不冻结新版 Alpha/PAS contract、不运行收益 proof、不写正式 DB；下一张路线卡为
 `v1-alpha-pas-authority-map-card`。当前 live truth 仍保持 `none / terminal`。
+
+随后 `v1-alpha-pas-authority-map-card-20260514-01` 已只读消费 source inventory，
+把当前 Alpha、历史 PAS 系统、YTC / Bob Volman / A 股经验与 MALF v1.4 映射成
+`docs/03-refactor/08-alpha-pas-authority-map-v1.md`。该卡冻结了 completed-wave baseline
+与 in-flight confirmation 的边界，裁决当前链路仍是 `sword_blank / 剑胚`，新版链路
+最多进入 `entry_level_a_share_survival_sword_candidate`；不迁移历史代码、不复制书籍内容、
+不冻结新版 Alpha/PAS contract、不运行收益 proof、不写正式 DB；下一张路线卡为
+`v1-alpha-pas-contract-redesign-card`。当前 live truth 仍保持 `none / terminal`。
 
 对应 symbolic allowed next action：
 
