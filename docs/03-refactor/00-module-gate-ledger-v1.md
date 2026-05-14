@@ -137,7 +137,8 @@ v1-core-module-recovery-roadmap-freeze-card-20260514-01 = passed / roadmap froze
 v1-malf-v1-4-immutability-anchor-card-20260514-01 = passed / MALF v1.4 immutability anchored
 v1-alpha-pas-source-inventory-card-20260514-01 = passed / Alpha PAS source inventory completed
 v1-alpha-pas-authority-map-card-20260514-01 = passed / Alpha PAS authority map completed
-next route card = v1-alpha-pas-contract-redesign-card
+v1-alpha-pas-contract-redesign-card-20260514-01 = passed / Alpha PAS contract redesigned
+next route card = v1-alpha-pas-bounded-proof-build-card
 ```
 
 该路线不修改 live next；当前 live truth 仍保持 `none / terminal`。`daily-incremental-production-scope-card`
@@ -165,6 +166,14 @@ docs / code / DB evidence、历史系统目录与书籍参考目录，输出
 最多进入 `entry_level_a_share_survival_sword_candidate`；不迁移历史代码、不复制书籍内容、
 不冻结新版 Alpha/PAS contract、不运行收益 proof、不写正式 DB；下一张路线卡为
 `v1-alpha-pas-contract-redesign-card`。当前 live truth 仍保持 `none / terminal`。
+
+随后 `v1-alpha-pas-contract-redesign-card-20260514-01` 已冻结
+`H:\Asteria-Validated\Alpha_PAS_Design_Set_v1_0` 与新版 Alpha/PAS 文档合同。该合同只读消费
+MALF v1.4 WavePosition / service facts 与 setup-time visible facts，输出
+context、strength、setup、trigger、candidate lifecycle、rank、lineage 和 T+1 open proof hint；
+不输出 position size、portfolio allocation、broker order、fill、account state 或 profit claim。
+该卡不迁移历史代码、不运行 bounded proof、不写正式 DB；下一张路线卡为
+`v1-alpha-pas-bounded-proof-build-card`。当前 live truth 仍保持 `none / terminal`。
 
 对应 symbolic allowed next action：
 

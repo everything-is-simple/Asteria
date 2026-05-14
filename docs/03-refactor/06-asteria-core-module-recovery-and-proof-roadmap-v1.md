@@ -248,8 +248,8 @@ Stage 0 只冻结路线与 no-live 边界。
 | 2 | `v1-malf-v1-4-immutability-anchor-card` | passed / immutability anchored | 只读锚定 MALF v1.4 不变量清单 |
 | 3 | `v1-alpha-pas-source-inventory-card` | passed / source inventory completed | 盘点当前 Alpha/PAS、历史版本、书籍和系统经验 |
 | 4 | `v1-alpha-pas-authority-map-card` | passed / authority map completed | 映射书籍、历史系统和第 5 章交易实例，冻结 PAS 候选生命周期与 A 股入门剑边界 |
-| 5 | `v1-alpha-pas-contract-redesign-card` | prepared next route card | 冻结 Alpha/PAS v1.0 定义包与新版合同，输入固定为 MALF v1.4 |
-| 6 | `v1-alpha-pas-bounded-proof-build-card` | planned | 小范围实现/恢复新版 Alpha/PAS bounded proof |
+| 5 | `v1-alpha-pas-contract-redesign-card` | passed / contract redesigned | 冻结 Alpha/PAS v1.0 定义包与新版合同，输入固定为 MALF v1.4 |
+| 6 | `v1-alpha-pas-bounded-proof-build-card` | prepared next route card | 小范围实现/恢复新版 Alpha/PAS bounded proof |
 | 7 | `v1-signal-contract-alignment-card` | planned | 让 Signal 对齐新版 Alpha/PAS 与 T+1 execution hint |
 | 8 | `v1-alpha-pas-t-plus-one-return-proof-card` | planned | T 日信号、T+1 开盘执行，输出收益/回撤/交易数/跳过原因 |
 | 9 | `v1-portfolio-analytics-reproof-card` | planned | 用新版 Alpha/PAS 信号重跑组合层 proof |
@@ -414,6 +414,19 @@ conclusion
 - 新合同可被 Signal 消费。
 - 合同包含 source lineage、rule version、confidence / strength、reason code。
 - 合同明确面向 T+1 open proof，不面向 broker。
+
+执行结果：
+
+| 项 | 结果 |
+|---|---|
+| 执行 run_id | `v1-alpha-pas-contract-redesign-card-20260514-01` |
+| 定义包目录 | `H:\Asteria-Validated\Alpha_PAS_Design_Set_v1_0` |
+| 定义包 zip | `H:\Asteria-Validated\Alpha_PAS_Design_Set_v1_0.zip` |
+| 当前 live next | `none / terminal`（保持不变） |
+| 正式 DB mutation | `no` |
+| runtime proof | `no` |
+| broker feasibility | `deferred` |
+| 下一张路线卡 | `v1-alpha-pas-bounded-proof-build-card` |
 
 ### 5.6 `v1-alpha-pas-bounded-proof-build-card`
 

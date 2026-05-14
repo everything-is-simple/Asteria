@@ -427,6 +427,22 @@ confirmation / invalidation。当前 MALF + Alpha + Signal 仍是 `sword_blank /
 当前 live 下一卡仍保持 `none / terminal`，下一张路线卡为
 `v1-alpha-pas-contract-redesign-card`。
 
+当前 Alpha/PAS contract redesign 路线卡也已形成：
+
+```text
+v1-alpha-pas-contract-redesign-card-20260514-01 = passed / Alpha PAS contract redesigned
+```
+
+它消费 `docs/03-refactor/08-alpha-pas-authority-map-v1.md`，冻结
+`H:\Asteria-Validated\Alpha_PAS_Design_Set_v1_0` 与新版 Alpha/PAS 文档合同。该合同只读消费
+MALF v1.4 WavePosition / service facts 与 setup-time visible facts，输出
+`pas_market_context`、`pas_strength_profile`、`pas_setup_family`、`pas_trigger_event`、
+`pas_candidate_lifecycle`、`pas_historical_rank_profile`、`pas_entry_candidate`、
+`pas_management_handoff_hint`、`pas_failure_state` 与 `pas_source_lineage`；可被 Signal
+与 T+1 open proof 消费，但不输出 position size、portfolio allocation、broker order、fill、
+account state 或 profit claim。当前 live 下一卡仍保持 `none / terminal`，下一张路线卡为
+`v1-alpha-pas-bounded-proof-build-card`。
+
 | Module | Run ID | Status | Conclusion |
 |---|---|---|---|
 | Pipeline | `v1-usage-readout-report-card-20260513-01` | `passed / usage readout report generated` | [conclusion](records/pipeline/v1-usage-readout-report-card-20260513-01.conclusion.md) |
@@ -440,6 +456,7 @@ confirmation / invalidation。当前 MALF + Alpha + Signal 仍是 `sword_blank /
 | Pipeline | `v1-malf-v1-4-immutability-anchor-card-20260514-01` | `passed / MALF v1.4 immutability anchored` | [conclusion](records/pipeline/v1-malf-v1-4-immutability-anchor-card-20260514-01.conclusion.md) |
 | Pipeline | `v1-alpha-pas-source-inventory-card-20260514-01` | `passed / Alpha PAS source inventory completed` | [conclusion](records/pipeline/v1-alpha-pas-source-inventory-card-20260514-01.conclusion.md) |
 | Pipeline | `v1-alpha-pas-authority-map-card-20260514-01` | `passed / Alpha PAS authority map completed` | [conclusion](records/pipeline/v1-alpha-pas-authority-map-card-20260514-01.conclusion.md) |
+| Pipeline | `v1-alpha-pas-contract-redesign-card-20260514-01` | `passed / Alpha PAS contract redesigned` | [conclusion](records/pipeline/v1-alpha-pas-contract-redesign-card-20260514-01.conclusion.md) |
 
 ## 3.1 Newly Passed Pre-Position Repair Card
 
