@@ -64,7 +64,56 @@ MALF authority anchor。
 
 因此下一阶段重心从 broker 选择前移到 Alpha/PAS 语义恢复与收益证明。
 
-### 2.3 Broker feasibility 暂缓
+### 2.3 Alpha/PAS 必须先形成类似 MALF 的定义包
+
+Alpha/PAS 恢复不走“直接迁移旧代码”路线，而是先形成类似
+`H:\Asteria-Validated\MALF_Three_Part_Design_Set_v1_4` 的权威定义包。
+
+建议目标形态：
+
+```text
+H:\Asteria-Validated\Alpha_PAS_Design_Set_v1_0
+```
+
+定义包应至少包含：
+
+| 文件 | 角色 |
+|---|---|
+| `AlphaPAS_00_Bridge_v1_0.md` | 说明 Alpha/PAS 与 MALF v1.4、当前 Alpha 五族、历史系统和书籍来源的桥接关系 |
+| `AlphaPAS_01_Core_Definitions_Theorems_v1_0.md` | 定义 PAS market context、strength/weakness、setup、trigger、candidate、failure |
+| `AlphaPAS_01B_Operational_Boundary_Rules_v1_0.md` | 定义只读消费 MALF、不得重定义 MALF、不得输出订单/仓位/成交的边界 |
+| `AlphaPAS_03_System_Service_Interface_v1_0.md` | 定义给 Signal / T+1 proof 消费的 Alpha/PAS service surface |
+| `MANIFEST.json` | 列明来源、hash、版本和适用范围 |
+
+本定义包模仿 MALF 的治理形态，但不得复制 MALF 的业务层级：MALF 定义结构事实，
+Alpha/PAS 只解释机会。
+
+### 2.4 PAS 强弱比较必须以 MALF 已完成波段为基准
+
+Lance Beggs / YTC 的 PAS 核心不是“看图感觉”，而是持续判断市场结构、趋势、强弱与未来路径。
+在 Asteria 中，这一层必须落到 MALF v1.4 已发布的波段事实上：
+
+| PAS 比较 | Asteria 落地口径 |
+|---|---|
+| 已完成同向基准 | `previous_completed_same_direction_wave` 与 `pre_previous_completed_same_direction_wave` 比较：推进距离、持续时间、速度、是否创新、是否更轻松越过边界 |
+| 已完成正逆对比 | 最近已完成趋势推进波与最近已完成逆向波段比较：强势是否仍在趋势方向，逆向是否只是弱回撤，还是已经出现反向接管 |
+| 当前进行中证据 | `current_wave`、candidate、transition、latest WavePosition 只能作为 `in_flight_confirmation`，用于判断预期是否被支持、削弱或失效；不得当作 completed baseline |
+| setup 时点约束 | 只使用 setup bar 当时及之前 MALF 已确认或已发布的 facts，不使用未来数据，不用事后完成的波段回填当时判断 |
+| S/R / boundary 交互 | 用 MALF guard boundary、transition boundary、candidate guard / confirmation facts 辅助判断测试、突破、突破失败、突破回撤 |
+| 无力继续 | 用 no-new-span、stagnation-rank、candidate replacement、transition span 等事实标记无法延伸或延伸质量变差 |
+
+因此，沙盘口径必须修正为：
+
+```text
+不是问“当前 up wave 比前一段 up wave 有没有更强”。
+而是先问“上一段已完成 up wave 是否强于上上一段已完成 up wave”。
+当前正在展开的 up wave / down pullback 只进入行进中确认、弱化、失效判断。
+```
+
+因此 Alpha/PAS authority map 必须把“强势方向运动、弱势方向失败”的书籍语义，
+翻译成基于 MALF wave / transition / lifespan / service facts 的可审计定义。
+
+### 2.5 Broker feasibility 暂缓
 
 `v1-broker-adapter-feasibility-card` 不取消，但必须延后。
 
@@ -91,7 +140,7 @@ Stage 0 只冻结路线与 no-live 边界。
 |---|---:|---:|
 | Stage 0 | 路线冻结与 no-live 边界 | 1 |
 | Stage 1 | MALF v1.4 不变量锚定 | 1 |
-| Stage 2 | Alpha/PAS 历史权威恢复 | 3 |
+| Stage 2 | Alpha/PAS 历史权威恢复与定义包冻结 | 3 |
 | Stage 3 | Alpha/PAS 到 Signal 与收益证明 | 3 |
 | Stage 4 | 组合复验与 broker 延后裁决 | 2 |
 
@@ -107,9 +156,9 @@ Stage 0 只冻结路线与 no-live 边界。
 |---:|---|---|---|
 | 1 | `v1-core-module-recovery-roadmap-freeze-card` | passed / roadmap frozen | 冻结本路线图、broker 暂缓、no-live 边界 |
 | 2 | `v1-malf-v1-4-immutability-anchor-card` | passed / immutability anchored | 只读锚定 MALF v1.4 不变量清单 |
-| 3 | `v1-alpha-pas-source-inventory-card` | prepared next route card | 盘点当前 Alpha/PAS、历史版本、书籍和系统经验 |
-| 4 | `v1-alpha-pas-authority-map-card` | planned | 映射 Lance Beggs / Bob Volman / 简简单单做股票 / 历史系统中的 PAS 语义 |
-| 5 | `v1-alpha-pas-contract-redesign-card` | planned | 冻结新版 Alpha/PAS 合同，输入固定为 MALF v1.4 |
+| 3 | `v1-alpha-pas-source-inventory-card` | passed / source inventory completed | 盘点当前 Alpha/PAS、历史版本、书籍和系统经验 |
+| 4 | `v1-alpha-pas-authority-map-card` | prepared next route card | 映射 Lance Beggs / Bob Volman / 简简单单做股票 / 历史系统中的 PAS 语义 |
+| 5 | `v1-alpha-pas-contract-redesign-card` | planned | 冻结 Alpha/PAS v1.0 定义包与新版合同，输入固定为 MALF v1.4 |
 | 6 | `v1-alpha-pas-bounded-proof-build-card` | planned | 小范围实现/恢复新版 Alpha/PAS bounded proof |
 | 7 | `v1-signal-contract-alignment-card` | planned | 让 Signal 对齐新版 Alpha/PAS 与 T+1 execution hint |
 | 8 | `v1-alpha-pas-t-plus-one-return-proof-card` | planned | T 日信号、T+1 开盘执行，输出收益/回撤/交易数/跳过原因 |
@@ -182,28 +231,62 @@ conclusion
 
 目标：把书籍、历史版本和当前实现中的 PAS / Alpha 语义映射成权威对照表。
 
+重点来源：
+
+| 来源 | 用途 |
+|---|---|
+| YTC 卷 2 第 3 章 `市场分析` | market context、S/R、多重时间框架、市场结构、趋势、强弱、未来趋势方向 |
+| YTC 卷 3 第 4 章 `交易策略` | YTC 架构、反弱势、被套交易者、TST / BOF / BPB / PB / CPB setup |
+| YTC 卷 3 第 5 章 `交易示例` | 五类 setup 的样例语料和失败/取消/重入场景 |
+| 当前 Asteria Alpha 五族 | `BOF / TST / PB / CPB / BPB` 当前实现表面 |
+| MALF v1.4 | wave / transition / candidate / lifespan / WavePosition 计量事实 |
+
+必须输出的 authority map 维度：
+
+| 维度 | 要求 |
+|---|---|
+| PAS market context | 如何由 MALF WavePosition、S/R、timeframe context 定义 |
+| strength / weakness | 已完成同向基准、已完成正逆对比、当前进行中确认/失效分层 |
+| setup family | TST / BOF / BPB / PB / CPB 是否对应并如何补强当前 Alpha 五族 |
+| entry candidate | 只定义候选与执行 hint，不生成订单 |
+| failure / invalidation | 如何表达 setup 失败、取消、重新评估 |
+| source lineage | 每个概念来自当前实现、历史系统、YTC 章节或 retained reference |
+
 通过标准：
 
 - 标出当前 Alpha/PAS 简化版缺口。
 - 区分必须保留、需要补强、历史弃用、不适合当前 Asteria 的概念。
 - 明确哪些语义进入 contract redesign，哪些只保留为 future enhancement。
+- 明确 PAS 强弱比较必须基于 MALF 已完成波段基准，不得把当前进行中波段当作 completed baseline。
 
 ### 5.5 `v1-alpha-pas-contract-redesign-card`
 
-目标：冻结新版 Alpha/PAS 合同。
+目标：冻结 `Alpha_PAS_Design_Set_v1_0` 与新版 Alpha/PAS 合同。
 
 边界：
 
 | 项 | 裁决 |
 |---|---|
 | 输入 | MALF v1.4 WavePosition / service facts |
-| 输出 | Alpha/PAS event、score、reason、candidate |
+| 输出 | Alpha/PAS context、setup、strength profile、event、score、reason、candidate、T+1 open execution hint |
 | 不输出 | position size、portfolio allocation、broker order |
 | 下游对象 | Signal 与 T+1 回测 |
 | 禁止 | 写回 MALF、直接生成实盘订单 |
 
+定义包必须至少冻结：
+
+| 定义 | 说明 |
+|---|---|
+| `pas_market_context` | 当前价格在 MALF 结构、S/R、timeframe context 中的位置 |
+| `pas_strength_profile` | completed-wave baseline、in-flight confirmation、正逆波段对比、无力继续、boundary interaction |
+| `pas_setup_family` | `TST / BOF / BPB / PB / CPB` 的 Asteria 定义 |
+| `pas_entry_candidate` | 面向 Signal / T+1 proof 的候选，不是订单 |
+| `pas_failure_state` | setup 取消、失败、重新评估、需要等待 |
+| `pas_source_lineage` | MALF run / WavePosition / rule version / source concept trace |
+
 通过标准：
 
+- `Alpha_PAS_Design_Set_v1_0` 形成 manifest 和版本锚点。
 - 新合同可被 Signal 消费。
 - 合同包含 source lineage、rule version、confidence / strength、reason code。
 - 合同明确面向 T+1 open proof，不面向 broker。
@@ -217,6 +300,8 @@ conclusion
 - 只跑 bounded proof。
 - 不写正式 DB，除非后续独立卡明确授权 guarded formal write。
 - 证明新版 PAS 语义能从 MALF v1.4 输入落到可审计输出。
+- 至少证明 `pas_strength_profile` 可从 setup 之前 MALF 已完成波段生成 completed baseline，不使用未来数据。
+- 至少证明当前进行中波段只作为 in-flight confirmation / invalidation，不被写成 completed baseline。
 
 ### 5.7 `v1-signal-contract-alignment-card`
 

@@ -397,6 +397,19 @@ MALF v1.4 继续作为长期结构权威；Alpha/PAS 只能消费 MALF WavePosit
 该卡不执行 runtime、不修改 schema、不写正式 DB、不迁移历史代码；当前 live 下一卡仍保持
 `none / terminal`，下一张路线卡为 `v1-alpha-pas-source-inventory-card`。
 
+当前 Alpha/PAS source inventory 路线卡也已形成：
+
+```text
+v1-alpha-pas-source-inventory-card-20260514-01 = passed / Alpha PAS source inventory completed
+```
+
+它只读盘点当前 Asteria Alpha 六件套、`src/asteria/alpha`、`scripts/alpha`、`tests/unit/alpha`、
+Alpha execution records、五个正式 Alpha DB，以及 `G:\malf-history`、`H:\Asteria-Validated\MALF-system-history`
+和三组书籍参考目录。输出为 `docs/03-refactor/07-alpha-pas-source-inventory-v1.md`。
+该卡不迁移历史代码、不复制书籍内容、不冻结新版 Alpha/PAS contract、不运行收益 proof、
+不写正式 DB；当前 live 下一卡仍保持 `none / terminal`，下一张路线卡为
+`v1-alpha-pas-authority-map-card`。
+
 | Module | Run ID | Status | Conclusion |
 |---|---|---|---|
 | Pipeline | `v1-usage-readout-report-card-20260513-01` | `passed / usage readout report generated` | [conclusion](records/pipeline/v1-usage-readout-report-card-20260513-01.conclusion.md) |
@@ -408,6 +421,7 @@ MALF v1.4 继续作为长期结构权威；Alpha/PAS 只能消费 MALF WavePosit
 | Pipeline | `v1-vectorbt-portfolio-analytics-proof-card-20260514-01` | `passed / vectorbt portfolio analytics proof completed` | [conclusion](records/pipeline/v1-vectorbt-portfolio-analytics-proof-card-20260514-01.conclusion.md) |
 | Pipeline | `v1-core-module-recovery-roadmap-freeze-card-20260514-01` | `passed / roadmap frozen / post-terminal route` | [conclusion](records/pipeline/v1-core-module-recovery-roadmap-freeze-card-20260514-01.conclusion.md) |
 | Pipeline | `v1-malf-v1-4-immutability-anchor-card-20260514-01` | `passed / MALF v1.4 immutability anchored` | [conclusion](records/pipeline/v1-malf-v1-4-immutability-anchor-card-20260514-01.conclusion.md) |
+| Pipeline | `v1-alpha-pas-source-inventory-card-20260514-01` | `passed / Alpha PAS source inventory completed` | [conclusion](records/pipeline/v1-alpha-pas-source-inventory-card-20260514-01.conclusion.md) |
 
 ## 3.1 Newly Passed Pre-Position Repair Card
 
