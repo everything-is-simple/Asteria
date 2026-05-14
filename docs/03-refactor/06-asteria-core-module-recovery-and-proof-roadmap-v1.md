@@ -250,8 +250,8 @@ Stage 0 只冻结路线与 no-live 边界。
 | 4 | `v1-alpha-pas-authority-map-card` | passed / authority map completed | 映射书籍、历史系统和第 5 章交易实例，冻结 PAS 候选生命周期与 A 股入门剑边界 |
 | 5 | `v1-alpha-pas-contract-redesign-card` | passed / contract redesigned | 冻结 Alpha/PAS v1.0 定义包与新版合同，输入固定为 MALF v1.4 |
 | 6 | `v1-alpha-pas-bounded-proof-build-card` | passed / bounded proof built | 小范围实现/恢复新版 Alpha/PAS bounded proof |
-| 7 | `v1-signal-contract-alignment-card` | prepared next route card | 让 Signal 对齐新版 Alpha/PAS 与 T+1 execution hint |
-| 8 | `v1-alpha-pas-t-plus-one-return-proof-card` | planned | T 日信号、T+1 开盘执行，输出收益/回撤/交易数/跳过原因 |
+| 7 | `v1-signal-contract-alignment-card` | passed / signal contract aligned | 让 Signal 对齐新版 Alpha/PAS 与 T+1 execution hint |
+| 8 | `v1-alpha-pas-t-plus-one-return-proof-card` | prepared next route card | T 日信号、T+1 开盘执行，输出收益/回撤/交易数/跳过原因 |
 | 9 | `v1-portfolio-analytics-reproof-card` | planned | 用新版 Alpha/PAS 信号重跑组合层 proof |
 | 10 | `v1-broker-adapter-feasibility-card` | deferred | 仅在第 8、9 卡证明策略有研究收益价值后，只读评估 broker adapter |
 
@@ -471,6 +471,25 @@ conclusion
 - Signal 保留 `symbol`、`signal_date`、`source_run_id`、`lineage`。
 - Signal 保留 `T+1 open execution hint`。
 - 不要求收益，不进入 broker。
+
+执行结果：
+
+| 项 | 结果 |
+|---|---|
+| 执行 run_id | `v1-signal-contract-alignment-card-20260514-01` |
+| source PAS DB | `H:\Asteria-temp\alpha_pas\v1-alpha-pas-bounded-proof-build-card-20260514-01\alpha_pas_bounded_proof.duckdb`（read-only） |
+| source PAS run | `v1-alpha-pas-bounded-proof-build-card-20260514-01` |
+| PAS input candidates | `4395` |
+| active PAS candidates | `1262` |
+| aligned formal signals | `1262` |
+| hard_fail_count | `0` |
+| temp alignment DB | `H:\Asteria-temp\signal_pas\v1-signal-contract-alignment-card-20260514-01\signal_pas_alignment.duckdb` |
+| report dir | `H:\Asteria-report\pipeline\2026-05-14\v1-signal-contract-alignment-card-20260514-01` |
+| validated zip | `H:\Asteria-Validated\Asteria-v1-signal-contract-alignment-card-20260514-01.zip` |
+| 当前 live next | `none / terminal`（保持不变） |
+| 正式 DB mutation | `no` |
+| return / broker proof | `no` |
+| 下一张路线卡 | `v1-alpha-pas-t-plus-one-return-proof-card` |
 
 ### 5.8 `v1-alpha-pas-t-plus-one-return-proof-card`
 

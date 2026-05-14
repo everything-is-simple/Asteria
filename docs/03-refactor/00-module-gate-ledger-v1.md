@@ -139,7 +139,8 @@ v1-alpha-pas-source-inventory-card-20260514-01 = passed / Alpha PAS source inven
 v1-alpha-pas-authority-map-card-20260514-01 = passed / Alpha PAS authority map completed
 v1-alpha-pas-contract-redesign-card-20260514-01 = passed / Alpha PAS contract redesigned
 v1-alpha-pas-bounded-proof-build-card-20260514-01 = passed / Alpha PAS bounded proof built
-next route card = v1-signal-contract-alignment-card
+v1-signal-contract-alignment-card-20260514-01 = passed / Signal contract aligned
+next route card = v1-alpha-pas-t-plus-one-return-proof-card
 ```
 
 该路线不修改 live next；当前 live truth 仍保持 `none / terminal`。`daily-incremental-production-scope-card`
@@ -187,6 +188,18 @@ context、strength、setup、trigger、candidate lifecycle、rank、lineage 和 
 `H:\Asteria-Validated\Asteria-v1-alpha-pas-bounded-proof-build-card-20260514-01.zip`。
 该卡不写正式 DB、不改 MALF、不证明收益、不接 broker；下一张路线卡为
 `v1-signal-contract-alignment-card`。当前 live truth 仍保持 `none / terminal`。
+
+随后 `v1-signal-contract-alignment-card-20260514-01` 已新增 Signal/PAS alignment-only runtime，
+只读消费第 6 卡 temp PAS proof DB，在
+`H:\Asteria-temp\signal_pas\v1-signal-contract-alignment-card-20260514-01`
+生成 temp alignment DB，并在 `H:\Asteria-report\pipeline\2026-05-14\v1-signal-contract-alignment-card-20260514-01`
+生成 alignment summary、contract coverage、lineage summary、audit summary 与 manifest。
+结果为 `input_candidate_count = 4395`、`active_candidate_count = 1262`、
+`formal_signal_count = 1262`、`hard_fail_count = 0`、`formal_data_mutation = no`；
+validated evidence 为
+`H:\Asteria-Validated\Asteria-v1-signal-contract-alignment-card-20260514-01.zip`。
+该卡不写正式 DB、不修改正式 `signal.duckdb`、不证明收益、不接 broker；下一张路线卡为
+`v1-alpha-pas-t-plus-one-return-proof-card`。当前 live truth 仍保持 `none / terminal`。
 
 对应 symbolic allowed next action：
 
