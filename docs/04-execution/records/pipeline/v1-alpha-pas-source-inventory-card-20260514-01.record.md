@@ -17,8 +17,9 @@
 3. 只读盘点当前 Asteria Alpha docs / code / runner / tests / execution records / formal DB paths。
 4. 只读确认 `G:\malf-history`、`H:\Asteria-Validated\MALF-system-history` 与书籍参考目录存在。
 5. 复核 YTC 卷 2 第 3 章与卷 3 第 4 / 5 章，补入 completed-wave baseline 与 in-flight confirmation 的下一卡必分口径。
-6. 输出 `docs/03-refactor/07-alpha-pas-source-inventory-v1.md`，只记录可审计引用和概念索引。
-7. 同步 roadmap、module gate ledger、conclusion index、repo 四件套、外部 report / manifest 与 Validated archive。
+6. 补充复核 `MarketLifespan-Quant`、`EmotionQuant-gamma`、`astock_lifespan-alpha`、`lifespan-0.01` 与 Bob Volman 参考材料。
+7. 输出 `docs/03-refactor/07-alpha-pas-source-inventory-v1.md`，只记录可审计引用、概念索引与资料充分性裁决。
+8. 同步 roadmap、module gate ledger、conclusion index、repo 四件套、外部 report / manifest 与 Validated archive。
 
 ## 3. Inventory Summary
 
@@ -34,6 +35,9 @@
 | book / reference roots | three roadmap reference roots confirmed |
 | YTC chapter anchors | volume 2 chapter 3; volume 3 chapters 4 / 5 |
 | completed vs in-flight split | next authority map must compare completed waves for baseline and treat current wave as provisional confirmation only |
+| historical PAS runtime/docs | sufficient for definition-package design, not sufficient for direct code migration |
+| Bob Volman references | sufficient as trigger / entry / false-breakout reference, not direct A-share parameter authority |
+| source sufficiency | `sufficient_for_definition`; `insufficient_for_migration_or_profit_proof` |
 
 ## 4. Boundaries Preserved
 
@@ -54,3 +58,5 @@
 映射为可进入 contract redesign 的语义对照，而不是直接迁移代码或复制书籍内容。
 其中 PAS 强弱基准必须先使用 MALF 已完成波段，当前正在发生的 up wave / down pullback
 只能作为行进中确认、削弱或失效证据。
+该卡还必须把 `Alpha_PAS_Design_Set_v1_0` 拆成 MALF v1.4 风格的定义包，
+并定义 context / trigger / strength / in-flight / historical-rank / formal-candidate 六层。

@@ -17,6 +17,11 @@
 completed-wave baseline 使用 MALF 已完成波段比较，current wave / candidate / transition
 仅作为 in-flight confirmation / invalidation，不得替代 completed baseline。
 
+根据补充复核，`MarketLifespan-Quant`、`EmotionQuant-gamma`、`astock_lifespan-alpha`、
+`lifespan-0.01`、YTC 与 Bob Volman 资料足以支撑 Asteria 构造自己的正式
+`Alpha_PAS_Design_Set_v1_0`。该充分性只限于 authority definition：不授权迁移旧代码，
+不证明收益，不打开 broker feasibility。
+
 ## 2. Gate Result
 
 | item | result |
@@ -26,6 +31,7 @@ completed-wave baseline 使用 MALF 已完成波段比较，current wave / candi
 | formal DB mutation | `no` |
 | historical code migration | `no` |
 | book content copied into repo | `no` |
+| source sufficiency | `sufficient_for_definition_only` |
 | next route card | `v1-alpha-pas-authority-map-card` |
 
 ## 3. Boundary
@@ -58,3 +64,5 @@ v1-alpha-pas-authority-map-card
 下一卡应把 source inventory 映射为 PAS / Alpha authority map，并明确哪些概念进入
 contract redesign，哪些保留为 reference / future enhancement / rejected。
 下一卡还必须冻结 completed-wave baseline 与 in-flight confirmation 的边界。
+同时，下一卡必须给出 MALF v1.4 风格的 `Alpha_PAS_Design_Set_v1_0` 文件清单与
+context / trigger / strength / in-flight / historical-rank / formal-candidate 六层定义任务。

@@ -43,6 +43,19 @@
 本卡只记录章节锚点，不复制书籍正文。下一卡必须把书中“当前价格行为是否支持预期”的
 行进中分析，与 Asteria 的 MALF completed-wave baseline 分开表达。
 
+### 2.2 Historical PAS Anchors
+
+| source | anchor | evidence role |
+|---|---|---|
+| `G:\malf-history\MarketLifespan-Quant\src\mlq\alpha\pas\contracts.py` | PAS five-trigger summaries, trigger ledger, formal signal, 16-cell readout | trigger / formal candidate / historical rank source anchor |
+| `G:\malf-history\MarketLifespan-Quant\src\mlq\core\contracts.py` | `BOF / BPB / PB / TST / CPB` public vocabulary | setup family vocabulary source anchor |
+| `G:\malf-history\MarketLifespan-Quant\docs\04-reference\battle-tested-lessons-all-modules-and-mainline-bridging-20260408.md` | trigger detection vs formal signal vs downstream ownership | boundary and anti-migration source anchor |
+| `G:\malf-history\EmotionQuant-gamma\WARP.md` | T+1 Open, IRS ranking, MSS sidecar, BOF-only mainline | execution hint and ranking sidecar source anchor |
+| `G:\malf-history\astock_lifespan-alpha\docs\02-spec\03-alpha-pas-trigger-semantic-spec-v1-20260419.md` | early Alpha/PAS trigger semantic spec | legacy trigger vocabulary source anchor |
+
+These anchors support `sufficient_for_definition`, not direct code migration,
+profit proof, or broker readiness.
+
 ## 3. External Evidence
 
 | asset | path |
@@ -60,5 +73,7 @@
 - 书籍内容可以复制进 repo。
 - T+1 open return proof 已改善。
 - broker adapter feasibility 可以进入 live queue。
+- 历史 PAS 代码可以不经 authority map 和 contract redesign 直接迁移。
+- Alpha/PAS 已证明收益或可接真实 broker。
 
 当前 live next 仍为 `none / terminal`。

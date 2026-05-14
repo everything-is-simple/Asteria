@@ -28,6 +28,7 @@
 | historical systems | `G:\malf-history\*`; `H:\Asteria-Validated\MALF-system-history` |
 | book / reference roots | `G:\《股市浮沉二十载》\2020.(Au)LanceBeggs`; `2021.Bob_Volman外汇超短线交易`; `2018.(CHINA)简简单单做股票` |
 | YTC chapter anchors | 卷 2 第 3 章；卷 3 第 4 / 5 章 |
+| sufficiency rereview | historical PAS runtime/docs, YTC, Bob Volman, and A 股历史系统是否足以定义独立 PAS 语义层 |
 
 ## 4. Explicit Non-Changes
 
@@ -45,6 +46,7 @@
 
 - `docs/03-refactor/07-alpha-pas-source-inventory-v1.md` exists and lists current / historical / reference source roots.
 - Inventory records the PAS split between completed-wave baseline and in-flight confirmation.
+- Inventory records `sufficient_for_definition` but not legacy migration, profit proof, or broker readiness.
 - Roadmap marks card 3 as passed and card 4 as prepared next route card.
 - Gate ledger and conclusion index register this post-terminal route card while preserving live next as `none / terminal`.
 - External report, manifest, and validated archive are produced.

@@ -79,10 +79,15 @@ H:\Asteria-Validated\Alpha_PAS_Design_Set_v1_0
 
 | 文件 | 角色 |
 |---|---|
-| `AlphaPAS_00_Bridge_v1_0.md` | 说明 Alpha/PAS 与 MALF v1.4、当前 Alpha 五族、历史系统和书籍来源的桥接关系 |
+| `AlphaPAS_00_Three_Documents_Bridge_v1_0.md` | 说明 Alpha/PAS 与 MALF v1.4、当前 Alpha 五族、历史系统和书籍来源的桥接关系 |
 | `AlphaPAS_01_Core_Definitions_Theorems_v1_0.md` | 定义 PAS market context、strength/weakness、setup、trigger、candidate、failure |
 | `AlphaPAS_01B_Operational_Boundary_Rules_v1_0.md` | 定义只读消费 MALF、不得重定义 MALF、不得输出订单/仓位/成交的边界 |
+| `AlphaPAS_02_Trigger_Strength_Stats_Definitions_Theorems_v1_0.md` | 定义 PAS 触发、波段强弱比较、历史统计排名与样本约束 |
 | `AlphaPAS_03_System_Service_Interface_v1_0.md` | 定义给 Signal / T+1 proof 消费的 Alpha/PAS service surface |
+| `AlphaPAS_04_Context_Chart_View_v1_0.md` | 给出 market context 与 MALF 波段标尺的图示化读法 |
+| `AlphaPAS_05_Trigger_Chart_View_v1_0.md` | 给出 TST / BOF / BPB / PB / CPB 的触发视图 |
+| `AlphaPAS_06_Stats_Ranking_Chart_View_v1_0.md` | 给出历史统计排名、分位、样本量、稀疏性与解释限制 |
+| `AlphaPAS_07_Definition_Theorem_Review_and_Implementation_Delta_v1_0.md` | 记录与当前 Asteria Alpha、历史 PAS、书籍语义的差异和取舍 |
 | `MANIFEST.json` | 列明来源、hash、版本和适用范围 |
 
 本定义包模仿 MALF 的治理形态，但不得复制 MALF 的业务层级：MALF 定义结构事实，
@@ -113,7 +118,44 @@ Lance Beggs / YTC 的 PAS 核心不是“看图感觉”，而是持续判断市
 因此 Alpha/PAS authority map 必须把“强势方向运动、弱势方向失败”的书籍语义，
 翻译成基于 MALF wave / transition / lifespan / service facts 的可审计定义。
 
-### 2.5 Broker feasibility 暂缓
+### 2.5 Source Sufficiency Verdict
+
+对当前列出的历史系统与书籍材料，本路线图给出阶段性裁决：
+
+```text
+sufficient for Alpha/PAS authority definition.
+not sufficient for direct legacy code migration.
+not sufficient for profit proof or broker readiness.
+```
+
+可用于正式版 Alpha/PAS 定义包的材料分层如下：
+
+| 来源层 | 可进入定义包的内容 | 不得直接进入 |
+|---|---|---|
+| YTC / Lance Beggs | market context、S/R、强弱、未来路径、TST / BOF / BPB / PB / CPB 语义 | 书籍正文复制、主观图感、不带 lineage 的人工判断 |
+| Bob Volman | 触发、入场、临界点、假突破、区间/突破细节参考 | 外汇短线参数原样照搬到 A 股日线 |
+| `MarketLifespan-Quant` | PAS 五触发器、16-cell readout、trigger ledger、formal signal、result reuse、table ownership 经验 | 旧 `research_lab` 临时链、一次性 backtest 输出、旧库表直接迁移 |
+| `EmotionQuant-gamma` | T+1 Open、IRS ranking、MSS risk sidecar、BOF-only 主线经验 | broker 执行闭环、MSS 进入个股横截面总分 |
+| `astock_lifespan-alpha` | 早期 MALF/PAS/Signal/Position 分解经验、T+0 signal -> T+1 open 桥接经验 | 历史代码和旧 schema 原样继承 |
+| `lifespan-0.01` | data producer、runner、checkpoint、trade bridge 的工程经验 | 把 Data / Trade 事实反向混入 Alpha/PAS 定义 |
+
+因此，第四卡必须回答“这些材料如何映射为 Asteria 自己的 PAS 语义层”，而不是问
+“旧系统有没有一个现成 PAS 可以搬过来”。
+
+### 2.6 Alpha/PAS Semantic Layers
+
+正式版 Alpha/PAS 至少拆成六层：
+
+| 层 | 职责 |
+|---|---|
+| `pas_market_context` | 解释价格当前处于 MALF 结构、S/R、timeframe 与 boundary 的哪个位置 |
+| `pas_trigger_event` | 记录 TST / BOF / BPB / PB / CPB 是否在 setup 时点触发 |
+| `pas_strength_profile` | 使用 MALF 已完成波段生成同向基准、正逆对比、回撤质量、无力继续 |
+| `pas_in_flight_state` | 记录当前 wave / candidate / transition 对预期的支持、削弱或失效，不替代 completed baseline |
+| `pas_historical_rank_profile` | 记录同类 setup 在历史样本中的频率、稀疏性、forward readout、failure / cancellation ranking |
+| `pas_formal_candidate` | 给 Signal / T+1 proof 的可消费候选，不生成订单、仓位或成交 |
+
+### 2.7 Broker feasibility 暂缓
 
 `v1-broker-adapter-feasibility-card` 不取消，但必须延后。
 
@@ -157,7 +199,7 @@ Stage 0 只冻结路线与 no-live 边界。
 | 1 | `v1-core-module-recovery-roadmap-freeze-card` | passed / roadmap frozen | 冻结本路线图、broker 暂缓、no-live 边界 |
 | 2 | `v1-malf-v1-4-immutability-anchor-card` | passed / immutability anchored | 只读锚定 MALF v1.4 不变量清单 |
 | 3 | `v1-alpha-pas-source-inventory-card` | passed / source inventory completed | 盘点当前 Alpha/PAS、历史版本、书籍和系统经验 |
-| 4 | `v1-alpha-pas-authority-map-card` | prepared next route card | 映射 Lance Beggs / Bob Volman / 简简单单做股票 / 历史系统中的 PAS 语义 |
+| 4 | `v1-alpha-pas-authority-map-card` | prepared next route card | 映射书籍与历史系统，裁决是否足以定义 Asteria 独立 PAS 语义层 |
 | 5 | `v1-alpha-pas-contract-redesign-card` | planned | 冻结 Alpha/PAS v1.0 定义包与新版合同，输入固定为 MALF v1.4 |
 | 6 | `v1-alpha-pas-bounded-proof-build-card` | planned | 小范围实现/恢复新版 Alpha/PAS bounded proof |
 | 7 | `v1-signal-contract-alignment-card` | planned | 让 Signal 对齐新版 Alpha/PAS 与 T+1 execution hint |
@@ -238,6 +280,10 @@ conclusion
 | YTC 卷 2 第 3 章 `市场分析` | market context、S/R、多重时间框架、市场结构、趋势、强弱、未来趋势方向 |
 | YTC 卷 3 第 4 章 `交易策略` | YTC 架构、反弱势、被套交易者、TST / BOF / BPB / PB / CPB setup |
 | YTC 卷 3 第 5 章 `交易示例` | 五类 setup 的样例语料和失败/取消/重入场景 |
+| Bob Volman price action references | 入场、临界点、假突破、区间/突破细节参考 |
+| `MarketLifespan-Quant` PAS runtime / docs | 五触发器、16-cell、trigger ledger、formal signal、历史统计与 result reuse 经验 |
+| `EmotionQuant-gamma` | T+1 Open、IRS ranking、MSS sidecar 与 BOF-only 主线边界 |
+| `astock_lifespan-alpha` | 早期 Alpha/PAS trigger、Signal、Position 桥接和 staged docs 经验 |
 | 当前 Asteria Alpha 五族 | `BOF / TST / PB / CPB / BPB` 当前实现表面 |
 | MALF v1.4 | wave / transition / candidate / lifespan / WavePosition 计量事实 |
 
@@ -248,6 +294,8 @@ conclusion
 | PAS market context | 如何由 MALF WavePosition、S/R、timeframe context 定义 |
 | strength / weakness | 已完成同向基准、已完成正逆对比、当前进行中确认/失效分层 |
 | setup family | TST / BOF / BPB / PB / CPB 是否对应并如何补强当前 Alpha 五族 |
+| trigger event | 什么叫 PAS 触发、什么叫未触发、取消、失败、等待 |
+| historical rank profile | 同类 setup 的历史统计排名、样本量、稀疏性、forward readout 与失败排名如何表达 |
 | entry candidate | 只定义候选与执行 hint，不生成订单 |
 | failure / invalidation | 如何表达 setup 失败、取消、重新评估 |
 | source lineage | 每个概念来自当前实现、历史系统、YTC 章节或 retained reference |
@@ -258,6 +306,8 @@ conclusion
 - 区分必须保留、需要补强、历史弃用、不适合当前 Asteria 的概念。
 - 明确哪些语义进入 contract redesign，哪些只保留为 future enhancement。
 - 明确 PAS 强弱比较必须基于 MALF 已完成波段基准，不得把当前进行中波段当作 completed baseline。
+- 给出 `source_sufficiency = sufficient_for_definition / insufficient_for_migration_or_profit_proof` 裁决。
+- 给出 `Alpha_PAS_Design_Set_v1_0` 的文件清单、必须定义项、retained gaps。
 
 ### 5.5 `v1-alpha-pas-contract-redesign-card`
 
@@ -280,6 +330,8 @@ conclusion
 | `pas_market_context` | 当前价格在 MALF 结构、S/R、timeframe context 中的位置 |
 | `pas_strength_profile` | completed-wave baseline、in-flight confirmation、正逆波段对比、无力继续、boundary interaction |
 | `pas_setup_family` | `TST / BOF / BPB / PB / CPB` 的 Asteria 定义 |
+| `pas_trigger_event` | setup 触发、未触发、取消、失败、等待、重新评估 |
+| `pas_historical_rank_profile` | setup 频率、样本量、历史分位、forward return readout、failure/cancellation rank |
 | `pas_entry_candidate` | 面向 Signal / T+1 proof 的候选，不是订单 |
 | `pas_failure_state` | setup 取消、失败、重新评估、需要等待 |
 | `pas_source_lineage` | MALF run / WavePosition / rule version / source concept trace |
