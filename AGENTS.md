@@ -79,7 +79,8 @@
 - Formal full rebuild and daily incremental release proof 已补齐正式证据；final release closeout 已核对 formal release evidence 与正式 DB manifest 并通过，当前为 terminal / no next card。
 - `v1-usage-validation-scope-card-20260512-01` 已作为 post-terminal / roadmap-only route 通过：冻结了 `31` 个申万一级行业代表股、`2024-01-02..2024-12-31` 时间窗与 `read_only` 使用验证边界。
 - `v1-application-db-readiness-audit-card-20260513-01` 已作为第二张 post-terminal 使用验证路线卡通过：`25 / 25` 个正式 DuckDB 可只读打开，Data / MALF / Alpha / Signal 上游 `20 / 20` 个 DB 可作为应用输入，Downstream / Pipeline `5 / 5` 可读，`issue_count = 0`；下一张路线卡是 `v1-usage-readout-report-card`，但当前 live next 仍保持 `none / terminal`。
-- `v1-usage-readout-report-card-20260513-01` 已作为第三张 post-terminal 使用验证路线卡通过：基于 `31` 个申万一级行业代表股与 `2024-01-02..2024-12-31` 时间窗，只读生成第一份人读使用读出报告，`issue_count = 0`，正式 DB mutation 为 `no`；下一张路线卡是 `v1-usage-value-decision-card`，但当前 live next 仍保持 `none / terminal`。
+- `v1-usage-readout-report-card-20260513-01` 已作为第三张 post-terminal 使用验证路线卡通过：基于 `31` 个申万一级行业代表股与 `2024-01-02..2024-12-31` 时间窗，只读生成第一份人读使用读出报告，`issue_count = 0`，正式 DB mutation 为 `no`；随后由第 4 张路线卡消费，但当前 live next 仍保持 `none / terminal`。
+- `v1-usage-value-decision-card-20260513-01` 已作为第四张 post-terminal 使用验证路线卡通过：裁决 `value_decision = research_usable_with_caveats`，`usage_blocker = 0`，`strategy_quality_issue = 2`，`source_caveat = 3`，`future_enhancement = 4`；下一张路线卡是 `daily-incremental-production-scope-card`，但当前 live next 仍保持 `none / terminal`。
 - 当前不得把 `v1 complete` 扩写为 System full build、Pipeline semantic repair 或业务模块语义重定义。
 
 硬规则：

@@ -23,6 +23,10 @@
 		{
 			"name": "Asteria-temp",
 			"path": "../Asteria-temp"
+		},
+		{
+			"name": "malf-history",
+			"path": "G:/malf-history"
 		}
 	],
 	"settings": {

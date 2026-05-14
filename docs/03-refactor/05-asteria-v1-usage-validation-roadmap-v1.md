@@ -293,8 +293,8 @@ Phase 2 不改变 live gate；当前 live next 仍保持 `none / terminal`。
 |---:|---|---|---|
 | 1 | `v1-core-retention-and-outsourcing-boundary-card` | passed / core retention and outsourcing boundary frozen | 冻结哪些自研、哪些外包、哪些历史资产回收、哪些 GitHub 项目只参考 |
 | 2 | `v1-signal-export-contract-card` | passed / signal export contract frozen | 冻结 Asteria 对外输出给回测框架的最小信号合同 |
-| 3 | `v1-t-plus-one-open-backtesting-py-proof-card` | prepared next route card | 用 `backtesting.py` 跑 T 日 signal -> T+1 open 的极小收益 proof |
-| 4 | `v1-vectorbt-portfolio-analytics-proof-card` | planned / after backtesting.py proof | 用 `vectorbt` 做矩阵化组合级绩效、暴露、换手和回撤分析 |
+| 3 | `v1-t-plus-one-open-backtesting-py-proof-card` | passed / t+1 open backtesting.py proof completed | 用 `backtesting.py` 跑 T 日 signal -> T+1 open 的极小收益 proof |
+| 4 | `v1-vectorbt-portfolio-analytics-proof-card` | prepared next route card | 用 `vectorbt` 做矩阵化组合级绩效、暴露、换手和回撤分析 |
 | 5 | `v1-broker-adapter-feasibility-card` | planned / after backtest semantics stable | 只读评估 easytrader / vn.py / 自研 broker kernel 的 adapter 可行性 |
 
 ### 6.2 `v1-core-retention-and-outsourcing-boundary-card`
@@ -384,7 +384,54 @@ Position / Portfolio Plan / Trade / System 平台。
 | 正式 DB mutation | `no` |
 | 下一张路线卡 | `v1-t-plus-one-open-backtesting-py-proof-card` |
 
-### 6.4 历史版本回收边界
+### 6.4 `v1-t-plus-one-open-backtesting-py-proof-card`
+
+目标：消费第 2 张卡冻结的 Signal export contract，用 `backtesting.py` 跑第一版极小
+T+1 open proof，回答 Asteria Signal 是否已经可以被外部回测框架消费并产出基础
+PnL / drawdown / trade count 读数。
+
+本卡只读消费正式 `signal.duckdb` 与 `market_base_day.duckdb`，不写 `H:\Asteria-data`，
+不进入 broker，不生成真实 fill ledger，不更新账户。
+
+冻结执行语义：
+
+| 项 | 语义 |
+|---|---|
+| signal timing | `T+0 signal` |
+| execution hint | `T_PLUS_1_OPEN` |
+| trade date policy | `next_trading_day_after_signal_date` |
+| price field | `open` |
+| engine | `backtesting.py` |
+| engine setting | `trade_on_close = false`，订单在下一根 bar 的 open 执行 |
+| positioning | `long_only_single_symbol` |
+
+2026-05-14 proof result：
+
+| 项 | 结果 |
+|---|---|
+| 执行 run_id | `v1-t-plus-one-open-backtesting-py-proof-card-20260514-01` |
+| 当前 live next | `none / terminal`（保持不变） |
+| route type | `roadmap-only / read-only / post-terminal / backtesting.py proof` |
+| sample scope | `31` 只申万一级行业代表股，`2024-01-02..2024-12-31` |
+| completed backtest count | `1` |
+| skipped symbol count | `30` |
+| skip reason | `no_active_signal_in_scope` |
+| total trade count | `6` |
+| mean return pct | `-12.5930` |
+| worst drawdown pct | `-23.5430` |
+| `formal_db_mutation = no` | `true` |
+| 下一张路线卡 | `v1-vectorbt-portfolio-analytics-proof-card` |
+
+通过含义：
+
+- Asteria Signal 已经可以通过只读 adapter 被 `backtesting.py` 消费。
+- `T+0 signal -> T+1 open execution` 已经形成第一版可运行 proof。
+- 当前样本暴露出严肃覆盖 caveat：31 只代表股中只有 1 只有 active Signal 可跑；这属于
+  `strategy quality issue / source caveat`，不是 live release blocker。
+- 本卡不得被解释为生产级组合回测、真实成交闭环、账户更新或实盘交易能力；
+  换句话说，仍然不得宣称实盘能力。
+
+### 6.5 历史版本回收边界
 
 | 历史版本 | 回收内容 | 边界 |
 |---|---|---|
@@ -394,7 +441,7 @@ Position / Portfolio Plan / Trade / System 平台。
 | `G:\malf-history\MarketLifespan-Quant` | risk unit、trailing stop、system backtest/readout | 回收风控与系统读出经验 |
 | `G:\malf-history\Lifespan-Validated` | MALF / System 证据资产 | 只作为权威锚点，不作为运行时代码 |
 
-### 6.5 外部项目分工
+### 6.6 外部项目分工
 
 | 外部项目 | 分工 | 裁决 |
 |---|---|---|

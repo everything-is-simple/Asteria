@@ -9,6 +9,7 @@ description = "Asteria Market Lifespan Framework, a local-first MALF-led market 
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
 dependencies = [
+    "backtesting>=0.6.5",
     "duckdb>=1.2.0",
     "pandas>=2.2.0",
     "polars>=1.0.0",

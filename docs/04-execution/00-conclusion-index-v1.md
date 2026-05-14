@@ -143,6 +143,7 @@ closeout（闭环）后的当前系统 docs/code 快照。快照之后的 repo H
 | Pipeline | `v1-usage-value-decision-card-20260513-01` | `passed / usage value decision completed` | [conclusion](records/pipeline/v1-usage-value-decision-card-20260513-01.conclusion.md) | [evidence-index](records/pipeline/v1-usage-value-decision-card-20260513-01.evidence-index.md) |
 | Pipeline | `v1-core-retention-and-outsourcing-boundary-card-20260513-01` | `passed / core retention and outsourcing boundary frozen` | [conclusion](records/pipeline/v1-core-retention-and-outsourcing-boundary-card-20260513-01.conclusion.md) | [evidence-index](records/pipeline/v1-core-retention-and-outsourcing-boundary-card-20260513-01.evidence-index.md) |
 | Pipeline | `v1-signal-export-contract-card-20260513-01` | `passed / signal export contract frozen` | [conclusion](records/pipeline/v1-signal-export-contract-card-20260513-01.conclusion.md) | [evidence-index](records/pipeline/v1-signal-export-contract-card-20260513-01.evidence-index.md) |
+| Pipeline | `v1-t-plus-one-open-backtesting-py-proof-card-20260514-01` | `passed / t+1 open backtesting.py proof completed` | [conclusion](records/pipeline/v1-t-plus-one-open-backtesting-py-proof-card-20260514-01.conclusion.md) | [evidence-index](records/pipeline/v1-t-plus-one-open-backtesting-py-proof-card-20260514-01.evidence-index.md) |
 | Governance | `governance-release-gate-closure-20260428-01` | `passed` | [conclusion](records/governance/governance-release-gate-closure-20260428-01.conclusion.md) | [evidence-index](records/governance/governance-release-gate-closure-20260428-01.evidence-index.md) |
 | Governance | `docs-authority-refresh-20260429-01` | `passed` | [conclusion](records/governance/docs-authority-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/docs-authority-refresh-20260429-01.evidence-index.md) |
 | Governance | `external-root-assets-refresh-20260429-01` | `passed` | [conclusion](records/governance/external-root-assets-refresh-20260429-01.conclusion.md) | [evidence-index](records/governance/external-root-assets-refresh-20260429-01.evidence-index.md) |
@@ -340,6 +341,20 @@ v1-signal-export-contract-card-20260513-01 = passed / signal export contract fro
 不更新账户、不写正式 DB。当前 live 下一卡仍保持 `none / terminal`，下一张路线卡为
 `v1-t-plus-one-open-backtesting-py-proof-card`。
 
+当前 Phase 2 的第三张路线卡也已形成：
+
+```text
+v1-t-plus-one-open-backtesting-py-proof-card-20260514-01 = passed / t+1 open backtesting.py proof completed
+```
+
+它只读消费正式 `signal.duckdb` 与 `market_base_day.duckdb`，用 `backtesting.py`
+执行第一版逐股 long-only T+1 open proof。结果为：`31` 只代表股、`1` 只完成 backtest、
+`30` 只因 `no_active_signal_in_scope` 跳过，完成样本交易 `6` 笔，mean return
+`-12.5930%`，worst drawdown `-23.5430%`。该卡证明外部 backtest adapter 可运行，
+但不证明生产级组合回测、真实成交闭环、账户更新、broker adapter 或实盘交易能力。
+当前 live 下一卡仍保持 `none / terminal`，下一张路线卡为
+`v1-vectorbt-portfolio-analytics-proof-card`。
+
 | Module | Run ID | Status | Conclusion |
 |---|---|---|---|
 | Pipeline | `v1-usage-readout-report-card-20260513-01` | `passed / usage readout report generated` | [conclusion](records/pipeline/v1-usage-readout-report-card-20260513-01.conclusion.md) |
@@ -347,6 +362,7 @@ v1-signal-export-contract-card-20260513-01 = passed / signal export contract fro
 | Pipeline | `v1-usage-value-decision-card-20260513-01` | `passed / usage value decision completed` | [conclusion](records/pipeline/v1-usage-value-decision-card-20260513-01.conclusion.md) |
 | Pipeline | `v1-core-retention-and-outsourcing-boundary-card-20260513-01` | `passed / core retention and outsourcing boundary frozen` | [conclusion](records/pipeline/v1-core-retention-and-outsourcing-boundary-card-20260513-01.conclusion.md) |
 | Pipeline | `v1-signal-export-contract-card-20260513-01` | `passed / signal export contract frozen` | [conclusion](records/pipeline/v1-signal-export-contract-card-20260513-01.conclusion.md) |
+| Pipeline | `v1-t-plus-one-open-backtesting-py-proof-card-20260514-01` | `passed / t+1 open backtesting.py proof completed` | [conclusion](records/pipeline/v1-t-plus-one-open-backtesting-py-proof-card-20260514-01.conclusion.md) |
 
 ## 3.1 Newly Passed Pre-Position Repair Card
 
