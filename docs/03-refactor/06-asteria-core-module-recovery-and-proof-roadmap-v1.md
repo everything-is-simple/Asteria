@@ -83,6 +83,7 @@ H:\Asteria-Validated\Alpha_PAS_Design_Set_v1_0
 | `AlphaPAS_01_Core_Definitions_Theorems_v1_0.md` | 定义 PAS market context、strength/weakness、setup、trigger、candidate、failure |
 | `AlphaPAS_01B_Operational_Boundary_Rules_v1_0.md` | 定义只读消费 MALF、不得重定义 MALF、不得输出订单/仓位/成交的边界 |
 | `AlphaPAS_02_Trigger_Strength_Stats_Definitions_Theorems_v1_0.md` | 定义 PAS 触发、波段强弱比较、历史统计排名与样本约束 |
+| `AlphaPAS_02A_Candidate_Lifecycle_Definitions_Theorems_v1_0.md` | 定义 setup 等待、触发、取消、修改、重入候选、失效、Signal 接受/拒绝 |
 | `AlphaPAS_03_System_Service_Interface_v1_0.md` | 定义给 Signal / T+1 proof 消费的 Alpha/PAS service surface |
 | `AlphaPAS_04_Context_Chart_View_v1_0.md` | 给出 market context 与 MALF 波段标尺的图示化读法 |
 | `AlphaPAS_05_Trigger_Chart_View_v1_0.md` | 给出 TST / BOF / BPB / PB / CPB 的触发视图 |
@@ -144,7 +145,7 @@ not sufficient for profit proof or broker readiness.
 
 ### 2.6 Alpha/PAS Semantic Layers
 
-正式版 Alpha/PAS 至少拆成六层：
+正式版 Alpha/PAS 至少拆成七层：
 
 | 层 | 职责 |
 |---|---|
@@ -152,10 +153,57 @@ not sufficient for profit proof or broker readiness.
 | `pas_trigger_event` | 记录 TST / BOF / BPB / PB / CPB 是否在 setup 时点触发 |
 | `pas_strength_profile` | 使用 MALF 已完成波段生成同向基准、正逆对比、回撤质量、无力继续 |
 | `pas_in_flight_state` | 记录当前 wave / candidate / transition 对预期的支持、削弱或失效，不替代 completed baseline |
+| `pas_candidate_lifecycle` | 记录 setup 等待、触发、取消、修改、重入候选、失效、被 Signal 接受或拒绝 |
 | `pas_historical_rank_profile` | 记录同类 setup 在历史样本中的频率、稀疏性、forward readout、failure / cancellation ranking |
 | `pas_formal_candidate` | 给 Signal / T+1 proof 的可消费候选，不生成订单、仓位或成交 |
 
-### 2.7 Broker feasibility 暂缓
+### 2.7 Alpha/PAS 入门剑裁决
+
+基于当前已实现系统与第 3 卡 source inventory，本路线图追加如下人话裁决：
+
+```text
+当前已实现的 MALF + Alpha + Signal 只是剑胚，不是已经能下场的剑。
+MALF v1.4 + 新版 Alpha/PAS + Signal 按本路线图做完后，可以形成适合 A 股生存的入门剑。
+```
+
+这里的“入门剑”不得解释为盈利机器、自动交易系统或 broker-ready 系统。它只用于：
+
+| 能力 | 允许解释 |
+|---|---|
+| 避坏位置 | 用 MALF 结构位置、completed-wave baseline 与 in-flight invalidation 过滤明显坏机会 |
+| 选相对更优候选 | 用 PAS context、trigger、strength profile、candidate lifecycle 与 historical rank 识别候选 |
+| 可审计信号 | 把 PAS 主观交易实例翻译成 Signal 可消费、T+1 proof 可验证的候选事实 |
+
+第 4 卡必须把 YTC 卷 3 第 5 章交易实例纳入 authority map，尤其是：
+
+| 交易实例语义 | Alpha/PAS 落地要求 |
+|---|---|
+| BPB / PB / BOF / TST / CPB 不只是标签 | 必须记录 setup 是否等待、触发、失败、取消、修改或重入候选 |
+| T1 / T2、保本、跟踪止损 | 只作为后续 Position / Trade 管理语义或 proof annotation，不由 Alpha/PAS 生成订单 |
+| 取消后重入 | 必须有新的 valid trigger 与当前 context / strength 支持，不允许机械重入 |
+| 强势冲入阻力或弱势回撤 | 必须落到 `pas_strength_profile` 与 `pas_in_flight_state`，供 Signal 放行或拒绝 |
+| 区间内的区间、复杂横向环境 | 必须记录 context nestedness 与 source caveat，不把复杂图感硬编码成确定信号 |
+
+A 股第一版生存边界固定为：
+
+| 边界 | 裁决 |
+|---|---|
+| 交易方向 | long-only / avoid-risk first；空头语义只用于回避或退出，不用于做空 |
+| 执行语义 | T 日信号，T+1 open proof；不得假设日内同日灵活进出 |
+| 频率 | day 为主，week/month 作为背景；不进入超短线或实盘 scalping |
+| 风险事实 | ST、停牌、涨跌停、流动性不足与 source gaps 先作为 hard filter 或 caveat |
+| 生存定义 | 降低坏交易暴露与提升候选可审计性，不等于收益 proof |
+
+因此，第 4 卡的核心产出不是 runtime，也不是 contract freeze，而是：
+
+```text
+MALF 做尺。
+Alpha/PAS 做机会与候选生命周期。
+Signal 做汇聚裁决。
+Position / Trade 以后才处理 T1/T2、分批、保本、跟踪、撤单和真实执行。
+```
+
+### 2.8 Broker feasibility 暂缓
 
 `v1-broker-adapter-feasibility-card` 不取消，但必须延后。
 
@@ -199,7 +247,7 @@ Stage 0 只冻结路线与 no-live 边界。
 | 1 | `v1-core-module-recovery-roadmap-freeze-card` | passed / roadmap frozen | 冻结本路线图、broker 暂缓、no-live 边界 |
 | 2 | `v1-malf-v1-4-immutability-anchor-card` | passed / immutability anchored | 只读锚定 MALF v1.4 不变量清单 |
 | 3 | `v1-alpha-pas-source-inventory-card` | passed / source inventory completed | 盘点当前 Alpha/PAS、历史版本、书籍和系统经验 |
-| 4 | `v1-alpha-pas-authority-map-card` | prepared next route card | 映射书籍与历史系统，裁决是否足以定义 Asteria 独立 PAS 语义层 |
+| 4 | `v1-alpha-pas-authority-map-card` | prepared next route card | 映射书籍、历史系统和第 5 章交易实例，冻结 PAS 候选生命周期与 A 股入门剑边界 |
 | 5 | `v1-alpha-pas-contract-redesign-card` | planned | 冻结 Alpha/PAS v1.0 定义包与新版合同，输入固定为 MALF v1.4 |
 | 6 | `v1-alpha-pas-bounded-proof-build-card` | planned | 小范围实现/恢复新版 Alpha/PAS bounded proof |
 | 7 | `v1-signal-contract-alignment-card` | planned | 让 Signal 对齐新版 Alpha/PAS 与 T+1 execution hint |
@@ -271,7 +319,8 @@ conclusion
 
 ### 5.4 `v1-alpha-pas-authority-map-card`
 
-目标：把书籍、历史版本和当前实现中的 PAS / Alpha 语义映射成权威对照表。
+目标：把书籍、历史版本和当前实现中的 PAS / Alpha 语义映射成权威对照表，
+并裁决 MALF + 新版 Alpha/PAS + Signal 如何形成 A 股 long-only / T+1 的入门级生存剑。
 
 重点来源：
 
@@ -279,7 +328,7 @@ conclusion
 |---|---|
 | YTC 卷 2 第 3 章 `市场分析` | market context、S/R、多重时间框架、市场结构、趋势、强弱、未来趋势方向 |
 | YTC 卷 3 第 4 章 `交易策略` | YTC 架构、反弱势、被套交易者、TST / BOF / BPB / PB / CPB setup |
-| YTC 卷 3 第 5 章 `交易示例` | 五类 setup 的样例语料和失败/取消/重入场景 |
+| YTC 卷 3 第 5 章 `交易示例` | BPB / PB / BOF / TST / CPB 的触发、取消、修改、重入、T1/T2、保本、跟踪止损与失败样例 |
 | Bob Volman price action references | 入场、临界点、假突破、区间/突破细节参考 |
 | `MarketLifespan-Quant` PAS runtime / docs | 五触发器、16-cell、trigger ledger、formal signal、历史统计与 result reuse 经验 |
 | `EmotionQuant-gamma` | T+1 Open、IRS ranking、MSS sidecar 与 BOF-only 主线边界 |
@@ -295,9 +344,11 @@ conclusion
 | strength / weakness | 已完成同向基准、已完成正逆对比、当前进行中确认/失效分层 |
 | setup family | TST / BOF / BPB / PB / CPB 是否对应并如何补强当前 Alpha 五族 |
 | trigger event | 什么叫 PAS 触发、什么叫未触发、取消、失败、等待 |
+| candidate lifecycle | 如何表达 `waiting / triggered / cancelled / modified / reentry_candidate / invalidated / accepted_by_signal / rejected_by_signal` |
 | historical rank profile | 同类 setup 的历史统计排名、样本量、稀疏性、forward readout 与失败排名如何表达 |
 | entry candidate | 只定义候选与执行 hint，不生成订单 |
 | failure / invalidation | 如何表达 setup 失败、取消、重新评估 |
+| A 股生存边界 | long-only、T+1 open、日线优先、source gaps、ST / 停牌 / 涨跌停 / 流动性 caveat 如何进入 hard filter 或 retained gap |
 | source lineage | 每个概念来自当前实现、历史系统、YTC 章节或 retained reference |
 
 通过标准：
@@ -306,6 +357,12 @@ conclusion
 - 区分必须保留、需要补强、历史弃用、不适合当前 Asteria 的概念。
 - 明确哪些语义进入 contract redesign，哪些只保留为 future enhancement。
 - 明确 PAS 强弱比较必须基于 MALF 已完成波段基准，不得把当前进行中波段当作 completed baseline。
+- 明确当前已实现 MALF + Alpha + Signal 是 `sword_blank / 剑胚`，不是可下场交易系统。
+- 明确 MALF v1.4 + 新版 Alpha/PAS + Signal 完成后只能裁决为 `entry_level_a_share_survival_sword_candidate`，
+  不得宣称收益、实盘、broker-ready 或自动交易能力。
+- 明确 `pas_candidate_lifecycle` 必须消费 YTC 卷 3 第 5 章交易实例中的等待、触发、取消、修改、重入、失败与 Signal 拒绝/接受语义。
+- 明确 T1 / T2、保本、跟踪止损、分批退出属于后续 Position / Trade 管理面；
+  Alpha/PAS 只能输出候选生命周期、risk/reward viability hint 或 proof annotation，不生成管理动作。
 - 给出 `source_sufficiency = sufficient_for_definition / insufficient_for_migration_or_profit_proof` 裁决。
 - 给出 `Alpha_PAS_Design_Set_v1_0` 的文件清单、必须定义项、retained gaps。
 
@@ -331,8 +388,10 @@ conclusion
 | `pas_strength_profile` | completed-wave baseline、in-flight confirmation、正逆波段对比、无力继续、boundary interaction |
 | `pas_setup_family` | `TST / BOF / BPB / PB / CPB` 的 Asteria 定义 |
 | `pas_trigger_event` | setup 触发、未触发、取消、失败、等待、重新评估 |
+| `pas_candidate_lifecycle` | `waiting / triggered / cancelled / modified / reentry_candidate / invalidated / accepted_by_signal / rejected_by_signal` |
 | `pas_historical_rank_profile` | setup 频率、样本量、历史分位、forward return readout、failure/cancellation rank |
 | `pas_entry_candidate` | 面向 Signal / T+1 proof 的候选，不是订单 |
+| `pas_management_handoff_hint` | T1/T2、保本、跟踪、分批只作为 Position / Trade handoff hint 或 proof annotation |
 | `pas_failure_state` | setup 取消、失败、重新评估、需要等待 |
 | `pas_source_lineage` | MALF run / WavePosition / rule version / source concept trace |
 
@@ -354,6 +413,8 @@ conclusion
 - 证明新版 PAS 语义能从 MALF v1.4 输入落到可审计输出。
 - 至少证明 `pas_strength_profile` 可从 setup 之前 MALF 已完成波段生成 completed baseline，不使用未来数据。
 - 至少证明当前进行中波段只作为 in-flight confirmation / invalidation，不被写成 completed baseline。
+- 至少证明 `pas_candidate_lifecycle` 能表达等待、触发、取消、修改、重入候选、失效、Signal 接受/拒绝。
+- T1 / T2、保本、跟踪止损只能落为 handoff hint 或 proof annotation，不得由 Alpha/PAS 输出订单、仓位或成交。
 
 ### 5.7 `v1-signal-contract-alignment-card`
 
