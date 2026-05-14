@@ -133,14 +133,17 @@ v1-core-retention-and-outsourcing-boundary-card-20260513-01 = passed / core rete
 v1-signal-export-contract-card-20260513-01 = passed / signal export contract frozen
 v1-t-plus-one-open-backtesting-py-proof-card-20260514-01 = passed / t+1 open backtesting.py proof completed
 v1-vectorbt-portfolio-analytics-proof-card-20260514-01 = passed / vectorbt portfolio analytics proof completed
-next route card = v1-broker-adapter-feasibility-card
+v1-core-module-recovery-roadmap-freeze-card-20260514-01 = passed / roadmap frozen / post-terminal route
+next route card = v1-malf-v1-4-immutability-anchor-card
 ```
 
 该路线不修改 live next；当前 live truth 仍保持 `none / terminal`。`daily-incremental-production-scope-card`
 仍是 prepared route card，但 Phase 2 已先冻结“核心自研 + 外围外包/adapter”战略边界；
 进入日更生产化范围冻结前，已消费 `v1-vectorbt-portfolio-analytics-proof-card`
-对组合级绩效、持仓暴露、换手和回撤的外部分析 proof；下一张路线卡为
-`v1-broker-adapter-feasibility-card`，但当前 live truth 仍保持 `none / terminal`。
+对组合级绩效、持仓暴露、换手和回撤的外部分析 proof。随后
+`v1-core-module-recovery-roadmap-freeze-card-20260514-01` 已冻结新的 core recovery / proof
+post-terminal 路线，把 broker feasibility 暂缓，并把下一张路线卡切到
+`v1-malf-v1-4-immutability-anchor-card`；当前 live truth 仍保持 `none / terminal`。
 
 对应 symbolic allowed next action：
 

@@ -367,8 +367,22 @@ Signal、组合矩阵完成，组合收益 `-13.2839%`，最大回撤 `-24.6748%
 `6` 笔，order activity `12`，active position day `85`，exposure time `1.1330%`，
 turnover proxy `11.6788`。该卡证明外部 portfolio analytics adapter 可运行，
 但不证明生产级组合回测、真实成交闭环、账户更新、broker adapter 或实盘交易能力。
-当前 live 下一卡仍保持 `none / terminal`，下一张路线卡为
-`v1-broker-adapter-feasibility-card`。
+当前 live 下一卡仍保持 `none / terminal`；该卡形成时的原下一张路线卡为
+`v1-broker-adapter-feasibility-card`，随后已由 core recovery / proof 路线冻结卡改判为 deferred。
+
+当前 core recovery / proof 路线冻结卡也已形成：
+
+```text
+v1-core-module-recovery-roadmap-freeze-card-20260514-01 = passed / roadmap frozen / post-terminal route
+```
+
+它冻结 `docs/03-refactor/06-asteria-core-module-recovery-and-proof-roadmap-v1.md`，消费
+`v1-vectorbt-portfolio-analytics-proof-card-20260514-01` 暴露的 active Signal 覆盖稀疏、
+组合收益为负和 exposure time 极低问题，正式把近期路线从 broker feasibility 前移到
+MALF v1.4 不变量锚定与 Alpha/PAS 恢复证明。该卡不运行收益 proof、不接 broker、
+不迁移历史 Alpha/PAS 代码、不写正式 DB；当前 live 下一卡仍保持 `none / terminal`，
+下一张路线卡为 `v1-malf-v1-4-immutability-anchor-card`，而
+`v1-broker-adapter-feasibility-card` 保持 deferred。
 
 | Module | Run ID | Status | Conclusion |
 |---|---|---|---|
@@ -379,6 +393,7 @@ turnover proxy `11.6788`。该卡证明外部 portfolio analytics adapter 可运
 | Pipeline | `v1-signal-export-contract-card-20260513-01` | `passed / signal export contract frozen` | [conclusion](records/pipeline/v1-signal-export-contract-card-20260513-01.conclusion.md) |
 | Pipeline | `v1-t-plus-one-open-backtesting-py-proof-card-20260514-01` | `passed / t+1 open backtesting.py proof completed` | [conclusion](records/pipeline/v1-t-plus-one-open-backtesting-py-proof-card-20260514-01.conclusion.md) |
 | Pipeline | `v1-vectorbt-portfolio-analytics-proof-card-20260514-01` | `passed / vectorbt portfolio analytics proof completed` | [conclusion](records/pipeline/v1-vectorbt-portfolio-analytics-proof-card-20260514-01.conclusion.md) |
+| Pipeline | `v1-core-module-recovery-roadmap-freeze-card-20260514-01` | `passed / roadmap frozen / post-terminal route` | [conclusion](records/pipeline/v1-core-module-recovery-roadmap-freeze-card-20260514-01.conclusion.md) |
 
 ## 3.1 Newly Passed Pre-Position Repair Card
 
