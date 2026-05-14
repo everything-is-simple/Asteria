@@ -138,7 +138,8 @@ v1-malf-v1-4-immutability-anchor-card-20260514-01 = passed / MALF v1.4 immutabil
 v1-alpha-pas-source-inventory-card-20260514-01 = passed / Alpha PAS source inventory completed
 v1-alpha-pas-authority-map-card-20260514-01 = passed / Alpha PAS authority map completed
 v1-alpha-pas-contract-redesign-card-20260514-01 = passed / Alpha PAS contract redesigned
-next route card = v1-alpha-pas-bounded-proof-build-card
+v1-alpha-pas-bounded-proof-build-card-20260514-01 = passed / Alpha PAS bounded proof built
+next route card = v1-signal-contract-alignment-card
 ```
 
 该路线不修改 live next；当前 live truth 仍保持 `none / terminal`。`daily-incremental-production-scope-card`
@@ -174,6 +175,18 @@ context、strength、setup、trigger、candidate lifecycle、rank、lineage 和 
 不输出 position size、portfolio allocation、broker order、fill、account state 或 profit claim。
 该卡不迁移历史代码、不运行 bounded proof、不写正式 DB；下一张路线卡为
 `v1-alpha-pas-bounded-proof-build-card`。当前 live truth 仍保持 `none / terminal`。
+
+随后 `v1-alpha-pas-bounded-proof-build-card-20260514-01` 已实现 proof-only runtime，
+只读消费 `H:\Asteria-data\malf_service_day.duckdb` 中
+`malf-v1-4-core-runtime-sync-implementation-20260505-01` 的 MALF v1.4 WavePosition，
+在 `H:\Asteria-temp\alpha_pas\v1-alpha-pas-bounded-proof-build-card-20260514-01`
+生成 temp proof DB，并在 `H:\Asteria-report\pipeline\2026-05-14\v1-alpha-pas-bounded-proof-build-card-20260514-01`
+生成 proof summary、contract coverage、lineage summary、audit summary 与 manifest。
+结果为 `source_row_count = 4395`、`candidate_count = 4395`、`hard_fail_count = 0`、
+`formal_data_mutation = no`；validated evidence 为
+`H:\Asteria-Validated\Asteria-v1-alpha-pas-bounded-proof-build-card-20260514-01.zip`。
+该卡不写正式 DB、不改 MALF、不证明收益、不接 broker；下一张路线卡为
+`v1-signal-contract-alignment-card`。当前 live truth 仍保持 `none / terminal`。
 
 对应 symbolic allowed next action：
 

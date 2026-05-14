@@ -249,8 +249,8 @@ Stage 0 只冻结路线与 no-live 边界。
 | 3 | `v1-alpha-pas-source-inventory-card` | passed / source inventory completed | 盘点当前 Alpha/PAS、历史版本、书籍和系统经验 |
 | 4 | `v1-alpha-pas-authority-map-card` | passed / authority map completed | 映射书籍、历史系统和第 5 章交易实例，冻结 PAS 候选生命周期与 A 股入门剑边界 |
 | 5 | `v1-alpha-pas-contract-redesign-card` | passed / contract redesigned | 冻结 Alpha/PAS v1.0 定义包与新版合同，输入固定为 MALF v1.4 |
-| 6 | `v1-alpha-pas-bounded-proof-build-card` | prepared next route card | 小范围实现/恢复新版 Alpha/PAS bounded proof |
-| 7 | `v1-signal-contract-alignment-card` | planned | 让 Signal 对齐新版 Alpha/PAS 与 T+1 execution hint |
+| 6 | `v1-alpha-pas-bounded-proof-build-card` | passed / bounded proof built | 小范围实现/恢复新版 Alpha/PAS bounded proof |
+| 7 | `v1-signal-contract-alignment-card` | prepared next route card | 让 Signal 对齐新版 Alpha/PAS 与 T+1 execution hint |
 | 8 | `v1-alpha-pas-t-plus-one-return-proof-card` | planned | T 日信号、T+1 开盘执行，输出收益/回撤/交易数/跳过原因 |
 | 9 | `v1-portfolio-analytics-reproof-card` | planned | 用新版 Alpha/PAS 信号重跑组合层 proof |
 | 10 | `v1-broker-adapter-feasibility-card` | deferred | 仅在第 8、9 卡证明策略有研究收益价值后，只读评估 broker adapter |
@@ -441,6 +441,26 @@ conclusion
 - 至少证明当前进行中波段只作为 in-flight confirmation / invalidation，不被写成 completed baseline。
 - 至少证明 `pas_candidate_lifecycle` 能表达等待、触发、取消、修改、重入候选、失效、Signal 接受/拒绝。
 - T1 / T2、保本、跟踪止损只能落为 handoff hint 或 proof annotation，不得由 Alpha/PAS 输出订单、仓位或成交。
+
+执行结果：
+
+| 项 | 结果 |
+|---|---|
+| 执行 run_id | `v1-alpha-pas-bounded-proof-build-card-20260514-01` |
+| source DB | `H:\Asteria-data\malf_service_day.duckdb`（read-only） |
+| source MALF run | `malf-v1-4-core-runtime-sync-implementation-20260505-01` |
+| requested scope | `day / 2024-01-02..2024-12-31 / symbol_limit=31` |
+| observed rows | `4395` |
+| PAS candidates | `4395` |
+| lifecycle catalog states | `8` |
+| hard_fail_count | `0` |
+| temp proof DB | `H:\Asteria-temp\alpha_pas\v1-alpha-pas-bounded-proof-build-card-20260514-01\alpha_pas_bounded_proof.duckdb` |
+| report dir | `H:\Asteria-report\pipeline\2026-05-14\v1-alpha-pas-bounded-proof-build-card-20260514-01` |
+| validated zip | `H:\Asteria-Validated\Asteria-v1-alpha-pas-bounded-proof-build-card-20260514-01.zip` |
+| 当前 live next | `none / terminal`（保持不变） |
+| 正式 DB mutation | `no` |
+| return / broker proof | `no` |
+| 下一张路线卡 | `v1-signal-contract-alignment-card` |
 
 ### 5.7 `v1-signal-contract-alignment-card`
 

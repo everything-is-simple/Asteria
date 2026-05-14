@@ -443,6 +443,21 @@ MALF v1.4 WavePosition / service facts 与 setup-time visible facts，输出
 account state 或 profit claim。当前 live 下一卡仍保持 `none / terminal`，下一张路线卡为
 `v1-alpha-pas-bounded-proof-build-card`。
 
+当前 Alpha/PAS bounded proof build 路线卡也已形成：
+
+```text
+v1-alpha-pas-bounded-proof-build-card-20260514-01 = passed / Alpha PAS bounded proof built
+```
+
+它实现 proof-only runtime，新增 Alpha/PAS 合同、规则、artifact writer、bounded proof runner
+与 CLI；只读消费 `H:\Asteria-data\malf_service_day.duckdb` 中
+`malf-v1-4-core-runtime-sync-implementation-20260505-01` 的 MALF v1.4 WavePosition，
+在 `H:\Asteria-temp` 与 `H:\Asteria-report` 生成 PAS proof evidence。
+结果为 `source_row_count = 4395`、`candidate_count = 4395`、`hard_fail_count = 0`，
+required service fields 无缺失，forbidden broker / position / portfolio / fill / account / profit
+fields 未出现。该卡不写正式 DB、不改 MALF、不运行收益 proof、不接 broker；当前 live 下一卡仍保持
+`none / terminal`，下一张路线卡为 `v1-signal-contract-alignment-card`。
+
 | Module | Run ID | Status | Conclusion |
 |---|---|---|---|
 | Pipeline | `v1-usage-readout-report-card-20260513-01` | `passed / usage readout report generated` | [conclusion](records/pipeline/v1-usage-readout-report-card-20260513-01.conclusion.md) |
@@ -457,6 +472,7 @@ account state 或 profit claim。当前 live 下一卡仍保持 `none / terminal
 | Pipeline | `v1-alpha-pas-source-inventory-card-20260514-01` | `passed / Alpha PAS source inventory completed` | [conclusion](records/pipeline/v1-alpha-pas-source-inventory-card-20260514-01.conclusion.md) |
 | Pipeline | `v1-alpha-pas-authority-map-card-20260514-01` | `passed / Alpha PAS authority map completed` | [conclusion](records/pipeline/v1-alpha-pas-authority-map-card-20260514-01.conclusion.md) |
 | Pipeline | `v1-alpha-pas-contract-redesign-card-20260514-01` | `passed / Alpha PAS contract redesigned` | [conclusion](records/pipeline/v1-alpha-pas-contract-redesign-card-20260514-01.conclusion.md) |
+| Pipeline | `v1-alpha-pas-bounded-proof-build-card-20260514-01` | `passed / Alpha PAS bounded proof built` | [conclusion](records/pipeline/v1-alpha-pas-bounded-proof-build-card-20260514-01.conclusion.md) |
 
 ## 3.1 Newly Passed Pre-Position Repair Card
 
