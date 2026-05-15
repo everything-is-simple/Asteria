@@ -255,6 +255,14 @@ Stage 0 只冻结路线与 no-live 边界。
 | 9 | `v1-portfolio-analytics-reproof-card` | planned | 用新版 Alpha/PAS 信号重跑组合层 proof |
 | 10 | `v1-broker-adapter-feasibility-card` | deferred | 仅在第 8、9 卡证明策略有研究收益价值后，只读评估 broker adapter |
 
+2026-05-14 路线补充裁决：
+
+```text
+第 8 卡不取消，但暂停扩大实现。
+它后续只能作为 narrow research return proof 执行，不能扩成 Trade / Position / System 合同卡。
+新的上层路线入口为 docs/03-refactor/09-asteria-v2-core-system-reconstruction-roadmap-v1.md。
+```
+
 每张卡执行前必须独立创建或更新自己的：
 
 ```text

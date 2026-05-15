@@ -71,10 +71,13 @@ H:\Asteria-Validated\Asteria-deep-research-report-重构系统最新剖切面研
 
 - [Asteria 执行结论索引](H:/Asteria/docs/04-execution/00-conclusion-index-v1.md)
 
-当前已通过 `Signal bounded proof`、`MALF v1.3 formal-data bounded closeout`，并完成
-`MALF v1.4 Core operational boundary authority sync`；下一步只允许
-`Position freeze review reentry / review-only`。Signal full build、Position 施工、下游模块
-施工和全链路 pipeline 必须等待后续 release gate。
+当前 release closeout 状态为 `final-release-closeout-card` passed / v1 complete，
+live next 仍为 `none / terminal`。post-terminal 路线图只作为独立研究/重构规划入口，
+不得改写 live gate truth：
+
+- [v1 使用验证路线图](H:/Asteria/docs/03-refactor/05-asteria-v1-usage-validation-roadmap-v1.md)
+- [核心模块恢复与证明路线图](H:/Asteria/docs/03-refactor/06-asteria-core-module-recovery-and-proof-roadmap-v1.md)
+- [v2 核心系统再重构路线图](H:/Asteria/docs/03-refactor/09-asteria-v2-core-system-reconstruction-roadmap-v1.md)
 
 前辈系统资产清单：
 
